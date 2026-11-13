@@ -1,89 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794589271;
-	b=Ng0Hj0IBQgi5I82pjfswyjX6Zsp3HGVW4E27OvmcJCD4hQ7+66S7tfbXKSTH0Ne8MwD/
-	 6viKIH1eyUeA7QES4YDm1wKnB3PIFbKsyL9R1WT+Mn4bIXVcaWjbYmNekma1/O9FpeRsv
-	 /4zpOFfE/4+1T/9YUHS1yuv6BC90dhLPS0woKGXVUrR59bpDXAuxjtu8KayPG4WEouimO
-	 PtoErr783oqc0fGItwPQVgkPAU4o5mXs5p8xZ1DkabCRdRO0fonej5nadYhPusHXrfmIy
-	 CMt/zODKyLkPQzLLHu5W1a9TRn5Wc3onRslV9dhWd9W2TMZmz/OQs9DPTDtWwdd2DZQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794589271;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Subject:From:To:Cc:
-	 Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 User-Agent:MIME-Version;
-	bh=T90is/Fq3M4BakgvweKQlUcFpJnSN8zA7BuLjyvBS8k=;
-	b=AKMyIb0/aiiC6HsifQELvIIJMRBwQjzzEGgQbAGEPeKPyIEVVWGEihUKwpYY+5PQAkqw
-	 QN5iqXXGr4t7AwATRFJyx4k8aIZ5QyoDx0YDp3vTwSqtJnkJq78DTmn1RshGFdb/rIDDA
-	 NIJAoxWfrGsVfZ8IiLNDepYvpVdPWxrawxe56y5wHOuDxPA/J1dTV3ZZACO8RDyvn1RCq
-	 5lpFIH27UM559/dsBGmlWS7U50TTOAzcRd7tVsQBzqzk5xFqrHqguhPozrkhxLr9RvKGm
-	 AUxPZK6wA8ngy03Dg0E+zaP5200TcPKCXKVZus5Zf0U2KZnuBWf2mzaE0Fn2BrCBJOg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=a9lwHeNy;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794592900;
+	b=kybzwTKJd33YbRxDGt/zWeF9sFlR1kpF1ELkD3iWtp/r/NIlY7+9516Bq5LvpjZ4v3mY
+	 SU6+ODm1J+e/Z+7Z/xoIbrAmeKa3LlTuNVUI9yjNXwq32lGdxeg0P7lxeHJQQTzXVQ6aD
+	 njGCEc3RstJGbCR9jTF9+1csdow2Kd5+Kikc5Fn6ODt2jYMq7FjfyBfsUbYolUtRgYHHJ
+	 9OX9I/T642mLq1bdkKRaKiK7CENBGTSU4gwph2b4tbjsRT11NLAr9sp3nFB2uokkcJ8w/
+	 yfVNAhk+KG+9pbQ990ajXDJDO5352oRRToMkKcjoA0yMaLaFg+godtYSM8t174uH+6Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794592900;
+	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
+	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=fei6i2HUpsCUUYKRfgUiNwOal5hCWRa/kM9HPb8mLEw=;
+	b=D+n+PBQazpOdDIi5qEQoqL8Owbp2142CjG/J7b5GLKm9C/5nvTA/S68wblMPaENhR3GR
+	 8F4QSiwFTNp3a5xVHUT+13iD4q/NV70BJJgHqvhdZyX/NarHqdjvoxo4np1rSB56K+0Fs
+	 j/FVNhLL9NqrpwNVbFC0ATAUhkh+NoIT9cc4zi7jKLkDhQbz3i3bixkOc5unogaREBrL0
+	 CZXmgdbQhAM2bRpPFY8Vl/LLJn/GstWV9hdnbfTk9xM4lU2lICgCZShUD7FbzeT7m11Pv
+	 TLCAS91KJ/fy1iLS7kYkNCtI8rHFpZa787dEZLcdZjg5XwFIwftw01S+IuZS4o8Zouw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OEpv5h1y;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCA6606A897;
-	Fri, 13 Nov 2026 17:01:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BBCA6606A897
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC0F606B220;
+	Fri, 13 Nov 2026 18:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=a9lwHeNy
-Received: from [IPv6:2a0a:edc0:0:900:1d::4e] (lupine.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::4e])
-	(Authenticated sender: pza@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id AC49920178E;
-	Fri, 13 Nov 2026 18:01:04 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794589264;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T90is/Fq3M4BakgvweKQlUcFpJnSN8zA7BuLjyvBS8k=;
-	b=a9lwHeNy45v+GSy0i7P7lcg5FCwWe5piG0RrHc3dWb6NVwS/r+xH7Ih7bpfwAIeUUdGcDA
-	QYdMwT/IYT8IkzJZkAmumYF9+LyXwZm4oel6Zoi6Homl9FzjQklghkpz8b82eva9/xSyUH
-	FNOc8mkpWa9dhuKVaTZJGo1v81/eoixS3fTa93ofAZCIzyEOx2ior0nbYVwjUXBooMVwLP
-	GdXA5lErEHTWO/B7eb1vPWhV0EE1liTLtk7bryPiMjmMA4TQI/LH65Ux5giNU0qRf5Bu0W
-	FG4DJqMmUWlUWP72j8XlddGTUbiUyTyiPjltjLgUAhy1do8kv9GdCG8jDL7hGg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794589264;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T90is/Fq3M4BakgvweKQlUcFpJnSN8zA7BuLjyvBS8k=;
-	b=ALoBq9Z0P2HvP3JPZFHXcaMKwzccaDpiMAqhcNHdq+sXxasZ1r1M+2vsrWHOF+VsJaYOtX
-	so2azqdz5iqa0NVKpwIfI2LJtLWHOOwu3fUIxTN19oLtqIvhzbd+JlqrjHQmOOdr9Y/73e
-	bfm/EyBd7bfwylaJ4ZFt2P9jdkMJDF3K+6wfSKS7Bmfb4rC6qHSFU0Jr+ENjcIEYHQjp+9
-	58wanCWHZQGc4UqOTiIqWoMq3yBiD6auiQsEPDI5sjsXi9KAOoJmrLZ759mqPwBN/VnvE3
-	1wWFgR9yceHnoRjr7x9cGEDH/8SyXP3+wsmIO6QQ0l8J3Te1CdUnwhHaB7grBw==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794589264; a=rsa-sha256;
-	cv=none;
-	b=a8/Wj0Mzl6hoCdkgHp+sUA49m2DjwNyDekgp5gwYwUSSKDFy8pmU/KQngwuIdvAOUtcp/R
-	fc5cWSkozZeWCe0I4BkNQKmA6FAzDsuPPcmLHsUme2OI0YCzNbLcxWEi9Mm3jAZIYw83IS
-	q5INuB527bjThuLb8/p4jSeUTCud/G0Xm0xUl0xlyVkdHzo9OZZ4YsW4SCExfGufI8E6zh
-	LNnVjt+cM15W5k5U5ZByWek28vDRJLKNCxR6KRgs3XbSGA2ZD1dXEm7eBXGzNJuuTT0Bqj
-	jsDRMhE7FCpB4BjHJ1Iv+29szKEUgTd0/At8q617Nl7rLYO8HGmR8PEJdw4//w==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=pza@pengutronix.de smtp.mailfrom=p.zabel@pengutronix.de
-Message-ID: <62d7f3ee8119e57375d0038b1b6c3859aef700b5.camel@pengutronix.de>
-Subject: Re: [PATCH] spi: sunplus-sp7021: use
- devm_reset_control_get_exclusive_deasserted()
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Felix Gu <ustc.gu@gmail.com>, Li-hao Kuo <lhjeff911@gmail.com>, Mark
- Brown	 <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Fri, 13 Nov 2026 18:01:04 +0100
-In-Reply-To: <20261114-sunplus-reset-cleanup-v1-1-115e32fe8c1a@gmail.com>
-References: <20261114-sunplus-reset-cleanup-v1-1-115e32fe8c1a@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OEpv5h1y
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5A51F000C6;
+	Fri, 13 Nov 2026 18:01:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794592899;
+	bh=fei6i2HUpsCUUYKRfgUiNwOal5hCWRa/kM9HPb8mLEw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=OEpv5h1yLV8OFSZCu+UvI9BFOHqrnvFckVSjU/GYLfx5ZBm9/kvEbk5qoXxf4ymd3
+	 LzsezAE7ZUDdfa2vop6R46I0l/7PPU8lNtAfpvfT+njTsRclL/A4PnUxs8wGSa+ANs
+	 FQy8qFfhmL2kXJaTfLpSP8TPUZlSoSRQ3wujKaYqHSlxRHhpiYHQTc/6u7QAlgcGs1
+	 y0R7XofHW5AFhHKXiJAyA07DeMWCTshwJmNVW5wv+Vhyj1U8G/9nDjIO887fTxAGDn
+	 0m1zoQ7/KnP8oCQTSJF2FJ6OlPnBmT/gcoT9UPFhOHbI21ryaBmS/+KFokoi1MWgfO
+	 93EW87uYExEtg==
+From: Mark Brown <broonie@kernel.org>
+To: Binbin Zhou <zhoubb.aaron@gmail.com>, Yinbo Zhu <zhuyinbo@loongson.cn>, 
+ Huacai Chen <chenhuacai@kernel.org>, Binbin Zhou <zhoubinbin@loongson.cn>
+Cc: Huacai Chen <chenhuacai@kernel.org>, Xuerui Wang <kernel@xen0n.name>, 
+ loongarch@lists.linux.dev, linux-spi@vger.kernel.org
+In-Reply-To: <cover.1794538736.git.zhoubinbin@loongson.cn>
+References: <cover.1794538736.git.zhoubinbin@loongson.cn>
+Subject: Re: [PATCH v2 0/7] spi: loongson: Fixes, cleanup and IRQ support
+Message-Id: <179458651530.68977.3697194516871626286.b4-ty@b4>
+Date: Fri, 13 Nov 2026 16:15:15 +0000
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -93,18 +59,66 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2037; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=GPgo+uG8JpRAExqEI7ahg9NF4Ya79KVDkuNdAF1ApAY=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLK+BzQE34pdqFN7YvH9ssrjkZMil4aZez89Vmep2vZqA
+ 7PK7pv9HaUsDGJcDLJiiixxWdwv60ter+E7uLANZg4rE8gQBi5OAZhI0wpGhrO3n+YsM0jp36w9
+ uaorqih35s7pj42vHjb8s+xf+G71S0sYGVYJLXMxjd22udf5+ab9AkekJ3/j2SF6bTujVHzfj8d
+ JmVwA
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Sa, 2026-11-14 at 00:47 +0800, Felix Gu wrote:
-> Use devm_reset_control_get_exclusive_deasserted() to replace the
-> explicit reset acquisition, deassertion, and cleanup action registered
-> with devm_add_action_or_reset().
->=20
-> This simplifies reset handling and removes the custom reset assertion
-> callback while preserving reset assertion during cleanup.
->=20
-> Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+On Fri, 13 Nov 2026 13:42:21 +0800, Binbin Zhou wrote:
+> spi: loongson: Fixes, cleanup and IRQ support
+> 
+> Hi all:
+> 
+> This series fixes several long-standing bugs in the Loongson SPI
+> controller driver, cleans up register access, and adds interrupt-driven
+> transfers with a polling fallback.
+> 
+> [...]
 
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Applied to
 
-regards
-Philipp
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.5
+
+Thanks!
+
+[1/7] spi: loongson: Fix incorrect SPI mode caching logic
+      https://git.kernel.org/broonie/spi/c/99967afeeffe
+[2/7] spi: loongson: Drop redundant CS deassert in setup()
+      https://git.kernel.org/broonie/spi/c/d60a8b838ba7
+[3/7] spi: loongson: Make suspend/resume registers PM-specific
+      https://git.kernel.org/broonie/spi/c/30d93695c357
+[4/7] spi: loongson: Fix clock rate retrieval on ACPI platforms
+      https://git.kernel.org/broonie/spi/c/39a0b497e0db
+[5/7] spi: loongson: Fix clock divider calculation with explicit table
+      https://git.kernel.org/broonie/spi/c/fdaf557e63c3
+[6/7] spi: loongson: Use bitfield helpers for register access
+      https://git.kernel.org/broonie/spi/c/834d129ceef0
+[7/7] spi: loongson: Add interrupt mode support
+      https://git.kernel.org/broonie/spi/c/bb8651fab896
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

@@ -1,66 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.231
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794536748;
-	b=VGzzRDPHViicWIyY9HOzLR+LwS5+IbqpRiF97SxaE92GCnS8XYPFa3TsLM/dMdEi+Xhl
-	 5pbwiqoLl+X3YUUXaMOy71xxbkrH7Ol2Obq7+u1rfuVVkVO1FJbS2LViqYHL3kyi54j+Y
-	 dmHTriquP8qcKs+v1dLNl6NaYD1LiZpmc14pophpKWIWNVXxYMCuM6H+/g0gOoywx549A
-	 nTpzaMp5Hhntoi4dC0TAsVCNGYUMis39x0cIkVHah5SFHyNAzsGiEtBoowVTL3ageZi1v
-	 nV290EUiMvxbMILzxRAk/5q9O+NUUTOIu0YmcUjOKPjBOuoEd04fWs0yhxItJYYzPtw==
+	t=1794536759;
+	b=Exfc1Pu8sD8+pQqu5ElczQ6t1RkmTHs3iMNcWKCzSMRDs/GnmYttvEtAmQEJfDFC0irq
+	 wlGRb/tim0RZdoPhamFd+c3n3ajq7pJgPpmdOmf1h3X+8CGe4T4UBsYi70xF2fQYPIRHp
+	 Yxvp7G+f6sFKbHFWBjYJsByod8iNK79t/tm07/y/aBLwDkgyZfG87wgmmKH1lnBYjEZuv
+	 KhHsksYgbfsAURu6k8j1CdGZAOdg3jeyFHDI7n4R/QWAfTuTOmock8dQ6c9aTAWbvX0sS
+	 H5Xtcpx+iHnENBQRaL7pHvxkCRZTT9nOJ5EC33YtaXK4qL9IWi+HLwQ6A+F+nbiZB1Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794536748;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794536759;
 	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
 	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
 	bh=adgGF6Y+EY3ng5J3ZlI+WZuzQBE8vUwfEB8/besoPZ4=;
-	b=YWLkgFNFzGEr3R0Qt0O1KvDYwuvIYx6aC47D7rBQLQrdKHXE//YmArxwXtV7z45jhWBf
-	 vTjDcr7OK0Mxacua94EbSUiUvPHGDRbHBsUJG8D4bP+ClN8iu0bjGKCkSHf5yA5zOwPk/
-	 m2LH7J4Zm7j0YP03kvvEA7lM3crvEyKiv3diV30k5FjMdWChOLNUHCYqp/7VOqsrmV+Uk
-	 9QYqqEEk29zRJeiN94GyoKR/ZoKBrU7ufozJdAdpYVmKjRVPfC0WK3/uI+oQr3phSEXAx
-	 8ve7tEBqmcYrZaP/msZAjgHTrjRQhBMV3pDBjEi0hgkrH1q08x7sUq5nRpWrlTxvKOA==
+	b=ymnIBu1iBOWmbWjlErwNVLUx2wO1kzMdwPgnclvOytQn66aMK1TdorDGY+CVV0/dhFLb
+	 XO39rCicb9HTvbQZcYjYXA3KuYx52odtmAWZBuF+XV1L8AO7b3mxO+gZ0CAmOADxuGN/D
+	 7R5FC5S6aguNeAOcIpOcafP+dNE2UJ7cdlg5g2APSJ1vs3BW5mnfApVpWq9flp9P4c0MX
+	 Gt4Ptbi7kGpAKAVa3T8HOp+S+eyRSbNytSV2Kd58rm7b3rzl8jE3AKl3Q4ClYbc44ZBPX
+	 YeNq0YDr0UgSW/qNboHgVRT1+KXxEkadHusagstv7OMzc8Knpb6ENK34FkIWjy3boNQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=qq.com;
 	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=XRYtLUSB;
-	arc=none smtp.remote-ip=203.205.221.231
-Received: from out203-205-221-231.mail.qq.com (out203-205-221-231.mail.qq.com [203.205.221.231])
+	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=RCMvMO36;
+	arc=none smtp.remote-ip=203.205.221.173
+Received: from out203-205-221-173.mail.qq.com (out203-205-221-173.mail.qq.com [203.205.221.173])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38CD606A327;
-	Fri, 13 Nov 2026 02:25:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D38CD606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65229606A33E;
+	Fri, 13 Nov 2026 02:25:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65229606A33E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=XRYtLUSB
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=RCMvMO36
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1794536744; bh=adgGF6Y+EY3ng5J3ZlI+WZuzQBE8vUwfEB8/besoPZ4=;
+	t=1794536756; bh=adgGF6Y+EY3ng5J3ZlI+WZuzQBE8vUwfEB8/besoPZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XRYtLUSB7ioTj137Lnc+sSPP+Z0zUtwmr68gWkFFXNWNVtD8Wy07ttBaFwHBZJhyz
-	 tErN9mtlYGnyRHT355/L0hZ6YrsRw97QqYpDGs7x3Mg+TsAwteMMuM5zeeVvyMtNK8
-	 dk9L0xzFmXw2k0QwB/6ZjD4Lz35BrfTR5oJiQQuE=
+	b=RCMvMO36qYYcEpAD9mpgGKIahsLHCNjzgvbhT2dXqi26xjeusKrMuB5G304neiXOe
+	 gOSdv/3phI0PK4lomBgz5B4EH6M+/p7LzZNkJURjcBCymUOWlCYF5M6OdcwqcvKHEh
+	 4ldP5EhqFLu1GsM+/ywlNB57Aa9cwkSqePCkce+s=
 Received: from shuai-VMware-Virtual-Platform.. ([117.158.156.199])
-	by newxmesmtplogicsvrszc56-0.qq.com (NewEsmtp) with SMTP
-	id 667ADE1E; Fri, 13 Nov 2026 10:25:39 +0800
-X-QQ-mid: xmsmtpt1794536742tvuzepfu9
-Message-ID: <tencent_0D58FEE5259A807105C5BA27E4DC9BA4BD09@qq.com>
-X-QQ-XMAILINFO: NgHXPu8ibN06FSUNIzwDtpkB96DOdEEv+1pkm01tJKk+F7+zm3Jbao4zzARQiv
-	 Ln5cETvGxdEOFAo6AsImgqnm/ReEo4LG9a8D8rdZajCNtxQMG0WQVQHfHVTJc86hCQ6ABhbjjboS
-	 JcYCmUTb76ApguT/eGDQO3+qBphDMD7uSZ6xy19fYEI4A9pYNIamO0bBGhI4LPvH9iKUz6LHrM1C
-	 F4t6yHQwwesLba8gdvMAe6rNlaZfmjqInZTkpBSMm5PotiN+Qk+OiFjKowjeg4+IXhIoyz6L2NDK
-	 oWB6uiQG4mnSGizKQtNjsnfKSDdsD/gCgmK82inEQDSJKUCfs+uHVVJoYxWmvAqdZQLOMYu5wKSP
-	 igW1yzm6D9cvtRKNVt5N34AaoZoJJX8LQeCJj1X6Y0pCrbcuNIJQwB5mY6uPYysRusqtwN68VKCO
-	 a03w2Zxq07cn8EMyhAOUKJbNZwHquY6YFkxSKL+8uHoVdzbDuj6k+BQJzUGagvl5E0+6rmKwbuAo
-	 F2h5j0IgNwmbXwFm8/ze+XKZ1jUGgQPn8NJOLKlau/qgbywrCGmaX5Cgcmxm39CibzsTxIx9XH9c
-	 jg/ylbtE2ax65+s9YfZm6OcWo+Dnrh6V3k7u4uneEb8EYuvDO8vxaQeLguNApwwCd+LtNgAEeTcA
-	 z+56qeSJXAIXbmdk/tYrTJjIgZHhx56lEx2XgN89Iqf6Q+qUQ5PnhItm2Uwcp5UKPsgVryRlqhT7
-	 cpnY+bt6av6emAcSqVKljLwy0eaxTnGLDcSpoehJ8TZzE6UnUpbRHXdjIhPwIw7NmhKwZTlSH55R
-	 V2aYHn2vu0/dk6xT51xDeyQwQVDAXtW6zYZG2CkmXzWBKESWkVOWyIr3mQbW2J6xWkVymsLcKV7a
-	 U2Zs2r4HPim+QfZzprE/7Pwsfq2dUiwScqGBVFzUB/VCHYDpfCIHtMtqU5EPIY/VrKJ9Kvmsfo+2
-	 W8Md4BDRVZQqevlncymQr0BElQ+fiwRQJ65iDteTCXoRIZs9WMfN77YTBOX8NeA1GBat6fAlXNR9
-	 7JxBMcwjRmfZ1gY5GbHi2s0+1oBFQOjPFwjdTmnFputJbA4a1r66oOLNRiTsVm0oDdAshtCOzfJH
-	 Xb1cxLk78gJlCSv8YHyT8nR0oiraVrM9tYISnmYluyoYiYEhXcmNFSVz90Og==
-X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
+	id 67422604; Fri, 13 Nov 2026 10:25:52 +0800
+X-QQ-mid: xmsmtpt1794536754t6v10ca43
+Message-ID: <tencent_D36E88294D0CB9BB49A3B1FCC8B734F5E20A@qq.com>
+X-QQ-XMAILINFO: ORr8VBNiK85PeI187XCv97bJSC/4fF38Q/ubbH3a0YQU/0lYU4Bwe1fl5s4Muh
+	 oAYFZjpmV+Ngaq/IfK90t3FZ7KobFC++z8bBD5PSYJA3PIhSvB1UN65aPr5zpwqJ7ezORksG9FzF
+	 e10AkFCyVlmH8bu8E/mQZsk3yH1A6CYI1TDz206ZcShlrPRm+GutnLqRzNClzzAlzQD4I16kQUzS
+	 GYCHzc5UxOMWFXgbeBoTzqgoam0yznb66q/jkgCxogYkpnFEosTDmS5Qx0XhLJ10P/xOvNEieqOj
+	 VBZbqN/RCLsKgq2Gfik9QwWERFrwvOgsMq0Wh/TY8Uub5cO7+s5FHttMDvhcay3suMUz3/dnOvJl
+	 LmxeKMKK2CFWCT1Ce3eZijl/GQdeQbAj+YBiWS9LG4t6quoTKOye5oVZs7vJdlRt28obVeS1P8f6
+	 QOV8DrE8am6iU0MSvVJeBey7xdYclbXXdyR4CBC8gtPb7WxC26qULWwpTeUo+t7NVVsV3e3j8PMn
+	 vafEduO72mFnrzeVlO965OKk/mASqgon2fDKOXTnlmyk1gLdmI6zz05zn4qM9CkCz8EnQLYLuANK
+	 22a2VOPLI8CpVXrKE3a+LeP1UtxWWvtMi6w6tniYZMtONVOW1GZrp6bAZxzu0xhFdXXZV3thjKGO
+	 KGfL0v012fd9Ldm0gINqIU3ydJprALkz8pcIkQaDGMDhcYb3XPaiE2+ZxbTrEg0bKRUkU7Ez9cMj
+	 48bjpmT6icfCzpfJKhDJmAVEAIrj7lnd6Gwmm1WfAUOvWiQJ6g6/UBAZjWXJH0rZS9JHAmCgUxah
+	 IJ922kB0C2ed0qQYwtVuxJjU40INFMEvNkkWpp4YFxxEmPmspLr2+9zaPswiDdYN0Lg7ebJBVxXw
+	 wkVdL/dvIwSc9OWVIUHlD+5FYq9Wice/Og2CJgQZeO2pos/fiE1uEzKuVZvByik3iCh9642S9ixg
+	 mxhTz+HNLEzEfo/ePTHRoK6NcnSvWdJfeYf0lhIfjfJmJMjn6vNluu/dKuouFWjk3od8x1kPMOzA
+	 WdQ1KNU3cwiEjYPkammXpxMGdB4Pjsf7BLIGmXjunGe/fZyEWg+qyI1mlQUXrHpk8cpkX4s6dv23
+	 LWBjG8GCU4Mw/vj+d7C+kEVO2Ei49fMvaKbTKfjqx8ubN1BCrhFmsA8hGQnNoYlL6KDyMd
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
 From: Shuai Liu <847807867@qq.com>
 To: linux-spi@vger.kernel.org
 Cc: rust-for-linux@vger.kernel.org,
@@ -70,12 +70,12 @@ Cc: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	847807867@qq.com
 Subject: [PATCH v7 3/3] samples: rust: add SPI driver sample
-Date: Fri, 13 Nov 2026 10:25:39 +0800
-X-OQ-MSGID: <20261113022539.601421-3-847807867@qq.com>
+Date: Fri, 13 Nov 2026 10:25:52 +0800
+X-OQ-MSGID: <20261113022552.601873-3-847807867@qq.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261113022539.601421-1-847807867@qq.com>
+In-Reply-To: <20261113022552.601873-1-847807867@qq.com>
 References: <tencent_097BA6F40A0B8FBC4C130C6EBF58F8048006@qq.com>
- <20261113022539.601421-1-847807867@qq.com>
+ <20261113022552.601873-1-847807867@qq.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>

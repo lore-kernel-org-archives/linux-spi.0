@@ -1,66 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.192
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794617859;
-	b=3CXnbOwM9Ka46chn9UJIpwWpEA06L18PE+CP9yW54dSNdq6Gn7k1Lrn6GwcowvVqXReQ
-	 yxzpVjjiVXM3xGBIOHGLXG9kV/SxJq4yMFlxWh439A6FMkYa3zphmKCI9sjMX1S2O3/d9
-	 1W6JBNKEyFn/OqdK/gOD6rIws+2DsFiCt5rQRt7EbC+rqwPkjElmJeBFLsaEhFblqQKUz
-	 mR9mq7ZuPh0Tdi9qYo8MIStyIiO/3SvwWxnhxddcHDq7rsvtYVxtwyFrts3rMJki89xMC
-	 8Ln8WAdTSO0+TVRJxw40F5KzRXVmXyuExGhN++AdC+J0SFlO6IxJ+a5wnRS4fNk980w==
+	t=1794618318;
+	b=zNI5BgpqolIuEcnbiX+iHmZQCsitbhe8EJBzkZ/p9vYLHhx+dOSXTzwdSZVkiq29KVZO
+	 FKuJHSDOWj5q3aqLsC6OprpqerME5fRM10Q609Up1IrLiO/4rLvwSTEtaxF4UxflLlHIa
+	 F+e1v5o4PT61MRBDbJt6KTyWr9xjAhUfb9aMU2vtIsBA5bBfSegxlmxVySK6/K3qq9rV/
+	 DYZ1x7QM9BWcXxORgPt7si8TVpGZDHKu7kNK7tr0Y/JPHuH3W7l36FpP4YzWvUbJ1x6cO
+	 h3aVIqsclFFpISptvAtSdW8tD0Zgemhws3+Yui6+tlOe46VtsiownROnujnxOwZkAAA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794617859;
-	h=Received:DKIM-Signature:Received:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-Cookie;
-	bh=lAezh5mnef6rba6MZBj2wsMthABud2NmCB2DtTrRKdg=;
-	b=mXu/ZN3ktYOU6T7YpD9aUwS3EyhseYyFinPmNU0uFMCaOrSkc05fw5QgTRmVeZdfoSMP
-	 JbvWwX1g+tshtEAARM6Bz3QnedZJuwy4abEcQSgp5/AQYxzipBZpOed+T3FTnCsJFZwUF
-	 NeRm4/H/r+EpLCtoqZ8V9svrKno0+xbnxvnwZ2RurgPMn3sIyy89s4U3QIEJsxPrcpCX9
-	 okL8B95caDkXsT8gUFdxZXVkyknKTz6X/7Agj8PCz+RWpCZiULm2/fG6a7K//NvmfepDZ
-	 sR5NyC5V0kGYWf5fAalZsnn8S3WkMesDNOd+6gn6pGduHj3UuxwZKlkciuaNgL+uAbQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794618318;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=Eg1aWZgHvhHXiees9Lk2jDCP70jKX8ALjN7+QJls73Y=;
+	b=1wtD7VziKa/QnjeSwBX2efjVHUkRGZN2aMBsQv7/Zj7gcPZHYweUdv6+xxwV0PFi5lF1
+	 AKG2M1QOPiQ3Ljn41rOeQAcydvb9E/RL+UZFpEaA5Nq1k2xHPT10yN/EH+dMwkcHbaRNW
+	 VaDSf8vzZJuS8g7HXeO/2t3qYTZhwQcMOj40v5677eGe0BnKPFoH2KvapB73zwzImf4tG
+	 2UNQKYpfqh8ed9fy5JQBToVjmHKDf5vzZAf3t40ZhwdJ9mc9z2D8OGe3i5GB82kH+OW97
+	 8+Y0hdDvO8m2h2uJ28l5X6wXPEYFL9qx2k14FdxoDkYWlVaAwUlEqSzIoRMKnyUPELA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CecBg1Cd;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=qq.com;
+	spf=pass smtp.mailfrom=qq.com;
+	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=wI5jNPdm;
+	arc=none smtp.remote-ip=203.205.221.192
+Received: from out203-205-221-192.mail.qq.com (out203-205-221-192.mail.qq.com [203.205.221.192])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C235E606A327;
-	Sat, 14 Nov 2026 00:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA58606A32D;
+	Sat, 14 Nov 2026 01:05:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ECA58606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CecBg1Cd
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2594A1F000C5;
-	Sat, 14 Nov 2026 00:57:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794617859;
-	bh=lAezh5mnef6rba6MZBj2wsMthABud2NmCB2DtTrRKdg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CecBg1Cd3qXQJrxLnt8ysgW7jGiA+dkeJPFgatdCew6s7dyDUQCyH+0RikWU7S8Sh
-	 FCSBgxQFrfBs0kakUg7kX5knQbwJeLa/EW7xk3iAM1TYGE/USmsxfAHqGlpHD09zZ+
-	 p4RLXv/iGtD/hoQWo4VbWwhhXO4yOJVdvaPbhU7YZrX4oxCzAR1hb5ZmCkMPlBy02U
-	 50i38kc8VihebyiOg4mp3SbbpVaUE9A7J3fOUvN7Qmx+/aPdRk1CA/dYx+VBaPMusq
-	 +j4x5DMCaAJbjz0ek/Q47G1i6hJRNsHxuGV/XZmmflBAmbEJjb2W8QjeeySkimgVTL
-	 TULQ/npSW3SVw==
-Received: by traversing.sirena.org.uk (Postfix, from userid 1000)
-	id C595032AEA60; Sat, 14 Nov 2026 00:57:36 +0000 (GMT)
-Date: Sat, 14 Nov 2026 00:57:36 +0000
-From: Mark Brown <broonie@kernel.org>
-To: William Zhang <william.zhang@broadcom.com>
-Cc: linux-spi@vger.kernel.org, shao.mingyin@zte.com.cn,
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-	pjw@kernel.org, samuel.holland@sifive.com, kursad.oney@broadcom.com,
-	jonas.gorski@gmail.com, bcm-kernel-feedback-list@broadcom.com,
-	anand.gore@broadcom.com, florian.fainelli@broadcom.com,
-	rafal@milecki.pl, linux-arm-kernel@lists.infradead.org,
-	sven@kernel.org, j@jannau.net, neal@gompa.dev,
-	asahi@lists.linux.dev, ryan.wanner@microchip.com,
-	nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
-	claudiu.beznea@tuxon.dev
-Subject: Re: [PATCH v2 0/5] spi: fix division by zero with a zero transfer
- speed
-Message-ID: <7730027d-d89c-4b7b-b8d8-07bb19e95061@sirena.org.uk>
-References: <20261110233450305Smji446Uhvoxa7r8SHEgl@zte.com.cn>
- <179460764342.448985.18219249061160291658.b4-ty@b4>
- <CAHi4H7GnDJPcJ2_DD8GGuFjN8mZsGPVWRCYzfCwywQeh26-=Fw@mail.gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=wI5jNPdm
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1794618307; bh=Eg1aWZgHvhHXiees9Lk2jDCP70jKX8ALjN7+QJls73Y=;
+	h=From:To:Cc:Subject:Date;
+	b=wI5jNPdmWIkNmLo2oIa8g4NmR1hS9q2f99kar2pFfrKbUdL+DAKBn2O1LUJJbe/Kd
+	 20Ez/IpgVHaM9atVhCINn3W78NW5Iur2N0/VLQ0lnjqSrM7sQcoRFWUBXEVrhrzfDg
+	 eAGkPZJ8BH32qAHfHoPO/iUcAlcljGw3Z8IuEsdU=
+Received: from shuai-VMware-Virtual-Platform.. ([117.158.156.199])
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id 14537450; Sat, 14 Nov 2026 09:05:05 +0800
+X-QQ-mid: xmsmtpt1794618305t09ygcrex
+Message-ID: <tencent_5FBF490F375F4C66A2C8DD421A8E8542FE05@qq.com>
+X-QQ-XMAILINFO: MRMtjO3A6C9XbXZ2D+oNSNEDFiFEBNtznPWKIx1ZWVpKJrivKl0LSRXCHyk1VB
+	 pk33VVrkhL5ua1yOnw3ZuhdxLSA7WyuejaXnkI+iUn7rhLvro6OnoHdwXk0WDhTGTduUDMtLwxp0
+	 o/vHBCcFhEwTMlodL+XsvFzQVq8Q1VL9cY9urKg2YHAgNrAtv7yawKDT3vce4hzhP+5zLUwQwHrH
+	 ABZ8KeyLMMKR4br1sWWWOXa8KG7I0qJatqCaDpDLRuOaHu2l7k/xOqA6fB79X21scLURSz7se/6I
+	 1BmSxhdu0dwIG1PrNPXyOCawjLBNcaf3PHX5Z9myyWZgWWtL19j0CJ7SnHh4MzfA3HiLPp9HfGRx
+	 Dzm1I71arlDqol3MM0PtBjo4rioE+lffjKmebEFNH3gwStp9QZ2Uquqg3hPb3x2enqfBeJ02tyzz
+	 Ze3qrWJBzTYvwi6fzJRB7cauYEoNhCHCesIey9GAx2Vs89tsHsVpJFxGrHMpUqoRdNthLMrlcdeX
+	 mZfJgIhhOSDtknuq9el470VoGXrrL6nSUkuxh67OWtC+o4Cd+pX7iJVG4pl8RlQneQQhjrEG6REw
+	 caKwmloI0pxfoIFQS4cBbAP4tC4vPUmkWO1gUNOYBSaxoPKLQ3CWyc2gbEm/PjVh+mBry12jdUYT
+	 q1S+dF7JQ91r5HRBIIpTX2n4x6rSD1RlhdC9yGIExlli3HsfKH/p4cuaR1VLidx13AqKUkSBrMQU
+	 pHq+cFwpLlfu1RpWzR2mN8hFY0ajbH6pft1hL5nn1JqhRX0424t+i1GxbKYJqkXWddhVRtgQJYI9
+	 ox9NW6qemPDbjUUAiStRhMWStlZet7tre4YXVmFkNLpNkvte7rO/hhyM+RnpZWgO7wF3sD/fhoEL
+	 r+VjJsaFGMU12eAJF0506kvVPVDj5m9UV3VS8EZjHMKlIx4tmLbLpYv43XQ3QOG/qoQAIl8oHisB
+	 UXtXVHoqkjf4w03jv8OSjMcIi4F3mKTzfPo9sRl5eX/39pdE3YY+tu2Uk3ZOhjtirZRInHLEom7N
+	 OrD6zasPq3M8ek8WCbwcupH6QzA5pLMLu/OW4xv8OJInYAFpEIAw2B2hpT18J+GgCajwfi5g==
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+From: Shuai Liu <847807867@qq.com>
+To: linux-spi@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>,
+	ojeda@kernel.org,
+	dakr@kernel.org,
+	linux-kernel@vger.kernel.org,
+	847807867@qq.com
+Subject: [PATCH v8 0/3] rust: spi: add SPI driver abstractions
+Date: Sat, 14 Nov 2026 09:05:04 +0800
+X-OQ-MSGID: <20261114010505.81436-1-847807867@qq.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -70,40 +80,44 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="xoZP66/tINM/gAZZ"
-Content-Disposition: inline
-In-Reply-To: <CAHi4H7GnDJPcJ2_DD8GGuFjN8mZsGPVWRCYzfCwywQeh26-=Fw@mail.gmail.com>
-X-Cookie: Earth is a beta site.
+Content-Transfer-Encoding: 8bit
+
+Add the Rust abstractions for the SPI driver subsystem, allowing SPI
+drivers to be written in Rust.
+
+Changes in v8:
+- Rebase onto linux-next (next-20261113); the v7 patches no longer
+  applied, per Mark Brown's review.
+- Send as a fresh thread rather than as a reply to the previous series,
+  per Mark Brown's review.
+
+Changes in v7:
+- Rework device I/O around a `transfer()` primitive that maps onto
+  spi_sync(), per Mark Brown's review.
+- Drop the spi_write()/spi_read() helpers; add
+  spi_message_init()/spi_message_add_tail() helpers instead.
+
+Shuai Liu (3):
+  rust: helpers: add SPI helpers
+  rust: spi: add SPI driver abstractions
+  samples: rust: add SPI driver sample
+
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/helpers.c          |   1 +
+ rust/helpers/spi.c              |  26 ++
+ rust/kernel/Kconfig.test        |  11 +
+ rust/kernel/lib.rs              |   2 +
+ rust/kernel/spi.rs              | 673 ++++++++++++++++++++++++++++++++
+ samples/rust/Kconfig            |  11 +
+ samples/rust/Makefile           |   1 +
+ samples/rust/rust_driver_spi.rs |  66 ++++
+ 9 files changed, 792 insertions(+)
+ create mode 100644 rust/helpers/spi.c
+ create mode 100644 rust/kernel/spi.rs
+ create mode 100644 samples/rust/rust_driver_spi.rs
 
 
---xoZP66/tINM/gAZZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Base-commit: 84abb955b1015f216d794566ed3c4fdd4bbd0f14
+-- 
+2.43.0
 
-On Fri, Nov 13, 2026 at 04:39:38PM -0800, William Zhang wrote:
-
-> There are still open disucssion in [PATCH v2 3/5].   If we want to add
-> a clamp in the controller driver,  patch 2 and 3 require extra fix as
-> discussed in that thread.
-
-Ah, I'd missed that subthread sorry.  It does seem like something that
-can be dealt with incrementally, none of this should be triggering
-unless the system is already pretty confused.  We could do something
-like have the driver round the rate up to whatever it's minimum is?
-We could also have a min_speed_hz in the core which would help, I
-could've sworn we had something already but I'm not immediately finding
-it.
-
---xoZP66/tINM/gAZZ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQReagvpf3TrrA7BoYYv73Ows9A4iQUCaveyAAAKCRAv73Ows9A4
-ifbFAP0SON2H7y/CJFWdK8kc1nz9gkXWut/M+KwIZnLTiO2HNQEAkMkTi5Jgnxqv
-d68HY96IysarOApAVEJVLdzNrRQwzgs=
-=9eWL
------END PGP SIGNATURE-----
-
---xoZP66/tINM/gAZZ--

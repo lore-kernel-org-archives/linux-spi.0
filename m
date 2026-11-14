@@ -1,97 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.30.148.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794622663;
-	b=KdCZN0TyiV+zedQh2R10BLACcpnVwmb3joSkewGyaQOxCPEYfsLqECi++2650sOdfECd
-	 ELsssfypauTlXd/jmdeRi+Cl8LDREzWHt0f72OawEqIprKSNs8LaNkuQ4hhnTVDuun+ln
-	 O6QI9AvG3QetHn4yP1fgpIjvssICD+G57sCQuvf4H8JblFLWOQAZa78/yCWPNgP/9yaeR
-	 PpozsXzWyvqYduPhVtvQnYRYlFRXyHlh9n5LOKZGIIVqP3+Yx5++LSWQlAuJJZHA79Dxu
-	 Ql7n1EBkQayR0AAUSCdjiWZIgCEQnpqGg+8vufRwWUvyGNZeUK5BVweQyXHOzfsYa6w==
+	t=1794636486;
+	b=xHCveYYcjVZbBS88tQZlBPzAANKoRSxXXFhRbkYIYQAWrfsj9n9AAI4XENi3hR99uXtm
+	 O13HQPTZ/3Ar6K6qKHXpb03AvMlP65oCmHgaLY78pswrHA+AxaPwT9eBi+7zeH1oVRVr0
+	 s5tZMgTqMK3cGHJD1D5rmBL0F5GtQYOEzAKzFtszu1vsLwFr0aoKOm5RBxC5mRghMm6Kc
+	 Ks3Kn9vxD5iO1W2CmEkw/IAhUG6v7GpYA35kyUMR+MGSLeFrHObLqyafdV4sQJYTbcbYP
+	 GSaKRw7KyMVDiTDaVngEttCChAUmN1DBikosezaDXlqMhlK0b+IW0ZPgJ/QJ9n9IDZQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794622663;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:In-Reply-To:References:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=OfIKBZnhOOiL2WcgTc07r4rHGBprvyQL2SchtUxUdKw=;
-	b=xUB7ZGt90aDz22hFJGjbWp32GkHNJWu7cbDmzj8dOOoqytbp19wU0hcWAEaY+M4bWV2C
-	 sEb6xTuOI6ggx+F0gxmQ4Kcbou2YCKaDrTJhtgZvqnk+z22fLxw4/AzL/fb3dDo63fJII
-	 0FTc89ZWPlQOl6yjalBm6IkSmoy7X6FHkMnJe0w0ZYzHMd8/OgEBTWt3zcM4BskRsPD3q
-	 03XJNCxTXPjborIO7ulSS714qAti9WOtgYm2Ckkiw4w25kAG+uTw2Ldev+BCUbPbSChcD
-	 m8fCOsRxYINpsDmWkr8mIY6fI3pu11USFZixow7ma8WOE7oyVmYVl3vnMJFvxFeHYqQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794636486;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 X-Zmail-TransId:X-Mailer:Message-ID:In-Reply-To:References:Date:
+	 Mime-Version:From:To:Cc:Subject:Content-Type:X-MAIL:X-TLS:
+	 X-ENVELOPE-SENDER:X-SOURCE-IP:X-CLEAN:X-Fangmail-Anti-Spam-Filtered:
+	 X-Fangmail-MID-QID;
+	bh=TV7/rNuPIcAPimQoiERTrRHJ9hzdQoce/kobpTJs1XU=;
+	b=rzgJGb9rItK+/QOZTqnQkF6x+0aWhUX6a4JcP8hbgvuvj3PtH4qUlg+qy1feEzkTWKmr
+	 Fvui1HiDa6T9TKVxwOrKDMP3E2MDLJFybnfufWFgnBlEH8GtXlNydei5xtsaEYiIYbM8L
+	 6JuxgJYo1KmLkmUYDZpRRrM/+5y81BE18b8UVMi0B1NwfiQxxfqNXpJnEh0FjuMy0ONq9
+	 L5B7zgVgWhsiZcsGZM4+aKQSC4MT2bALnZrX1885Fd8iECx64qx3WgxcLjSaON64rT5hV
+	 w/ydzLnIfExi9BNfBGpYvfdEdQLMDPaDI57MP7/Zjh7SJ5a56jzF0zb+wvdKfmCUGQA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lBTySpgG;
-	arc=none smtp.remote-ip=74.125.82.176
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=zte.com.cn;
+	spf=pass smtp.mailfrom=zte.com.cn;
+	dkim=pass header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b=eHJLNOWZ;
+	arc=none smtp.remote-ip=160.30.148.34
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D285606A337
-	for <linux-spi@vger.kernel.org>; Sat, 14 Nov 2026 02:17:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9D285606A337
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E22A606A327;
+	Sat, 14 Nov 2026 06:08:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E22A606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lBTySpgG
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-37986eb6fa2so792011eec.0
-        for <linux-spi@vger.kernel.org>; Fri, 13 Nov 2026 18:17:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794622662; x=1795227462; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OfIKBZnhOOiL2WcgTc07r4rHGBprvyQL2SchtUxUdKw=;
-        b=lBTySpgGD/QnNG/ZxyjrFEiehOFqMoyUzvo5UapiKvWUxbefYbV/Tnr0dOrP4gcfkF
-         FY8pZ5GK4hn2Ypxb4dspKTumrL7ODfcwrTWXU2hMoOgrNSlHvyAavT/Bw88ykGvlknzr
-         alLcnJKYiR4CqkHanHmZJ5Vd0nMLkIps4gxSjrb6oJfx0lyA8suUqcF4ujAqK8YGjJ3E
-         bZhPCUv10u1lZ7vOMWJF1dU7DzNGMHdzLbAhRptsSSZ8NeRIoY5afLXlrmnv4St3VKyJ
-         g7YQgUjnNKeeCa7AgWrmXgP2PSirrJoPYMYarW9zzL1cOXx5AXJ/FFwiwASYHvQpyaiN
-         j2XA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794622662; x=1795227462;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OfIKBZnhOOiL2WcgTc07r4rHGBprvyQL2SchtUxUdKw=;
-        b=uJEMlgbDEskvdnKCuL5TlJVfYg0K+rNl6//OfM0LlL6An5WzkTsFWUSs4h6esPlx9t
-         pevB5M0xFHIWEGdZq3VvTkw43aSqgaw3LWSQSBXObxIvVSDMPHpyp6kHp1UIWlTWqvwu
-         MdyZL9PZUbS8K9SqmrHvsyW5plEb1ntZ6KEway3ErtqHaGsIsoEtKcCyMCHO6ibOAChT
-         s/bwPtrOT1WbhYq/CJHwUrv9ZZ2iiaNaXe8V9/D4fKAIWrogsfc26LL27OfKGo/GV71k
-         29Es6YemSmWmDMrCjF32LwC0c1VJjQfB0QlwOLdFXmBy5oA2Jgl8lBCYdwor+lzgrGZz
-         eXGQ==
-X-Gm-Message-State: APuU4Z95fBN7aGBx3GQ/pTD1KlSWDu1RefFxg6XYKAYb1Q7ptnwOEz6b
-	oUYoCxJ6LqmLMKqyS20UX9SRTwV3JlB6FAL+PY5rKJ1jaFQC/N7i7s3iK3DHNBseZdk=
-X-Gm-Gg: AYBFou0nAlAoBQzyr1MR4LzPj6MOu5D3h3zgBAQYj8/W6gDwoIQRxqwDc4l0BQqLO/m
-	vI52S14wnAWpBTMpmIAcbHRB43JBL4jmVtgKaHVArNxnGIkXRo2/Fbw0Uo1xeEwE7/RNnPHPGdO
-	C2DQzn/PFBngKagPlEaK07JhHEJmCgADnEXJ+fin1/8mn770JkCuq0YDlM17VFQ29MvD4f7LJbb
-	2IdShg4V6rlzkZYjh+nkqNI8KzVkG210cMckfSmmsNmTKXshfjo2CJ94V9gDeKNfFTirJGX+VKd
-	ydBxfWoUFWbULWXYU2JXZsx5a5pgVLQlfTRdUgrF7s2Xs3/BV3XWUfkD1nEOuvtNdEBgiHUOZEU
-	rxl6pHZFBE4iCKVzODWZuaCwsg6TfLNfJ35d/hZ8LS0xM5cgYU7XBzEDAn2nwcUDiWSz0L6CpPw
-	ymRvB45bKTiD29ZnMXtBzg8aIzF/6eJouthos3ObzUGbEEFCcm0IajZFqXwiAOqb4XRj21a4vEr
-	uFwN+3dWuBChIEkoVMacJ8FryqTHiTh8ymbIdXw/TPuZrotbVALlv/7JUi77evXHZ+JmJ86BBmh
-	m2G2qD3/OlQO0+YrZGoXDT3QIXu3VHimEfPsHRQmkvOXf2spgmD8jZ2nPKn42XBkT1zsj6d1Lii
-	NQtN8WsH2BbCFwTnew2lPvKnM
-X-Received: by 2002:a05:7300:c8c5:b0:379:e0a2:1a1 with SMTP id 5a478bee46e88-379e0a20687mr3206612eec.35.1794622661423;
-        Fri, 13 Nov 2026 18:17:41 -0800 (PST)
-Received: from [127.0.1.1] ([2602:feda:30:cafe:ec49:38a8:0:1866])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3795378d7e5sm11298969eec.3.2026.11.13.18.17.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 18:17:40 -0800 (PST)
-From: Yaohan Li <shunsheng1218@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject:
- Re: [RFC] spi: handling a stuck queue worker during controller unregister
-Date: Sat, 14 Nov 2026 10:17:37 +0800
-Message-ID: <179462265760.266954.15125504985835019625@gmail.com>
-In-Reply-To: <03d73980-f558-4dd4-8ec1-a8d40bd2474d@sirena.org.uk>
-References:
- <CAGTEBTY2EhOHwmWhB0_YdnP-nMyGzzhnwH+ta9yeynHD-Y0JyQ@mail.gmail.com>
- <03d73980-f558-4dd4-8ec1-a8d40bd2474d@sirena.org.uk>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b=eHJLNOWZ
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jRNw1329yz5B13X;
+	Sat, 14 Nov 2026 14:08:01 +0800 (CST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=zte.com.cn;
+	s=z202610; t=1794636481;
+	bh=5lzsOGRbljK3UBGsxRWnpa6SowpbvPCeY1W5tc58u7M=;
+	h=In-Reply-To:References:Date:From:To:Cc:Subject;
+	b=eHJLNOWZSaYUZo7rxalDo358pfeRaghstONJbcKc8oKd9rFsOGWCdd8uNhLZdpwSi
+	 iy3n+D0o7Oq3PDOAhqtc9T9xgYkKcamZYFAXT37IoW1isB9qW2Ab0+LDAb+ntAuJQP
+	 aennq31FDHtuaoWxD1zUp+eB2VF69uEJVqBM8DoLsOJrgz+2xBSN3ptGdGqESHsBH6
+	 GCbUqKkiAsbEdSvgMs7UWxVgNULg3vAuNLsILJAwWFiLyhbHafx/xPv1BjW2AREWLg
+	 IIK1tJzm3lDkJM+Y7lCa+H9RStE6NUYoUMMkieBlBnD5agjfQrgOV62aorJjvQe1AG
+	 OF+qCKJ5ZEHgg==
+Received: from xaxapp02.zte.com.cn ([10.88.97.241])
+	by mse-fl2.zte.com.cn with SMTP id 6AE67ttf060421;
+	Sat, 14 Nov 2026 14:07:55 +0800 (+08)
+	(envelope-from shao.mingyin@zte.com.cn)
+Received: from mapi (xaxapp05[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Sat, 14 Nov 2026 14:07:57 +0800 (CST)
+X-Zmail-TransId: 2afc6af7fabd8be-0c510
+X-Mailer: Zmail v1.0
+Message-ID: <20261114140757347tqYOa2IkTGVulSwLrw2Mf@zte.com.cn>
+In-Reply-To: <CAHi4H7FCOxcXnYkNfXNa_iO9KFZRSC96urJthPkgoem7C52ppg@mail.gmail.com>
+References: CAHi4H7GHGO27Q=O8Upfds8jk-ujSHU5h91hCZw6qjftNX7a2Ng@mail.gmail.com,20261111173637687ugnRPRBKJkF0zihl662i2@zte.com.cn,1d8b7784-f217-45ef-8f09-658044e441ea@sirena.org.uk,CAHi4H7FCOxcXnYkNfXNa_iO9KFZRSC96urJthPkgoem7C52ppg@mail.gmail.com
+Date: Sat, 14 Nov 2026 14:07:57 +0800 (CST)
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -100,50 +72,63 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
+From: <shao.mingyin@zte.com.cn>
+To: <william.zhang@broadcom.com>
+Cc: <broonie@kernel.org>, <shao.mingyin@zte.com.cn>,
+        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-riscv@lists.infradead.org>, <pjw@kernel.org>,
+        <samuel.holland@sifive.com>, <kursad.oney@broadcom.com>,
+        <jonas.gorski@gmail.com>, <bcm-kernel-feedback-list@broadcom.com>,
+        <anand.gore@broadcom.com>, <florian.fainelli@broadcom.com>,
+        <rafal@milecki.pl>, <linux-arm-kernel@lists.infradead.org>,
+        <sven@kernel.org>, <j@jannau.net>, <neal@gompa.dev>,
+        <asahi@lists.linux.dev>, <ryan.wanner@microchip.com>,
+        <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+        <claudiu.beznea@tuxon.dev>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2MiAzLzVdIHNwaTogYmNtYmNhLWhzc3BpOiBmaXggZGl2aXNpb24gYnkgemVybyBmb3IgZGV2aWNlcyB3aXRob3V0IGEgbWF4IHNwZWVk?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 6AE67ttf060421
+X-TLS: YES
+X-ENVELOPE-SENDER: shao.mingyin@zte.com.cn
+X-SOURCE-IP: 10.5.228.133 unknown Sat, 14 Nov 2026 14:08:01 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6AF7FAC1.000/4jRNw1329yz5B13X
 
-Hi Mark,
+On Sat, Nov 14, 2026 at 09:13:59AM +0800, William Zhang wrote:
+> In that case,   Mingyin, please update the patch to ensure FCW >=1
 
-Thanks for offering to review a patch.
+I need to correct my previous reply: I incorrectly agreed that the clamp
+gives FCW = 0 with a 200 MHz base clock.  Sorry for the confusion.
 
-I tried a core-side fix for the unregister race, but found that the lifetime
-rules need more thought before the patch is ready.
+The applied code in both drivers is
 
-The original problem is that spi_destroy_queue() can time out while the pump
-worker is still running. Unregister then continues, potentially releasing the
-controller while the worker is still using it.
+	hz = max_t(int, hz, 1);
 
-I experimented with tracking active I/O and waiting for it during removal.
-This helped with the original test, but I found a problem with my accounting
-for asynchronous transfer_one_message() controllers.
+	reg = DIV_ROUND_UP(2048, DIV_ROUND_UP(bs->speed_hz, hz));
 
-spi_finalize_current_message() signals cur_msg_completion before calling the
-message's completion callback. In my experimental patch, the pump can
-therefore drop the active I/O count before that callback returns.
+For a zero-speed request, the clamp sets hz to 1.  With the 200 MHz base
+clock, the calculation is
 
-I confirmed this with a fake controller and a non-sleeping callback using a
-bounded busy-wait to expose the ordering. spi_unregister_controller() returned
-while the callback had entered but not exited. The test produced no KASAN
-report; it was intended to demonstrate the ordering, not a separate UAF. The
-fake peripheral driver deliberately left an asynchronous request outstanding
-during remove().
+	DIV_ROUND_UP(200000000, 1) = 200000000
+	FCW = DIV_ROUND_UP(2048, 200000000) = 1
 
-I also found that core-side accounting cannot protect private resources that
-a peripheral driver frees while its own asynchronous callbacks can still
-access them.
+The outer division rounds up, which I missed in my previous reply.
+The same calculation gives FCW = 1 for 24 MHz and 400 MHz base clocks.
 
-I've stopped work on the experimental patch for now. Before extending it, I'd
-appreciate your guidance on two points:
+With the 200 MHz base, FCW = 1 corresponds to about 97.7 kHz
+(base / 2048), the minimum rate.  The 1 Hz value is an input to the
+divider calculation; it does not mean the SPI bus runs at 1 Hz.
+For this case, the applied code already selects the minimum FCW.
 
-1. Is it the peripheral driver's responsibility to stop new requests and
-   drain outstanding asynchronous callbacks before releasing private
-   resources in remove(), including requests submitted during removal?
-2. If a controller cannot terminate an active transfer, should its driver
-   ensure that the transfer completes before unregister returns? Given that
-   spi_unregister_controller() returns void, would the core need a different
-   contract to handle an unabortable transfer safely?
+Mark, understood about the difficulty of handling zero speeds in the
+core.  For the 200 MHz case above, the applied driver code already
+selects the minimum FCW; any further adjustment would be incremental.
 
-I can provide the test module, logs and experimental diff if useful.
+If you would still like an explicit FCW lower bound in both drivers,
+I can prepare an incremental patch on top of the applied commits.
 
 Thanks,
-Yaohan
+Shao

@@ -1,23 +1,22 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.54
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.56
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794761810;
-	b=ur06X9irV+aXsJwS24Z3QOr1e34/5przgX+yE+tl6yoKwr/5l2oI/4GRRq305jhbb7en
-	 +LUff94z+WLo8FfN5BM/Xv90pTm1rMM2/5/ZTp8eUr2gkUG4BGuz1YYqUhkTdhFSixkWT
-	 7nE+Pr/E0428iebD9ZQai/3aPoUPLsyNVeAjghS4Cyv5lZVgtGd5W8tFOu+1UPMjUkGU6
-	 9PKt/BbzXfK4hl/8Z/xYi6nraSq5CSslS55Z7VX6JgewG2JIwH1yc3/TpkxkaKx8xKLXv
-	 04/gZ5NbrKwvNf8+7sRWvTEi69Bv28RDY0SwoXQGi76mqmHzDehBjRqHyL9wxqaCb0w==
+	t=1794761814;
+	b=nl2bNaBV//+sav26XtQQAzBfznu3Md0hbU2V183EyA8RTTQr4F25//mL9sexBHlmt2V0
+	 4lNBNoFVtctGml2ADPid4NAX2YgF3hu6OCG41erZ+UVZNQ5+LMLCGd2MGWoicok30+5u8
+	 Ep7yF9Vc/ovVQdtkZ25pSmfGFqe/1WFVAexcIL0gUtCRH37+AJZmurnhAXjEw7E6owG3N
+	 yOlGizWBQSnLGe2+BGre1CRHR6AD7EqStt08FZlNgkiAd5lorbwqsarIb/TZntQryC8kb
+	 zraGAyevszn8QI6hfJHnopV93P/XM1Fh0znxwJP9Q4BsXZMJs5h9H2lFdclk9537BeA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794761810;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794761814;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:
 	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Received:From:Subject:Date:Message-ID:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 CC:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
+	 Received:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-ID:References:In-Reply-To:To:CC:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
@@ -27,78 +26,78 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=rI/QGfrjM3i7FEH9pkXzGGNmIFzxXp3sVm5FtW/Duu0=;
-	b=B4TfcHkmRwptZORSDpOJ0X/0p47lAcr7n/X7hnSLzVFV1afO9m8ludvbuoSdfnxyGiEe
-	 QIynJ3DG35NuiLp722ShCCJ3aSQiIt9oRodFiSf4dwo3foSHZOybp7Ynjzsfzauf3HM80
-	 I3mCg34Ntx/KCgobKhE7Y/xis7DtFqtadz/fJAYugsrsvyzpfFrpLNiD6134auaO+rc1p
-	 mT1mi8yC0aD7sBpTa34XzeGdtGWfpIoZdFIqxUBT33WqDCR6bUqwkII2bfIIJhKoYG1TQ
-	 aOqPL0MrEA0max/0dAkG+8Hu14jmCbAMHVl3Te/OLdTvzN/0puaMWV4K9bD5vwF8HwA==
+	bh=jwfAv9KT/gvVyFrTHdgfsAqWsfvLvjtF8C8JwclUSFY=;
+	b=i6Xq3J3n3cMIvkvpsunvRUvhT6r3beuUJZ26Ow5jxIyIIkhvW5n3LE6FNHBTI+oA1X+c
+	 QiV/t935OoOKzyxsUG479IVHvVnJlo7GkeoKAqs4GQLygXN+318WNSlscFcnN6TlXxIkV
+	 q5ICgIlipBtcte1/VAfZGICurONX+eVL6Ci/MMfOV/JuTrM9ca1BHJTkpIFnLv3wXkepu
+	 +2OQdGVWN0mB1Xz9yKh2lRIdAN23KJVIaeIIRXbuLYfhYkvWt2xXXbKTNx5ko5HT6d4aO
+	 hgVAoFk/hAYp7HbCOABC3n6RbEmbpaBB5Xyguuv9RLRqcf18RpZBAx3lWZAMdc4wB1A==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=amd.com;
 	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b="A8gz/SZx";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.54
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011054.outbound.protection.outlook.com [40.93.194.54])
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b="0a5Ve/5g";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.56
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012056.outbound.protection.outlook.com [52.101.48.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E765E606A31D;
-	Sun, 15 Nov 2026 16:56:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E765E606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F354606A31E;
+	Sun, 15 Nov 2026 16:56:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F354606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=A8gz/SZx
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=0a5Ve/5g
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RHHELrfOSprx3mlhLBIplFERLLehhXyV1XnYTQnUnkyB0SqBzZ85uxkDL6M/fLidqWuMA2vAHY1L40Qz5kqxrDH6fy87pPas7sWtaUl50itqOOaFvh6fEEtMmOIqhgOSTm+wQ7WMPCCklCSBT5Vd7D2V8udXd3icyVaQwXZRvuYH56CEwmyXS2OLUBcdwfQOtkha+/4NNyrpu+BiomHxHP0iIscaEu63fa7cX1cTcGjqRI/o8onW4A70qCB3aqYs/3qO7lJS4MT6qHxYGnaO5hAZz0UmSn2NkOc+wO+bKl+0SUgQiBw033i9ea2MMjribVc1lg6CB/HTdeE1/DHakg==
+ b=Gsh3GbuHci94F706eFHMfZUSXCUrzESsMg+VBKeGrdabUOXluufJrmMD+rsm/AUMoVzyGSHI5rHf5XlTicBqztzBnu9DVBvXBcQ01hFsehfP+EzyFWBJNBwScKTd+g/1yE+0Zyc4w/WB9R1mMk6gb0qkVAe2aQBZJQmPk/wRRxGBrB8kDb4uGh9nJ3LfEAaUwJUn2Vqp1eMenmalw5La272uvknjzJvS47i5PQ+ZF3xvgxqsY+0G9sivJQCl//vskUc2yJU0oSJKntmMRaK68A6FUpuU26TKYTsEei8PXYYwieb9etLrhTBtRYSB8U3T+c7zEFdZgffdTGbVNeT27w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rI/QGfrjM3i7FEH9pkXzGGNmIFzxXp3sVm5FtW/Duu0=;
- b=bttLYeBDVp42r9GmJmRC+RhZHqxto36j4C7k9CEmc9fWmS3z76It2D/teRWl5zCMqBr2162H97vKgzXtQ7SjYS19jUYVLMRbWHhvH4pbqxM5mQyva7xFo7iCuTWBVyUWkn2nLBw+huCnGv8Q9kMcZFGq6V2/F49weF2FpCyvnOXmkzLblbdQ5vjwGGV9d10IAOXT9fwiVIHP5jbEQw3ZegyfXkSkRgFmreLyNh3zZkwYRYhtWu/u5SN7fLCiJdHg/J2BUbki0+5rL244SnnAupCxzrtQhhOhKipCO86GOylYNuYGyf70sfWXRhcIoFNjG1cCkVE1PbFOSQNuJ1H/rw==
+ bh=jwfAv9KT/gvVyFrTHdgfsAqWsfvLvjtF8C8JwclUSFY=;
+ b=Xms/duwmcigQG39YJ0EB7c3zeEZfAfFN37F6xfmA8bCE9ANOYbC8sKbQilensN/bOkfyjYU0NpirCvx3EgB02gYxGpB4wyGPmgahOjTfx1MD12Ttr2KeI/Ygq37ZO1UphNajq5dFMGPbEdILU32AFYylvwsvVaoPZUW+VgvqzC5uKRqL4mclOwKcTAshwwA6YUFUxB1w6nZGR0FKYI1BEkDVAOvdtMoino3SGR+S7vvNUP9Q4ToqwBXE3jxlzVOUQOR1faQTyufbiuTXhlXZgIGBUT7LM4MeZQN3RADtsfiQX9DGcVrZGwVenf1X5XK8Atoa9zu6WMoIhp4O0eQp6w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rI/QGfrjM3i7FEH9pkXzGGNmIFzxXp3sVm5FtW/Duu0=;
- b=A8gz/SZx0IeEmk7yDT014n+zvI61HsiyIxE2RRyvtOOgFnNxo1CBv2txCaQVBboxszvaITL92kMWdsT3ra3BZW0E8cON+zE/zt4Q/msHpnlMphZFuo4JnQdcQwZvOHzz6myKEIUYfUUdQ+5X/jdZgYk4qUEIz76jeMPjTDL+u+k=
-Received: from CY5PR22CA0095.namprd22.prod.outlook.com (2603:10b6:930:65::13)
- by BL3PR12MB6547.namprd12.prod.outlook.com (2603:10b6:208:38e::6) with
+ bh=jwfAv9KT/gvVyFrTHdgfsAqWsfvLvjtF8C8JwclUSFY=;
+ b=0a5Ve/5gH3oFvfbudJMneb9pMYnMYxVnXkbqiN/PNqUxyK+a5enAlrPhv9ky1GwRQSqRakhc5o95KfmdyAgiSINqTpqr8vyscE3qHi8OVmMob5NTr8FEJebjBdpHk9RI0nOVv9lnDuBvOlGDEIbZ51YblWWRB6e5MkcKnh2WDxc=
+Received: from PH8P220CA0028.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:348::6)
+ by EAYPR12MB999132.namprd12.prod.outlook.com (2603:10b6:303:2c2::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Sun, 15 Nov
- 2026 16:56:46 +0000
-Received: from CY6PEPF0000004A.namprd03.prod.outlook.com
- (2603:10b6:930:65:cafe::aa) by CY5PR22CA0095.outlook.office365.com
- (2603:10b6:930:65::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.13; Sun, 15 Nov
+ 2026 16:56:49 +0000
+Received: from BY1PEPF00026959.namprd05.prod.outlook.com
+ (2603:10b6:510:348:cafe::53) by PH8P220CA0028.outlook.office365.com
+ (2603:10b6:510:348::6) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.13 via Frontend Transport; Sun,
- 15 Nov 2026 16:56:46 +0000
+ 15 Nov 2026 16:56:49 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- CY6PEPF0000004A.mail.protection.outlook.com (10.167.247.135) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BY1PEPF00026959.mail.protection.outlook.com (10.167.244.170) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.639.5 via Frontend Transport; Sun, 15 Nov 2026 16:56:46 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.615.4 via Frontend Transport; Sun, 15 Nov 2026 16:56:48 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Sun, 15 Nov
- 2026 10:56:45 -0600
+ 2026 10:56:48 -0600
 Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
  (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Sun, 15 Nov
- 2026 10:56:45 -0600
+ 2026 10:56:47 -0600
 Received: from xhdsboyapal40x.amd.com (10.180.168.240) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.57 via Frontend
- Transport; Sun, 15 Nov 2026 10:56:43 -0600
+ Transport; Sun, 15 Nov 2026 10:56:45 -0600
 From: Srikanth Boyapally <srikanth.boyapally@amd.com>
-Subject: [PATCH 0/5] spi: spi-zynqmp-gqspi: Fix remove and IO-mode reads
-Date: Sun, 15 Nov 2026 22:26:39 +0530
-Message-ID: <20261115-qspi_14_11-v1-0-23425ed177bf@amd.com>
+Date: Sun, 15 Nov 2026 22:26:40 +0530
+Subject: [PATCH 1/5] spi: spi-zynqmp-gqspi: Factor out
+ zynqmp_qspi_disable_hw()
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -110,70 +109,136 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEfk+WoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzNDQ0MT3cLigsx4Q5N4Q0PdRNOkZAvLRDMDMxNTJaCGgqLUtMwKsGHRsRB
- +cWlSVmpyCcgEpdpaAJBSW7puAAAA
-X-Change-ID: 20261114-qspi_14_11-a5bc89a60645
+Message-ID: <20261115-qspi_14_11-v1-1-23425ed177bf@amd.com>
+References: <20261115-qspi_14_11-v1-0-23425ed177bf@amd.com>
+In-Reply-To: <20261115-qspi_14_11-v1-0-23425ed177bf@amd.com>
 To: <michal.simek@amd.com>, <ranjit.waghmode@xilinx.com>, <broonie@kernel.org>
 CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
 	<linux-spi@vger.kernel.org>, <git@amd.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794761802; l=997;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794761802; l=3494;
  i=srikanth.boyapally@amd.com; s=20261106; h=from:subject:message-id;
- bh=cxWTGmA+AsSETKdMw7Ryor0HxRhlm0ddw7Oo4AuBqpE=;
- b=AUFMaozOZwzfSG9isQHPUySteub2DcOxUIxtKyrnPAinEDDkJnrrUTLnSMOu7daUHEmOLmf9/
- tiNvK7IwDFDBzYqge663QTeJI6Ply/SUQas/F1wmLNmeKAUfL+YeJUF
+ bh=eUdFmEA2uwXKj7sDr2IechKU84/eSHhk0pPowcwOHjQ=;
+ b=/TNspH9cHieoYg3SoFZFTwpzdQNCMbNyLeAd6V+XVmI7UJNcSgERq9+uqsjjMhJSxMV6xC30p
+ CMW0tHjjerUCNapW2fDuczJzXCfVKrU3ixSg8C6jLP+INA8F55Crg23
 X-Developer-Key: i=srikanth.boyapally@amd.com; a=ed25519;
  pk=VZiIwz5+m6FvZJ+3hzpXDQl0u531OPVeBcB2OVGeZVk=
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY6PEPF0000004A:EE_|BL3PR12MB6547:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0c760942-7f48-4f10-e7c9-08df43396ef5
+X-MS-TrafficTypeDiagnostic: BY1PEPF00026959:EE_|EAYPR12MB999132:EE_
+X-MS-Office365-Filtering-Correlation-Id: f72d8dd0-75dc-49af-4df6-08df4339707d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|1800799024|36860700016|82310400026|10067099003|11063799006|56012099006|261026121527099003|261026140227099003|261028144727099003|261022105027099003|261022075727099003|261021123027099003|261021121427099003|261102123227099003|261009223027099003|261009221727099003|261009221227099003|261009220027099003|261009223327099003|18002099003;
+	BCL:0;ARA:13230040|23010399003|376014|1800799024|36860700016|82310400026|10067099003|11063799006|56012099006|261021123027099003|261021121427099003|261102123227099003|261009223027099003|261009221727099003|261009221227099003|261009220027099003|261009223327099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	UgHhJsj6p3bcB7eUsGHsUrRmlg/0OlueSX4LztQJFfDXr6cc6sqzUx8SCD8dST1KGBOg9YYGiU4FhdWfI8mLv2TJxkRWfp/ZD17Gq2bocIFRvnIipYLRGD+7t3S7GwvgDuJ4DlFIouAMqTG0tIBUf4u1tUmklY8/iMOJOXKN7XlzMlbDaubYmgP6c+XcyaSneuZjusMMarA0tokBT1vLnRsdt8CqZ9EE0xZ0BCvdvdC5ZbzhRfBdmZgU8LZvv048iw8kh3To7iW8MpnTNkzcuoVhrC62RUsIdhen0xUQf81g+13blL0VteEUewQnIOHX9JR5X3OiuwgYChXTQYpiKnb0j8GcC3sgAmRTTmvF6SjqAvHt9SrbNlkm/ntyTFNjbbEuK9OYroAwSAJovvwtIyNVUkhDdkCjyISGoYcWRVNRIutLKJRGdIuyzHYHYitUYViwspPORZd4wisj+X8UQQeewkHuRblsLOPSEyZdSPUqwuvp92ylUWD6V2PWB3+eBn2jTs3j6h/VWibnujywwKAX32OQsqS1rd5UbHZx2XxGOkOz4AvsBf/43aNr3z5gcl4MxmtI6DWOa5DCaUcsL9KdmU1clLo8JMt/oh8ahzFBHmE9lEx8up6V7AfD1m25a0CPXO8xv1e+Jl+drMZF/qOQAPXXR4BIJlxNh4uUMjbLqONy3WSX2yPsyT9rt70vIpC0acusKhFaC74N6QncdA==
+	y+43pP2bWsA5I+yBe+0WIRkHncb1FZYI29TbWgQspq916F/vHk//y33OU7fykk8WvwL85c9EAWK5CdHi/mZ91eNQYoMUSwIb+UO2ZzbDJR0Z/yXCB4K7tF/1w5/rybHI9B6uPPVrUAm7ttBFvNusxGKgbK7Th9Q5jYxF51qFzb7Z49WMLYcKRaG9TlDF8CsbaVoNAcIdf4u8sNclakx9O2ECth5souueBxZeWbFASU7qrfU5ZOhzYddWuYg6V09YiOBdvqW7HLzVg91Xx85kcnTM4d5JdKO0cPFIogrYFyhsXdwlotAF6v1spJtlyDZhRUBABWPiUH2VmfY6TLtpCIq3xzzHoXFQ5jeHEKtHaPy6+NPvtE2OTaxWlhrbnCpXeyxybG4NymnWCweXc50x8QPuNLT4m16Yn/MkdMGIzY36CvfQEoXYiICaP9ngGpLMPw0Nm+Ni7xuuw0tfvUwJ39EleZWImBliUJQcr6RwvUuyS8a96AuKUm+7toK6JtmpcdZHxZQ3bQU+jvR/JtVHzybrk6QASny9zhpmKJ5UkKwSUD++xbheEQ63LHHHwplAkzaTPZasBahF84tAM4e9u/DcX1raGPATGKvGAJ6mjjyPENBRdEI5XUwU9yW6mTfhEk6tldqhdBTzZj7+rQ2/1/5K2nvTXeUQ+8gGpv/lK1C88Mh3vJZPayYqDrRIF/DcJ3rvxwnbB44ukF/OTJIkfQ==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(36860700016)(82310400026)(10067099003)(11063799006)(56012099006)(261026121527099003)(261026140227099003)(261028144727099003)(261022105027099003)(261022075727099003)(261021123027099003)(261021121427099003)(261102123227099003)(261009223027099003)(261009221727099003)(261009221227099003)(261009220027099003)(261009223327099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(36860700016)(82310400026)(10067099003)(11063799006)(56012099006)(261021123027099003)(261021121427099003)(261102123227099003)(261009223027099003)(261009221727099003)(261009221227099003)(261009220027099003)(261009223327099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	wH5J7U/vINHckyGRi6s8jjIUkZAj5QoD55T+G4m5x+fqT5gURDh2ETOAETkpLUuKgKNR/azE795L87Yda5v9C/kdasU7yhODuoqO9XkBP9Mr4h6BHozHOK8MK+W8oRdCCB2WVBFRCqLUniK2jg/nw5PwLX0gsgBcUBkYKcqOf3UXVm+fiZaLbN0QeqYOKKVVG9iC3BGfuD9t0E07nF84TsdZS7chKmbHIll/4u4CrlQvZ5PglWLFsWTCihOhgptw0MkU4T1HC6J9w1N65JYXEzSVWL/fpk7l2VnoJtmcbDCKYkQ8+lerqh7dA1p4gjShpR+6fNGg5xB7Zo7HWi3ayzXdpPOOABcx+jOWWAoVVqPN/EE7FndO9X+V5LwZj+kjZBNWDtOXFLSLojV9PT79dWC3t0MYSRFev+WPOn08bjGIZmdvd9jli1L+K/XQJLyg
+	K042Vc+rrHGrLMQciqvItAopGFGXcpSMsOfuk/UX7Xxga6r9VcTWrwFdctdmIW8nTcthkzCoQK6decPSPWRsxXvxxymRrz48N6O8ne45oX6Cta3IxpzR+rgnRfXy+ifU1kKidWlKdV8lgi4s92xjDLnspBGgNoWLQT189jYjPL2QBh03NHRmFpCimx0iJNbXrLVZdBhy1EIh5tY4KhPO6dtZDSfA5wmk0/jUgIwAePPgQyMQ1sAKoZ/AH9em8u81vuY2o+8mVrM94S5aws/M+mUSud9tjqOZfi+miwk26jVVKDd5IG3W+ikkI8kviik+HLNsavPlKJbLfAn1VOSqvF1Cee9knGhBRodPVL1Zl1601CoLC2HZ+lIlO4eWwMMxxBffyVeMiSHjRWZkZkMadcGBchQff9ZPfStc6n6hY+bA1l2g3+PwCc5AhC88Q9Ls
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2026 16:56:46.2821
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2026 16:56:48.8101
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0c760942-7f48-4f10-e7c9-08df43396ef5
+X-MS-Exchange-CrossTenant-Network-Message-Id: f72d8dd0-75dc-49af-4df6-08df4339707d
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CY6PEPF0000004A.namprd03.prod.outlook.com
+	BY1PEPF00026959.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6547
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: EAYPR12MB999132
 
-This series includes improvements to the ZynqMP GQSPI driver, covering
-unaligned RX buffer handling, controller shutdown during remove,
-interrupt and clock handling, and RX FIFO draining in IO mode.
+From: Mohammad Zeeshan <zeeshan.mohammad2@amd.com>
 
+Move the clear-mask-disable sequence out of zynqmp_qspi_init_hw() into
+its own zynqmp_qspi_disable_hw(), so it can be reused by other paths
+that need to stop the controller.
+
+No functional change: this is pure code motion, zynqmp_qspi_init_hw()
+calls the new helper in exactly the same place it used to run the
+sequence inline.
+
+Signed-off-by: Mohammad Zeeshan <zeeshan.mohammad2@amd.com>
 Signed-off-by: Srikanth Boyapally <srikanth.boyapally@amd.com>
 ---
-Amit Kumar Mahapatra (1):
-      spi: spi-zynqmp-gqspi: Use IO mode if RX buffer is not cache-line aligned
+ drivers/spi/spi-zynqmp-gqspi.c | 54 ++++++++++++++++++++++++++----------------
+ 1 file changed, 34 insertions(+), 20 deletions(-)
 
-Mohammad Zeeshan (4):
-      spi: spi-zynqmp-gqspi: Factor out zynqmp_qspi_disable_hw()
-      spi: spi-zynqmp-gqspi: Mask the interrupt before gating clocks on remove
-      spi: spi-zynqmp-gqspi: Stop the controller fully on remove
-      spi: spi-zynqmp-gqspi: Drain RX FIFO on RXNEMPTY in IO mode
+diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
+index 15e9d3ef8839..0da44ebaf39c 100644
+--- a/drivers/spi/spi-zynqmp-gqspi.c
++++ b/drivers/spi/spi-zynqmp-gqspi.c
+@@ -280,6 +280,38 @@ static void zynqmp_gqspi_selecttarget(struct zynqmp_qspi *instanceptr,
+ 	}
+ }
+ 
++/**
++ * zynqmp_qspi_disable_hw - Clear and mask all interrupts, stop the controller
++ * @xqspi:	Pointer to the zynqmp_qspi structure
++ *
++ * Acknowledges any pending GQSPI and DMA status, masks every interrupt source
++ * and disables the controller. Used when (re)initialising the hardware and
++ * when handing the system over on reboot, poweroff or kexec.
++ */
++static void zynqmp_qspi_disable_hw(struct zynqmp_qspi *xqspi)
++{
++	/* Select the GQSPI mode */
++	zynqmp_gqspi_write(xqspi, GQSPI_SEL_OFST, GQSPI_SEL_MASK);
++	/* Clear and disable interrupts */
++	zynqmp_gqspi_write(xqspi, GQSPI_ISR_OFST,
++			   zynqmp_gqspi_read(xqspi, GQSPI_ISR_OFST) |
++			   GQSPI_ISR_WR_TO_CLR_MASK);
++	/* Clear the DMA STS */
++	zynqmp_gqspi_write(xqspi, GQSPI_QSPIDMA_DST_I_STS_OFST,
++			   zynqmp_gqspi_read(xqspi,
++					     GQSPI_QSPIDMA_DST_I_STS_OFST));
++	zynqmp_gqspi_write(xqspi, GQSPI_QSPIDMA_DST_STS_OFST,
++			   zynqmp_gqspi_read(xqspi,
++					     GQSPI_QSPIDMA_DST_STS_OFST) |
++					     GQSPI_QSPIDMA_DST_STS_WTC);
++	zynqmp_gqspi_write(xqspi, GQSPI_IDR_OFST, GQSPI_IDR_ALL_MASK);
++	zynqmp_gqspi_write(xqspi,
++			   GQSPI_QSPIDMA_DST_I_DIS_OFST,
++			   GQSPI_QSPIDMA_DST_INTR_ALL_MASK);
++	/* Disable the GQSPI */
++	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
++}
++
+ /**
+  * zynqmp_qspi_set_tapdelay:   To configure qspi tap delays
+  * @xqspi:             Pointer to the zynqmp_qspi structure
+@@ -355,26 +387,8 @@ static void zynqmp_qspi_init_hw(struct zynqmp_qspi *xqspi)
+ 	u32 config_reg, baud_rate_val = 0;
+ 	ulong clk_rate;
+ 
+-	/* Select the GQSPI mode */
+-	zynqmp_gqspi_write(xqspi, GQSPI_SEL_OFST, GQSPI_SEL_MASK);
+-	/* Clear and disable interrupts */
+-	zynqmp_gqspi_write(xqspi, GQSPI_ISR_OFST,
+-			   zynqmp_gqspi_read(xqspi, GQSPI_ISR_OFST) |
+-			   GQSPI_ISR_WR_TO_CLR_MASK);
+-	/* Clear the DMA STS */
+-	zynqmp_gqspi_write(xqspi, GQSPI_QSPIDMA_DST_I_STS_OFST,
+-			   zynqmp_gqspi_read(xqspi,
+-					     GQSPI_QSPIDMA_DST_I_STS_OFST));
+-	zynqmp_gqspi_write(xqspi, GQSPI_QSPIDMA_DST_STS_OFST,
+-			   zynqmp_gqspi_read(xqspi,
+-					     GQSPI_QSPIDMA_DST_STS_OFST) |
+-					     GQSPI_QSPIDMA_DST_STS_WTC);
+-	zynqmp_gqspi_write(xqspi, GQSPI_IDR_OFST, GQSPI_IDR_ALL_MASK);
+-	zynqmp_gqspi_write(xqspi,
+-			   GQSPI_QSPIDMA_DST_I_DIS_OFST,
+-			   GQSPI_QSPIDMA_DST_INTR_ALL_MASK);
+-	/* Disable the GQSPI */
+-	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
++	zynqmp_qspi_disable_hw(xqspi);
++
+ 	config_reg = zynqmp_gqspi_read(xqspi, GQSPI_CONFIG_OFST);
+ 	config_reg &= ~GQSPI_CFG_MODE_EN_MASK;
+ 	/* Manual start */
 
- drivers/spi/spi-zynqmp-gqspi.c | 86 +++++++++++++++++++++++++++++-------------
- 1 file changed, 59 insertions(+), 27 deletions(-)
----
-base-commit: 7a043c9d31af627f0689757b29b8aad6155a9376
-change-id: 20261114-qspi_14_11-a5bc89a60645
-
-Best regards,
---  
-Srikanth Boyapally <srikanth.boyapally@amd.com>
+-- 
+2.43.0
 

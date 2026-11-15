@@ -1,58 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794749446;
-	b=Mm7vQ8G7zjGiixiDuS5ge8Vd8gu2dSljNXtECUr7ExVsD2z8sniMRnYxXtB+8+l7pMjK
-	 1lc6mIru2gEsAj/a6uo80Vmn5SSsL/zwiyevGM/3SMCXuDVNrLyoFSQQBoRH5LSSsFEYT
-	 67rRozlrqffmq2TBUndcu+jLEzTNA2gyApPZdJaQBVY6z37gTn3FSb1W+wgi9qvSHUCOo
-	 OVT24j/vnOJ/o/fL66qoD2RSMYjjjN5zc995u+a97DwQg+TzDs1YUT8Z9+KH0CB0ine1N
-	 L6Y6KkPRio3JPdGoHFh983UEffUcAGU3xsgetqJy7K5a+jEaoBX4kdE15jV17nBGUWg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794749446;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=BFJvKVhH5INfNQgu/CQEYJJqodEEEvt0XMiAlZaDCO8=;
-	b=D4bNT89/4cE8vXyK/aTQStFxqdpMncR2VN4b+yq8ogvboljdvVsXTH8WsORurY4FZRQx
-	 cZfEkwLDRk/FFyiTUc4R0i/gLE75mBjR2a7m27Kl2jCKaXHxG9mY3teUaLpBg95iUTMnk
-	 BVk2HkslfzMnUJ4QFWtXtXwtrQU4ltbnvpi93Ej3bKCGT1qJrgcHLPj/w07yGmexYRiaT
-	 wOMREstB9W4DUNewxrToij55hxOYcquMTR1OQ+RUzmMSV/Iy7UlrkD/3N6c69L0o2iuOi
-	 SPvCKPHDIOsDJhp+mQECCH6aRqWaWn7cJJih6ASsds7Z068d/5VlAdnxSVK9E67ZwhA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=biO4OCoT;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.54
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794761810;
+	b=ur06X9irV+aXsJwS24Z3QOr1e34/5przgX+yE+tl6yoKwr/5l2oI/4GRRq305jhbb7en
+	 +LUff94z+WLo8FfN5BM/Xv90pTm1rMM2/5/ZTp8eUr2gkUG4BGuz1YYqUhkTdhFSixkWT
+	 7nE+Pr/E0428iebD9ZQai/3aPoUPLsyNVeAjghS4Cyv5lZVgtGd5W8tFOu+1UPMjUkGU6
+	 9PKt/BbzXfK4hl/8Z/xYi6nraSq5CSslS55Z7VX6JgewG2JIwH1yc3/TpkxkaKx8xKLXv
+	 04/gZ5NbrKwvNf8+7sRWvTEi69Bv28RDY0SwoXQGi76mqmHzDehBjRqHyL9wxqaCb0w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794761810;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:Received:From:Subject:Date:Message-ID:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 CC:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=rI/QGfrjM3i7FEH9pkXzGGNmIFzxXp3sVm5FtW/Duu0=;
+	b=B4TfcHkmRwptZORSDpOJ0X/0p47lAcr7n/X7hnSLzVFV1afO9m8ludvbuoSdfnxyGiEe
+	 QIynJ3DG35NuiLp722ShCCJ3aSQiIt9oRodFiSf4dwo3foSHZOybp7Ynjzsfzauf3HM80
+	 I3mCg34Ntx/KCgobKhE7Y/xis7DtFqtadz/fJAYugsrsvyzpfFrpLNiD6134auaO+rc1p
+	 mT1mi8yC0aD7sBpTa34XzeGdtGWfpIoZdFIqxUBT33WqDCR6bUqwkII2bfIIJhKoYG1TQ
+	 aOqPL0MrEA0max/0dAkG+8Hu14jmCbAMHVl3Te/OLdTvzN/0puaMWV4K9bD5vwF8HwA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b="A8gz/SZx";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.54
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011054.outbound.protection.outlook.com [40.93.194.54])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C6D606A31D;
-	Sun, 15 Nov 2026 13:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E765E606A31D;
+	Sun, 15 Nov 2026 16:56:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E765E606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=biO4OCoT
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D28411F000C4;
-	Sun, 15 Nov 2026 13:30:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794749445;
-	bh=BFJvKVhH5INfNQgu/CQEYJJqodEEEvt0XMiAlZaDCO8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=biO4OCoT9LK26HFXawWMg47PKjOOhQ5lxWOn54+c57WmYerA/vMo8s0/Lg5iNYRtv
-	 xcK69kSqZJhOvmlEIE4rZgCsi7VO6RLU7h088yTrlTQ07V/YXANYaycrb89nO4YwkL
-	 p34tVDjyD1rVQiFwB30bHusvCUpZ+JuDPJ/frXBhKtMjtXWbcLHc88Xt5/tnb9+UEQ
-	 CRjPURYSob1TXUgmPyruC88XMfAX35fXj2ETOeRvqRqojpUE7OKVU78VZyQEuOiFcp
-	 DtxB+UjDBwDe5v6hJeNdNNIKwdStzJIvEjpgO9paba/tU2UaFa08FU7KwGWAK6aQcs
-	 1miF+YJuZ/9/Q==
-Date: Sun, 15 Nov 2026 21:10:23 +0800
-From: Jisheng Zhang <jszhang@kernel.org>
-To: PaulCercueil <paul.cercueil@bootlin.com>, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-	Tanmay Jagdale <tanmay@marvell.com>,
-	George Cherian <gcherian@marvell.com>
-Subject: Re: [PATCH v3 6/6] spi: cadence-xspi: Add workaround for old Marvell
- firmwares
-Message-ID: <avmvP5EQqMV_FKqI@xhacker>
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=A8gz/SZx
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RHHELrfOSprx3mlhLBIplFERLLehhXyV1XnYTQnUnkyB0SqBzZ85uxkDL6M/fLidqWuMA2vAHY1L40Qz5kqxrDH6fy87pPas7sWtaUl50itqOOaFvh6fEEtMmOIqhgOSTm+wQ7WMPCCklCSBT5Vd7D2V8udXd3icyVaQwXZRvuYH56CEwmyXS2OLUBcdwfQOtkha+/4NNyrpu+BiomHxHP0iIscaEu63fa7cX1cTcGjqRI/o8onW4A70qCB3aqYs/3qO7lJS4MT6qHxYGnaO5hAZz0UmSn2NkOc+wO+bKl+0SUgQiBw033i9ea2MMjribVc1lg6CB/HTdeE1/DHakg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rI/QGfrjM3i7FEH9pkXzGGNmIFzxXp3sVm5FtW/Duu0=;
+ b=bttLYeBDVp42r9GmJmRC+RhZHqxto36j4C7k9CEmc9fWmS3z76It2D/teRWl5zCMqBr2162H97vKgzXtQ7SjYS19jUYVLMRbWHhvH4pbqxM5mQyva7xFo7iCuTWBVyUWkn2nLBw+huCnGv8Q9kMcZFGq6V2/F49weF2FpCyvnOXmkzLblbdQ5vjwGGV9d10IAOXT9fwiVIHP5jbEQw3ZegyfXkSkRgFmreLyNh3zZkwYRYhtWu/u5SN7fLCiJdHg/J2BUbki0+5rL244SnnAupCxzrtQhhOhKipCO86GOylYNuYGyf70sfWXRhcIoFNjG1cCkVE1PbFOSQNuJ1H/rw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rI/QGfrjM3i7FEH9pkXzGGNmIFzxXp3sVm5FtW/Duu0=;
+ b=A8gz/SZx0IeEmk7yDT014n+zvI61HsiyIxE2RRyvtOOgFnNxo1CBv2txCaQVBboxszvaITL92kMWdsT3ra3BZW0E8cON+zE/zt4Q/msHpnlMphZFuo4JnQdcQwZvOHzz6myKEIUYfUUdQ+5X/jdZgYk4qUEIz76jeMPjTDL+u+k=
+Received: from CY5PR22CA0095.namprd22.prod.outlook.com (2603:10b6:930:65::13)
+ by BL3PR12MB6547.namprd12.prod.outlook.com (2603:10b6:208:38e::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Sun, 15 Nov
+ 2026 16:56:46 +0000
+Received: from CY6PEPF0000004A.namprd03.prod.outlook.com
+ (2603:10b6:930:65:cafe::aa) by CY5PR22CA0095.outlook.office365.com
+ (2603:10b6:930:65::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.13 via Frontend Transport; Sun,
+ 15 Nov 2026 16:56:46 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ CY6PEPF0000004A.mail.protection.outlook.com (10.167.247.135) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.639.5 via Frontend Transport; Sun, 15 Nov 2026 16:56:46 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Sun, 15 Nov
+ 2026 10:56:45 -0600
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Sun, 15 Nov
+ 2026 10:56:45 -0600
+Received: from xhdsboyapal40x.amd.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.57 via Frontend
+ Transport; Sun, 15 Nov 2026 10:56:43 -0600
+From: Srikanth Boyapally <srikanth.boyapally@amd.com>
+Subject: [PATCH 0/5] spi: spi-zynqmp-gqspi: Fix remove and IO-mode reads
+Date: Sun, 15 Nov 2026 22:26:39 +0530
+Message-ID: <20261115-qspi_14_11-v1-0-23425ed177bf@amd.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -62,133 +108,72 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261112143050.53347-7-paul.cercueil@bootlin.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEfk+WoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzNDQ0MT3cLigsx4Q5N4Q0PdRNOkZAvLRDMDMxNTJaCGgqLUtMwKsGHRsRB
+ +cWlSVmpyCcgEpdpaAJBSW7puAAAA
+X-Change-ID: 20261114-qspi_14_11-a5bc89a60645
+To: <michal.simek@amd.com>, <ranjit.waghmode@xilinx.com>, <broonie@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-spi@vger.kernel.org>, <git@amd.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794761802; l=997;
+ i=srikanth.boyapally@amd.com; s=20261106; h=from:subject:message-id;
+ bh=cxWTGmA+AsSETKdMw7Ryor0HxRhlm0ddw7Oo4AuBqpE=;
+ b=AUFMaozOZwzfSG9isQHPUySteub2DcOxUIxtKyrnPAinEDDkJnrrUTLnSMOu7daUHEmOLmf9/
+ tiNvK7IwDFDBzYqge663QTeJI6Ply/SUQas/F1wmLNmeKAUfL+YeJUF
+X-Developer-Key: i=srikanth.boyapally@amd.com; a=ed25519;
+ pk=VZiIwz5+m6FvZJ+3hzpXDQl0u531OPVeBcB2OVGeZVk=
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY6PEPF0000004A:EE_|BL3PR12MB6547:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0c760942-7f48-4f10-e7c9-08df43396ef5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|1800799024|36860700016|82310400026|10067099003|11063799006|56012099006|261026121527099003|261026140227099003|261028144727099003|261022105027099003|261022075727099003|261021123027099003|261021121427099003|261102123227099003|261009223027099003|261009221727099003|261009221227099003|261009220027099003|261009223327099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	UgHhJsj6p3bcB7eUsGHsUrRmlg/0OlueSX4LztQJFfDXr6cc6sqzUx8SCD8dST1KGBOg9YYGiU4FhdWfI8mLv2TJxkRWfp/ZD17Gq2bocIFRvnIipYLRGD+7t3S7GwvgDuJ4DlFIouAMqTG0tIBUf4u1tUmklY8/iMOJOXKN7XlzMlbDaubYmgP6c+XcyaSneuZjusMMarA0tokBT1vLnRsdt8CqZ9EE0xZ0BCvdvdC5ZbzhRfBdmZgU8LZvv048iw8kh3To7iW8MpnTNkzcuoVhrC62RUsIdhen0xUQf81g+13blL0VteEUewQnIOHX9JR5X3OiuwgYChXTQYpiKnb0j8GcC3sgAmRTTmvF6SjqAvHt9SrbNlkm/ntyTFNjbbEuK9OYroAwSAJovvwtIyNVUkhDdkCjyISGoYcWRVNRIutLKJRGdIuyzHYHYitUYViwspPORZd4wisj+X8UQQeewkHuRblsLOPSEyZdSPUqwuvp92ylUWD6V2PWB3+eBn2jTs3j6h/VWibnujywwKAX32OQsqS1rd5UbHZx2XxGOkOz4AvsBf/43aNr3z5gcl4MxmtI6DWOa5DCaUcsL9KdmU1clLo8JMt/oh8ahzFBHmE9lEx8up6V7AfD1m25a0CPXO8xv1e+Jl+drMZF/qOQAPXXR4BIJlxNh4uUMjbLqONy3WSX2yPsyT9rt70vIpC0acusKhFaC74N6QncdA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(36860700016)(82310400026)(10067099003)(11063799006)(56012099006)(261026121527099003)(261026140227099003)(261028144727099003)(261022105027099003)(261022075727099003)(261021123027099003)(261021121427099003)(261102123227099003)(261009223027099003)(261009221727099003)(261009221227099003)(261009220027099003)(261009223327099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	wH5J7U/vINHckyGRi6s8jjIUkZAj5QoD55T+G4m5x+fqT5gURDh2ETOAETkpLUuKgKNR/azE795L87Yda5v9C/kdasU7yhODuoqO9XkBP9Mr4h6BHozHOK8MK+W8oRdCCB2WVBFRCqLUniK2jg/nw5PwLX0gsgBcUBkYKcqOf3UXVm+fiZaLbN0QeqYOKKVVG9iC3BGfuD9t0E07nF84TsdZS7chKmbHIll/4u4CrlQvZ5PglWLFsWTCihOhgptw0MkU4T1HC6J9w1N65JYXEzSVWL/fpk7l2VnoJtmcbDCKYkQ8+lerqh7dA1p4gjShpR+6fNGg5xB7Zo7HWi3ayzXdpPOOABcx+jOWWAoVVqPN/EE7FndO9X+V5LwZj+kjZBNWDtOXFLSLojV9PT79dWC3t0MYSRFev+WPOn08bjGIZmdvd9jli1L+K/XQJLyg
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2026 16:56:46.2821
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0c760942-7f48-4f10-e7c9-08df43396ef5
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY6PEPF0000004A.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6547
 
-On Thu, Nov 12, 2026 at 03:30:50PM +0100, Paul Cercueil wrote:
-> From: Tanmay Jagdale <tanmay@marvell.com>
-> 
-> Older firmwares from Marvell used the cdns,xspi-nor compatible string
-> for the Marvell-specific xSPI IP, which is incompatible.
-> 
-> Add a workaround to support this case, checking for a Marvell board in
-> the DTB or the ACPI tables.
+This series includes improvements to the ZynqMP GQSPI driver, covering
+unaligned RX buffer handling, controller shutdown during remove,
+interrupt and clock handling, and RX FIFO draining in IO mode.
 
-+ DT maintainers,
+Signed-off-by: Srikanth Boyapally <srikanth.boyapally@amd.com>
+---
+Amit Kumar Mahapatra (1):
+      spi: spi-zynqmp-gqspi: Use IO mode if RX buffer is not cache-line aligned
 
-I want to query a rule here: does mainlined driver need to care
-about out-of-tree dtb bug?
+Mohammad Zeeshan (4):
+      spi: spi-zynqmp-gqspi: Factor out zynqmp_qspi_disable_hw()
+      spi: spi-zynqmp-gqspi: Mask the interrupt before gating clocks on remove
+      spi: spi-zynqmp-gqspi: Stop the controller fully on remove
+      spi: spi-zynqmp-gqspi: Drain RX FIFO on RXNEMPTY in IO mode
 
-> 
-> Signed-off-by: Tanmay Jagdale <tanmay@marvell.com>
-> Co-developed-by: Paul Cercueil <paul.cercueil@bootlin.com>
-> Signed-off-by: Paul Cercueil <paul.cercueil@bootlin.com>
-> 
-> ---
-> 
-> v2: Replace the workaround based on the presence of the "xfer" resource
->     with a mechanism that identifies a Marvell SoC based on the board's
->     compatible string on DTB, and the DSDT table on ACPI.
-> 
-> v3: Wrap ACPI specific code with CONFIG_ACPI guards, as some of the
->     functions and structs aren't defined without CONFIG_ACPI.
-> ---
->  drivers/spi/spi-cadence-xspi.c | 41 +++++++++++++++++++++++++++++++++-
->  1 file changed, 40 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
-> index 8fa58a0412e3..7b06b95af794 100644
-> --- a/drivers/spi/spi-cadence-xspi.c
-> +++ b/drivers/spi/spi-cadence-xspi.c
-> @@ -2,6 +2,7 @@
->  // Cadence XSPI flash controller driver
->  // Copyright (C) 2020-21 Cadence
->  
-> +#include <linux/acpi.h>
->  #include <linux/completion.h>
->  #include <linux/delay.h>
->  #include <linux/err.h>
-> @@ -11,11 +12,13 @@
->  #include <linux/iopoll.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
-> +#include <linux/of.h>
->  #include <linux/platform_device.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/property.h>
->  #include <linux/spi/spi.h>
->  #include <linux/spi/spi-mem.h>
-> +#include <linux/string.h>
->  #include <linux/bitfield.h>
->  #include <linux/limits.h>
->  #include <linux/log2.h>
-> @@ -775,7 +778,6 @@ static void cdns_xspi_print_phy_config(struct cdns_xspi_dev *cdns_xspi)
->  		 readl(cdns_xspi->auxbase + CDNS_XSPI_CCP_PHY_DLL_SLAVE_CTRL));
->  }
->  
-> -#ifdef CONFIG_64BIT
->  static struct cdns_xspi_driver_data marvell_driver_data = {
->  	.mrvl_hw_overlay = true,
->  	.dll_phy_ctrl = MARVELL_REGS_DLL_PHY_CTRL,
-> @@ -788,6 +790,7 @@ static struct cdns_xspi_driver_data marvell_driver_data = {
->  	.rfile_phy_dll_slave_ctrl = MARVELL_RFILE_PHY_DLL_SLAVE_CTRL,
->  };
->  
-> +#ifdef CONFIG_64BIT
->  static const int cdns_mrvl_xspi_clk_div_list[] = {
->  	4,	//0x0 = Divide by 4.   SPI clock is 200 MHz.
->  	6,	//0x1 = Divide by 6.   SPI clock is 133.33 MHz.
-> @@ -1228,6 +1231,33 @@ static int cdns_xspi_transfer_one_message_b0(struct spi_controller *controller,
->  }
->  #endif
->  
-> +#ifdef CONFIG_ACPI
-> +static const struct acpi_platform_list mrvl_platform_list[] = {
-> +	{
-> +		.oem_id = "MRVL  ",
-> +		.oem_table_id = "CN10K",
-> +		.table = ACPI_SIG_DSDT,
-> +		.pred = all_versions,
-> +	},
-> +	{ }
-> +};
-> +#endif
-> +
-> +static inline bool cdns_is_marvell(struct device *dev)
-> +{
-> +	const char *compatible;
-> +
-> +#ifdef CONFIG_ACPI
-> +	if (has_acpi_companion(dev))
-> +		return acpi_match_platform_list(mrvl_platform_list) >= 0;
-> +#endif
-> +
-> +	if (of_machine_read_compatible(&compatible, 0) < 0)
-> +		return false; /* shouldn't actually happen */
-> +
-> +	return strstarts(compatible, "marvell,");
-> +}
-> +
->  static int cdns_xspi_probe(struct platform_device *pdev)
->  {
->  	struct device *dev = &pdev->dev;
-> @@ -1249,6 +1279,15 @@ static int cdns_xspi_probe(struct platform_device *pdev)
->  	if (!cdns_xspi->driver_data)
->  		return -ENODEV;
->  
-> +	if (IS_ENABLED(CONFIG_64BIT) &&
-> +	    !cdns_xspi->driver_data->mrvl_hw_overlay &&
-> +	    cdns_is_marvell(dev)) {
-> +		/* Some old firmwares use the base compatible string... */
-> +
-> +		dev_warn(dev, "Using the cdns,xspi-nor compatible string on a Marvell SoC. Please fix firmware!\n");
-> +		cdns_xspi->driver_data = &marvell_driver_data;
-> +	}
-> +
->  	host->mem_ops = &cadence_xspi_mem_ops;
->  	cdns_xspi->sdma_handler = &cdns_xspi_sdma_handle;
->  	cdns_xspi->set_interrupts_handler = &cdns_xspi_set_interrupts;
-> -- 
-> 2.47.3
-> 
+ drivers/spi/spi-zynqmp-gqspi.c | 86 +++++++++++++++++++++++++++++-------------
+ 1 file changed, 59 insertions(+), 27 deletions(-)
+---
+base-commit: 7a043c9d31af627f0689757b29b8aad6155a9376
+change-id: 20261114-qspi_14_11-a5bc89a60645
+
+Best regards,
+--  
+Srikanth Boyapally <srikanth.boyapally@amd.com>
+

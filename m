@@ -1,57 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.145
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794822863;
-	b=fH5ql6iVeGjZ2uWBKc7ralrwhU3oFRwqcOWA+XmqI+K//YE29HWaS3vLIQq90Ai5UtN7
-	 +leF3krRjx8OQLUbR7X27TcL6kIKTjQxIUktlcGFor+cL20MqXgOxUH90QFOW59tzJry+
-	 t0rrL6+y1PsgHjn3lgoLcMB+FdfcpVHANnh9t6Nn5UxsULLmKY8O/YLTz2xGY1+y/G0qB
-	 I4ITfZ9CwMcbu4NO6tnBVXmAmhsrXfmiKeIy4Ut9Z+0jBMi/XLcPCfWmuq0hSOt/RPNe1
-	 tPhRX7ITerUq4txtkxX0RTpu+hlUIXiPOqWiYV6RzjcO1kvTjmvwhPjIzUhw/L3xrNw==
+	t=1794824946;
+	b=4CNuN9DxbPTFjUww4MG5xbbJk0LtwQP0V+UGGXvqiToVJYKu084IHA+2QKq75Iow8woP
+	 lfot+8f5Nc/vQaNfPkONS4Uji/yz/rmLNHScZsyIb0fe8fsSpVtzQPHBdfVfIU/MRXbIA
+	 WOo/3Eu4UgVBE4qO9ILb6DxKnLmiDE3PQ4WmfdZejDcYkvoYW3S0Sxhql24xpAqbvidkR
+	 zrdKn8Sbj3MJN21CGMr1Y4ql6msP3IrSESzAJj1DwL0z5FyEz9vfLgWlBfLWd0wVfDhSj
+	 0t0qsFvW+1KDNVxDo4gEfFxJ2Fe0rgqdFuNurtfeg2YPh5pxWL1wDEzZvS4xO53RuZg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794822863;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794824946;
 	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
 	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=ZcwaTZETTIsbZwMzSlJmJ3zFX+bLxEcm3yQDMGPf2so=;
-	b=e/Ihy4Lmu1vrCo0hYkLjinDF2qevOy7m5j59ZjoF2uM1PUSoRW9HxJfZ84rMWOgPDWhI
-	 Z5UY7x51mQMIaav7i4rB+K4UMtLI/COXuawEBUUwiCGGihTc67sYbIK+IXlFcIrJlwaRN
-	 EXQ0wdv4Z+MGgf6EIkhITVejHpAeWlXdYx0J6Z43GvZSs9PQRxBlcUvjD11ZYU1P+XuCy
-	 abuRhvP/4K6VBnVjkh8nZ/eVu8qNHHZVS8bG8Scuh0r33pNZcjkfIo90QVfya26T0ikT7
-	 TJHO8C1Gblvsvuhqrkil4iZIC5zj716GpmvUUx8nYSiV7OH80/qfyk9owO57BLxS+mg==
+	bh=3Id0hsgYyF1MNWyUmbOw9PnJtuPWJdtHxVZgRs+q9NQ=;
+	b=dqsoWSg0BJSpkJuWt2bwr0gXdJeh2TT6ZrY28Krr0sPt/DmgK3AA7TkVGnmFnSn92vam
+	 SDhGM5fY7DLPgUf62wvc3iQZZjetBbzqv+xumTzSa6hPKF7I4EMahWseq5S45A/2UFbDZ
+	 mZjvdeuuYKgJHGqUVSYpMZuEYDebFsHTWGZXeRvLBH5X8xJYS9HyE99/VxkDZjPi6E8Y3
+	 Lq5crFLRAQLu1m8XnFrDs8rZRMogkUzzavDAjbvFnoTwhK2oLenRoF2pJgspYpdR19WKk
+	 oBd8jN4nUiQsCU4ZrPo2Jt9AD8ETGoyGitsWWvktsieocZhHNfjUYRHFtCanETHk/rA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=yinhe.ht;
 	spf=pass smtp.mailfrom=yinhe.ht;
-	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=jRZLOIXS;
-	arc=none smtp.remote-ip=115.124.28.145
-Received: from out28-145.mail.aliyun.com (out28-145.mail.aliyun.com [115.124.28.145])
+	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=K8PgSRxY;
+	arc=none smtp.remote-ip=115.124.28.49
+Received: from out28-49.mail.aliyun.com (out28-49.mail.aliyun.com [115.124.28.49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C244B606A337;
-	Mon, 16 Nov 2026 09:54:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C244B606A337
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B28B606A31C;
+	Mon, 16 Nov 2026 10:29:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B28B606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=jRZLOIXS
+	dkim=pass (2048-bit key, unprotected) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=K8PgSRxY
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=yinhe.ht; s=default;
-	t=1794822854; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=ZcwaTZETTIsbZwMzSlJmJ3zFX+bLxEcm3yQDMGPf2so=;
-	b=jRZLOIXSuyJfF/28cIomcz/ZxugIgDydWV6HZG/Y0eV9+xV7EpMMyx972JwRGTbLGsHj4HO4laKQvwcTdkQP12+Fn0bbe2rhnPAZGVkH2t2aCHfNam3aHmTE6jXtx4ZKjMemB94iIkSeNMG42VKYDPyVP1DIb06rMj4ZM9smhef4SE+b/SwQG52PTuIcjzQynNz5rB2fzzP6lcj9h4kiZ8SfvAdfsss749zgWEXdlcs0UhDqWjEbzc6bRrMQpxD2YIM6vJCDcUCgR4CYgXaKBMhudehAeia6RK30b3XEX51pgYD8S8ZcRVJHcgRZoWVTu+YznveUCPCjXDd9+tkEXg==
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.08097517|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.20129-0.0268292-0.771881;FP=2808465616424981911|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033025068124;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DS;RN=6;RT=6;SR=0;TI=SMTPD_---.k33mMNX_1794822853;
-Received: from galx..(mailfrom:chunyuzhiqiang@yinhe.ht fp:SMTPD_---.k33mMNX_1794822853 cluster:ay29)
+	t=1794824936; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=3Id0hsgYyF1MNWyUmbOw9PnJtuPWJdtHxVZgRs+q9NQ=;
+	b=K8PgSRxYBdsQjORV7zVmjy7D10nyNP9yKHx+r/N2gCIwO9wz2jrRWwilN3uhEjGcgs73KANmQdAUED99mHjO/TijAtHdkXy5c99Pq3d25fMvz0OAMijDznuNCf/ks71MpWoekoIUuJ7HOaE1UQPctnxLqHIkqvflPjpRzUFI6dYr+JvldyK8zyysSS9CsKXWdoKPZVgSnT+DJKofgD9kA88gBW8CanJFYf3RQs7S2iK8kIyLjKPtQDd0TxYZg0OaO8AnOIDtos9pZaKS6MhCUVWv6/9O5mLIxuvb4cN5FKQDJzBmtMptuWT3XS11u27WWBTgtSO3dsnuSO78eQiy3w==
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07452955|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.0661257-0.00124372-0.932631;FP=7823091585212073403|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037034017;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.k35E.fC_1794824935;
+Received: from galx..(mailfrom:chunyuzhiqiang@yinhe.ht fp:SMTPD_---.k35E.fC_1794824935 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Mon, 16 Nov 2026 17:54:14 +0800
+          Mon, 16 Nov 2026 18:28:55 +0800
 From: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-To: Mark Brown <broonie@kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	linux-spi@vger.kernel.org,
-	imx@lists.linux.dev,
+To: Kees Cook <kees@kernel.org>,
+	Srinivas Kandagatla <srini@kernel.org>
+Cc: Tony Luck <tony.luck@intel.com>,
+	"Guilherme G . Piccoli" <gpiccoli@igalia.com>,
 	linux-kernel@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org,
 	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>
-Subject: [RFC PATCH 0/2] spi: panic atomic transfers and fsl_lpspi support
-Date: Mon, 16 Nov 2026 17:49:13 +0800
-Message-ID: <20261116094916.4039108-1-chunyuzhiqiang@yinhe.ht>
+Subject: [RFC PATCH 0/3] pstore: add an NVMEM backend with panic writes
+Date: Mon, 16 Nov 2026 18:23:54 +0800
+Message-ID: <20261116102357.4127825-1-chunyuzhiqiang@yinhe.ht>
 X-Mailer: git-send-email 2.47.3
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -64,55 +66,49 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is a follow-up to Heiko Stuebner's "spi: Implement a atomic transfer
-as a last resort" series.  These patches are based on that series; they
-are not standalone.
+This series builds on the SPI panic atomic transfer series sent
+separately.  It is not standalone: patch 2 uses spi_sync_atomic() and the
+pstore panic path depends on the controller implementing transfer_atomic().
 
-Patch 1 relies on the atomic GPIO chip-select handling that Heiko
-announced for v3 of his series.  With v2, spi_set_cs() still calls
-gpiod_set_value_cansleep(), so GPIO chip selects would sleep in the
-atomic path.  I will rebase on v3 once it is available.
+The target system has no retained RAM.  A SPI FRAM is the only persistent
+store, and the crash log must reach it before the next reset.  Existing
+pstore backends do not fit: pstore/blk needs a block device, mtdpstore
+needs an MTD device, and the new spi-mem panic write path requires
+exec_op() plus a native chip select.  The FRAM here is an NVMEM device on
+a GPIO chip select.
 
-Patch 1 implements transfer_atomic() for the i.MX LPSPI controller.  It is
-a second controller implementation for the new API, next to the Rockchip
-one.  The callback uses PIO polling with DMA and interrupts disabled, uses
-the core spi_set_cs() and delay helpers, and caches the per-clock rate
-because clk_get_rate() takes the clock prepare lock.  Poweroff and restart
-prepare handlers runtime-resume the controller before shutdown, matching
-the Rockchip implementation.
+Patch 1 adds a panic write callback to nvmem_config and a matching
+nvmem_device_write_panic() consumer API.  The callback must not sleep,
+allocate, use DMA, wait for interrupts or touch a GPIO that may sleep.
 
-Patch 2 adds an explicit spi_sync_atomic() entry point for panic and oops.
-The shutdown path added by Heiko is gated on system_state being past
-SYSTEM_RUNNING; panic and oops run while system_state is still
-SYSTEM_RUNNING, so they cannot use it.  The new entry point reuses the
-controller's transfer_atomic() callback, takes the bus locks with
-trylock so a normal transfer in progress on another CPU returns -EBUSY
-instead of deadlocking, and validates the message without allocating or
-optimizing it.
+Patch 2 implements the callback for FRAM in the at25 driver.  FRAM has no
+write cycle, so the WREN and WRITE commands are issued directly with
+spi_sync_atomic().  EEPROMs still need status polling and are rejected.
 
-The expected user is pstore over an SPI FRAM.  Such a system has no
-retained RAM and must persist the crash log before the next reset.  The
-pstore/nvmem side is still a work in progress; I would like to get the
-SPI direction agreed before building on it.
+Patch 3 adds a pstore/zone backend for NVMEM devices.  The device is
+selected by name, the pstore area is described by offset and total_size,
+and the zone sizes are module parameters with Kconfig defaults matching
+pstore/blk.  Normal writes use the regular NVMEM path; panic writes use
+nvmem_device_write_panic().  This avoids a private pstore-fram driver and
+a new devicetree binding, and reuses the existing at25 FRAM support.
 
 Testing:
 
-  - a mock controller test in qemu exercises the panic entry point and
-    the error paths; all tests pass;
-  - spi.c and spi-fsl-lpspi.c compile on x86 with COMPILE_TEST and on
-    arm64 with the i.MX defconfig;
-  - hardware validation on i.MX8QXP is still pending.
+  - the changes compile on x86 with COMPILE_TEST and on arm64;
+  - qemu boots with the backend built in and the SPI mock test still
+    passes;
+  - a runtime test with a mock NVMEM provider and the full panic path on
+    i.MX8QXP are still pending.
 
 Questions:
 
-  1. Is an explicit spi_sync_atomic() acceptable, or would you prefer to
-     extend spi_in_atomic_mode() to cover panic and oops so that
-     spi_sync() keeps switching transparently?
-  2. Is trylock on both bus_lock_mutex and bus_lock_spinlock the right
-     behaviour for panic context?  The spi-mem panic write code already
-     checks mutex_is_locked() before entering the controller.
-  3. Should the fsl_lpspi implementation be a separate patch, as here, or
-     folded into the core series?
+  1. Is the panic write operation at the NVMEM level the right layer, or
+     should pstore talk to the SPI device directly?
+  2. Is reg_write_panic in nvmem_config acceptable, or should it be a
+     separate provider operation?
+  3. Is selecting the NVMEM device by module parameter acceptable, or is
+     an NVMEM cell/devicetree nomination preferred?
+  4. Should the backend live in fs/pstore or drivers/nvmem?
 
 This cover letter and the patches were prepared with AI assistance; the
 submitter must review them before submission.
@@ -122,14 +118,21 @@ ChunYuZhiQiang
 
 Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
 
-ChunYuZhiQiang (2):
-  spi: fsl-lpspi: add atomic transfer support
-  spi: add spi_sync_atomic() for panic and oops
+ChunYuZhiQiang (3):
+  nvmem: add panic write support
+  nvmem: at25: support panic writes for FRAM
+  pstore: add nvmem backend
 
- drivers/spi/spi-fsl-lpspi.c | 171 ++++++++++++++++++++++++++++++++++--
- drivers/spi/spi.c           |  72 +++++++++++++--
- include/linux/spi/spi.h     |   1 +
- 3 files changed, 231 insertions(+), 13 deletions(-)
+ drivers/nvmem/at25.c           |  59 +++++++++
+ drivers/nvmem/core.c           |  44 +++++++
+ drivers/nvmem/internals.h      |   1 +
+ fs/pstore/Kconfig              |  64 +++++++++
+ fs/pstore/Makefile             |   3 +
+ fs/pstore/nvmem.c              | 230 +++++++++++++++++++++++++++++++++
+ include/linux/nvmem-consumer.h |   9 ++
+ include/linux/nvmem-provider.h |   3 +
+ 8 files changed, 413 insertions(+)
+ create mode 100644 fs/pstore/nvmem.c
 
 -- 
 2.47.3

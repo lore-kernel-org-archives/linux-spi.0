@@ -1,100 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.41
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794808731;
-	b=PUITQpLfymI7V6jUQmlgHYl6k/jo2vnBlnbiD/e/4d1cEcASWMGquCD0wIJB+BCDoLw6
-	 HvQtFF6K3ICDn5V9jvctg9D/7eH6a9wf3/0sYDe6JtlLlVEYX+gK2OoeQxlwDLp9VXKjX
-	 CEd+zzNjq0SYgbHDBtdKRwrWOFzHVocVR+kpxiNDLqnAODv7BonH2a0oX9Aj8h8BJJE4l
-	 R9/CnfzM8krxpTmeUDA4bV1L8Ag5TxCYAUMrD6KlY1M9Z3whIa2r8KKmM+/Fd7R8WB5P7
-	 Pn0iodfs8ty8m3YwChO9OJMiBH2Jc+qElHCsQNfIs9Jw9RO20/5Ze1/ohcBYaYL1JRA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794808731;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=HKC6wftTAfwgm7hfDMXB92AtkaDOnYKFMImjf+ok55c=;
-	b=iO6+SSFUffXZynfWA8UjG4KBcfjDlSvZVTd1cctw1NkWWquf32wWdNNFpyVDdC6Eiy/j
-	 OIwH55bs/PbLs046Z32wjCC6dCbgqveU2zWtp89r/lJiSmzf9btjYSaQIaD8D3HGjaRWY
-	 074sT2xIdExn9rfZEWUhJ+LUi5mncnKuGM45mMTorFNkU72UPYDHgcW7cQSIZQHawkLOU
-	 yvnIvGay8Gm+xbxT5oTRbAVwb+Rgz20RDrNKEtW8FpeZfZ0eabaokCqXBqOWZJlMdoCPD
-	 oeRiDMbUweGFxcdz2xno+v0uS/f1xIL84BnbMJQ9gCfYL49jvGJFop/o1kz2ZWgoQSA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=B8RwwSB5;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.41
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.52
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794822859;
+	b=2s+JL1e16EG3w2w0F5f74/tVKDqtTnVKkbh5rE0V7Lg0iRJkt64/UsC9r15LyprkEuHx
+	 JDYIA8n8GYFaxh1x+wTY0+zx4MC8Il27QJPqFeUHAIT83QuCbx5yVLwlIBki46XJ1HZdb
+	 imkCkyNHRMQydY9nWXJXaDjzr74wPnU6IN1ynebn5F2APSoJpw7EmmvKujLmqN4OaYkd7
+	 nWRO+WilgB6ilJotfmSn/MxUH3Xc4NRXl+wrGSnV15ZvWjmfHd0DM4OKfxaSk3LhaA5Bi
+	 PB9kF/jGsxixRegeJtU1iFYuhLYuTKDzVp2mAFqtBgcjh1Jy8h5kNlJfhkR4aRtRyuQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794822859;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=Sj9W2KXStfMsSzmzo3maa1XXWhMpVcMuMXc2iP94Ags=;
+	b=Golwe1XytPP9snhz4KR3hrv2jD2VFIIGRkZlnVWrq4rjobvd31p9k5HNR4Qx5H0CPVB7
+	 T9vyPja6Fng+wf+eUPfYOLns3bs2AEmcYM7fK6gXjk/ngm5rT6LAXbe7Kohs0UXQo2VLp
+	 PvyfpV3xutCAjDyNU7CHVr0z2312u56NUyxkN0IHWGgLVFwawb3RUTldWq04biZtbUxoB
+	 Db588PqINJyZEuHbuLu30cCaGD0elT+pkNfKOxHfck19Qhej4wyFzHVPdkZUhVkTUSBix
+	 J2E454G0OBVKmNVnpNDFPUDygKQkIuYULKyr+XBUPcZil5pZqMf0exhkfXV5FYAXzQw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=yinhe.ht;
+	spf=pass smtp.mailfrom=yinhe.ht;
+	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=RVuzTe8A;
+	arc=none smtp.remote-ip=115.124.28.52
+Received: from out28-52.mail.aliyun.com (out28-52.mail.aliyun.com [115.124.28.52])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D01606A329
-	for <linux-spi@vger.kernel.org>; Mon, 16 Nov 2026 05:58:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C0D01606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEDA606A329;
+	Mon, 16 Nov 2026 09:54:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4DEDA606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=B8RwwSB5
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5be4b29df8cso212253e87.2
-        for <linux-spi@vger.kernel.org>; Sun, 15 Nov 2026 21:58:50 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794808729; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VbRhnu2gBE9qoSVbQeJKEcbHtvBblTX5lZBCezJf4wzRzc/zGjyGQHWiIFcXna/PAq
-         TJ2hadSpZvgotS9g+GYGJJNi62s+Dkm+vRo5mXxGt5MlUJJevEkpsoJOpJZxlGRg3bib
-         YrBqaPGTKXeKvSfI/xlbDxvqniSGz/mpog+a8k2IigWvdC+Zj3EI90iw/x8QimfSbj9e
-         ZaZteCf10OaW50qAAh4wZEx43AKi0dUDlamRljZ0Vy/mbOTPlZCCxTeJnMF1CQT8VIO9
-         LSEOPujybOAAYChwr1pjYPLltwAhPo5b1o8VUI7V8eUk16Y9GaaOpTF930syfGCqw9xE
-         ZcrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=HKC6wftTAfwgm7hfDMXB92AtkaDOnYKFMImjf+ok55c=;
-        fh=gdZ7lPllkJcNbGsR2I+2v181XHNizHA/G64Ntxfdjgc=;
-        b=gu4q0k7ZHB33frgBxaVRH8caGowxXdl234itjK8JH+QqDnrf/4LpXE6ky+h/9rLNzx
-         VYe/rPti0sw8ZrUDXEfXu1TGOWmhxHt2RXYupc/jZ2THh9fwwn7xqkXu52nsAlrPhycZ
-         hh5okeTWrvLrICR5StDvfzTT/IrYt4KBUTIL4Ydy8buhzyn0PKL/Rb2xFBJMaONUf7B4
-         XxfNJ4DHQUj1iRuAgNpCGuf97ySRDNP3uZGFuS0YGZYnR10JcKedAt11OdTtXpWENFBB
-         CMExvE41TmYzRRue3ceHV120L3Wq++AhITDj4DPz1HiS9fUNbXJfzHHo3sujO88mVeir
-         fKOw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794808729; x=1795413529; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=HKC6wftTAfwgm7hfDMXB92AtkaDOnYKFMImjf+ok55c=;
-        b=B8RwwSB5A8LtO7UHvVXYnc07E6WmdiR3wJH5UDhSfLEJYiSbn1KPdAvI7qSEiQcF+v
-         dzhLPdOx5WKVfMeGZCKOfeQSpLuuALPljF/mSTa675n7PNiLn99rEMntSbky+gmNtjUm
-         T6gAdR/uYaaTWkFflhg46Lbuf3gd9b91nKEHWCoFEuXucwm1KohflJ6pw7xmBdnkEl5Y
-         0kmhlsNtW+zkCvkOT8MyAxmLpLeiAJmdNtB/EC6V0CWcS7tUZI8fJ8voMqYsJdIvxsZK
-         rxh0HEyXhdqsAlYkmkFB9/PPUEjPgYVPhXctXJe2TI/mopCKAbH8EO2nulVKEiFFty2z
-         Gb/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794808729; x=1795413529;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HKC6wftTAfwgm7hfDMXB92AtkaDOnYKFMImjf+ok55c=;
-        b=CX1FVxYSokFYqw/DXUZV7g1KZCv6CPCNl9xGlrpchUQ4LHYMAeVA/AgDa38f10kcyD
-         mnQrKkZoNY1BAdRqZUAOYNCgTCDgD31pNLDfpqF0BSibSl9TzDkjS1d1QsBEpspxndtS
-         HswUt3D2YTnQU1YMgCYb0k0VbZ/pQATbcHatgfAOEFSpDGfJrpym/9+xQvDXjL8nPonK
-         vzGDKXwMCW+3zsiLoeABVfOBwkpnrwscL3ZM5ifDtfO+cTh2Y+JHGjlhRWhFdkoeLPQj
-         VKNmwv5wG8+GJr+Y7rUNo1NmVSEfVVlHav8g9aXvnSsbQFpCw56N9g5iosL07nNf1hYR
-         dfmQ==
-X-Forwarded-Encrypted: i=1; AL+hErGQT5huanZd60EX+rGvDvLoVRU/CNxyygKUZD2HQ5e1VRG1YDNvU8FM6phi1Fhb9aJf/ngXF1m6+qI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9BYIoqKf4PP9VJ+vYQjFCBsbBCG5OCkjrTfz5OTzMKeNfUvJ8L
-	X2EBfCS4oTroGDHrfvHJS1pDajBADBqsv/sNC3KwS6Zb8jz1qB5ERyrfXKeikrQLHW3SGCZI6L0
-	z5kmEB6hyn0EFyQDMm6tOJpietA+sst0=
-X-Gm-Gg: AYBFou0e3M35D6GSCb6qipMXgWOq7pzlLMcLVQpMxE5/k4lMM07OBR+Kqzj6/9ZWkDa
-	xXgUw2toIeSsFXQpPzuV3wWmsLO+5EVLusBhuS+ImbTVVZPfZYiUimZdFCraOTjPZAiz3z16a15
-	b6fOVeLgZ/CC62sA7XWRwW0hcC+AtfQcXmjA0NPoPEl5BpojAuioOXChVHiYt9HJFvBo2cZtOH2
-	XQKfR9a9M4oxZVcKw8yvXR+dw1cPmHRyfvTJUSWA+coJSzn96nTiXnv2lPCZTBmFMCh3T2sQsFA
-	Tn+rBiHADGa42ri0GrcBW1jE02DRzmyX2bRFAvws6B/qRLx8XU53MM9rLRA7xj//W3AGgP1Lo+0
-	zO/0318CqhuBWeJvCUJ42+JSofLfFA6BwYNZqH1MXYNZ0LBS6H8jDFB6Ojp+iy+bVn9dBpU4=
-X-Received: by 2002:a05:6512:3e0d:b0:5bf:a66f:e5e with SMTP id
- 2adb3069b0e04-5c17058b108mr3973537e87.0.1794808728737; Sun, 15 Nov 2026
- 21:58:48 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=RVuzTe8A
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=yinhe.ht; s=default;
+	t=1794822855; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=Sj9W2KXStfMsSzmzo3maa1XXWhMpVcMuMXc2iP94Ags=;
+	b=RVuzTe8Aaap5ZtOh0AqRdno2rfoXnntcw/pc7Hab/29syZBaB4WZdISc4QRNdTdpc+wy5D8vh1EdQCmBhExul+QFBZkRPCmSNm5GZFe8TBh8Htf2mcNX3HCc2g3YxXPHJ5LIiMABOuD0ymHD/bYJkV/ZjxRIHwUEip5bM5bCoPmd+QLM3OjBuKVReeQC8QquAJfJHXSyMisqmW9PuGYZs5BOeE7B/5M6PnHGLog2gv87rcGX8fG0eS5erYDToflwNtcVV3WnYrVZ7uFbWjGXSA1SVlEq5+nB87rsOzRTNq3BHhQgav67BWB6kr2Yj5zgfPeLq7uR1BKlVffMmam3lA==
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436259|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.010619-0.0156546-0.973726;FP=10534534883485174998|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037028158;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DS;RN=6;RT=6;SR=0;TI=SMTPD_---.k33mMOC_1794822854;
+Received: from galx..(mailfrom:chunyuzhiqiang@yinhe.ht fp:SMTPD_---.k33mMOC_1794822854 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Mon, 16 Nov 2026 17:54:14 +0800
+From: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+To: Mark Brown <broonie@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>,
+	linux-spi@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>
+Subject: [RFC PATCH 1/2] spi: fsl-lpspi: add atomic transfer support
+Date: Mon, 16 Nov 2026 17:49:14 +0800
+Message-ID: <20261116094916.4039108-2-chunyuzhiqiang@yinhe.ht>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261116094916.4039108-1-chunyuzhiqiang@yinhe.ht>
+References: <20261116094916.4039108-1-chunyuzhiqiang@yinhe.ht>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -104,40 +64,320 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261110-spi-sun6i-h616-dual-read-v1-1-59bea5a897d4@gmail.com>
- <179461167656.590303.12402709871115244251.b4-review@b4> <CAEy9hNUgWgO_tzV=3=X82A3kOYBxhukOvqRzaq+-YC18=RZW-A@mail.gmail.com>
-In-Reply-To: <CAEy9hNUgWgO_tzV=3=X82A3kOYBxhukOvqRzaq+-YC18=RZW-A@mail.gmail.com>
-From: Arun Iyengar <aiyengar1990@gmail.com>
-Date: Sun, 15 Nov 2026 21:58:37 -0800
-X-Gm-Features: Aa3M54oyNaHJcBkKzqdmGmOePaHsPjod2sYjt6MjOSlPfYgCgkl8Fvj4W_J60DU
-Message-ID: <CAEy9hNXFw1Fr81p=27vHR4HbNOA2ni4srU1RyP3W8wxoas6Ztw@mail.gmail.com>
-Subject: Re: [PATCH] spi: sun6i: Add dual read support for the H616
-To: Mark Brown <broonie@kernel.org>
-Cc: Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, linux-spi@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-> This new compatible needs a corresponding DT binding update.
+Implement transfer_atomic() for the i.MX LPSPI controller, following the
+atomic transfer API added by Heiko Stuebner.  The callback uses PIO
+polling with interrupts and DMA disabled, handles chip select through
+spi_set_cs(), and runs the message synchronously without completions.
+The controller is reset before the message so state left by a crashed
+transfer does not leak into the atomic path.
 
-You were right and my earlier reply was wrong: the binding limits the
-H616 to single-line bus widths, so a dual-read flash node fails the DT
-check. v2 adds the binding change as patch 1.
+The atomic path cannot call clk_get_rate(), because it takes the clock
+prepare lock.  Cache the per-clock rate at probe and refresh it in the
+normal transfer path; the atomic path only uses the cached value.  A
+zero rate is rejected instead of programming a bogus divisor.
 
-Arun
+Only host mode registers the callback.  Poweroff and restart prepare
+handlers runtime-resume the controller so the atomic path can be used
+from the shutdown notifiers, matching the Rockchip implementation.
 
-On Fri, Nov 13, 2026 at 5:13=E2=80=AFPM Arun Iyengar <aiyengar1990@gmail.co=
-m> wrote:
->
-> > This new compatible needs a corresponding DT binding update.
->
-> The binding already has it: allwinner,sun6i-a31-spi.yaml lists
-> "allwinner,sun50i-h616-spi" with the "allwinner,sun8i-h3-spi" fallback,
-> and sun50i-h616.dtsi uses that pair. The patch only makes the driver
-> match the specific compatible before the fallback.
->
-> I'll say so in the commit message if a v2 is needed.
->
-> Arun
+The driver is compile-tested on x86 with COMPILE_TEST and on arm64;
+hardware validation on i.MX8QXP is pending.
+
+This patch was prepared with AI assistance; the submitter must review it
+before submission.
+
+Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+---
+ drivers/spi/spi-fsl-lpspi.c | 171 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 163 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index b25f94b2e..6443471b0 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -14,6 +14,7 @@
+ #include <linux/err.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
++#include <linux/iopoll.h>
+ #include <linux/irq.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+@@ -22,6 +23,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/dma/imx-dma.h>
+ #include <linux/pm_runtime.h>
++#include <linux/reboot.h>
+ #include <linux/slab.h>
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi_bitbang.h>
+@@ -112,6 +114,7 @@ struct fsl_lpspi_data {
+ 	unsigned long base_phys;
+ 	struct clk *clk_ipg;
+ 	struct clk *clk_per;
++	u32 perclk_rate;
+ 	bool is_target;
+ 	bool is_only_cs1;
+ 	bool is_first_byte;
+@@ -335,7 +338,8 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_data *fsl_lpspi)
+ 	dev_dbg(fsl_lpspi->dev, "FCR=0x%08x\n", temp);
+ }
+ 
+-static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
++static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi,
++				 bool atomic)
+ {
+ 	struct lpspi_config config = fsl_lpspi->config;
+ 	unsigned int perclk_rate, div;
+@@ -343,7 +347,14 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ 	u8 prescale;
+ 	int scldiv;
+ 
+-	perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
++	if (atomic) {
++		perclk_rate = fsl_lpspi->perclk_rate;
++	} else {
++		perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
++		fsl_lpspi->perclk_rate = perclk_rate;
++	}
++	if (!perclk_rate)
++		return -EINVAL;
+ 	prescale_max = fsl_lpspi->devtype_data->prescale_max ?: 7;
+ 
+ 	if (!config.speed_hz) {
+@@ -427,13 +438,13 @@ static int fsl_lpspi_dma_configure(struct spi_controller *controller)
+ 	return 0;
+ }
+ 
+-static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
++static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi, bool atomic)
+ {
+ 	u32 temp;
+ 	int ret;
+ 
+ 	if (!fsl_lpspi->is_target) {
+-		ret = fsl_lpspi_set_bitrate(fsl_lpspi);
++		ret = fsl_lpspi_set_bitrate(fsl_lpspi, atomic);
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -464,7 +475,7 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
+ 
+ static int fsl_lpspi_setup_transfer(struct spi_controller *controller,
+ 				     struct spi_device *spi,
+-				     struct spi_transfer *t)
++				     struct spi_transfer *t, bool atomic)
+ {
+ 	struct fsl_lpspi_data *fsl_lpspi =
+ 				spi_controller_get_devdata(spi->controller);
+@@ -496,7 +507,7 @@ static int fsl_lpspi_setup_transfer(struct spi_controller *controller,
+ 
+ 	fsl_lpspi->watermark = min(fsl_lpspi->txfifosize, t->len);
+ 
+-	return fsl_lpspi_config(fsl_lpspi);
++	return fsl_lpspi_config(fsl_lpspi, atomic);
+ }
+ 
+ static int fsl_lpspi_prepare_message(struct spi_controller *controller,
+@@ -515,7 +526,7 @@ static int fsl_lpspi_prepare_message(struct spi_controller *controller,
+ 
+ 	fsl_lpspi->is_first_byte = true;
+ 	fsl_lpspi->usedma = false;
+-	ret = fsl_lpspi_setup_transfer(controller, spi, t);
++	ret = fsl_lpspi_setup_transfer(controller, spi, t, false);
+ 
+ 	fsl_lpspi->usedma = fsl_lpspi_can_dma(controller, spi, t);
+ 
+@@ -776,6 +787,114 @@ static int fsl_lpspi_pio_transfer(struct fsl_lpspi_data *fsl_lpspi,
+ 	return ret;
+ }
+ 
++static int fsl_lpspi_pio_xfer_atomic(struct fsl_lpspi_data *fsl_lpspi,
++				     struct spi_transfer *t)
++{
++	u32 sr, timeout_us;
++	int ret;
++
++	/* One frame plus margin, at least 1ms. */
++	timeout_us = DIV_ROUND_UP(8 * USEC_PER_SEC, fsl_lpspi->config.speed_hz);
++	timeout_us = max(timeout_us * 2, 1000U);
++
++	fsl_lpspi->tx_buf = t->tx_buf;
++	fsl_lpspi->rx_buf = t->rx_buf;
++	fsl_lpspi->remain = t->len;
++
++	while (fsl_lpspi->remain) {
++		ret = readl_poll_timeout_atomic(fsl_lpspi->base + IMX7ULP_SR,
++						sr, sr & SR_TDF, 0, timeout_us);
++		if (ret)
++			return ret;
++		fsl_lpspi->tx(fsl_lpspi);
++
++		ret = readl_poll_timeout_atomic(fsl_lpspi->base + IMX7ULP_SR,
++						sr, sr & SR_RDF, 0, timeout_us);
++		if (ret)
++			return ret;
++		fsl_lpspi->rx(fsl_lpspi);
++	}
++
++	ret = readl_poll_timeout_atomic(fsl_lpspi->base + IMX7ULP_SR, sr,
++					sr & SR_TCF, 0, timeout_us);
++	if (ret)
++		return ret;
++
++	writel(SR_TCF, fsl_lpspi->base + IMX7ULP_SR);
++	return 0;
++}
++
++static int fsl_lpspi_transfer_atomic(struct spi_device *spi,
++				     struct spi_message *msg)
++{
++	struct spi_controller *controller = spi->controller;
++	struct fsl_lpspi_data *fsl_lpspi =
++				spi_controller_get_devdata(controller);
++	struct spi_transfer *t, *next;
++	bool first = true;
++	bool keep_cs = false;
++	int ret = 0;
++
++	if (!pm_runtime_active(fsl_lpspi->dev))
++		return -ESHUTDOWN;
++
++	fsl_lpspi->usedma = false;
++	fsl_lpspi_reset(fsl_lpspi);
++	writel(0, fsl_lpspi->base + IMX7ULP_DER);
++
++	t = list_first_entry(&msg->transfers, struct spi_transfer, transfer_list);
++	spi_set_cs(spi, !t->cs_off, false);
++
++	list_for_each_entry(t, &msg->transfers, transfer_list) {
++		if (t->len) {
++			fsl_lpspi->is_first_byte = first;
++			ret = fsl_lpspi_setup_transfer(controller, spi, t, true);
++			if (ret)
++				break;
++			if (t->len %
++			    fsl_lpspi_bytes_per_word(fsl_lpspi->config.bpw)) {
++				ret = -EINVAL;
++				break;
++			}
++
++			fsl_lpspi_set_cmd(fsl_lpspi);
++			fsl_lpspi->is_first_byte = false;
++
++			ret = fsl_lpspi_pio_xfer_atomic(fsl_lpspi, t);
++			if (ret)
++				break;
++
++			fsl_lpspi_reset(fsl_lpspi);
++			first = false;
++		}
++
++		spi_transfer_delay_exec(t);
++
++		if (t->cs_change) {
++			if (list_is_last(&t->transfer_list, &msg->transfers)) {
++				keep_cs = true;
++			} else {
++				if (!t->cs_off)
++					spi_set_cs(spi, false, false);
++				spi_transfer_cs_change_delay_exec(msg, t);
++				next = list_next_entry(t, transfer_list);
++				if (!next->cs_off)
++					spi_set_cs(spi, true, false);
++			}
++		} else if (!list_is_last(&t->transfer_list, &msg->transfers)) {
++			next = list_next_entry(t, transfer_list);
++			if (t->cs_off != next->cs_off)
++				spi_set_cs(spi, !next->cs_off, false);
++		}
++	}
++
++	if (!keep_cs)
++		spi_set_cs(spi, false, false);
++	fsl_lpspi_reset(fsl_lpspi);
++	msg->status = ret;
++	return ret;
++}
++
+ static int fsl_lpspi_transfer_one(struct spi_controller *controller,
+ 				  struct spi_device *spi,
+ 				  struct spi_transfer *t)
+@@ -786,7 +905,7 @@ static int fsl_lpspi_transfer_one(struct spi_controller *controller,
+ 
+ 	fsl_lpspi->usedma = fsl_lpspi_can_dma(controller, spi, t);
+ 
+-	ret = fsl_lpspi_setup_transfer(controller, spi, t);
++	ret = fsl_lpspi_setup_transfer(controller, spi, t, false);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -880,6 +999,19 @@ static int fsl_lpspi_init_rpm(struct fsl_lpspi_data *fsl_lpspi)
+ 	return 0;
+ }
+ 
++static int fsl_lpspi_power_off(struct sys_off_data *data)
++{
++	struct fsl_lpspi_data *fsl_lpspi = data->cb_data;
++	int ret;
++
++	ret = pm_runtime_resume_and_get(fsl_lpspi->dev);
++	if (ret)
++		dev_warn(fsl_lpspi->dev,
++			 "failed to resume controller for poweroff: %d\n", ret);
++
++	return 0;
++}
++
+ static int fsl_lpspi_probe(struct platform_device *pdev)
+ {
+ 	const struct fsl_lpspi_devtype_data *devtype_data;
+@@ -960,6 +1092,9 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 		goto out_pm_get;
+ 	}
+ 
++	/* The atomic transfer path cannot call clk_get_rate(). */
++	fsl_lpspi->perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
++
+ 	temp = readl(fsl_lpspi->base + IMX7ULP_PARAM);
+ 	fsl_lpspi->txfifosize = 1 << (temp & 0x0f);
+ 	fsl_lpspi->rxfifosize = 1 << ((temp >> 8) & 0x0f);
+@@ -974,6 +1109,8 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 	controller->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
+ 	controller->prepare_message = fsl_lpspi_prepare_message;
+ 	controller->transfer_one = fsl_lpspi_transfer_one;
++	if (!fsl_lpspi->is_target)
++		controller->transfer_atomic = fsl_lpspi_transfer_atomic;
+ 	controller->prepare_transfer_hardware = lpspi_prepare_xfer_hardware;
+ 	controller->unprepare_transfer_hardware = lpspi_unprepare_xfer_hardware;
+ 	controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+@@ -984,6 +1121,24 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 	if (!fsl_lpspi->is_target)
+ 		controller->use_gpio_descriptors = true;
+ 
++	if (!fsl_lpspi->is_target) {
++		ret = devm_register_sys_off_handler(&pdev->dev,
++						    SYS_OFF_MODE_POWER_OFF_PREPARE,
++						    SYS_OFF_PRIO_DEFAULT,
++						    fsl_lpspi_power_off,
++						    fsl_lpspi);
++		if (ret)
++			goto out_pm_get;
++
++		ret = devm_register_sys_off_handler(&pdev->dev,
++						    SYS_OFF_MODE_RESTART_PREPARE,
++						    SYS_OFF_PRIO_DEFAULT,
++						    fsl_lpspi_power_off,
++						    fsl_lpspi);
++		if (ret)
++			goto out_pm_get;
++	}
++
+ 	ret = fsl_lpspi_dma_init(&pdev->dev, fsl_lpspi, controller);
+ 	if (ret == -EPROBE_DEFER)
+ 		goto out_pm_get;
+-- 
+2.47.3
+

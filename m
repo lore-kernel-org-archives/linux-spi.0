@@ -1,62 +1,112 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.220
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794824946;
-	b=3E9pfZo134pP7BFiBbl+ftDdNGyS6XgO9iGC9zGna3BUAfJ7C9YVsAldv/eEFgS5G+BM
-	 S0qHODfNdaFy80oFGmmESrENmYUgwkaxwbLnt8ZRPHO+2zEi2/sq1AXyC2zxm6afZsb2A
-	 4KYzTjJ3scfjRPUOLq1OLYwZtt3yNCU6g0ysXxRBBEEnVyZ0IjNyfZa1QPmpIGQUcjyNm
-	 ivkKLFzJrtPPPp+iQvpqWVvnjGSoNdvpzXIJURkTl7RKhsN/V03aPP7ZNcU2X57xnLf+q
-	 crBowxc+XIJ2oLX9npXgqsZqr9nZTmrsitSn5tIsnVD1OxqIJaJ+vr+9fZH6k0Y6AIw==
+	t=1794825412;
+	b=RJCm+yX+Jrjay+LhhtiNPltBMxGgZfgj3vJSiuPiBON0sRu9d9hpv7SjLHrNy4eQzHaR
+	 I50txSZrBE4EaSu3uQXv6N1oexpWyEjYWko4b3rdWhv/BRneTEWVQTO25vrfVEyOKyo2i
+	 iIIViHJzexTTfuq3eJ4ziZNRwTEJRKxpQWkdtDybuI2vhoV6hN3T+A9zo7dUaJEtu4J6U
+	 wNHIX9fgtgjr37n1Hw5f4p8ZAFIGTQgfcoG+nCM9YPG2kNkCLItaaEo6m4AfUgX3kiQdy
+	 I5/5QSMPgqc6cwYMfwc8MaJLuYWpI7wEHmRtUmOWpAYVM55z7UFwN8vG7AZHedsgAYw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794824946;
-	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=/UO/CJgYQ2JBoy2zyhz0IR72AhokimalGxTertQg//U=;
-	b=WfoY3/slTFLpGkM/zV+FEgtXvuKSgedn34XSe8G9IGeu7u5PASMrV5RpAksPGZFBiqfQ
-	 1LHe7w+Q9HJ4N6+giz8+7as+23NaVcEQ+iQq7XnaoUUL7b+5gpan6h1BGqyOAULfeYFbk
-	 lECq8J2TIiAzeLBmA4M4v7JHyIC98IzXETakqTUKDaJlecedVWOT1i6bBoimLU2i/2lfQ
-	 cE9Xo+UROWlIuQfajHHH3DB9Fzr4iu30kjcCbbS0Z7YdNDrkiBM/ywTjwgxGpkxLsykaB
-	 U1O0jI2e1r5Qqs3TMSsMl87U9kt7NOIfhG4JetDFCaONjqPr9jFXDSCosIXLw+ogJVA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794825412;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=MftvhOyh0JpsGoC/uKwPwUiWJJ5nnSYLJzRW3U35/uE=;
+	b=aBYmAXzjqyIXlOaX+rsmGHXzLdqY2ZetbfHnmnuYGhVyMmVlGOQgoUcElbLHK9wlMYgD
+	 5XQwYLo3bx2D17hItw49DpDZO7J8LmRWiuVJBKAd/LgcyTH16htQdxHLcwD/GSpVdrtDU
+	 JI3hJz0Cq1VRlB2QwqyRjLb1oGGwZNcohrVf7Sych3d9HoXWraZ8b890aw3OoxL3pQfe4
+	 9/BeIp86Utpd+yZrB8srU4AvDxcQUoMcgrYs/9qqqOFGGm7kfILi1nJM7QQH3PoPiBNaD
+	 TBbxzg+OkAvVw/BaB74rp1xDoq50NuItfqci7x5d0FLMCA4c0mab1WXqdl9HxODtXQQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=yinhe.ht;
-	spf=pass smtp.mailfrom=yinhe.ht;
-	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=bPIQ3p53;
-	arc=none smtp.remote-ip=115.124.28.220
-Received: from out28-220.mail.aliyun.com (out28-220.mail.aliyun.com [115.124.28.220])
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=P0Ii6B8d;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=kv5UWK5g;
+	arc=none smtp.remote-ip=205.220.180.131
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31742606A323;
-	Mon, 16 Nov 2026 10:29:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 31742606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A03606A887
+	for <linux-spi@vger.kernel.org>; Mon, 16 Nov 2026 10:36:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 23A03606A887
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=bPIQ3p53
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=yinhe.ht; s=default;
-	t=1794824937; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=/UO/CJgYQ2JBoy2zyhz0IR72AhokimalGxTertQg//U=;
-	b=bPIQ3p536ziEDOAJWGAKYm3HRjmRutG3DjNWs6jzxUydmJyEdGFDJT+Q7avEnsqHiVGTaC3dT2KFWgdwOHqDHQk66AID8sL9Kb5Mswq/p6JsSBWZULYPxpdNfmCq+t5mqNtb9H8Njz9U8XJu/vZlrLMOmIHElrbyntG0HVOcV98oiwy8Dw/hcdCMjH8VDcZNr584+YL6hPPV6aQAU1GuhQ4QQNLX1eywvq7zD2zslyuvCf55ZDGhhAtV2BgwiAO0PNMCRdsNDTVCDgmhKxqMdL2Lf3lEhIFmA+00ODY61XZzzsySGE2Uwir7HCRHSewAsMRof5TmPqQbdmcXvCQSeQ==
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436259|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0309002-0.000954233-0.968146;FP=18200556205844792507|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037026024;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.k35E.gT_1794824936;
-Received: from galx..(mailfrom:chunyuzhiqiang@yinhe.ht fp:SMTPD_---.k35E.gT_1794824936 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Mon, 16 Nov 2026 18:28:56 +0800
-From: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-To: Kees Cook <kees@kernel.org>,
-	Srinivas Kandagatla <srini@kernel.org>
-Cc: Tony Luck <tony.luck@intel.com>,
-	"Guilherme G . Piccoli" <gpiccoli@igalia.com>,
-	linux-kernel@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org,
-	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>
-Subject: [RFC PATCH 3/3] pstore: add nvmem backend
-Date: Mon, 16 Nov 2026 18:23:57 +0800
-Message-ID: <20261116102357.4127825-4-chunyuzhiqiang@yinhe.ht>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261116102357.4127825-1-chunyuzhiqiang@yinhe.ht>
-References: <20261116102357.4127825-1-chunyuzhiqiang@yinhe.ht>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=P0Ii6B8d;
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=kv5UWK5g
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AG7f0EF1633061
+	for <linux-spi@vger.kernel.org>; Mon, 16 Nov 2026 10:36:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	MftvhOyh0JpsGoC/uKwPwUiWJJ5nnSYLJzRW3U35/uE=; b=P0Ii6B8dvzW1BWVr
+	vF7QyOXiccvKYXQvu4cSlMXbJZhzPqaZml7m4cbtpoemL6floNqwNdb1T778fh/W
+	1YnBzfTkItJlO5kCDcGjZ6QgRr5tzXKY0yJls/4rMcVpT2qT6kqfh6GcodW8o+np
+	hFLu8yHjNwHCCtWoIe98zmlK29UsOryjtshI8VVlfPJFjXmvcRpM+RAnnVGlue94
+	4eabt2dbek/AmU7omBipCsHYlQaTfT3PO94hkxHjopSb92UhxqeJKTeiaqVK/F6Q
+	FjH9m9ecQjWqqNOCHE/98xi3eKdLxjd4v8veY0B+v97+KkFzjTYD1eKEqsAmpqFi
+	scT6Rg==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hxhmanygc-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-spi@vger.kernel.org>; Mon, 16 Nov 2026 10:36:50 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2ed283cb5b9so22194705ad.1
+        for <linux-spi@vger.kernel.org>; Mon, 16 Nov 2026 02:36:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1794825410; x=1795430210; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MftvhOyh0JpsGoC/uKwPwUiWJJ5nnSYLJzRW3U35/uE=;
+        b=kv5UWK5gXjfQeCZc1SoNrluIDPIs55Brc41K8tbEc3bsS74sc+VCuwC/6WrNv8w5MG
+         F8pYRg2fKvo4gRcuTVZ8IKhLk7Uu+HARaITLV03Rdqiuj80016wl63DjeH/odlnL5oqs
+         2SIk26JgufwxG1noiVsQPEcliDQOvz8Du5FIkTaku3XKE/ATRbc51RSj4YtRf3ga+8Vp
+         JqXvdpcEb/Fz666tCfAkEwOrc3mGbMprRzimElqnURElThv1qKUkcK2kEmAoKrIIGNhq
+         nkQnw1ecZ8IFRJzkqSYMvZlkbpWsAVNtLR+yZTKGaD9O4UreavCY7zBDxIfgCN4RIQtu
+         Vl3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794825410; x=1795430210;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=MftvhOyh0JpsGoC/uKwPwUiWJJ5nnSYLJzRW3U35/uE=;
+        b=LHKP5sOKtkwlJOtru67oVYM84aGTDkOGN7PgY3/xUTwAmkyLCxjbKaE27rg6MkFU3/
+         cSWIsxdXy9XeC4gCDZzEFJUJ3PzuUijQSWsKfWyQZGuW2TmdlUex7kXy5s4MAfGwyKGX
+         6zqpZh8WIw7AkJcEo8T49ayj54aooFtkkNoRXtD0fqFDB0WCGICZnAsLuRqlK0X9s9m0
+         Uni5+1ZLziZYZHeWXH9D6D1yMtG1jG5Pqjyqxt8mskt91JoF7r3GW2Oiwxc35GtnlTEt
+         BqNYKQZA810EC5LC2oATr4zaOQm2aEBeM2kdconFsFP0Ckjk/1r6kfBmv9gKpfRgwNKk
+         qH3g==
+X-Forwarded-Encrypted: i=1; AL+hErGui6PVvKF+9gvJpejxKxEirFD2WzCtZsda5Of5qTpVVOLflM32gny/GlN8AwFcyS9hfvEBmvqIXPY=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+31ek/19HckPStO6/9f9QJvPjyUEdIxzHv49PEYc90s3/hh2k5
+	JNcFc1mBaZeWsWu6h+i5QaP9K+x8aPatZguq4PKG9vess3r/X2boC3pD0tPjHHaLl5lfMRCwj7Q
+	LpbVlF/TVVAhe9JTHdzpnSqHIhSf1qJjZYVRyt2qbgYbUpoV59PrQ49jy9BJcgDs=
+X-Gm-Gg: AZFdTZcdA14MFmTdj2uYzsSAo+YAyGWyaLYcPT7AQK2dAZhvq52XZKfNxWb7XzcLpI/
+	JwxF9XXDZkfzWg9yT5b5ImjgaqKdNfoJ0c8dQYL9tWrvujU+VXbWrzBzLIOI7k7lQr4tHDFnb//
+	rCLNaMAgrErqtzabiXvUphIGlaKo7Eac99AsBYXpKIqijE0lYgvNg3ycclOWgeYDhV2NschTYah
+	P9JJopoTBcrqlY39ap86+i+4O26ZUvCdlR6chaxsTudPxg1JaR2L36LwAbame8PMp2HGo1jx6zg
+	KcsMVoU8BZJOSi/M2xxcf+nvNdrGjyg0MjhDfg60SsHmhgi42H6WG4g6qyha5/XaQsc/5OKyXWO
+	MFob8DWllfNq1xM5+0J2jdMm4fHYSVIKCr5VSBT0Q/ix92fYi856w60xGTbNS8G/Px3YYnXMaq6
+	INXNA=
+X-Received: by 2002:a17:90b:4ec5:b0:3b1:6689:a016 with SMTP id 98e67ed59e1d1-3b1b0b8f9cfmr5958549a91.16.1794825409916;
+        Mon, 16 Nov 2026 02:36:49 -0800 (PST)
+X-Received: by 2002:a17:90b:4ec5:b0:3b1:6689:a016 with SMTP id 98e67ed59e1d1-3b1b0b8f9cfmr5958521a91.16.1794825409384;
+        Mon, 16 Nov 2026 02:36:49 -0800 (PST)
+Received: from [10.218.50.86] ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ee0f4adcdesm36374645ad.10.2026.11.16.02.36.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Nov 2026 02:36:48 -0800 (PST)
+Message-ID: <0d4fa5af-e406-4761-aa58-534c3c6a043a@oss.qualcomm.com>
+Date: Mon, 16 Nov 2026 16:06:42 +0530
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -66,346 +116,112 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/6] dt-bindings: dma: qcom-gpi: Add QSPI protocol
+ identifier
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+        Frank Li <Frank.Li@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dmaengine@vger.kernel.org, devicetree@vger.kernel.org
+References: <20261106-qspi_upstream_series-v1-0-21f43042dd60@oss.qualcomm.com>
+ <20261106-qspi_upstream_series-v1-2-21f43042dd60@oss.qualcomm.com>
+ <20261109-wandering-miraculous-mamba-0cf21a@quoll>
+ <2fc8f7ea-651e-466e-9346-c47e0a38c5bb@oss.qualcomm.com>
+ <20261111-daring-salamander-from-tartarus-4c72bd@quoll>
+ <c9427a03-8b45-4e35-a29d-7ebe30f07ed7@oss.qualcomm.com>
+ <5b6e4031-4c52-4b67-82c2-0033d13b15d6@kernel.org>
+Content-Language: en-US
+From: Jyothi Kumar Seerapu <jyothi.seerapu@oss.qualcomm.com>
+In-Reply-To: <5b6e4031-4c52-4b67-82c2-0033d13b15d6@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: V7r46Ob7yGfOCkjgy6pC4Ik4fTFEYknY
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE2MDA0MiBTYWx0ZWRfXwVJOPPLnPXzu
+ HVlPEeDkw2+sJgy/iNVW1nrx84vDGei3RVNyuTnXUq/hSzUiWjRIK6y6nE9s4glG2Ylo0ohBRnL
+ QQs4efcw+Zg/9EFVK8u9bXFnXFnqzDAZ6lNU+pm/ERk1W16u9ZsLhUGzSdwDmRrak9+O+ORgmUv
+ b01ZaB1yFmZgAgT3yTx24xzSXptvD7TOg8UPTSDY3M4kQP/KTde982wX2OYNDRJ/O3/Q3AVC//K
+ opPWw3X9eT9RSOfDFdMzqANDeuKOCFw0AWHb8bpWbr5iVncu9fxoRNBqHB5bzou1B0IXfMX+BcE
+ x4exr8BHw99PrjfP8Siruz5CSG1Ln16yXQZMncrvXJj17dwFoFNnyj6uyrcm+3Fdf5mHh4LNsml
+ K6YuNHAapAiwvCfK2xTJ7IN7IPXtjQd/xbYbk3NPYUdzPRPuKX+Wf0Jlp7K0dOn6OuZ3JwI0fDQ
+ LgslnnEOxCy1/Pob8Zw==
+X-Authority-Analysis: v=2.4 cv=NdhzRGD4 c=1 sm=1 tr=0 ts=6afadcc2 cx=c_pps
+ a=IZJwPbhc+fLeJZngyXXI0A==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
+ a=y5txsNG1kXPmV2KDPIwA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=uG9DUKGECoFWVXl0Dc02:22
+X-Proofpoint-GUID: V7r46Ob7yGfOCkjgy6pC4Ik4fTFEYknY
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE2MDA0MiBTYWx0ZWRfX39rAk1dAdLDN
+ ywpcbnZ11+SN+vO0cTdznvVR5dMy0XlKaSOo4aUQw2QK0dd0lOBJTlJIvwUFOTI5EY71DoKbpdI
+ s4zyx+A4Ny6VY5c1WP7gS3AdNxK8ncw=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-16_03,2026-11-11_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 suspectscore=0 clxscore=1015 adultscore=0 lowpriorityscore=0
+ spamscore=0 impostorscore=0 priorityscore=1501 bulkscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611160042
 
-Add a pstore/zone backend that stores records on an NVMEM device.  The
-device is selected by name; normal reads and writes use the regular NVMEM
-API and panic writes use nvmem_device_write_panic().
 
-The zone sizes and the device offset are module parameters, with Kconfig
-defaults matching pstore/blk.  The NVMEM device must already be registered
-when the backend is initialized.
 
-This patch was prepared with AI assistance; the submitter must review it
-before submission.
+On 11/12/2026 7:27 PM, Krzysztof Kozlowski wrote:
+> On 12/11/2026 14:47, Jyothi Kumar Seerapu wrote:
+>>
+>>
+>> On 11/11/2026 6:07 PM, Krzysztof Kozlowski wrote:
+>>> On Mon, Nov 09, 2026 at 08:03:29PM +0530, Jyothi Kumar Seerapu wrote:
+>>>>
+>>>>
+>>>> On 11/9/2026 7:12 PM, Krzysztof Kozlowski wrote:
+>>>>> On Fri, Nov 06, 2026 at 08:31:20PM +0530, Jyothi Kumar Seerapu wrote:
+>>>>>> Add QCOM_GPI_QSPI to identify QSPI (Quad SPI) channels in GPI DMA
+>>>>>> specifiers. Its value, 9, matches the GENI serial engine firmware
+>>>>>> protocol ID for QSPI.
+>>>>>
+>>>>> What is GENI serial engine firmware? How does the Linux rely on it that
+>>>>> we add bindings for it?
+>>>>
+>>>> Hi Krzysztof,
+>>>> GENI firmware runs on the serial engine’s programmable sequencers and
+>>>> implements protocols such as SPI and QSPI. Linux configures the engine and
+>>>> submits transfers to it.
+>>>> The existing GPI DMA specifier includes a client protocol ID. Linux programs
+>>>> this ID into the DMA channel and selects the corresponding descriptor
+>>>> format. QCOM_GPI_QSPI adds the QSPI protocol encoding 9 to that interface.
+>>>> I will clarify this in the commit description in V2.
+>>>
+>>> Does not really answer. I see no reason why GENI firmware needs ABI for
+>>> Linux.
+>>>
+>> This extends the existing GPI DMA binding, not a GENI firmware ABI.
+> 
+> OK, so it is not ABI for the firmware. Period. Let's stop discussing this.
+> 
+>>
+>> The third argument of the DMA specifier in the dmas property selects
+>> the peripheral protocol. The GPI driver programs this value into the
+> 
+> Yes, so the third argument can be value of 6 because it has no meaning
+> for the firmware.
+> 
+> Again, follow standard DT bindings ABI rules, you don't get an exception.
 
-Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
----
- fs/pstore/Kconfig  |  64 +++++++++++++
- fs/pstore/Makefile |   3 +
- fs/pstore/nvmem.c  | 230 +++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 297 insertions(+)
- create mode 100644 fs/pstore/nvmem.c
+The existing GPI DMA driver and binding uses its third cell to identify 
+the client protocol. The driver takes that value from DT and programs it 
+directly into the channel's SCRATCH_0 protocol field.
+Its mandatory to maintain protocol ID-9 for QSPI.
 
-diff --git a/fs/pstore/Kconfig b/fs/pstore/Kconfig
-index 3acc38600..7393236b7 100644
---- a/fs/pstore/Kconfig
-+++ b/fs/pstore/Kconfig
-@@ -189,3 +189,67 @@ config PSTORE_BLK_FTRACE_SIZE
- 
- 	  NOTE that, both Kconfig and module parameters can configure
- 	  pstore/blk, but module parameters have priority over Kconfig.
-+
-+config PSTORE_NVMEM
-+	tristate "Log panic/oops to an NVMEM device"
-+	depends on PSTORE
-+	depends on NVMEM
-+	select PSTORE_ZONE
-+	default n
-+	help
-+	  This enables panic and oops messages to be logged to an NVMEM
-+	  device such as a SPI FRAM.  The NVMEM device is selected with the
-+	  device_name module parameter or PSTORE_NVMEM_DEV.
-+
-+	  The device must be dedicated to pstore, or the offset and
-+	  total_size parameters must select a region that is not used by
-+	  anything else.
-+
-+	  If unsure, say N.
-+
-+config PSTORE_NVMEM_DEV
-+	string "NVMEM device name"
-+	depends on PSTORE_NVMEM
-+	default ""
-+	help
-+	  Name of the NVMEM device to use for pstore storage, for example
-+	  "spi1.0" for an at25 FRAM.
-+
-+config PSTORE_NVMEM_KMSG_SIZE
-+	int "Size in Kbytes of kmsg dump log to store"
-+	depends on PSTORE_NVMEM
-+	default 64
-+	help
-+	  Size of the kmsg dump zone in Kbytes.  It must be a multiple of 4.
-+
-+config PSTORE_NVMEM_MAX_REASON
-+	int "Maximum kmsg dump reason to store"
-+	depends on PSTORE_NVMEM
-+	default 2
-+	help
-+	  The maximum reason for kmsg dumps to store.  The default is 2
-+	  (KMSG_DUMP_OOPS).
-+
-+config PSTORE_NVMEM_PMSG_SIZE
-+	int "Size in Kbytes of pmsg to store"
-+	depends on PSTORE_NVMEM
-+	depends on PSTORE_PMSG
-+	default 64
-+	help
-+	  Size of the pmsg zone in Kbytes.  It must be a multiple of 4.
-+
-+config PSTORE_NVMEM_CONSOLE_SIZE
-+	int "Size in Kbytes of console log to store"
-+	depends on PSTORE_NVMEM
-+	depends on PSTORE_CONSOLE
-+	default 64
-+	help
-+	  Size of the console zone in Kbytes.  It must be a multiple of 4.
-+
-+config PSTORE_NVMEM_FTRACE_SIZE
-+	int "Size in Kbytes of ftrace log to store"
-+	depends on PSTORE_NVMEM
-+	depends on PSTORE_FTRACE
-+	default 64
-+	help
-+	  Size of the ftrace zone in Kbytes.  It must be a multiple of 4.
-diff --git a/fs/pstore/Makefile b/fs/pstore/Makefile
-index c270467ae..76f44410c 100644
---- a/fs/pstore/Makefile
-+++ b/fs/pstore/Makefile
-@@ -18,3 +18,6 @@ obj-$(CONFIG_PSTORE_ZONE)	+= pstore_zone.o
- 
- pstore_blk-objs += blk.o
- obj-$(CONFIG_PSTORE_BLK)	+= pstore_blk.o
-+
-+pstore_nvmem-objs += nvmem.o
-+obj-$(CONFIG_PSTORE_NVMEM) += pstore_nvmem.o
-diff --git a/fs/pstore/nvmem.c b/fs/pstore/nvmem.c
-new file mode 100644
-index 000000000..95039baf5
---- /dev/null
-+++ b/fs/pstore/nvmem.c
-@@ -0,0 +1,230 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * pstore backend for NVMEM devices.
-+ *
-+ * The NVMEM device is selected by name.  Normal writes use the regular
-+ * NVMEM write path; panic writes use the non-sleeping write callback so a
-+ * SPI FRAM or another NVMEM provider can persist the crash log before the
-+ * next reset.
-+ */
-+
-+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-+
-+#include <linux/device.h>
-+#include <linux/init.h>
-+#include <linux/kernel.h>
-+#include <linux/limits.h>
-+#include <linux/module.h>
-+#include <linux/nvmem-consumer.h>
-+#include <linux/pstore_zone.h>
-+#include <linux/string.h>
-+
-+static char pstore_nvmem_dev_name[80] = CONFIG_PSTORE_NVMEM_DEV;
-+module_param_string(device_name, pstore_nvmem_dev_name, 80, 0400);
-+MODULE_PARM_DESC(device_name, "NVMEM device name for pstore storage");
-+
-+static unsigned long offset;
-+module_param(offset, ulong, 0400);
-+MODULE_PARM_DESC(offset, "offset in the NVMEM device in bytes");
-+
-+static unsigned long total_size;
-+module_param(total_size, ulong, 0400);
-+MODULE_PARM_DESC(total_size, "pstore area size in bytes (0: rest of device)");
-+
-+static long kmsg_size = CONFIG_PSTORE_NVMEM_KMSG_SIZE;
-+module_param(kmsg_size, long, 0400);
-+MODULE_PARM_DESC(kmsg_size, "kmsg dump zone size in kbytes");
-+
-+static int max_reason = CONFIG_PSTORE_NVMEM_MAX_REASON;
-+module_param(max_reason, int, 0400);
-+MODULE_PARM_DESC(max_reason, "maximum reason for kmsg dump");
-+
-+#if IS_ENABLED(CONFIG_PSTORE_PMSG)
-+static long pmsg_size = CONFIG_PSTORE_NVMEM_PMSG_SIZE;
-+#else
-+static long pmsg_size = -1;
-+#endif
-+module_param(pmsg_size, long, 0400);
-+MODULE_PARM_DESC(pmsg_size, "pmsg zone size in kbytes");
-+
-+#if IS_ENABLED(CONFIG_PSTORE_CONSOLE)
-+static long console_size = CONFIG_PSTORE_NVMEM_CONSOLE_SIZE;
-+#else
-+static long console_size = -1;
-+#endif
-+module_param(console_size, long, 0400);
-+MODULE_PARM_DESC(console_size, "console zone size in kbytes");
-+
-+#if IS_ENABLED(CONFIG_PSTORE_FTRACE)
-+static long ftrace_size = CONFIG_PSTORE_NVMEM_FTRACE_SIZE;
-+#else
-+static long ftrace_size = -1;
-+#endif
-+module_param(ftrace_size, long, 0400);
-+MODULE_PARM_DESC(ftrace_size, "ftrace zone size in kbytes");
-+
-+static struct nvmem_device *pstore_nvmem;
-+static struct pstore_zone_info pstore_info;
-+
-+static int pstore_nvmem_match(struct device *dev, const void *data)
-+{
-+	return !strcmp(dev_name(dev), data);
-+}
-+
-+static unsigned long size_kb_to_bytes(long kb)
-+{
-+	if (kb <= 0)
-+		return 0;
-+
-+	return ALIGN((unsigned long)kb * 1024, 4096);
-+}
-+
-+static bool pstore_nvmem_range_ok(size_t size, loff_t off)
-+{
-+	if (off < 0 || off > UINT_MAX || size > UINT_MAX)
-+		return false;
-+	if (offset > UINT_MAX - off)
-+		return false;
-+
-+	return size <= UINT_MAX - (offset + off);
-+}
-+
-+static ssize_t pstore_nvmem_read(char *buf, size_t size, loff_t off)
-+{
-+	int ret;
-+
-+	if (!pstore_nvmem_range_ok(size, off))
-+		return -EINVAL;
-+
-+	ret = nvmem_device_read(pstore_nvmem, offset + off, size, buf);
-+	if (ret)
-+		return ret;
-+
-+	return size;
-+}
-+
-+static ssize_t pstore_nvmem_write(const char *buf, size_t size, loff_t off)
-+{
-+	int ret;
-+
-+	if (!pstore_nvmem_range_ok(size, off))
-+		return -EINVAL;
-+
-+	ret = nvmem_device_write(pstore_nvmem, offset + off, size, (void *)buf);
-+	if (ret)
-+		return ret;
-+
-+	return size;
-+}
-+
-+static ssize_t pstore_nvmem_panic_write(const char *buf, size_t size,
-+					loff_t off)
-+{
-+	int ret;
-+
-+	if (!pstore_nvmem_range_ok(size, off))
-+		return -EINVAL;
-+
-+	ret = nvmem_device_write_panic(pstore_nvmem, offset + off, size,
-+				       (void *)buf);
-+	if (ret)
-+		return ret;
-+
-+	return size;
-+}
-+
-+/* The NVMEM device must already be registered; load providers first. */
-+static int __init pstore_nvmem_init(void)
-+{
-+	unsigned long dev_size, area_size;
-+	unsigned long kmsg, pmsg, console, ftrace;
-+	int ret;
-+
-+	if (!pstore_nvmem_dev_name[0]) {
-+		pr_err("no NVMEM device name configured\n");
-+		return -EINVAL;
-+	}
-+
-+	pstore_nvmem = nvmem_device_find(pstore_nvmem_dev_name, pstore_nvmem_match);
-+	if (IS_ERR(pstore_nvmem)) {
-+		ret = PTR_ERR(pstore_nvmem);
-+		pr_err("failed to find NVMEM device %s: %d\n", pstore_nvmem_dev_name, ret);
-+		return ret;
-+	}
-+
-+	dev_size = nvmem_dev_size(pstore_nvmem);
-+	if (!dev_size || offset >= dev_size) {
-+		pr_err("invalid offset %lu for %lu-byte device\n",
-+		       offset, dev_size);
-+		ret = -EINVAL;
-+		goto err_put;
-+	}
-+
-+	area_size = dev_size - offset;
-+	if (total_size && total_size < area_size)
-+		area_size = total_size;
-+	area_size = ALIGN_DOWN(area_size, 4096);
-+	if (area_size < 4096) {
-+		pr_err("pstore area must be at least 4096 bytes\n");
-+		ret = -EINVAL;
-+		goto err_put;
-+	}
-+
-+	kmsg = size_kb_to_bytes(kmsg_size);
-+	pmsg = size_kb_to_bytes(pmsg_size);
-+	console = size_kb_to_bytes(console_size);
-+	ftrace = size_kb_to_bytes(ftrace_size);
-+	if (!kmsg && !pmsg && !console && !ftrace) {
-+		pr_err("at least one zone size must be non-zero\n");
-+		ret = -EINVAL;
-+		goto err_put;
-+	}
-+	if (kmsg + pmsg + console + ftrace > area_size) {
-+		pr_err("zone sizes exceed the %lu-byte pstore area\n",
-+		       area_size);
-+		ret = -EINVAL;
-+		goto err_put;
-+	}
-+
-+	pstore_info.owner = THIS_MODULE;
-+	pstore_info.name = KBUILD_MODNAME;
-+	pstore_info.total_size = area_size;
-+	pstore_info.kmsg_size = kmsg;
-+	pstore_info.pmsg_size = pmsg;
-+	pstore_info.console_size = console;
-+	pstore_info.ftrace_size = ftrace;
-+	pstore_info.max_reason = max_reason;
-+	pstore_info.read = pstore_nvmem_read;
-+	pstore_info.write = pstore_nvmem_write;
-+	pstore_info.panic_write = pstore_nvmem_panic_write;
-+
-+	ret = register_pstore_zone(&pstore_info);
-+	if (ret) {
-+		pr_err("failed to register pstore zone: %d\n", ret);
-+		goto err_put;
-+	}
-+
-+	pr_info("using NVMEM device %s, offset %lu, size %lu\n",
-+		pstore_nvmem_dev_name, offset, area_size);
-+	return 0;
-+
-+err_put:
-+	nvmem_device_put(pstore_nvmem);
-+	pstore_nvmem = NULL;
-+	return ret;
-+}
-+late_initcall(pstore_nvmem_init);
-+
-+static void __exit pstore_nvmem_exit(void)
-+{
-+	if (!pstore_nvmem)
-+		return;
-+
-+	unregister_pstore_zone(&pstore_info);
-+	nvmem_device_put(pstore_nvmem);
-+	pstore_nvmem = NULL;
-+}
-+module_exit(pstore_nvmem_exit);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("pstore backend for NVMEM devices");
--- 
-2.47.3
+Other protocol IDs which are not part of upstream are for AFC (6), SPMI 
+(7), HID_QSPI (8).
+
+> 
+> Best regards,
+> Krzysztof
 

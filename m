@@ -1,58 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794877225;
-	b=p04jns9mSTBXajwrHQmiwbQsAF66HdaBkCfOtIWgV1NUWjHjwWsnzeQHq8y03YxAKN3R
-	 LrxD1F1NMfiZgA9a1H1VHLgXB/UC+MnAzD1iU2KnKz9YasG4nj9/ioVlfo3oW0EfnEfGI
-	 EADB68QKg0pIQaFXA3PNVqUO/XfqaaQtb9ZRvqxBRi/5YWxXygxbr/H75Bk7spa6xmDba
-	 DauJQNIzKOrg7s+PWLS+zEh7MpZt9d7AqshBRG5K69LClLfbToMfuynJ+mtHiMnQa5FYU
-	 gbk3ok3ry8DUQFH0C1NIsie3p64tcc4/omx2twVbQQ44Lg7DXvl/apY36JvqtVgZwmw==
+	t=1794877229;
+	b=gPP9rpInEp2Uq3NUPSaxPhxKpj3yrFPlOoQ17ytLeNM8auLZWC1cFpfYg36WGJRvtz1D
+	 X8N2tg3vauMbSdPhKWj8tEiEHrbYGS35M2VW1u6xYHXmZDXZl7rrScxqJ3gFALyBTKmat
+	 fR9wyWK65ayQneNKxRVXQ6WldaKwn1SeWQcwUBEw6L7oI/ioeUWDLr0FVBK81PakA+z2f
+	 2+Z8c4Jk0EA28QWCmIDR84Oy9amc2S3nhv4m/KCp3bsoMNLQuluv0v0ihMqGm+uYA77Ci
+	 IJByoDMq25b49p9vrBYnIbRCM4xAHowl1ALutsMBxquP5VDoFlysdmznpGpIlvIFJmw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794877225;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794877229;
 	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
 	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=bgSIbrhhX1M1S/mhIphweUgHFMz7lfbrdfHFK5Cb/eE=;
-	b=h5EGLG1Xq13FHWMGZ/qcwVYb7R6+avXNOCRTP03LcImglScT9oVuR0pMiSh7IZj84UCx
-	 xkXPb5A6nmFHDxtGxdINLLSnTQ1FokWDO/tyG2aJxRQxTiOPeIE6Hp1z/OrDZGRv7UeFX
-	 PopLHPfHKXsEcA2j2K0ZSFM55vhD2+zqvv04GgfZaCcNdCKpHLOTp9LElTClBXg3FvxDN
-	 KYcY3syrNjkiC82oQdLx/1xM0rzn1hfzylB4/mbWTzrt5pZnG6VdRgrifJZmnuGvJHHVC
-	 0UxdJYkrxg7D+/AHc1rZj7m9rRX+NKOs+YkSkMQNhuMUd5/A3tNQEo9MaHLx76vj8GQ==
+	bh=1HjsXGD+/jNNjOWvFBb4g2K6fISAdH1Vg5t1O4G65xY=;
+	b=pmlKDo8vDdC9ESnQ7SbkiWKa7UqEk6mnxkWG/PEBtGMoPnXkbX0Mo+YzXov+k0DYRa46
+	 O9DI6+c3rhgftqkNOPjm6epSfSjrpzLsDUacJAhwtG+ImLJ3kHrCljrxcHzMUNVnoTB9k
+	 KRA4ho/gBL6EgfNuH9emXeyP3CqlmBE7g5i3l95dj4bQO2No57HFZmYClOeSJUseKZkqU
+	 bvPCR8SI4B3C2AVai6Sxzhd4cGV/uvlhu8CakEmnjOf3bA1lSIvxCrbn3a0M0HOuNI6Le
+	 LEi09Vi77GGxK8buG8PwzE8tNlW8IcbLCjphBhJIMiYM56im/iHbD1LdlZvOFbJo8FA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PSXHPF7s;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kUH6lvsi;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8419B606A31C;
-	Tue, 17 Nov 2026 01:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBB4606A31C;
+	Tue, 17 Nov 2026 01:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PSXHPF7s
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3221F000C4;
-	Tue, 17 Nov 2026 01:00:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kUH6lvsi
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 528861F000C5;
+	Tue, 17 Nov 2026 01:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794877224;
-	bh=bgSIbrhhX1M1S/mhIphweUgHFMz7lfbrdfHFK5Cb/eE=;
+	s=k20260515; t=1794877228;
+	bh=1HjsXGD+/jNNjOWvFBb4g2K6fISAdH1Vg5t1O4G65xY=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=PSXHPF7spIVqe2ztBNDDhOyYVVdgDBOHFwE50CSUKJP/2nwXXWyJklRJOhCdEj6HQ
-	 iPZooWFYCdvtK3lEDbYKgpvpWu++UIHhC0Kcxb04kS4rlzrgKlAEF7JY3kCW/+r+xX
-	 NLgumWSFFMKlBgBlqxlizlycsYAwGc1yKgUj6Lg8wFoHOpZFfoXVDqnZwKSfufBV30
-	 9E6AzsxjvDLpoh4+IcM116kHk5mja0+V8XEX1J5UvlxFt/BPJs52DpeZ6J74Z8BcIp
-	 SXjMgGE0dvaod3eD4zSUV59LAygTs8n0PcY9MPMxipOfIJ3lyx9O6ptBdUDy7MLMer
-	 30FpotCBC8xYA==
+	b=kUH6lvsi7YuOshE0tCl9iUEYMFLU2Mj7DRCSaNGXXKuCkW6KEBfasseB/XXMjIwIK
+	 DBenGHCxynpTqHXEY+PeIha3qUoQM6l1EaMX1T4XRCtNquTxuBk4y1qG7NLDXUka5U
+	 +HLpGSs2BO/w+irevEmywiV7OMeVJnE9R8eNjl+Gi9QRTzDFwVn3yGJ7FBVcI2G1WG
+	 tAYFUBIVMq4eYEvEAfpuz6cJDvsuxkqFlqUcERgDR4aZcjkShrGrWwytuQqa0kZZbA
+	 FUhAi/DWclNpe5VEQyWy4o2D8VX395hJ5tmRLSZJvDCIckHE+uoPaeO4PzFnfJzLTc
+	 6ovoeH1t47m/w==
 From: Mark Brown <broonie@kernel.org>
-To: Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Leilk Liu <leilk.liu@mediatek.com>, Rui Cao <i@udp0.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- stable@vger.kernel.org
-In-Reply-To: <20261107-mt65xx-qos-fix-v1-1-9d9c16a584e4@udp0.com>
-References: <20261107-mt65xx-qos-fix-v1-1-9d9c16a584e4@udp0.com>
-Subject: Re: [PATCH] spi: mt65xx: Remove the CPU latency QoS request when
- probe fails
-Message-Id: <179486355915.2504946.5816262629767344458.b4-ty@b4>
-Date: Mon, 16 Nov 2026 21:12:39 +0000
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jisheng Zhang <jszhang@kernel.org>
+Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Fei Xie <fei.xie@horizon.auto>
+In-Reply-To: <20261107072044.17574-1-jszhang@kernel.org>
+References: <20261107072044.17574-1-jszhang@kernel.org>
+Subject: Re: [PATCH 0/3] spi: cadence-xspi: add DMA support
+Message-Id: <179486302401.2504946.17728543055996478690.b4-ty@b4>
+Date: Mon, 16 Nov 2026 21:03:44 +0000
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -65,17 +63,25 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1137; i=broonie@kernel.org;
- h=from:subject:message-id; bh=ueKoG72WP0KE1M/J03C8AU5NedkldPwySMm1P4vDO9M=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLJ+L1fdF3Ncc+Ole4JbK9bpNv+1eNVoOnsNn4TyBMfoF
- 0cc70293lHKwiDGxSArpsgSl8X9sr7k9Rq+gwvbYOawMoEMYeDiFICJqO9l+Gcn8Ozcvwsfj8+4
- 8+XP9W2bZM+XZL1mSpV8qsLfK13NfWsXI8NTO9MfSvs05/O2dExeELatWiat17E/5IbBku/V2cc
- SlFkB
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1578; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=xfmqZOpGVf84MdC9KDWv8lo4k6ghdFfVUj7ZUO/CNjY=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLJ+L9dMfvTr16u+qE0T1jLHLfnzyflxkook47bE2R95y
+ j5d3/Rke0cpC4MYF4OsmCJLXBb3y/qS12v4Di5sg5nDygQyhIGLUwAmEnOLkeHxIl3ZgyuePjDh
+ TDdxOGHqcmaTTM3dawffucil7trdtUqMkWH7NZP5rGmblp+6PfN9YfMdebknB5idZu+Xn7lV2mz
+ OCXUGAA==
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Sat, 07 Nov 2026 18:13:43 +0800, Rui Cao wrote:
-> spi: mt65xx: Remove the CPU latency QoS request when probe fails
+On Sat, 07 Nov 2026 15:20:41 +0800, Jisheng Zhang wrote:
+> spi: cadence-xspi: add DMA support
+> 
+> This series tries to improve the cadence-xspi cpu usage and potential
+> performance if the allocated dmaengine is powerful.
+> 
+> But no matter the dmaengine performance is powerful or not, the cpu
+> usage is reduced a lot.
+> 
+> [...]
 
 Applied to
 
@@ -83,8 +89,12 @@ Applied to
 
 Thanks!
 
-[1/1] spi: mt65xx: Remove the CPU latency QoS request when probe fails
-      https://git.kernel.org/broonie/spi/c/d4cb2717eb13
+[1/3] spi: dt-bindings: cdns,xspi: Add DMA properties
+      https://git.kernel.org/broonie/spi/c/f3d871df3184
+[2/3] spi: cadence-xspi: Support dmaengine for sdma io copy
+      https://git.kernel.org/broonie/spi/c/b7d724ff0f4a
+[3/3] spi: cadence-xspi: Use writel_relaxed() for cmd regs
+      https://git.kernel.org/broonie/spi/c/f73ef73be217
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

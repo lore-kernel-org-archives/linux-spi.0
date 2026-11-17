@@ -1,56 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794877229;
-	b=gPP9rpInEp2Uq3NUPSaxPhxKpj3yrFPlOoQ17ytLeNM8auLZWC1cFpfYg36WGJRvtz1D
-	 X8N2tg3vauMbSdPhKWj8tEiEHrbYGS35M2VW1u6xYHXmZDXZl7rrScxqJ3gFALyBTKmat
-	 fR9wyWK65ayQneNKxRVXQ6WldaKwn1SeWQcwUBEw6L7oI/ioeUWDLr0FVBK81PakA+z2f
-	 2+Z8c4Jk0EA28QWCmIDR84Oy9amc2S3nhv4m/KCp3bsoMNLQuluv0v0ihMqGm+uYA77Ci
-	 IJByoDMq25b49p9vrBYnIbRCM4xAHowl1ALutsMBxquP5VDoFlysdmznpGpIlvIFJmw==
+	t=1794881157;
+	b=gRnalgNuc+K7AUYh/uJh17qPB60VBzW7Bdogi/fgzSHNw9MwR8j/0p08wtTItom1Mcat
+	 FRdZhXxAuYKqrFAEqNvr+6TnobTUQLBrrHwfvQ0BYD1lGWWAuq2rp9rMgIB9CvdLZODkD
+	 mIyiAtoshc+PypfjLbAx0uehVCbWuHUAYigaAntYhdhMSaW/PKSXKEZ5EvnTQCMIlvt+3
+	 mrbXOZARIm9L1QkEl26KIS+D41GJ2bWLoYNnutfh/wT9iV5yjkHY0uIjDbvLJX8IkwB7t
+	 I09DEl171u5YQNGRfbjNQk43EjyiW0VuGw8nVzcYf9pFJT8IFTMMBzTTR1krcv7p7VQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794877229;
-	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
-	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=1HjsXGD+/jNNjOWvFBb4g2K6fISAdH1Vg5t1O4G65xY=;
-	b=pmlKDo8vDdC9ESnQ7SbkiWKa7UqEk6mnxkWG/PEBtGMoPnXkbX0Mo+YzXov+k0DYRa46
-	 O9DI6+c3rhgftqkNOPjm6epSfSjrpzLsDUacJAhwtG+ImLJ3kHrCljrxcHzMUNVnoTB9k
-	 KRA4ho/gBL6EgfNuH9emXeyP3CqlmBE7g5i3l95dj4bQO2No57HFZmYClOeSJUseKZkqU
-	 bvPCR8SI4B3C2AVai6Sxzhd4cGV/uvlhu8CakEmnjOf3bA1lSIvxCrbn3a0M0HOuNI6Le
-	 LEi09Vi77GGxK8buG8PwzE8tNlW8IcbLCjphBhJIMiYM56im/iHbD1LdlZvOFbJo8FA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794881157;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=y05LMTHAhK20B/ZLUic40ylZUlZKhXPp+9NtIYoDVw0=;
+	b=5tV6oxLfpyMTVGK3MLEgd+72C3ZpPS5wZ9BSJTOw+lh8bZVrrfjTTg9AUZF0qk3mBFl8
+	 ndO5CvZXEB04HFhCB8oYt9KajjzULZeAKsFcVSKvZ6Aofe+OHlaMb7YUV2QmRXV7m+JON
+	 y4wWpDe4/chtTgSopKEiRIWSVXrjhd+npj5kyHwDzE0nIpYB99ORkmy1K9H87D4mZVJbc
+	 3KNq95ksm1LPgPks4xmeuLkWzd7eWfx2aTfPtQtnKPPZhOJBAudwZjruQDzlC+HzFUhvX
+	 9KT64p/V3yhHi9zg9YcMQoMsZ5C4A58tooH6cdWJzqKJtG9lujh90u6snv57bZlKOwQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kUH6lvsi;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBB4606A31C;
-	Tue, 17 Nov 2026 01:00:28 +0000 (UTC)
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=OWrLEKva;
+	arc=none smtp.remote-ip=111.22.67.139
+Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14BB6606A31C;
+	Tue, 17 Nov 2026 02:05:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 14BB6606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kUH6lvsi
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 528861F000C5;
-	Tue, 17 Nov 2026 01:00:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794877228;
-	bh=1HjsXGD+/jNNjOWvFBb4g2K6fISAdH1Vg5t1O4G65xY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=kUH6lvsi7YuOshE0tCl9iUEYMFLU2Mj7DRCSaNGXXKuCkW6KEBfasseB/XXMjIwIK
-	 DBenGHCxynpTqHXEY+PeIha3qUoQM6l1EaMX1T4XRCtNquTxuBk4y1qG7NLDXUka5U
-	 +HLpGSs2BO/w+irevEmywiV7OMeVJnE9R8eNjl+Gi9QRTzDFwVn3yGJ7FBVcI2G1WG
-	 tAYFUBIVMq4eYEvEAfpuz6cJDvsuxkqFlqUcERgDR4aZcjkShrGrWwytuQqa0kZZbA
-	 FUhAi/DWclNpe5VEQyWy4o2D8VX395hJ5tmRLSZJvDCIckHE+uoPaeO4PzFnfJzLTc
-	 6ovoeH1t47m/w==
-From: Mark Brown <broonie@kernel.org>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jisheng Zhang <jszhang@kernel.org>
-Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Fei Xie <fei.xie@horizon.auto>
-In-Reply-To: <20261107072044.17574-1-jszhang@kernel.org>
-References: <20261107072044.17574-1-jszhang@kernel.org>
-Subject: Re: [PATCH 0/3] spi: cadence-xspi: add DMA support
-Message-Id: <179486302401.2504946.17728543055996478690.b4-ty@b4>
-Date: Mon, 16 Nov 2026 21:03:44 +0000
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=OWrLEKva
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=OWrLEKvaS+Fj8TcBCH5CrjyOARDtEwU9gL+lXxW2SrQ7J3Bk0O3m2OY5T6w8SGr6c05VKUPaUfMzq
+	 IaoCIvIP0kX5JEnBIsIYlq8vS+CHVNOOK558ht60sPZC+FoLpJzScbaBXmNjTw9uJYC0sta3fzd0fr
+	 3Shq0+XieaF3M3VQ=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee16afbb6822a4-dfb98;
+	Tue, 17 Nov 2026 10:05:55 +0800 (CST)
+X-RM-TRANSID:2ee16afbb6822a4-dfb98
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain.localdomain (unknown[10.55.1.72])
+	by rmsmtp-syy-appsvr09-12009 (RichMail) with SMTP id 2ee96afbb681739-9ecee;
+	Tue, 17 Nov 2026 10:05:54 +0800 (CST)
+X-RM-TRANSID:2ee96afbb681739-9ecee
+From: Luo Yifan <luoyifan@cmss.chinamobile.com>
+To: Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Subject: [PATCH] spi: dw-mmio: handle clock and reset failures on resume
+Date: Tue, 17 Nov 2026 10:05:57 +0800
+Message-Id: <20261117020557.20019-1-luoyifan@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.24.4
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -60,58 +67,77 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1578; i=broonie@kernel.org;
- h=from:subject:message-id; bh=xfmqZOpGVf84MdC9KDWv8lo4k6ghdFfVUj7ZUO/CNjY=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLJ+L9dMfvTr16u+qE0T1jLHLfnzyflxkook47bE2R95y
- j5d3/Rke0cpC4MYF4OsmCJLXBb3y/qS12v4Di5sg5nDygQyhIGLUwAmEnOLkeHxIl3ZgyuePjDh
- TDdxOGHqcmaTTM3dawffucil7trdtUqMkWH7NZP5rGmblp+6PfN9YfMdebknB5idZu+Xn7lV2mz
- OCXUGAA==
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
 
-On Sat, 07 Nov 2026 15:20:41 +0800, Jisheng Zhang wrote:
-> spi: cadence-xspi: add DMA support
-> 
-> This series tries to improve the cadence-xspi cpu usage and potential
-> performance if the allocated dmaengine is powerful.
-> 
-> But no matter the dmaengine performance is powerful or not, the cpu
-> usage is reduced a lot.
-> 
-> [...]
+dw_spi_mmio_resume() ignores the return values of the two
+clk_prepare_enable() calls and of reset_control_deassert().  If any of them
+fails, the function still calls platform_resume() and
+dw_spi_resume_controller(), which access the controller with its clocks or
+reset line not ready.
 
-Applied to
+Check every step and unwind in reverse order on failure, including the
+controller resume itself.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.5
+Signed-off-by: Luo Yifan <luoyifan@cmss.chinamobile.com>
+---
+ drivers/spi/spi-dw-mmio.c | 36 +++++++++++++++++++++++++-----------
+ 1 file changed, 25 insertions(+), 11 deletions(-)
 
-Thanks!
+diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+index dd703c1e56..665805dea3 100644
+--- a/drivers/spi/spi-dw-mmio.c
++++ b/drivers/spi/spi-dw-mmio.c
+@@ -472,23 +472,37 @@ static int dw_spi_mmio_resume(struct device *dev)
+ 	struct dw_spi_mmio *dwsmmio = dev_get_drvdata(dev);
+ 	int ret;
+ 
+-	clk_prepare_enable(dwsmmio->clk);
+-	clk_prepare_enable(dwsmmio->pclk);
++	ret = clk_prepare_enable(dwsmmio->clk);
++	if (ret)
++		return ret;
++
++	ret = clk_prepare_enable(dwsmmio->pclk);
++	if (ret)
++		goto err_clk;
+ 
+-	reset_control_deassert(dwsmmio->rstc);
++	ret = reset_control_deassert(dwsmmio->rstc);
++	if (ret)
++		goto err_pclk;
+ 
+ 	if (dwsmmio->platform_resume) {
+ 		ret = dwsmmio->platform_resume(dwsmmio);
+-		if (ret) {
+-			reset_control_assert(dwsmmio->rstc);
+-
+-			clk_disable_unprepare(dwsmmio->pclk);
+-			clk_disable_unprepare(dwsmmio->clk);
+-			return ret;
+-		}
++		if (ret)
++			goto err_rst;
+ 	}
+ 
+-	return dw_spi_resume_controller(&dwsmmio->dws);
++	ret = dw_spi_resume_controller(&dwsmmio->dws);
++	if (ret)
++		goto err_rst;
++
++	return 0;
++
++err_rst:
++	reset_control_assert(dwsmmio->rstc);
++err_pclk:
++	clk_disable_unprepare(dwsmmio->pclk);
++err_clk:
++	clk_disable_unprepare(dwsmmio->clk);
++	return ret;
+ }
+ 
+ static DEFINE_SIMPLE_DEV_PM_OPS(dw_spi_mmio_pm_ops,
+-- 
+2.24.4
 
-[1/3] spi: dt-bindings: cdns,xspi: Add DMA properties
-      https://git.kernel.org/broonie/spi/c/f3d871df3184
-[2/3] spi: cadence-xspi: Support dmaengine for sdma io copy
-      https://git.kernel.org/broonie/spi/c/b7d724ff0f4a
-[3/3] spi: cadence-xspi: Use writel_relaxed() for cmd regs
-      https://git.kernel.org/broonie/spi/c/f73ef73be217
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

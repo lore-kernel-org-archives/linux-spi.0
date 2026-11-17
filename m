@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.11.138.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794959454;
-	b=QzeOIed478Zr0f6NzU2cPc9QMFgFv+CTz2mdwPV2Mf5KgiRRfutXqlFbLNf4/2e0hMqN
-	 qRFrzxULL6z8tZ7MHMy9n3CAD/sGSe53hI2OamaxwMvEtahMDEcVU8RrV+sOBtqRI/hcw
-	 WmWrHeCttXGUjlOYTLae/ZrxaaFAyBy7gsyOQxk/2wJSxou17ZOnNE3I3Fz+qMWAFwOOL
-	 1ejG4uqvaobD4PBMapFrHQSDpHbSLJxIYk2uS6GklG4/UvSk2mGLHiZNfES4uPdmDP9QF
-	 FJcFnY3DcooWgLd6eFcPk3jmxRFfE7OiN12E26a0K3vRrXJG6S5syuLspAhZ9tyP0Ig==
+	b=DiI4dxHMVZjOJKQwvwu6LhZ1KAipcDazUNtP8CYNXnciBNBTFgcILH70r3wOaQt5pImG
+	 nyuyWs5D6zBCxXvZN6ahYlTAHULpsccRjacSuMhQAlsCt5b1r90i4VmIGrfDXBBOb+TAk
+	 5UQMVNO+qjPCtUPrGfxl1hvcAacpfP2hc8FPEzTspoEqdnhNFdFx37Li7noo6+Zefb0CX
+	 APELmO92uIU9RYkKRjkergeGw2ruRbh9/2HXmocJ6Sw7onRM+jTduhk905DqpM7UStYV6
+	 W04nXz942u6zToKos6WPAUuAM4xu+2i+zarXzllbphjrZcnGh+XTHvXFqPpC9Vrmp6Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794959454;
 	h=DMARC-Filter:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=Zyn/wsIyYQl6Eky8acJOO+NdFIpJN2qVmm8YCLh3DuM=;
-	b=d4SeoSiICWqxHewlCfiurB7GaJtkFqN4XCLpAt7S8+ddbZYmDL2aB+DszwmS60tfzYni
-	 VrKBLHMcGTUbnHUOadqqwJKRW8UbACfpda+uxJPY7LhPiItS3cAQb1dHjp3GgO5H7TdYF
-	 /RW0BJsaLEOqauVomHefZAFOf8pibZf3e9yvj0jU/EG3rSbFn7JvcrUp8jp73MPVHxssF
-	 G8b0YPpQ1l7gPShGNEufmIntLE/PK9F7YIcn4P75863xKZwqEe9gpKwJ19HaAP89T5RhL
-	 leA8ikbDau2oggvUIrH1ukzUi4+i6qaAHGV8duYl65ZagWtBnMunX4aC2z0SPD+KkrA==
+	bh=LwdZQUIfgt+sse1gdnZ0Zk0xWEjAcM+cCSRaPUtzOtM=;
+	b=kSReoAQ67MW2+XnJ4MqsStAEi9mXlFLYNCSSM5ObxlfmJO+50yLtUPfvQ8Q9EBOAfzRj
+	 IOWqd7n0Rx6ggVlz1n6LSExj1UmCT6jKitbzbsM5Me1sTx047xkEkwf/vZtQTrwh0lpYW
+	 FnUleqeb0IX56OrolkFpvPgPfNkrlXISGDeOX7mNkAtYrhD+qD2VFoHJdtpU4AMWfv/sp
+	 WRXV569Xjobam5Dmm54fOgqYHgpvaX4IZ90NBORD8YjjOHVSgT5A8N4mB/ff22iuWA7vj
+	 QSwLAjFq36hWZ0cB4DYRXF+bb7m/Ggk+53ATocoJEL09ThA+18BM1MDNPeOG4/7HiHQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=sntech.de;
 	spf=pass smtp.mailfrom=sntech.de;
-	dkim=pass header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=dSziFeNg;
+	dkim=pass header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=LaVRiDqS;
 	arc=none smtp.remote-ip=185.11.138.130
 Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB9F606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9AC606A32A
 	for <linux-spi@vger.kernel.org>; Tue, 17 Nov 2026 23:50:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3DB9F606A330
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D9AC606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=dSziFeNg
+	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=LaVRiDqS
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
 	s=gloria202408; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type;
-	bh=Zyn/wsIyYQl6Eky8acJOO+NdFIpJN2qVmm8YCLh3DuM=; b=dSziFeNg76MA4AKj//A3RRR61i
-	6/wuPkqr/DSUjCTHVtSQPpGk+Ecjc1MUu2XLRePkRE5obgPVnHD5Ve75egqQK5lp76vu6eJaCpL9Q
-	JI2hsXyAUYlbwbs7C7iRZUrcgOssgedHRe7RxZcqHbsCEvSxNPCZxkJpsuFW8nZlnOUPASk8BO+9F
-	uW1rpn32jsYXamLJdwjbzZUNOX1M8RtPIix96IlI7+58jT/j987rnqKcLonJ1y/gRyri2fAMv30Vp
-	Kw5D/AfctkxbUdnyQbsg+jBxH/YVB/UOc1UvFRCWWh5Ksk813ZlgxBl0jTi5X8ipgsLymjj/bHgbz
-	nWzvh/yw==;
+	bh=LwdZQUIfgt+sse1gdnZ0Zk0xWEjAcM+cCSRaPUtzOtM=; b=LaVRiDqSxwymtAkxtIdEfecLdH
+	ORdLws6Pi9v60/6LufNliNKsp+zQBjp8VwG5NxgifJKiK8J/YY4BCWabY4CkU6vNDl+M+2g34p0Mp
+	RFv+cAnHP6tnzc33m8HvrBokQBy5kmJYkWYAxyBIGA2Sh/CDeRNb/bTp8DbrFrpAKCATzb154Rbla
+	r3RpITOe1UlvmnBh+AvyDvG9ybouqBKFU7d1qh4JyW45BY7oiDBRlbYnWjYcsRWzIFJcRH1ZIu8rW
+	Q2QEm0zTE0olTt1rbqIGYmt87aE9S6j5UnbqrQ5jeeJKsTX+GrE1Qauipzj3F9M9jePT7NLkvkNvf
+	IPbNbyxw==;
 From: Heiko Stuebner <heiko@sntech.de>
 To: broonie@kernel.org
 Cc: Heiko Stuebner <heiko@sntech.de>,
@@ -52,9 +52,9 @@ Cc: Heiko Stuebner <heiko@sntech.de>,
 	Lee Jones <lee@kernel.org>,
 	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Heiko Stuebner <heiko.stuebner@cherry.de>
-Subject: [PATCH v3 1/7] spi: Allow spi_toggle_csgpiod() to get called from atomic contexts
-Date: Wed, 18 Nov 2026 00:50:15 +0100
-Message-ID: <20261117235021.2013719-2-heiko@sntech.de>
+Subject: [PATCH v3 4/7] spi: Add infrastructure for atomic sync transfers
+Date: Wed, 18 Nov 2026 00:50:18 +0100
+Message-ID: <20261117235021.2013719-5-heiko@sntech.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261117235021.2013719-1-heiko@sntech.de>
 References: <20261117235021.2013719-1-heiko@sntech.de>
@@ -71,61 +71,171 @@ Content-Transfer-Encoding: 8bit
 
 From: Heiko Stuebner <heiko.stuebner@cherry.de>
 
-spi_toggle_csgpiod() by default allows for sleeping gpio controllers.
-In the upcoming atomic mode for late stage systems,
+There are cases where SPI transfers are needed during times without
+interrupts like shutdown when a PMIC should turn off the system.
 
-So determine which stage the system is at and select an appropriate
-gpio_set_value function to use.
+I2C already has atomic transfers for exactly that case, so introduce a
+similar concept for SPI. Similar to I2C, this is and should stay a
+corner-case, so is only allowed during the shutdown stages of the kernel,
+when interrupts are already turned off.
 
-If for whatever reason a sleeping gpio controller is combined with
-an atomic operation using a gpio-chipselect, this will cause a warning.
+So add an optional transfer_atomic callback, drivers can implement to do
+immediate uninterrupted transfers and let spi_sync() determine if the
+state is late enough to use it.
 
-This also introduces a helper spi_in_atomic() to determine when that is
-the case. While the upcoming atomic transfer should really only be used
-during late system states, this helper just makes sure to distinguish
-between sleeping / non-sleeping.
+For drivers without a transfer_atomic callback defined, the previous
+behaviour is kept for backwards compatibility and a helper
+spi_in_atomic_sync_mode() makes sure to only ever use this atomic mode
+during late system stages.
+
+spi_async() does not require a sleeping context for itself, so while it
+could in theory also be included, its caller waiting for the completion
+can sleep, so would still cause the splat about it.
 
 Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
 ---
- drivers/spi/spi.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/spi/spi.c       | 68 ++++++++++++++++++++++++++++++++++++++---
+ include/linux/spi/spi.h | 11 +++++++
+ 2 files changed, 75 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 40cda0037ea5..3aeee3b11c0c 100644
+index f04adf069ec1..95fa460ca3ff 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -1244,8 +1244,18 @@ static inline bool spi_is_last_cs(struct spi_device *spi)
- 	return last;
+@@ -5026,6 +5026,47 @@ static int __spi_sync(struct spi_device *spi, struct spi_message *message)
+ 	return status;
  }
  
-+/* Check if sleeping is allowed */
-+static inline bool spi_in_atomic(void)
++/*
++ * We only allow atomic transfers for very late communication, e.g. to access a
++ * PMIC when powering down. Atomic transfers are a corner case and not for
++ * generic use!
++ */
++static inline bool spi_in_atomic_sync_mode(void)
 +{
-+	return IS_ENABLED(CONFIG_PREEMPT_COUNT) ? !preemptible() : irqs_disabled();
++	return system_state > SYSTEM_RUNNING && spi_in_atomic();
 +}
 +
- static void spi_toggle_csgpiod(struct spi_device *spi, u8 idx, bool enable, bool activate)
- {
-+	/* Will complain if atomic transfer is combined with sleeping gpio */
-+	int (*gpio_func)(struct gpio_desc *desc, int value) =
-+		spi_in_atomic() ? gpiod_set_value : gpiod_set_value_cansleep;
++static int __spi_sync_atomic(struct spi_device *spi, struct spi_message *message)
++{
++	struct spi_controller *ctlr = spi->controller;
++	unsigned long flags;
++	int status;
 +
- 	/*
- 	 * Historically ACPI has no means of the GPIO polarity and
- 	 * thus the SPISerialBus() resource defines it on the per-chip
-@@ -1257,10 +1267,10 @@ static void spi_toggle_csgpiod(struct spi_device *spi, u8 idx, bool enable, bool
- 	 * into account.
- 	 */
- 	if (is_acpi_device_node(dev_fwnode(&spi->dev)))
--		gpiod_set_value_cansleep(spi_get_csgpiod(spi, idx), !enable);
-+		gpio_func(spi_get_csgpiod(spi, idx), !enable);
- 	else
- 		/* Polarity handled by GPIO library */
--		gpiod_set_value_cansleep(spi_get_csgpiod(spi, idx), activate);
-+		gpio_func(spi_get_csgpiod(spi, idx), activate);
++	if (!ctlr->transfer_atomic) {
++		dev_err(&ctlr->dev, "No atomic transfer handler defined\n");
++		return -EOPNOTSUPP;
++	}
++
++	if (__spi_check_suspended(ctlr)) {
++		dev_warn_once(&spi->dev, "Attempted to sync while suspend\n");
++		return -ESHUTDOWN;
++	}
++
++	/* Not using spi_maybe_optimize_message, so just validate */
++	status = __spi_validate(spi, message);
++	if (status)
++		return status;
++
++	spin_lock_irqsave(&ctlr->bus_lock_spinlock, flags);
++	status = ctlr->transfer_atomic(spi, message);
++	spin_unlock_irqrestore(&ctlr->bus_lock_spinlock, flags);
++
++	if (status == 0)
++		status = message->status;
++
++	return status;
++}
++
+ /**
+  * spi_sync - blocking/synchronous SPI data transfers
+  * @spi: device with which data will be exchanged
+@@ -5036,6 +5077,10 @@ static int __spi_sync(struct spi_device *spi, struct spi_message *message)
+  * is non-interruptible, and has no timeout.  Low-overhead controller
+  * drivers may DMA directly into and out of the message buffers.
+  *
++ * During the time when the system is being shutdown and a transfer_atomic
++ * function is set, this call may also be used from a context that does
++ * not allow sleeping, i.e. with disabled interrupts.
++ *
+  * Note that the SPI device's chip select is active during the message,
+  * and then is normally disabled between messages.  Drivers for some
+  * frequently-used devices may want to minimize costs of selecting a chip,
+@@ -5049,11 +5094,17 @@ static int __spi_sync(struct spi_device *spi, struct spi_message *message)
+  */
+ int spi_sync(struct spi_device *spi, struct spi_message *message)
+ {
++	struct spi_controller *ctlr = spi->controller;
+ 	int ret;
  
- 	if (activate)
- 		spi_delay_exec(&spi->cs_setup, NULL);
+-	mutex_lock(&spi->controller->bus_lock_mutex);
+-	ret = __spi_sync(spi, message);
+-	mutex_unlock(&spi->controller->bus_lock_mutex);
++	/* Keep old behaviour for clients that tolerate the warnings */
++	if (spi_in_atomic_sync_mode() && ctlr->transfer_atomic) {
++		ret = __spi_sync_atomic(spi, message);
++	} else {
++		mutex_lock(&spi->controller->bus_lock_mutex);
++		ret = __spi_sync(spi, message);
++		mutex_unlock(&spi->controller->bus_lock_mutex);
++	}
+ 
+ 	return ret;
+ }
+@@ -5069,6 +5120,10 @@ EXPORT_SYMBOL_GPL(spi_sync);
+  * is non-interruptible, and has no timeout.  Low-overhead controller
+  * drivers may DMA directly into and out of the message buffers.
+  *
++ * During the time when the system is being shutdown and a transfer_atomic
++ * function is set, this call may also be used from a context that does
++ * not allow sleeping, i.e. with disabled interrupts.
++ *
+  * This call should be used by drivers that require exclusive access to the
+  * SPI bus. It has to be preceded by a spi_bus_lock call. The SPI bus must
+  * be released by a spi_bus_unlock call when the exclusive access is over.
+@@ -5077,7 +5132,12 @@ EXPORT_SYMBOL_GPL(spi_sync);
+  */
+ int spi_sync_locked(struct spi_device *spi, struct spi_message *message)
+ {
+-	return __spi_sync(spi, message);
++	struct spi_controller *ctlr = spi->controller;
++
++	if (spi_in_atomic_sync_mode() && ctlr->transfer_atomic)
++		return __spi_sync_atomic(spi, message);
++	else
++		return __spi_sync(spi, message);
+ }
+ EXPORT_SYMBOL_GPL(spi_sync_locked);
+ 
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 0bf31776c54c..f62b21af5d75 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -461,6 +461,8 @@ extern struct spi_device *devm_spi_new_ancillary_device(struct spi_device *spi,
+  * controller for configuring specific CS setup time, hold time and inactive
+  * delay in terms of clock counts
+  * @transfer: adds a message to the controller's transfer queue.
++ * @transfer_atomic: transfer a message immediately from a late-stage
++ *	synchronous transfer
+  * @cleanup: frees controller-specific state
+  * @can_dma: determine whether this controller supports DMA
+  * @dma_map_dev: device which can be used for DMA mapping
+@@ -721,6 +723,15 @@ struct spi_controller {
+ 	int			(*transfer)(struct spi_device *spi,
+ 						struct spi_message *mesg);
+ 
++	/*
++	 * Bidirectional bulk atomic transfers
++	 *
++	 * Special function that allows transfers in contexts where
++	 * no interrupts nor DMA are available.
++	 */
++	int			(*transfer_atomic)(struct spi_device *spi,
++						   struct spi_message *mesg);
++
+ 	/* Called on deregistration to free memory provided by spi_controller */
+ 	void			(*cleanup)(struct spi_device *spi);
+ 
 -- 
 2.53.0
 

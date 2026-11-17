@@ -1,84 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.11.138.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794936668;
-	b=rsqb8spjgy8+N09jLGGqu6QqhPQnBcXqz1U8q6gJjDKnVvGPtEkvdNLGtIfcEYAtsWoQ
-	 SL2QnxVaasNtSZ+vv5HhiGqIikMTrgqeQzqQ7a+xCP0ZPRGtocq7bGdxHLf7ZdmabN7es
-	 /CtRUy81UfjkjOufiYXBTPiF7t/ORQKx3EKN1KgzxM53rHCSthsoWirPV8xv2nQZ/zhjL
-	 SbY3KWOtdU7FtIUd/y04zeuEuXhjYPz3tmAXrsOMrZzqOLPSTYc7ueNBEoRKc1VIJu1co
-	 yNwRDKLRhHHZqiJoBesjwmMMsOKrCIHA/t7zzCavLSZTln7wkr3pgaZoEKgwQokPa6g==
+	t=1794959454;
+	b=QzeOIed478Zr0f6NzU2cPc9QMFgFv+CTz2mdwPV2Mf5KgiRRfutXqlFbLNf4/2e0hMqN
+	 qRFrzxULL6z8tZ7MHMy9n3CAD/sGSe53hI2OamaxwMvEtahMDEcVU8RrV+sOBtqRI/hcw
+	 WmWrHeCttXGUjlOYTLae/ZrxaaFAyBy7gsyOQxk/2wJSxou17ZOnNE3I3Fz+qMWAFwOOL
+	 1ejG4uqvaobD4PBMapFrHQSDpHbSLJxIYk2uS6GklG4/UvSk2mGLHiZNfES4uPdmDP9QF
+	 FJcFnY3DcooWgLd6eFcPk3jmxRFfE7OiN12E26a0K3vRrXJG6S5syuLspAhZ9tyP0Ig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794936668;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=LkTA2fZGKt54LgX0tsQgX09c7+dqTc8gL6HA9sc7mLs=;
-	b=P7hp4DQ+BOMELTWoGKN2MJkiTVEC3PPSp/Yqy8ECaFsQUSoVlWPAlWtDSumiRg1Z40k1
-	 TonhbplKcJ0LoXeYgnp3sdjMq6V1+ipCNYIqel6bMIAary8OqZh55ZX9nSV8S8NBtbCzI
-	 yzVK5nmWU8+E0QYTw14xjB4y1HjzggRj2d2SoQVAY/129k4v2blzZVf3OAMKuj/z1WQO3
-	 1P+hi3OfFn+AvHI7xPHh7HqQ5JRcsmC5kZWCYkeYaTlfWKRDgRNaxfEtG2MFawRCE9GPw
-	 XmUP3mmtHctnHq4cFKhU1fti1ctP7rOAHAMrRBsVGEsWIvxkvsI5WEzG+sJXpsBAxZA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794959454;
+	h=DMARC-Filter:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=Zyn/wsIyYQl6Eky8acJOO+NdFIpJN2qVmm8YCLh3DuM=;
+	b=d4SeoSiICWqxHewlCfiurB7GaJtkFqN4XCLpAt7S8+ddbZYmDL2aB+DszwmS60tfzYni
+	 VrKBLHMcGTUbnHUOadqqwJKRW8UbACfpda+uxJPY7LhPiItS3cAQb1dHjp3GgO5H7TdYF
+	 /RW0BJsaLEOqauVomHefZAFOf8pibZf3e9yvj0jU/EG3rSbFn7JvcrUp8jp73MPVHxssF
+	 G8b0YPpQ1l7gPShGNEufmIntLE/PK9F7YIcn4P75863xKZwqEe9gpKwJ19HaAP89T5RhL
+	 leA8ikbDau2oggvUIrH1ukzUi4+i6qaAHGV8duYl65ZagWtBnMunX4aC2z0SPD+KkrA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WcnglDbx;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=sntech.de;
+	spf=pass smtp.mailfrom=sntech.de;
+	dkim=pass header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=dSziFeNg;
+	arc=none smtp.remote-ip=185.11.138.130
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C23A606A31C;
-	Tue, 17 Nov 2026 17:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB9F606A330
+	for <linux-spi@vger.kernel.org>; Tue, 17 Nov 2026 23:50:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3DB9F606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WcnglDbx
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3FB61F000C4;
-	Tue, 17 Nov 2026 17:31:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794936668;
-	bh=LkTA2fZGKt54LgX0tsQgX09c7+dqTc8gL6HA9sc7mLs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WcnglDbxvWNx3BawIBmbTs6ZXBzryxbYuU6EJEGAOGS8UPG95ALzC/8nC5usZm/fM
-	 CIPGNaq3mNpdS3+L+IsX/68xcqFYhrR3+lOmCzvON8o1KJRoXCIyh24u/znihbQUlO
-	 G0dw42LOnRdcT5FM1u4uZ//DVzxUAo7c5d5pYgnjsebmEdw19rRvfcoWp2CeTbCCjn
-	 4QARIu4ZhvQ9wGj6PO4AKN1JfWnBdHwUmwjdd5X9sQTAdo98vw32OPf6vUoJRX4XUc
-	 hshP4bXmOKi05J1SyuJBd0sYRWpyIpRyrhNB2gxRky7p2usScFTOcjPlbXm+cBSaGC
-	 HGReg6oO5EyRw==
-Date: Tue, 17 Nov 2026 17:30:58 +0000
-From: Conor Dooley <conor@kernel.org>
-To: =?iso-8859-1?Q?Beno=EEt?= Monin <benoit.monin@bootlin.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jun Chang <jun.chang@metanoia-comm.com>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Sebastian Reichel <sre@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Thomas Gleixner <tglx@kernel.org>, Radu Rendec <radu@rendec.net>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Ben Zong-You Xie <ben717@andestech.com>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Ulf Hansson <ulfh@kernel.org>, Jisheng Zhang <jszhang@kernel.org>,
-	CL Wang <cl634@andestech.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Minas Harutyunyan <hminas@synopsys.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Randolph Sheng-Kai =?utf-8?B?TGluKOael+iBluWHsSk=?= <randolph@andestech.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-pm@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	Paul Walmsley <paul.walmsley@sifive.com>, linux-mmc@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-watchdog@vger.kernel.org
-Subject: Re: [PATCH 00/25] riscv: add support for the Metanoia MT2824 SoC and
- MT5824 EVB
-Message-ID: <20261117-calamity-quiver-96d0d568b338@spud>
-References: <20261106-mt2824-v1-0-86087eaf5af4@bootlin.com>
- <f6bb6461-c9d0-4685-8c93-7e62691a93b8@sirena.org.uk>
- <_koitdIgQPmk89LDhlUlJQ@bootlin.com>
+	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=dSziFeNg
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Transfer-Encoding:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type;
+	bh=Zyn/wsIyYQl6Eky8acJOO+NdFIpJN2qVmm8YCLh3DuM=; b=dSziFeNg76MA4AKj//A3RRR61i
+	6/wuPkqr/DSUjCTHVtSQPpGk+Ecjc1MUu2XLRePkRE5obgPVnHD5Ve75egqQK5lp76vu6eJaCpL9Q
+	JI2hsXyAUYlbwbs7C7iRZUrcgOssgedHRe7RxZcqHbsCEvSxNPCZxkJpsuFW8nZlnOUPASk8BO+9F
+	uW1rpn32jsYXamLJdwjbzZUNOX1M8RtPIix96IlI7+58jT/j987rnqKcLonJ1y/gRyri2fAMv30Vp
+	Kw5D/AfctkxbUdnyQbsg+jBxH/YVB/UOc1UvFRCWWh5Ksk813ZlgxBl0jTi5X8ipgsLymjj/bHgbz
+	nWzvh/yw==;
+From: Heiko Stuebner <heiko@sntech.de>
+To: broonie@kernel.org
+Cc: Heiko Stuebner <heiko@sntech.de>,
+	linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	quentin.schulz@cherry.de,
+	Lee Jones <lee@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Heiko Stuebner <heiko.stuebner@cherry.de>
+Subject: [PATCH v3 1/7] spi: Allow spi_toggle_csgpiod() to get called from atomic contexts
+Date: Wed, 18 Nov 2026 00:50:15 +0100
+Message-ID: <20261117235021.2013719-2-heiko@sntech.de>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261117235021.2013719-1-heiko@sntech.de>
+References: <20261117235021.2013719-1-heiko@sntech.de>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -88,86 +67,65 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="BcuOzLdY9wrmX3Fk"
-Content-Disposition: inline
-In-Reply-To: <_koitdIgQPmk89LDhlUlJQ@bootlin.com>
+Content-Transfer-Encoding: 8bit
 
---BcuOzLdY9wrmX3Fk
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+From: Heiko Stuebner <heiko.stuebner@cherry.de>
 
-On Tue, Nov 17, 2026 at 11:41:52AM +0100, Beno=EEt Monin wrote:
-> On Friday, 6 November 2026 at 12:15:09 CET, Mark Brown wrote:
-> > On Fri, Nov 06, 2026 at 10:29:57AM +0100, Beno=EEt Monin wrote:
-> >=20
-> > > The series is organised as:
-> >=20
-> > > - patches 1-14 add the device tree bindings, the Metanoia vendor pref=
-ix,
-> > >   the RISC-V board schema and the SoC block compatibles
-> > > - patch 15 adds ARCH_METANOIA and selects the AX45MP errata
-> > > - patches 16-23 add the reset, SPI, watchdog, MMC, PHY and USB changes
-> > >   needed to build and probe on this SoC
-> > > - patch 24 adds the MT2824 SoC and MT5824 EVB device trees
-> > > - patch 25 adds the MAINTAINERS entry
-> >=20
-> > This sort of thing tends to work better if you submit the patches for
-> > subsystems as separate serieses, it avoids enormous CC lists and keeps
-> > the individual serieses a managable size.
-> >=20
-> I agree, and I am reworking the series that way. Version 1 was intended
-> as an overview of the complete SoC support, but it ended up being too
-> big for a single series.
->=20
-> So version 2 of this current series will be only the platform basics
-> (2 patches):
->=20
->   - dt-bindings: vendor-prefixes: add Metanoia Communications
+spi_toggle_csgpiod() by default allows for sleeping gpio controllers.
+In the upcoming atomic mode for late stage systems,
 
->   - riscv: add ARCH_METANOIA Kconfig entry
+So determine which stage the system is at and select an appropriate
+gpio_set_value function to use.
 
-Realistically, this does not need to be a prereq either, because you'll
-have "depends on ARCH_METANIOA || COMPILE_TEST".
+If for whatever reason a sleeping gpio controller is combined with
+an atomic operation using a gpio-chipselect, this will cause a warning.
 
->=20
-> It will act as a prerequisite for the following new series, one per
-> subsystem:
->=20
->   - reset: binding + reset-simple support (the separate reboot binding
->     is dropped; the RST block is described as a single node)
->   - SPI: optional DMA/IRQ binding, MT2824 compatible, atcspi200 IRQ
->     support + Kconfig
->   - watchdog: compatible + Kconfig
->   - MMC: compatible + MT2824 support (split between SD, eMMC and
->     auto-detection) + tuning/HS400
->   - PHY: USB2 PHY binding + driver/Kconfig
->   - USB DWC2: binding + params
->=20
-> Finally, once the subsystem bindings are accepted and the drivers
-> are queued, I'll post the SoC DTS in its own series: board schema +
-> cache/PLIC/PLICSW/PLMT compatibles + the MT2824/MT5824 DTS and the
-> MAINTAINERS entry
->=20
-> Thanks everyone for the reviews, I will integrate the feedback in the
-> next iterations of each series.
->=20
-> Best regards,
-> Beno=EEt
->=20
->=20
->=20
+This also introduces a helper spi_in_atomic() to determine when that is
+the case. While the upcoming atomic transfer should really only be used
+during late system states, this helper just makes sure to distinguish
+between sleeping / non-sleeping.
 
---BcuOzLdY9wrmX3Fk
-Content-Type: application/pgp-signature; name=signature.asc
+Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
+---
+ drivers/spi/spi.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 40cda0037ea5..3aeee3b11c0c 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1244,8 +1244,18 @@ static inline bool spi_is_last_cs(struct spi_device *spi)
+ 	return last;
+ }
+ 
++/* Check if sleeping is allowed */
++static inline bool spi_in_atomic(void)
++{
++	return IS_ENABLED(CONFIG_PREEMPT_COUNT) ? !preemptible() : irqs_disabled();
++}
++
+ static void spi_toggle_csgpiod(struct spi_device *spi, u8 idx, bool enable, bool activate)
+ {
++	/* Will complain if atomic transfer is combined with sleeping gpio */
++	int (*gpio_func)(struct gpio_desc *desc, int value) =
++		spi_in_atomic() ? gpiod_set_value : gpiod_set_value_cansleep;
++
+ 	/*
+ 	 * Historically ACPI has no means of the GPIO polarity and
+ 	 * thus the SPISerialBus() resource defines it on the per-chip
+@@ -1257,10 +1267,10 @@ static void spi_toggle_csgpiod(struct spi_device *spi, u8 idx, bool enable, bool
+ 	 * into account.
+ 	 */
+ 	if (is_acpi_device_node(dev_fwnode(&spi->dev)))
+-		gpiod_set_value_cansleep(spi_get_csgpiod(spi, idx), !enable);
++		gpio_func(spi_get_csgpiod(spi, idx), !enable);
+ 	else
+ 		/* Polarity handled by GPIO library */
+-		gpiod_set_value_cansleep(spi_get_csgpiod(spi, idx), activate);
++		gpio_func(spi_get_csgpiod(spi, idx), activate);
+ 
+ 	if (activate)
+ 		spi_delay_exec(&spi->cs_setup, NULL);
+-- 
+2.53.0
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCavyPUgAKCRB4tDGHoIJi
-0u31AP0dJRd3avDcA8zq/be2KJLowwp03Bx+1e11P7wMqhKhSgD+NGQuQVH14+ta
-vo0nqDQxea6EE+XzXZ9SOeXFMg+dqQ0=
-=Y40v
------END PGP SIGNATURE-----
-
---BcuOzLdY9wrmX3Fk--

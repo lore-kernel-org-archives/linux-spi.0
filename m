@@ -1,63 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=57.103.76.244
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.154.119.183
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795027090;
-	b=3iiNbKbGdcYdHTUdXZFkqwxZcbUE+0ekTZCU+bpNuExwEe5dPKulspvVsHEWcTrekJur
-	 Lwz+FQvtC1OoVAuaRvN1kNYwUmaIpFwHJQLflp8T5hnIr+5Ksh9nkEwIm/kCjQtOExMMV
-	 5fPtfN/UpFcIj0eHsLT0FmbzmCYJBfc5TpFpjhzsG3sa5eIcRj9ctHpgZ3pxxkUasYAVP
-	 cgJ4LDcZR4CLmci5WzOkaUpFFOHTbqGokKJXxcd2rM/vjqDUU9xHnWf75BMVyZiTt4aBF
-	 XzDdnvS5NkeMbECsm4IhS0AgXEtyDHwwo6UyCnn9T9y56cWrU3KDAZV6FvTgaxveBfQ==
+	t=1795039842;
+	b=wlWZaS/7vPwQrKMAHnSH7Jf5kI6YkwPjlwgP0L3t2wK4ixwsUY9WzenWyB5JmrGpkeDF
+	 iA532JhTP4aYAefSrXF4VGWx81UlZAX3MUQxHuas7CsSNZBWny632H64cYCCwFB4vlMSh
+	 VORy17isqMJN3NjVcQ7p0gHzpxq3YAJMvIubJmIKhfa/86MjbNCYKTM8wuGBVmpQLbSUT
+	 K3F/+iuM3c06KiYLZvP9Yh8wOs+C09LD2F7H4YFnEms1Z1qO3qCgswwJ/uAZ7Fek5r0eH
+	 A27458xshQr+d+Ent6Yr14kvglg9Kp8YnJl6jSkjwEeiA7h7E598w2B+cQ8q35YbJsw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795027090;
-	h=DMARC-Filter:Received:X-ICL-RepId:Dkim-Signature:
-	 mail-alias-created-date:Received:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Authority-Info-Out:X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:X-JNJ;
-	bh=G/lIww7et98viW/5VX21jdn8thD7SKB2sXXE7AmwGI0=;
-	b=SPTzGrQJatFCW7TourkM9+rivpbDClJY7mugwyWwtW3JNY9lHNG7muIZkSfo/wTjmoLD
-	 7A5C+7Fl61hBzvAkSqMgtDDgbcMm+lhEP6aAIOucuGkfIh9dWudXFfVT2THnxhWFPUGtE
-	 /6I6KauHmZxeNvipEEu0Mq5iTQJTxgiTk4jbOcP4lG/vxMg0hdgRUmU+/UWIZi3cnpXHp
-	 5zpAT5rRXGxAJ7saWzDjaMKS9yOrMhTdIlZ5g3LZqV7475LJYII4p/LchZ07xurws9fPS
-	 dnAG5UGg9NLAjdoeQtMAZRHEf5wfwD8pCvY3qWZ2/+VzO/lbNXs3ezjU3/Buylgs2/w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795039842;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:Mail-Followup-To:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:User-Agent;
+	bh=aqSyYu+jA7QD7ixyq7XtysEQBlg5TZeCmD7JGK41Hzk=;
+	b=qbGME4IwOODBXjSFNyFXLDdo7EN4563eSMbkCtusV5ITen3Fwe1nUr5WqXQoo4LVKCwp
+	 WLpElDfjgcM6RGr4xNyPevr/VfAg7hN/COb2tNvFS8n3ADfI3F+Rabx6qkDQj0K8eoheZ
+	 ehzCQNERp9wvtaQNRo1FOXN+rC9NLJHdH2mnsQ1zyAX/TMP02XDEXIF3RYGGaR6fnApAA
+	 A2TzdxWfqQpP2b/4D+8yyxp+N8nEa8vQTwrDnaWWAK/PGOH7zWVnIyjQ1u8ysSHExiw36
+	 Ms71/Sg4qRKhh+RQ9et31Hj8PGtOzXrFzQX+7Qnrcf8GNeZZuphkr41goAg0AM90S1g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=putintsev.com;
-	spf=pass smtp.mailfrom=putintsev.com;
-	dkim=pass header.d=putintsev.com header.i=@putintsev.com header.a=rsa-sha256 header.s=sig1 header.b=PiJ91MqF;
-	arc=none smtp.remote-ip=57.103.76.244
-Received: from outbound.st.icloud.com (st-2006l-snip4-3.eps.apple.com [57.103.76.244])
+	dmarc=pass header.from=aurel32.net;
+	spf=pass smtp.mailfrom=aurel32.net;
+	dkim=pass header.d=aurel32.net header.i=@aurel32.net header.a=rsa-sha256 header.s=202004.hall header.b=C9u7IwL8;
+	arc=none smtp.remote-ip=195.154.119.183
+Received: from hall.aurel32.net (hall.aurel32.net [195.154.119.183])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C907606A330
-	for <linux-spi@vger.kernel.org>; Wed, 18 Nov 2026 18:38:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C907606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=putintsev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=putintsev.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B14606A32A;
+	Wed, 18 Nov 2026 22:10:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 31B14606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aurel32.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aurel32.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=putintsev.com header.i=@putintsev.com header.a=rsa-sha256 header.s=sig1 header.b=PiJ91MqF
-Received: from outbound.st.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-1a-60-percent-11 (Postfix) with ESMTPS id E1BA918000B7;
-	Wed, 18 Nov 2026 18:38:07 +0000 (UTC)
-X-ICL-RepId: 01a1eff3-b201-73db-8d19-b6c5140059aa
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=putintsev.com; s=sig1; t=1795027088; x=1826563088; bh=G/lIww7et98viW/5VX21jdn8thD7SKB2sXXE7AmwGI0=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=PiJ91MqFpdxmQyWy79KVTkWt/mrrLM/gylkSMC25V30MFSGkmqm1uhpYxXzPQE0KYRu7MVP68XxlmwyOlNQURvtF5zIWKM266T7XLIckPfQmbPVt7et5+hW9c21GmJtM3KtZTgd3RVO8gNqIw8UMN9C9CBXOqmDEt5m8W9Sh4iV9dcHX1vmxyRjLSeeutR+6CpZgHVA7oe+PCpY7NSanUlq3yzVr4D2Bl8V+6krsiDlrXMGw/xIQwJD29jTEDA3161UUhz73OexXt1ddHRwwGGQ6jsXr2Ge7I4kl9wqrRcT45K3pXoDwWqFyKny8pSJTjPsg+uMDHbZpQX3Ws/NnhQ==
-mail-alias-created-date: 1771854267065
-Received: from macbookpro.lan (unknown [17.156.216.30])
-	by p00-icloudmta-asmtp-us-east-1a-60-percent-11 (Postfix) with ESMTPSA id 331A91800108;
-	Wed, 18 Nov 2026 18:38:07 +0000 (UTC)
-From: Roman Putintsev <roman@putintsev.com>
-To: ldewangan@nvidia.com,
+	dkim=pass (2048-bit key) header.d=aurel32.net header.i=@aurel32.net header.a=rsa-sha256 header.s=202004.hall header.b=C9u7IwL8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=aurel32.net
+	; s=202004.hall; h=In-Reply-To:Content-Type:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Content-Transfer-Encoding:From:Reply-To:
+	Subject:Content-ID:Content-Description:X-Debbugs-Cc;
+	bh=aqSyYu+jA7QD7ixyq7XtysEQBlg5TZeCmD7JGK41Hzk=; b=C9u7IwL8od2s/LBGaU8QBaFgtF
+	DM6GLz3c9mQoYwQZxEP+O+Bv8F6Y2PrcaxPQH+W57zzrmLY5QvOIi24gIc+rkk7DZZmQCxuWPYFr4
+	B/AcjfrN+p4/g7CXSJeARwkW2Zz8L5Wc7unydDrAfty77UOX6cszWUnVt8zWzL0R56JIyiY2EhZ2x
+	EH0Vzkp/bxuSgz8hTfiXEdcB3P187nbXY8zOe5zU/d5pBgGRi8eUz4SNShRAnE2SaI4e2ksq3WYjD
+	Ik1HaiDqyW8A5wr9um58k/k9CO3jP84L3Z9aH2An9j8FXFZ9Bbs0G7GtO+OOQfDysywhne4wGDYw0
+	EApEcm5Q==;
+Received: from authenticated user
+	by hall.aurel32.net with esmtpsa  (TLS1.3)  tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <aurelien@aurel32.net>)
+	id 1xTnrQ-00000000XZ4-32WB;
+	Wed, 18 Nov 2026 23:10:36 +0100
+Date: Wed, 18 Nov 2026 23:10:35 +0100
+From: Aurelien Jarno <aurelien@aurel32.net>
+To: Conor Dooley <conor@kernel.org>
+Cc: Wang Yang <yang.wang@deepcomputing.io>, Yixun Lan <dlan@kernel.org>,
+	Benson Leung <bleung@chromium.org>,
+	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Guenter Roeck <groeck@chromium.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Sandie Cao <sandie.cao@deepcomputing.io>,
+	devicetree@vger.kernel.org, chrome-platform@lists.linux.dev,
+	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
 	broonie@kernel.org
-Cc: linux-spi@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	thierry.reding@kernel.org,
-	jonathanh@nvidia.com,
-	skomatineni@nvidia.com,
-	Roman Putintsev <roman@putintsev.com>
-Subject: [PATCH] spi: tegra114: re-assert CS after a mid-message cs_change
-Date: Wed, 18 Nov 2026 13:38:05 -0500
-Message-ID: <20261118183805.25461-1-roman@putintsev.com>
-X-Mailer: git-send-email 2.50.1
+Subject: Re: [PATCH 1/9] dt-bindings: bus: Add SpacemiT K3 eSPI controller
+Message-ID: <av4iWQb33bya48G1@aurel32.net>
+Mail-Followup-To: Conor Dooley <conor@kernel.org>,
+	Wang Yang <yang.wang@deepcomputing.io>, Yixun Lan <dlan@kernel.org>,
+	Benson Leung <bleung@chromium.org>,
+	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Guenter Roeck <groeck@chromium.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Sandie Cao <sandie.cao@deepcomputing.io>,
+	devicetree@vger.kernel.org, chrome-platform@lists.linux.dev,
+	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	broonie@kernel.org
+References: <20261118085742.1817536-1-yang.wang@deepcomputing.io>
+ <20261118085742.1817536-2-yang.wang@deepcomputing.io>
+ <20261118-backdrop-scrap-1bee34e06336@spud>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -67,86 +95,89 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE4MDA3NCBTYWx0ZWRfX44dALubhyGVm
- W02cJJuiIXnbLrDttWSgCnCg5bRrsSaGr6US77TUqddKUQphDPeazfVJhc7X6f649mLouoxH7B4
- h2dbB9fdR569BSUBX9G6y0ATmCc22YphpMyi2BsK6hluw/PJxjeOpvSUr30inNAQHlM8jcnuW3C
- wsL81wepCe6MwCxd2qgd0Hj0EXUOEzqLnGTPc+SAQlEuXP3elKfIy5AtS7gSfq4grLkgGiv8RgU
- cocz52tq7Hk/Rshra3L6GN8NVCSptaL++6+TXEGufwOdTR3xL7r7MM+VrebB64fJJBu2XUkuJmc
- w0yAu1keHCezxdjjP2GLZkmw0zutdTQknbcBREKAXscnMN1mrH6NuerVZn0g3c=
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE4MDA3NCBTYWx0ZWRfX6sbyOs6a/9i9
- w/4XLjucXN8Br2it7Ez/QC7wdDJGnuu1X7xPO9J/LBUBSv7yAwhBRqVBSgoYyEqCT5WlrHtLw28
- qACMK9nKRca69m/Mjzwjn+GX3Onp6Jo=
-X-Authority-Info-Out: v=2.4 cv=UsH2pOwB c=1 sm=1 tr=0 ts=6afdf090
- cx=c_apl:c_pps:t_out a=oyWFxbOnq+dmhQrAPgaJYA==:117
- a=oyWFxbOnq+dmhQrAPgaJYA==:17 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=51JdnUhQRHFq8RItG6ly:22 a=XqUgTU364RIWfhS-Fj-h:22 a=VwQbUJbxAAAA:8
- a=gNxGhvmwAAAA:8 a=7g2LsxMrY8pxi2ky23YA:9 a=O8hF6Hzn-FEA:10
- a=yjIKAdwAKDrTRT0yDhyo:22
-X-Proofpoint-ORIG-GUID: R_gCKmEIytyiTga0pDaPDDNPFjQVL90U
-X-Proofpoint-GUID: R_gCKmEIytyiTga0pDaPDDNPFjQVL90U
-X-JNJ: AAAAAAABpmt4HQEMGo56imYTeWQrIr/RKOhydgnHkeT3ryUCLVqrdya/8vXldJaF0JddAX
- Zz5JvYZpkxq4RGhpAbM+XKQKHTBTDjh88xxJYJMVWb0LYzdOsfJuj/RGpa1QRqD66pLIZ6
- iYBU2ag67GNaL7rzbP8owmmz7zX+685T37oQPWp6/awJNjwZgAr28X5YyvBRQTey+T0IiM
- qYs5UpepKx3wr//USxdbeOcxsnxNjbVkITtL9pi1yfJl5aAt+Ne0ZrE7hFiDe/TfBzC7lj
- t0SfRl0h1gKMdtc5XlUf06LDXjID+HFGJ5UucdEI+1wMft9KAQwdxnkzAYkXYHIiyQwaJJ
- xr1cmQpSQaAKCgP6YmZ/FHAgzFX5Bqng43BSRMKVQpoZARXzZFWuUmG/R52c//dC8AFGky
- 5KTbd+xYdQMWT3TslUg4oVMMzgOrqnx6kRx8mdzSdAEJWzmOgy9iNGTPiiAs/1lBjZ8ovF
- b55K0/if7TjgGs6UNUddEHQmOMcQA9On+u2wr70koRIY0ASAO/H5fWoXYV+eByPybNSS3v
- JcfCsBlc7jh86XdcuOLmmpgsBanIFk9qqiWwDOI5w4DguDLn/XpvTzW/eC/P6KXhHpLAj9
- phqWLWLUdmqpsovdPGeAnHgqVB86NkAOAQSOcqWE/Qdq6VmzQl7zYVJY1q6yleolZGYsZi
- lu78CdQqWa6+cnzRcJcFq1mxzpCErT69iZABVGQ/xQjBTd2+MIDyTcK3PwKSlZ6U5eTxSv
- CS/imZyMoFibOkezHDfC4GoQkDi6Lf4bjP4G6svu8b7vXGUKKycQf5tvpyvTcB/LPmYY3J
- mTpk/3kTr8mCb70SWSyelRKgrLgSMaZViwVzHOodHxuAoPLAtJmIgQwgcDjS7weyfuyC/v
- 0GVY3vN/66uK/aaC+LOiMMRdUetpl/KVrwouX3vJtthIz6FfoC18w96oHWY+UQ2d1crr2j
- c4IG/fqY4Qx2jPCzRa8ExCxah/iml6djrzmml7LfYUzv9cs0HIFcxkwvsLmAW99HltfTzT
- JfzOR8c4b0FkCeGfHxmYSiTwKcqvbbo5CjXwR299obuUQcpG2/nkRM3nqvi+Qxq4YyoQxi
- v9XL9bWH93kMc2mSOxvMstW6lwEM9TwUlqiYSpzfmZ1Gj6Egn2LXmRp8VERAaqScxlItTt
- IrsZPoUDXXe3pJHRdNozifPVISU7xJhAqay7lw0bxDXLTdkwLYSVykW723/Ni8Gja2SUUB
- VtnjIF34x6LO7Kv6NyXCSfJQoxuhiQuXpNu5+55NKy2lQQ1SANLn1C7jmHWweQ==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="uwS4iCT+BxiI+7D2"
+Content-Disposition: inline
+In-Reply-To: <20261118-backdrop-scrap-1bee34e06336@spud>
+User-Agent: Mutt/2.4.1 (2026-07-04)
 
-When a transfer has cs_change set and is not the last one of a message,
-tegra_spi_transfer_one_message() ends it with tegra_spi_transfer_end().
-That function deasserts CS and stores the deasserted state in
-tspi->command1_reg (SPI_CS_SW_VAL). The next transfer is not the first one
-of the message, so tegra_spi_setup_transfer_one() reuses command1_reg
-unchanged: the controller clocks that transfer out with CS inactive. The
-slave never sees the data and no error is reported.
+--uwS4iCT+BxiI+7D2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Every driver that splits a message into "write payload, toggle CS, write
-trigger" hits this. mcp251xfd does it for every CAN frame, so an MCP2518FD
-never transmits: the frame reaches the chip's RAM, but the write that sets
-UINC|TXREQ in the TX FIFO control register is lost. Reception uses
-single-transfer messages and still works.
+Hi Conor,
 
-Before commit f3e182c33e53 ("spi: tegra114: de-assert CS before SPI mode
-change") the deassertion did not touch command1_reg and the next transfer
-asserted CS on its own. Mark the following transfer as the first one of a
-message again, so that it takes the setup path that asserts CS.
+On 2026-11-18 17:51, Conor Dooley wrote:
+> +CC Mark, spi,
+>=20
+> On Wed, Nov 18, 2026 at 04:57:34PM +0800, Wang Yang wrote:
+> > window, clocks, resets and link configuration. The EC uses this memory
+> > window rather than the ordinary SPI transfer interface.
+> >=20
+> > The controller implementation is carried as a separate prerequisite so
+> > that the hardware vendor can review it independently.
+> >=20
+> > Prepared with Codex assistance from the existing DC-linux EC support.
+> >=20
+> > Signed-off-by: Wang Yang <yang.wang@deepcomputing.io>
+> > ---
+> >  .../bindings/bus/spacemit,k3-espi.yaml        | 146 ++++++++++++++++++
+> >  1 file changed, 146 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/bus/spacemit,k3-e=
+spi.yaml
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/bus/spacemit,k3-espi.yam=
+l b/Documentation/devicetree/bindings/bus/spacemit,k3-espi.yaml
+> > new file mode 100644
+> > index 000000000..30985ee0a
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/bus/spacemit,k3-espi.yaml
+> > @@ -0,0 +1,146 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/bus/spacemit,k3-espi.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: SpacemiT K3 eSPI controller
+>=20
+> How is this "eSPI" different to the eSPI described in fsl,espi.yaml and
+> implemented by a driver in drivers/spi?
 
-Tested on a reComputer Orin J40 Mini with an MCP2518FD on spi1.0. No frame
-was transmitted before this change; with it CAN traffic runs in both
-directions with no errors.
+eSPI in fsl,espi.yaml is a Freescale (now NXP) SPI controller, it=20
+implements a SPI bus.
 
-Fixes: f3e182c33e53 ("spi: tegra114: de-assert CS before SPI mode change")
-Cc: stable@vger.kernel.org
-Signed-off-by: Roman Putintsev <roman@putintsev.com>
----
- drivers/spi/spi-tegra114.c | 2 ++
- 1 file changed, 2 insertions(+)
+Here eSPI is a bus, replacing the LPC bus, as defined by Intel:
+https://www.intel.com/content/www/us/en/content-details/841685/enhanced-ser=
+ial-peripheral-interface-espi-interface-base-specification-for-client-and-s=
+erver-platforms.html
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index f43f2df..d2fda21 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -1116,6 +1116,8 @@ complete_xfer:
- 		} else if (xfer->cs_change) {
- 			tegra_spi_transfer_end(spi);
- 			spi_transfer_delay_exec(xfer);
-+			/* CS was deasserted, assert it for the next transfer */
-+			is_first_msg = true;
- 		}
- 
- 	}
+Regards
+Aurelien
 
-base-commit: 20eef29b7c8465ac98d7dd6d6f2ac07a8d8056ca
+--=20
+Aurelien Jarno                          GPG: 4096R/1DDD8C9B
+aurelien@aurel32.net                     http://aurel32.net
+
+--uwS4iCT+BxiI+7D2
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEUryGlb40+QrX1Ay4E4jA+JnoM2sFAmr+IlkACgkQE4jA+Jno
+M2u7Pw//e3NQMW5zCgglmLHZ41Ne5HfOAqECutIMDry7Tiignz2Wv4A1BCM3BV/q
+xlsE+HEjYrQiJ/ruU93iQ1DvXgvvsXp+nL5vOnPw+XCUlwiSaR93jCWkKWkYJpN3
+ZytuPUk1kN06MRND2NakKtSw8ExyLklo3MvDMFtS0Y4Pc5dmG8E47DYADH8sZRZ7
+Iw7MTh/ZnGl56ydGt7BE1A3IIa+hrCgQnv7hN7ApM5SOeF+XhelLWoLA0flqq021
+lp1bxIHANUiJOCIIyTn6L69GkfUDGXRCLZyPm0WhBLf9RQD17lX5COGmEjCzdeiK
+ZHuzdFDK0YYCKXq9fvUE1aDL9fe8bSjtz7sRnCBXWvH/Wb39vhQbuq0mvOK5e265
+4xdDRBeFVX0dsuBy/0gIQ0i1zG9MayaML0QvqCjET2L9oNGRmuzyCorINFijJtM4
+yKg/bDEq8EtnhWmyblVm9HgmKZ92euYYyUxTZS5iA7NrbrFXWqui9HtAcy3dVXa9
+WmB6is/oHXKtSQ8WAHYzjd3Q/k753uf0hijQLFpLRg1lLiFEm/qenRh/9R8/+XVc
+77g3nlWVQ2RAj675ydet7gpOF1ccrsQbTg3CraPRJsfs2JasEYz0wlFH4kmWTAcj
+zX+UNgiclADpqKIquiydOEGBRkra3TcbMlJ0ZLtIdYUo0V8rYto=
+=bfSu
+-----END PGP SIGNATURE-----
+
+--uwS4iCT+BxiI+7D2--

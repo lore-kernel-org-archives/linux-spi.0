@@ -1,63 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795096707;
-	b=0wga8/iNHYz+ZOKg0mh8UnYzeuQR/x1VqlYWBS8ryfh0YK++Ian01Fegq2gfRsvcSebh
-	 AUv92eytuTUvTVUHqphjBApLGoChNnU8sRDaxde3N5zPlPumYzwcbrLThOJkUHdBvauFz
-	 LV2hixJs4/M+g3Xovze/GIBtHn+fKQ5KsjFa8U4AD4ZswOCmGNhc3/BBN+qnPe7qnqp8V
-	 84FeATY67bFS8/MW1zAllB7BDhHO6x5JjBPL/dnz/8pcUEAC34QVzIZOZZHz9FeEwg8gG
-	 /hyHZb7/JwvlJe9ADh2ZjQEBfG3tpQ9ZA5e6w7D84BITcTf+TakVcXVZeDJVYMJt9Jw==
+	t=1795096809;
+	b=emoUcPkUdolgqA8oIojBYON/vwexwDWKhCHgj1I1qBAHy8zIrxy/6F6awNlRAPjiwMmo
+	 r99SFVC3kbguUcIeo5KzDP6WajEsJ+Uc5qHxkCffNW/zP80hGGc8HCK36v6Ai/IcFPPNw
+	 yqE98PyGmVPzRgkJHbVNaETkEYJXqaQQ9br/L5mxWG4xhH0FQnhOKL+j9Wc5eQeAjysUd
+	 PSB+sU3b4D7JAu3dqXasqLj9dhmePkiF72zdEyzvwIh2hTUVL34J/9QUgQFoPXLwUjVRB
+	 sojMcxi0DJzr4+q/ZTcH5H4dNlEkhJd6AaqXJbebsg8lnzzq/akh08587z2Kv55aGgw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795096707;
-	h=DMARC-Filter:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=3lTaBCqZF5G8fjlGAlGQP3TalbwWa07a5DbQshXZTOk=;
-	b=kFdO1v/WyapfARMhMu/1q0BlEs40voGHzdciUfT3X3+BrenPx4w4LWdjo1CrtJCgzdAD
-	 7p2ECREHJ7VV2H7WBWQ/50FbUL7lPxp6oTEf5w5pZ4Wv1/ozfBKlVzo3DLSoim292nTFq
-	 tAg67d8g9rBMJR0x+xRtp0gvHTuoHv3MEEIvTedC6EOL3FECLRGrOVz/29isAocLpJ2dF
-	 87BIfS4XQeiB47LpY0A4e0gDvTbkzXaBNK//xvZ6ximWIEKBD2eXoGt3XR6vwWv2KuzFT
-	 eNJ1bqt6Y72TktFbCD/3Dldb7AKMS831mlzDaLecsHpr+Vx1nhn60ALvp1Lu0VPPrDg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795096809;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:To;
+	bh=1dunnBEJHo7IyD+yti6dpnPalVdIxMbbQ4FZsTGuTbk=;
+	b=fVbovjhUHIJweF2/zbfBjuss2H+dDeCrJxBSoGkkL5lvL+kvKT79TYfB+wIx1VJ4BcPp
+	 kkKiFk5o3WndUaoAAZFLP09/iSrbvxKPr6/1RJyjui+dB5E2f7y69QnGnLDW4k/q257e5
+	 aWRajE4uvgVBUSZUsrCXFDEH1rSVWeTYxXD89mFjS0LV5L1jQTxyIJ9OKAJyRhItz/Xvg
+	 y0Eqmc2qBaBFl76s2HBOx2qH5NIK/30ryubzGndEsfDmCOQqhT9pcrAoJUfLTPs0beedZ
+	 RpsAxTCZIG/8ROsurmP/uUyZOtYOvp3Og5yTHuXqfOARIkiqOlQZzqOZrLAq5MSabxg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=sntech.de;
-	spf=pass smtp.mailfrom=sntech.de;
-	dkim=pass header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=qp2kg4x9;
-	arc=none smtp.remote-ip=185.11.138.130
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g+SAnosq;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CA6606A326
-	for <linux-spi@vger.kernel.org>; Thu, 19 Nov 2026 13:58:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 44CA6606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F9C606A320
+	for <linux-spi@vger.kernel.org>; Thu, 19 Nov 2026 14:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=qp2kg4x9
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Transfer-Encoding:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type;
-	bh=3lTaBCqZF5G8fjlGAlGQP3TalbwWa07a5DbQshXZTOk=; b=qp2kg4x9gfr3I3leGdIHl9EBeZ
-	BcSiihxgJ6LOkQpNKSt1epwz76ydXVYZiqFJjmpVDbgCjw6jGSOTXdEsjW9ft2lJH3m8oRvtUxX9Q
-	Y6d/ZqcL6fOZXpwFz0ITmEiCupBVxHqNZaxBdqAKFEYs/pBk5IxYBQdLTGyjhn63OjdIQT1Lrff0O
-	5Jydw6VCNNxHzcnIBUCUbLC8FJYgOgwuPQcSusgEI4J2iBqc9uX8MrEHRDJud6CbgBAgy5wiA/Eta
-	FvpnB5a1s6buC7AXHvEj0KHcuDDKRIvcsfaN8/b3J73ioeRm4wae4hEpxAWiNIEcvQfsKop+CSPQ7
-	5PHQEufg==;
-From: Heiko Stuebner <heiko@sntech.de>
-To: broonie@kernel.org
-Cc: Heiko Stuebner <heiko@sntech.de>,
-	linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	quentin.schulz@cherry.de,
-	Lee Jones <lee@kernel.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Heiko Stuebner <heiko.stuebner@cherry.de>
-Subject: [PATCH v4 2/6] spi: Allow spi_delay_exec() to be used from atomic contexts
-Date: Thu, 19 Nov 2026 14:58:04 +0100
-Message-ID: <20261119135808.2377849-3-heiko@sntech.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261119135808.2377849-1-heiko@sntech.de>
-References: <20261119135808.2377849-1-heiko@sntech.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g+SAnosq
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DEB1F000C4;
+	Thu, 19 Nov 2026 14:00:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795096809;
+	bh=1dunnBEJHo7IyD+yti6dpnPalVdIxMbbQ4FZsTGuTbk=;
+	h=Subject:From:Date:To;
+	b=g+SAnosqwd38VzRV1HgYvlaDszfJpO9OXZwaO8uSOSw5zSmcCTg/WRu4KoDgMVNx6
+	 HGCliMZdl0IJHZRD7RwsVLqgAbnn1sBpxSq4ghH0LUhH9Fovog+7IIfVXoQkc/o9JM
+	 KwvgTy1BcSVYkjx8+0QGoGkEhrDZXhHzBFk0jo5ubZ0K1GreqO9Bty/lMuakAbMKvY
+	 WBJ52eml8TQe+k5zgHMBCSeJl6arT/mugp5kFSWr83QBqO4gf94gZDO35yCu6eOjfJ
+	 7pnjR09WCNi416wGVy53P5XTT3/K4SBxdEUO2Y1ybpRQP70gPzaa8uoYBwUpXQpgK2
+	 sNnq2mO96M5yQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3CA623808210;
+	Thu, 19 Nov 2026 14:00:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -68,48 +53,35 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <179509680790.3111853.1025062486067005153.git-patchwork-summary@kernel.org>
+Date: Thu, 19 Nov 2026 14:00:07 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-From: Heiko Stuebner <heiko.stuebner@cherry.de>
+Hello:
 
-When using spi_delay_exec() only the fsleep in the subsequent
-_spi_transfer_delay_ns() can actually sleep.
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-As we might want to use spi_delay_exec() from atomic contexts in the
-future, move the might_sleep() up to the actual place that matters
-and fall back to the existing ndelay if called from an atomic context.
+Patch: PM: runtime: Convert pm_runtime_put_autosuspend() and friends to a void function
+  Submitter: Brian Norris <briannorris@chromium.org>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/series/1180567/
+  Lore link: https://lore.kernel.org/r/20261006231900.3230373-1-briannorris@chromium.org
 
-Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
----
- drivers/spi/spi.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Patch: [RESEND] spi: ti-qspi: Discard pm_runtime_put_autosuspend() return value
+  Submitter: Brian Norris <briannorris@chromium.org>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/series/1209917/
+  Lore link: https://lore.kernel.org/r/20261112112334.RESEND.1.Ia678a25bddd5942c7f3e11ff0eb807754d7e2aa2@changeid
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 5e05f2fef12e..ec2074126910 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1730,11 +1730,12 @@ static void _spi_transfer_delay_ns(u32 ns)
- {
- 	if (!ns)
- 		return;
--	if (ns <= NSEC_PER_USEC) {
-+	if (ns <= NSEC_PER_USEC || spi_in_atomic()) {
- 		ndelay(ns);
- 	} else {
- 		u32 us = DIV_ROUND_UP(ns, NSEC_PER_USEC);
- 
-+		might_sleep();
- 		fsleep(us);
- 	}
- }
-@@ -1782,8 +1783,6 @@ int spi_delay_exec(struct spi_delay *_delay, struct spi_transfer *xfer)
- {
- 	int delay;
- 
--	might_sleep();
--
- 	if (!_delay)
- 		return -EINVAL;
- 
+
+Total patches: 2
+
 -- 
-2.53.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 

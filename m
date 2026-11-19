@@ -1,55 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795083370;
-	b=4QGLzR6jj5MzBUIJQQtXGa6vXQnM0ytnDHO6BV1la9NbuMMK+2OHz0QAyz8pPqVjpvyQ
-	 qEkYLPGSfaKnk5Wh/RYSh0NdufGH+ubUfG/0xAyAwbyAu8gQD3DCReIc5GUHMFlc/QEN6
-	 VCnr27thuC6ie9+22rghzG44zSBOXCyoGyjyLzpEqYr/V4xXN4qXnUJNg2yKk9CVv0wv+
-	 3TjbBHgmHOzsW44GmsSp7JKb1SkvOFtg4KNCkTBw8Yu+UxDhmL9q+3sqdndWTqD/CDKuw
-	 snDgf9vLPii0+jtifsRu/2YcDAv2gwdoFKcdhUlEStNCzLkC2chBxqQZYVBHfUPMB7A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795083370;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Mime-Version:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Subject:Cc:To:
-	 From:X-Mailer:References:In-Reply-To:X-Last-TLS-Session-Version;
-	bh=iobtCfn8EFQLi1QR3m/ewET1qprBKHmaYyEVyi3cf1U=;
-	b=jKnU3R5XXnuqch1V8/sR4Jg4YVahm0RJf8xI8K97/KNUHXIo+jLcg4VswBpAGz4ZfEp2
-	 twOAP841acyKGxU68b2QrnWNkvEBKLHeQPm1S2w2ED5ChTnYsRb60SUNqOgpGICjfDfWG
-	 bBrAEx2/f+HRpLZybewWPOudnw4J5FiX4Eg1Jf5FEvBRO8O3dD5JudoVnJ9jIRIGWY6hO
-	 QPXI+v/NGOHk6hMDJWta3ozNAqILIn7huOauNvxi3YwoatsD17qOSEI/Q3Ju3npzVDIm6
-	 rVnyjt4fQECeJripgLL2ST7uQ2uOXfiLr8y84zO3DIpzQG543eiExJNlttewXYbltVQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=GivbN5j6;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795085987;
+	b=MFmeUuIyimfo8q4ON3GR8tnE6VRKta69S2kib1KcX9cdfr/Xr3T334PWKJp0PGppD49W
+	 Z3yuIhymVkBub+1SnPcUrgGmO8DFZxSsAIFjYJgK7GV1/NL/YnFWY7YXy8IJTorNGPJoj
+	 5BZ/uCPdjpv4OI6VpqHLGehcwAlkKZyrmqqaWPNdQJhy5xu+nH9rOj6WSv4GD+G2T9e3I
+	 +D1SYNOXToxP7Z1smhohFJ/MKoBb+AD9zqIArOwEaL5SZNcMveaxU914tmokE2GhR+dVv
+	 sjn4f4RFF9qfxCoTyP0tzoQw6UQ4ZMmpklR/5MUOd4ljgguf6dQLO0dHM8TfMh7bZlA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795085987;
+	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=uZmBVCO/E+M3LGN206IhnPbUYGaF035jqFVGv/CZR9E=;
+	b=aiTVyaHLyiyFikWkIruH7OmMq5XGDB6L7vQy30PxOGrROV3gVRj0Fc0yFhUJNbfUsmz+
+	 jBJCWKMpcgywDkV6GtuOiokkwjCe3SjfMz27uKUssxdXUtwAYkLSu0iIKHW6dmLubQRiU
+	 5avGiUejF/TecKruMfMZ0uQOzMwno1mHyN+gnKNtttHug+vAs59vBR7seZUXiHnWGIUW6
+	 KfvtLw4Tif2giugB1KbqKygckQWnwufq6/ZQsv/8BZuJpBVvY828sJcjlLuhkqXNUj3vs
+	 +J7YPXODh81r0+cAh+PHnPAsxlzAUO+N6T5M0hZ+kE+nuSom+3J3VwK8cqoF/Lsmu2A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=pengutronix.de;
+	spf=pass smtp.mailfrom=pengutronix.de;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=dKHe7A8q;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59036606A324;
-	Thu, 19 Nov 2026 10:16:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 59036606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DFD606A324
+	for <linux-spi@vger.kernel.org>; Thu, 19 Nov 2026 10:59:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 18DFD606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=GivbN5j6
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 02C934E4156A;
-	Thu, 19 Nov 2026 10:16:03 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C8C0860237;
-	Thu, 19 Nov 2026 10:16:02 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 46F1011BC17F1;
-	Thu, 19 Nov 2026 11:15:54 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795083358; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=iobtCfn8EFQLi1QR3m/ewET1qprBKHmaYyEVyi3cf1U=;
-	b=GivbN5j6JnNwoQuWrLk1np2/mro20p1FB2cuifa3KzI+Nr9bZ1Ms6eoj5q/w9w8+8CAvyd
-	v8kFbqX1bnFmEULAh04Rkc4f1xrQJdqiuze3qF6kU1ENmjwuydY3D9G0dQHH0RlMUEz74D
-	J/+Q1gIN0a0G3hS7FphiRf6rrhoxy3DPuX7rV9hv6NbHWv/wH475Po1mbaiMXjU+Qj6cie
-	uFmXZRbS+ANzS55VIsmENuJJRwgjca+GYJvFY9oofQLtL/Fb9aNSzM1xPanXivkbwaKu/R
-	/tCipcmvgHv3otxsjwbwBZFoYt1qo+DYi0XTmh6IAjLh5cVIFFCC/ZMbNCnjuQ==
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=dKHe7A8q
+Received: from pengutronix.de (ptz.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::77])
+	(Authenticated sender: mkl@pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 9EC68200F2F;
+	Thu, 19 Nov 2026 11:59:43 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1795085983;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uZmBVCO/E+M3LGN206IhnPbUYGaF035jqFVGv/CZR9E=;
+	b=dKHe7A8q9Xpwv+VQkBFatz9PfnUs9YrS8wWbAqbXIgDw8ZeyOEv0U19drTGgkSgLLojebV
+	ch5WiFx5xevOhefB9+qkHqq/LYSNDiQ0Z/LOsPGbRkhzQZJHKdWm7Ail/45Yhfs/UmrhzD
+	/lCEj/1JMrnGYdTG+3BIqqarJdXzszhIRT/YJy1zeW8fMbifHhAQ9FIUZjEEZXEgTB2msA
+	KfHlQyW8DkERPX17sSa2jMGRQ9Zi2c9CdMVCB/aDkXmwESJMjBr72Wx1UFipIvZ8PZqCva
+	ZmEpzWStAoEJli4UqSUhlXZYSydaTytDtDzcoyqMJHLg2W2xVe31NHpVGkFAsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1795085983;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uZmBVCO/E+M3LGN206IhnPbUYGaF035jqFVGv/CZR9E=;
+	b=L0KBMMz7rb7mBp/ydrpatG2oqaEsYVIdolV19kZBorMrwtclV3h8h2ff9UhwRxDwIXooAd
+	7nFxKpfXlava60tE2lmBDxLaAUvROT/lEUjLZUS0D6FnB2O7qjr5e7oJO8kOt8Hw90wSxR
+	IeJXdNs4QHFU99mgblEKzfNJtuX9J2RBZZABuLK3pATVoIWDpJccNoUYmiyP5hmotoG9VJ
+	hjq4bty9Flvg/YATQqjxdU4PothcT/5RgQrFJJXhgU24y4+0KlU6HhUIxaOXW+Eis01zzY
+	+3HdZ3L0m6N2SPn2YNpVO3/Wnc0HmC8fAfxoM7IG/qkCva0rIUakhq2OzFaiBw==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795085983; a=rsa-sha256;
+	cv=none;
+	b=Z7IqYLzL6AodbMdZCudDlRmnP8xJSry6QuSSGhBNZAGbGjVusyy/lk6fOQA+2ck4YOj/Bj
+	AoNecKPbgmGdwFxqmvIRusyqRi3FozRiCC3+jdm4oJYAx3LuJ5QfgXWZCnVHtXoPq9d1aT
+	uTZlQPfmbrngcrWI/pZpM1+dgQFsuejjKJYBulpW5ICCUD9FLkhjq6n4W4jkQTJfjSiIxg
+	XVUGMhMvAmbPEo3LhiWKO9cjVzQcvsCk+lhYME0jzvlajf7JaCPpByafg1zJaNPMBtPjTI
+	yw7KasOvVfjyat7iXlDWGNlX9CoiefrxNNnQbdkxb9dlGTZXwEiSXijp5AvpuA==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=mkl@pengutronix.de smtp.mailfrom=mkl@pengutronix.de
+Date: Thu, 19 Nov 2026 11:59:43 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: carlos.song@oss.nxp.com
+Cc: Frank.Li@nxp.com, broonie@kernel.org, linux-spi@vger.kernel.org, 
+	imx@lists.linux.dev, Carlos Song <carlos.song@nxp.com>
+Subject: Re: [PATCH] spi: fsl-lpspi: expand FCR TWATER and RXWATER bit fields
+ to 4 bits
+Message-ID: <20261119-jumping-pompous-silkworm-a6e7df-mkl@pengutronix.de>
+References: <20261119101539.2536367-1-carlos.song@oss.nxp.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -58,109 +86,65 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="w7lrfqvj3zly6jiv"
+Content-Disposition: inline
+In-Reply-To: <20261119101539.2536367-1-carlos.song@oss.nxp.com>
+
+
+--w7lrfqvj3zly6jiv
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Nov 2026 11:15:53 +0100
-Message-Id: <DMZ3XW6ZEFDF.2WJ1XU4UKTRAH@bootlin.com>
-Subject: Re: [PATCH 06/10] spi: cadence-quadspi: Bound chip select against
- f_pdata array size
-Cc: <stable@vger.kernel.org>
-To: "Lee Jones" <lee@kernel.org>, "Mark Brown" <broonie@kernel.org>, "Foon
- Tan" <lftan@altera.com>, "Graham Moore" <grmoore@opensource.altera.com>,
- "Murugan R" <vadivel.muruganx.ramuthevar@intel.com>, "Vignesh Raghavendra"
- <vigneshr@ti.com>, "Pratyush Yadav" <p.yadav@ti.com>, "Dhruva Gole"
- <d-gole@ti.com>, <linux-spi@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, =?utf-8?q?Miqu=C3=A8l_Raynal?=
- <miquel.raynal@bootlin.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
-References: <20261119091810.3440619-1-lee@kernel.org>
- <20261119091810.3440619-7-lee@kernel.org>
-In-Reply-To: <20261119091810.3440619-7-lee@kernel.org>
-X-Last-TLS-Session-Version: TLSv1.3
+Subject: Re: [PATCH] spi: fsl-lpspi: expand FCR TWATER and RXWATER bit fields
+ to 4 bits
+MIME-Version: 1.0
 
-Hello Lee,
-
-On Thu Nov 19, 2026 at 10:17 AM CET, Lee Jones wrote:
-> cqspi_setup_flash() uses the chip select taken from each flash child
-> node's reg property to index the fixed-size cqspi->f_pdata[] array,
-> which has CQSPI_MAX_CHIPSELECT entries.
+On 19.11.2026 18:15:39, carlos.song@oss.nxp.com wrote:
+> From: Carlos Song <carlos.song@nxp.com>
 >
-> The range check now compares the chip select against num_chipselect,
-> which comes straight from the num-cs property and is never clamped to
-> CQSPI_MAX_CHIPSELECT.  A device tree which specifies num-cs greater than
-> CQSPI_MAX_CHIPSELECT together with a flash node at a correspondingly
-> high reg value therefore causes writes beyond the end of f_pdata[].
+> The original FCR[TWATER|RXWATER] fields were defined as 3-bit values,
+> limiting the FIFO watermark to values 0-7. This is sufficient for LPSPI
+> instances with 8-word FIFOs (like i.MX93) where watermark =3D FIFO_SIZE/2.
 >
-> Reject chip selects which do not fit in f_pdata[] as well as those which
-> exceed num-cs.  While at it, store the chip select in a u32, matching
-> of_property_read_u32(), so that values with the top bit set cannot
-> become negative and slip past the bounds checks.
-
-This commit message was hard to read! Can we do better?
-The issue at hand is super simple.
-
-Repeating the last sentence:
-
-> While at it, store the chip select in a u32, matching
-> of_property_read_u32(), so that values with the top bit set cannot
-> become negative and slip past the bounds checks.
-
-Come on! 2147483648 chip selects?
-
-> Fixes: 0d62c64a8e48 ("spi: cadence-qspi: assert each subnode flash CS is =
-valid")
-> Closes: https://sashiko.dev/#/bug/linux-cd463fc8-1b94-4bcf-8d06-fae21b888=
-94c
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lee Jones <lee@kernel.org>
-
-Is this worthy of backporting to all stable releases? It is a indeed
-a bug fix but which can only occur with a broken DT, probably during
-development. It sounds like a lot of churn.
-
-> ---
->  drivers/spi/spi-cadence-quadspi.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
+> However, platforms like i.MX95 feature 16-word FIFOs requiring watermark
+> values up to 8, which exceeds the 3-bit field capacity. Expands both
+> TXWATER and RXWATER fields from 3 bits to 4 bits to support larger FIFO
+> configurations across various IMX platforms while maintaining backward
+> compatibility with existing 8-word FIFO implementations.
 >
-> diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-=
-quadspi.c
-> index 844df97111d7..fbb917c104b0 100644
-> --- a/drivers/spi/spi-cadence-quadspi.c
-> +++ b/drivers/spi/spi-cadence-quadspi.c
-> @@ -1751,7 +1751,8 @@ static int cqspi_setup_flash(struct cqspi_st *cqspi=
-)
->  	struct platform_device *pdev =3D cqspi->pdev;
->  	struct device *dev =3D &pdev->dev;
->  	struct cqspi_flash_pdata *f_pdata;
-> -	int ret, cs, max_cs =3D -1;
-> +	int ret, max_cs =3D -1;
-> +	u32 cs;
-> =20
->  	/* Get flash device data */
->  	for_each_available_child_of_node_scoped(dev->of_node, np) {
-> @@ -1761,8 +1762,9 @@ static int cqspi_setup_flash(struct cqspi_st *cqspi=
-)
->  			return ret;
->  		}
-> =20
-> -		if (cs >=3D cqspi->num_chipselect) {
-> -			dev_err(dev, "Chip select %d out of range.\n", cs);
-> +		if (cs >=3D cqspi->num_chipselect ||
-> +		    cs >=3D CQSPI_MAX_CHIPSELECT) {
-> +			dev_err(dev, "Chip select %u out of range.\n", cs);
->  			return -EINVAL;
->  		}
+> Fixes: 732b903ea3e2 ("spi: spi-fsl-lpspi: fsl_lpspi_set_watermark(): use =
+FIELD_PREP() to encode FIFO Control register")
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
 
-OK this does fix the bug. Here is another proposal though:
-ensure at probe that cqspi->num_chipselect <=3D CQSPI_MAX_CHIPSELECT.
+Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de>
 
-Thanks,
+Maybe you can pick up the idea from:
 
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+| https://lore.kernel.org/all/20260319-spi-fsl-lpspi-cleanups-v2-3-02b56c5d=
+44a8@pengutronix.de/
 
+and mainline it too?
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--w7lrfqvj3zly6jiv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCav7WnQAKCRDMOmT6rpmt
+0iOtAP96lbtWoS0f8szegRd9Db3yGX+sxGt4hk5qCpKotsaz4wEAh1BsGAVsljfN
+Dt/bVCvNDsUdnWB31TAaa2LcPmUKqAc=
+=PVp0
+-----END PGP SIGNATURE-----
+
+--w7lrfqvj3zly6jiv--

@@ -1,83 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795085987;
-	b=MFmeUuIyimfo8q4ON3GR8tnE6VRKta69S2kib1KcX9cdfr/Xr3T334PWKJp0PGppD49W
-	 Z3yuIhymVkBub+1SnPcUrgGmO8DFZxSsAIFjYJgK7GV1/NL/YnFWY7YXy8IJTorNGPJoj
-	 5BZ/uCPdjpv4OI6VpqHLGehcwAlkKZyrmqqaWPNdQJhy5xu+nH9rOj6WSv4GD+G2T9e3I
-	 +D1SYNOXToxP7Z1smhohFJ/MKoBb+AD9zqIArOwEaL5SZNcMveaxU914tmokE2GhR+dVv
-	 sjn4f4RFF9qfxCoTyP0tzoQw6UQ4ZMmpklR/5MUOd4ljgguf6dQLO0dHM8TfMh7bZlA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795085987;
-	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=uZmBVCO/E+M3LGN206IhnPbUYGaF035jqFVGv/CZR9E=;
-	b=aiTVyaHLyiyFikWkIruH7OmMq5XGDB6L7vQy30PxOGrROV3gVRj0Fc0yFhUJNbfUsmz+
-	 jBJCWKMpcgywDkV6GtuOiokkwjCe3SjfMz27uKUssxdXUtwAYkLSu0iIKHW6dmLubQRiU
-	 5avGiUejF/TecKruMfMZ0uQOzMwno1mHyN+gnKNtttHug+vAs59vBR7seZUXiHnWGIUW6
-	 KfvtLw4Tif2giugB1KbqKygckQWnwufq6/ZQsv/8BZuJpBVvY828sJcjlLuhkqXNUj3vs
-	 +J7YPXODh81r0+cAh+PHnPAsxlzAUO+N6T5M0hZ+kE+nuSom+3J3VwK8cqoF/Lsmu2A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=dKHe7A8q;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795086130;
+	b=4U+OB3aKjU61KNePwz/+KNqU56xUu+HA98ZcD9NKFqJrwDEztxG7s124GkNLksiFKStc
+	 2ZPc56mRKVGQLu8h8w5+BFAdC6nP2M7rEw4/rGywK/mus6aaLhHiwlgp2NrCX7kyGPDMw
+	 rt2CpyWqHcWDFc3/v+YO+jgg1vjwYE24AfkA2dmMlxYfwaAUResPjZOo51nXmzEWw7Hvc
+	 ZhkpOcGzfiAKPol5uTI4FYNGElKIrpOw8PP/w9b9zjsz+hRSCE6A7xXtIudzoSdtOW7kW
+	 gpsnHXN2eSEF01ts5hs5MLFQFXlAfNnlW4qayadMRzOiE4PsWRYMHEuwn1ohR7eaz+A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795086130;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=iJ289iMCz5xAzHlapJusKbqEqrWvns+8UKRTR9Uk9iU=;
+	b=lYqRzghA8PJ4l1Mwt0zYewRcvEFFwAyCn4taZHxLfKNJAZR24VjAqrKHNOadamerxwk+
+	 aM3rtW3+ulw8QajM8iBtaMPuK5oz5tAUK5/dBOwawqSe8eBD58HZCJOpRsXDz1jHgoFrt
+	 /9bjtQ37w6AfImwyfMuBscpr8P3XhxalaKLCKIl7v+31g4RO1dvYUytzUU47Ou5qLXvcl
+	 VIY4MSAUaV0vsd2HfPTElW1J3dziL1mtGRxQ52jVB9CFRhXrmPhjWb76mXDMOUg8kpyT6
+	 7c/xkKiwT1BDTHi9BVGOaS4ZEfIs5/oXAjzwjDHxnTxD6P0u/3kRzy82n/6Xr/65yCw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GcDAX8ch;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DFD606A324
-	for <linux-spi@vger.kernel.org>; Thu, 19 Nov 2026 10:59:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 18DFD606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8865F606A320;
+	Thu, 19 Nov 2026 11:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=dKHe7A8q
-Received: from pengutronix.de (ptz.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::77])
-	(Authenticated sender: mkl@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 9EC68200F2F;
-	Thu, 19 Nov 2026 11:59:43 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795085983;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uZmBVCO/E+M3LGN206IhnPbUYGaF035jqFVGv/CZR9E=;
-	b=dKHe7A8q9Xpwv+VQkBFatz9PfnUs9YrS8wWbAqbXIgDw8ZeyOEv0U19drTGgkSgLLojebV
-	ch5WiFx5xevOhefB9+qkHqq/LYSNDiQ0Z/LOsPGbRkhzQZJHKdWm7Ail/45Yhfs/UmrhzD
-	/lCEj/1JMrnGYdTG+3BIqqarJdXzszhIRT/YJy1zeW8fMbifHhAQ9FIUZjEEZXEgTB2msA
-	KfHlQyW8DkERPX17sSa2jMGRQ9Zi2c9CdMVCB/aDkXmwESJMjBr72Wx1UFipIvZ8PZqCva
-	ZmEpzWStAoEJli4UqSUhlXZYSydaTytDtDzcoyqMJHLg2W2xVe31NHpVGkFAsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795085983;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uZmBVCO/E+M3LGN206IhnPbUYGaF035jqFVGv/CZR9E=;
-	b=L0KBMMz7rb7mBp/ydrpatG2oqaEsYVIdolV19kZBorMrwtclV3h8h2ff9UhwRxDwIXooAd
-	7nFxKpfXlava60tE2lmBDxLaAUvROT/lEUjLZUS0D6FnB2O7qjr5e7oJO8kOt8Hw90wSxR
-	IeJXdNs4QHFU99mgblEKzfNJtuX9J2RBZZABuLK3pATVoIWDpJccNoUYmiyP5hmotoG9VJ
-	hjq4bty9Flvg/YATQqjxdU4PothcT/5RgQrFJJXhgU24y4+0KlU6HhUIxaOXW+Eis01zzY
-	+3HdZ3L0m6N2SPn2YNpVO3/Wnc0HmC8fAfxoM7IG/qkCva0rIUakhq2OzFaiBw==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795085983; a=rsa-sha256;
-	cv=none;
-	b=Z7IqYLzL6AodbMdZCudDlRmnP8xJSry6QuSSGhBNZAGbGjVusyy/lk6fOQA+2ck4YOj/Bj
-	AoNecKPbgmGdwFxqmvIRusyqRi3FozRiCC3+jdm4oJYAx3LuJ5QfgXWZCnVHtXoPq9d1aT
-	uTZlQPfmbrngcrWI/pZpM1+dgQFsuejjKJYBulpW5ICCUD9FLkhjq6n4W4jkQTJfjSiIxg
-	XVUGMhMvAmbPEo3LhiWKO9cjVzQcvsCk+lhYME0jzvlajf7JaCPpByafg1zJaNPMBtPjTI
-	yw7KasOvVfjyat7iXlDWGNlX9CoiefrxNNnQbdkxb9dlGTZXwEiSXijp5AvpuA==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=mkl@pengutronix.de smtp.mailfrom=mkl@pengutronix.de
-Date: Thu, 19 Nov 2026 11:59:43 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: carlos.song@oss.nxp.com
-Cc: Frank.Li@nxp.com, broonie@kernel.org, linux-spi@vger.kernel.org, 
-	imx@lists.linux.dev, Carlos Song <carlos.song@nxp.com>
-Subject: Re: [PATCH] spi: fsl-lpspi: expand FCR TWATER and RXWATER bit fields
- to 4 bits
-Message-ID: <20261119-jumping-pompous-silkworm-a6e7df-mkl@pengutronix.de>
-References: <20261119101539.2536367-1-carlos.song@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GcDAX8ch
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E132A1F000C6;
+	Thu, 19 Nov 2026 11:02:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795086130;
+	bh=iJ289iMCz5xAzHlapJusKbqEqrWvns+8UKRTR9Uk9iU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GcDAX8chMsZcwHLAlbUXneBa+4Djex+cGrewl4QpZVADAJtpk/2QdeBi9SubUYoZo
+	 muDKRCNF/nXOrXp9robQVqMFCNz6aFhcqAsx/lMI3CVgx3pwY/EFcBi7lPEDL4YYBV
+	 XbdKu62wgd8VmCiOUzyAblklXJoW6aytT/Cr2ihON33oC0vKh+XHFP6UmOQ5xMtHBp
+	 5135ucs6byeFJHFJ8IHGYH+0x1pDu6aWOAjuSyw2oZidfnWkmp6HDwL9MMkEo7/DpK
+	 DbdEOQjQtGgQHkLLZ98jGpbomQ1WEn3LYpyOKQV57q9s2z+R4eGtXrl1oggk9UjoV8
+	 ll/6ZfOoL2GpA==
+Date: Thu, 19 Nov 2026 11:02:03 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Wang Yang <yang.wang@deepcomputing.io>
+Cc: Aurelien Jarno <aurelien@aurel32.net>, Yixun Lan <dlan@kernel.org>,
+	Benson Leung <bleung@chromium.org>,
+	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Guenter Roeck <groeck@chromium.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Sandie Cao <sandie.cao@deepcomputing.io>,
+	devicetree@vger.kernel.org, chrome-platform@lists.linux.dev,
+	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	broonie@kernel.org, yh_chung@aspeedtech.co
+Subject: Re: [PATCH 1/9] dt-bindings: bus: Add SpacemiT K3 eSPI controller
+Message-ID: <20261119-defy-stumbling-72b230220a49@spud>
+References: <20261118085742.1817536-1-yang.wang@deepcomputing.io>
+ <20261118085742.1817536-2-yang.wang@deepcomputing.io>
+ <20261118-backdrop-scrap-1bee34e06336@spud>
+ <av4iWQb33bya48G1@aurel32.net>
+ <20261119090553.1886090-1-yang.wang@deepcomputing.io>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -88,63 +73,59 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="w7lrfqvj3zly6jiv"
+	protocol="application/pgp-signature"; boundary="d3eRFCAKT41jyFTl"
 Content-Disposition: inline
-In-Reply-To: <20261119101539.2536367-1-carlos.song@oss.nxp.com>
+In-Reply-To: <20261119090553.1886090-1-yang.wang@deepcomputing.io>
 
-
---w7lrfqvj3zly6jiv
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
+--d3eRFCAKT41jyFTl
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] spi: fsl-lpspi: expand FCR TWATER and RXWATER bit fields
- to 4 bits
-MIME-Version: 1.0
 
-On 19.11.2026 18:15:39, carlos.song@oss.nxp.com wrote:
-> From: Carlos Song <carlos.song@nxp.com>
->
-> The original FCR[TWATER|RXWATER] fields were defined as 3-bit values,
-> limiting the FIFO watermark to values 0-7. This is sufficient for LPSPI
-> instances with 8-word FIFOs (like i.MX93) where watermark =3D FIFO_SIZE/2.
->
-> However, platforms like i.MX95 feature 16-word FIFOs requiring watermark
-> values up to 8, which exceeds the 3-bit field capacity. Expands both
-> TXWATER and RXWATER fields from 3 bits to 4 bits to support larger FIFO
-> configurations across various IMX platforms while maintaining backward
-> compatibility with existing 8-word FIFO implementations.
->
-> Fixes: 732b903ea3e2 ("spi: spi-fsl-lpspi: fsl_lpspi_set_watermark(): use =
-FIELD_PREP() to encode FIFO Control register")
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+On Thu, Nov 19, 2026 at 05:05:53PM +0800, Wang Yang wrote:
+> Hi Conor, Aurelien,
+>=20
+> > How is this "eSPI" different to the eSPI described in fsl,espi.yaml and
+> > implemented by a driver in drivers/spi?
+>=20
+> Thank you, Aurelien, for clarifying this. K3 uses the Intel-defined
+> eSPI interface intended to replace LPC. It is a different protocol from t=
+he
+> Freescale/NXP SPI controller described by fsl,espi.yaml.
 
-Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Ah I think this might be confusing af, because that device also
+supports what it calls "eLBC"...
 
-Maybe you can pick up the idea from:
+> On K3, the controller exposes a CPU-accessible window for the eSPI
+> Peripheral Channel. The EC client accesses its command, response
+> and memory-map regions through this window, rather than exchanging
+> ordinary SPI messages.
+>=20
+> The proposed controller driver handles clocks, resets, link
+> configuration and window setup. The EC transport handles the EC
+> register mapping and host commands. The distinction is therefore
+> the protocol and access model, rather than the use of MMIO itself.
+>=20
+> I will make the Intel eSPI terminology and this access model
+> explicit in the binding description.
 
-| https://lore.kernel.org/all/20260319-spi-fsl-lpspi-cleanups-v2-3-02b56c5d=
-44a8@pengutronix.de/
+Please take a look at a similar series from Aspeed and see if you can
+cooperate on creating something common between you:
+https://lore.kernel.org/all/20260313-upstream_espi-v1-0-9504428e1f43@aspeed=
+tech.com/
 
-and mainline it too?
+Thanks,
+Conor.
 
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---w7lrfqvj3zly6jiv
-Content-Type: application/pgp-signature; name="signature.asc"
+--d3eRFCAKT41jyFTl
+Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCav7WnQAKCRDMOmT6rpmt
-0iOtAP96lbtWoS0f8szegRd9Db3yGX+sxGt4hk5qCpKotsaz4wEAh1BsGAVsljfN
-Dt/bVCvNDsUdnWB31TAaa2LcPmUKqAc=
-=PVp0
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCav7XJwAKCRB4tDGHoIJi
+0jzJAQDtL5rkRZE8LnDVXeZtgQgA+RtqttjgRFyFtUphoHdWFAEA6xsUZag4jTnB
+9N7iFMdYFqfgcKj+Eu+uiTeCMD2HRg4=
+=jIrP
 -----END PGP SIGNATURE-----
 
---w7lrfqvj3zly6jiv--
+--d3eRFCAKT41jyFTl--

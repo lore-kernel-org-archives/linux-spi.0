@@ -1,60 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795079940;
-	b=Z48VC3Cv+lxEU5XcsP95yRw5xsjOQwPt3flR3hycaFsNKMTcbD5CbrMuUndD2a852apj
-	 Ap6rZ4MPTgBXhXNp/oFmxxh9bg55z1a9Y1g18lbcfPx0f+ybqzgq1XRsQ/1uB+u42kyyD
-	 t0zdpqa9TaEmJI0+sbrURgca7SyI+3VqST5Qo0GoQVyy3aIFq873J1/o6bIDP6zIz3inG
-	 ayaeVvcNtE/bKCwGAiTodtY5Qda2YmVqO6Z9YUr/Nca9m8HpIcwBWPhisin8UWEoJtRE3
-	 u0irwFpY4szyEJ57F7QM8a/SKD8J3fq0D+KLcWgGSnl6cQsY0YO9Oyn2OUQagV5KYXg==
+	t=1795079947;
+	b=Om8StK52N7r6bHhSOJKkzaAt0iwThTAwnf3sy5w/Agg2ihhs+6U3Q+CYTb2PGiv17AYv
+	 jY+QZzmo/e9jwXyqxVUmoQUyN0gbYGS4miqmepZ/qxRAxDZ74pRs2HuhpVUQuS0dmLd0G
+	 9X44uKH3VIKOg4T2UAkH/9baL7kGT6sQb8M5dXcayYiWMeC59AvIwIX1eXhbU1jRFN3vU
+	 zGuGFMB/FNUQKEunEqqQkhL80R4VIADvaIhZHzNLB11rKv+Qdn5PDGYRFkNzJ1BiKTHcr
+	 M8VRAQIfNQ+93r1EXKZju13hwO6XCleVJS4kViNbGo1pKZzUaDJuh/WYHhjtbeeBNKA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795079940;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	a=rsa-sha256; c=relaxed/relaxed; t=1795079947;
+	h=Received:DKIM-Signature:From:To:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=wWAHpRMjEIilTLG34gMrrF5Fp3ne+eOLzz4gXxJz6oM=;
-	b=IoAM6pjLvp9Y4EGawnrZSLvzdWovo8wYmoQD0v1I4rmC4HzZ+347xR+rip8vyMVI7YPf
-	 60bFmzDiJOIzGPLt4kXMo1/2Bkd1y/nBXJdh+iKprHiB+f+EKTkBd+MpmPq4TbD4sSaDm
-	 vVRjbQG4tJWGdas25XKj1CY7zc4krwevHIOGS887SijouDVi51OD3JvRFtIhvMfEsHMER
-	 U8aiBlqDwxOb85CcSzqv0Zy7ytbivjBMyTuPD7xp/GnzWaliZPKA0devMzcqX3ntbZKxg
-	 h20teAULP07ceJb3L5BHvnNCdbCfQ8sDgeYV2Su7bjHu9nKArRB8O9Y0Bk60Mu9QA3Q==
+	bh=biqqkhHSKDLivAE199nWl07d+bH5F/FM2/QeE750Lnc=;
+	b=iOCS3GgNR5hGC0sqTJk6VOBwxYLg+sTW9IyIKV4BI6uEoRtxC9z08qQITzrEzz/2SAFk
+	 3KvaGj/tp4xX+RGEShHtB2x08fwH1o3vEDbR1XDr97WS6hm0Si+80n+FaJYBQCU+Ij70w
+	 XkoUPRdrqbc7Da9XENfvkpBREXUWP4bLtTy5f0eyCVtQkQD3by6ezCyuIEvoilLOoABhM
+	 UwO3BdVcsBauklsqfB++57/IukWrPJT474lXGniUK7NPeRuk2o9etgmpcqceurgGUlLEW
+	 sVqkIwX6zhJ4c/RKt1bqjFB8iLTwWcFGR7guW3bOcYb6eLFYORGy6o4vwPuAot+WJ4g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZO3U2tRq;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="jBv/LfNc";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DFE260A2600;
-	Thu, 19 Nov 2026 09:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACB960A2605;
+	Thu, 19 Nov 2026 09:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZO3U2tRq
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E371F000C4;
-	Thu, 19 Nov 2026 09:18:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jBv/LfNc
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26CB61F000C6;
+	Thu, 19 Nov 2026 09:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795079940;
-	bh=wWAHpRMjEIilTLG34gMrrF5Fp3ne+eOLzz4gXxJz6oM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZO3U2tRqu5hdUq8RLfE9AL+8v5QM1DBGrFkHLz6okbyF3Yih3Ur3kT1WmETbMtLuy
-	 g6kncYPF2cy9PcZG0kGkqtcj/gQNzIO/pcpO3/pSV9IczkyLUW+YRbF3wZHX+SMCnp
-	 Ubr8Z+e4RmfVSmrZSkmJOZ8qD+fbwcING/YmcuErIMosTt8P+4/WL8Q+dv/QiRj4xS
-	 3rywm6ZydP+iqC6OXBl2Je7qVKnyj0zvm3QuhotvKx8044LQ93KqCEsnglIQXQYKqc
-	 FBH1FHQlKv2fXOmZR1BraD59/XZGA7iRCpLtgS4nzUK7AXdLcQ3z7vPBWfxI3xG74M
-	 G95Z7MOfIQTsw==
+	s=k20260515; t=1795079946;
+	bh=biqqkhHSKDLivAE199nWl07d+bH5F/FM2/QeE750Lnc=;
+	h=From:To:Subject:Date:In-Reply-To:References;
+	b=jBv/LfNczLlBtatsxgFl4q3x6ZmVxjyuAV8foP80+SHv+AW+H58ZuOSIO+U7CEMJT
+	 xDfVtQ3noguQ018XBWt8lMAX1ih1B1QOb0aeqjkjogYfkxgHSOhlUA1tVL+A7upbUW
+	 weV0Ut/FBhmDH8UfbqBB8eIdqk2wMjNvuJ8sRILa7hoP3qJcWTHwu67DnQKkROzPsw
+	 UaDxQIsNMcXvyxdv0h1dKFMoyGPo9x510Q3VeLE1OX8FbnrqGjVT+n2PRS6MATAQHp
+	 myBTh48hMWdWnQ/feztGrzodTY9CxbLU92ni/RW9O+94Ir+omkrvO46hXWMQeSpLLi
+	 9i0H0jcgygn9g==
 From: Lee Jones <lee@kernel.org>
 To: lee@kernel.org,
 	Mark Brown <broonie@kernel.org>,
-	Foon Tan <lftan@altera.com>,
-	Graham Moore <grmoore@opensource.altera.com>,
-	Murugan R <vadivel.muruganx.ramuthevar@intel.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Pratyush Yadav <p.yadav@ti.com>,
-	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
-	Dhruva Gole <d-gole@ti.com>,
+	Jisheng Zhang <jszhang@kernel.org>,
+	Konrad Kociolek <konrad@cadence.com>,
+	Jayshri Pawar <jpawar@cadence.com>,
+	Parshuram Thombare <pthombar@cadence.com>,
+	Witold Sadowski <wsadowski@marvell.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 06/10] spi: cadence-quadspi: Bound chip select against f_pdata array size
-Date: Thu, 19 Nov 2026 09:17:18 +0000
-Message-ID: <20261119091810.3440619-7-lee@kernel.org>
+Subject: [PATCH 07/10] spi: cadence-xspi: Zero the tail word in m_iowriteq()
+Date: Thu, 19 Nov 2026 09:17:19 +0000
+Message-ID: <20261119091810.3440619-8-lee@kernel.org>
 X-Mailer: git-send-email 2.56.1.708.g77570a6a1d-goog
 In-Reply-To: <20261119091810.3440619-1-lee@kernel.org>
 References: <20261119091810.3440619-1-lee@kernel.org>
@@ -69,55 +66,36 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-cqspi_setup_flash() uses the chip select taken from each flash child
-node's reg property to index the fixed-size cqspi->f_pdata[] array,
-which has CQSPI_MAX_CHIPSELECT entries.
+m_iowriteq() writes data which is not 8-byte aligned, as well as any
+trailing bytes which do not make up a full 64-bit word, through a stack
+temporary.  Only min(len, 8) bytes are copied into that temporary
+before all 8 bytes are written to the SDMA FIFO with writeq(), so when
+the remaining length is not a multiple of 8, up to 7 bytes of
+uninitialised kernel stack are written to the FIFO.
 
-The range check now compares the chip select against num_chipselect,
-which comes straight from the num-cs property and is never clamped to
-CQSPI_MAX_CHIPSELECT.  A device tree which specifies num-cs greater than
-CQSPI_MAX_CHIPSELECT together with a flash node at a correspondingly
-high reg value therefore causes writes beyond the end of f_pdata[].
+Zero-initialise the temporary so that the padding bytes are always
+zero.
 
-Reject chip selects which do not fit in f_pdata[] as well as those which
-exceed num-cs.  While at it, store the chip select in a u32, matching
-of_property_read_u32(), so that values with the top bit set cannot
-become negative and slip past the bounds checks.
-
-Fixes: 0d62c64a8e48 ("spi: cadence-qspi: assert each subnode flash CS is valid")
-Closes: https://sashiko.dev/#/bug/linux-cd463fc8-1b94-4bcf-8d06-fae21b88894c
-Cc: stable@vger.kernel.org
+Fixes: 75128e2a14a9 ("spi: cadence: Add Marvell SDMA operations")
+Closes: https://sashiko.dev/#/bug/linux-a7158f26-3bb5-4ac2-913d-482e746b5a02
 Signed-off-by: Lee Jones <lee@kernel.org>
 ---
- drivers/spi/spi-cadence-quadspi.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/spi/spi-cadence-xspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 844df97111d7..fbb917c104b0 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1751,7 +1751,8 @@ static int cqspi_setup_flash(struct cqspi_st *cqspi)
- 	struct platform_device *pdev = cqspi->pdev;
- 	struct device *dev = &pdev->dev;
- 	struct cqspi_flash_pdata *f_pdata;
--	int ret, cs, max_cs = -1;
-+	int ret, max_cs = -1;
-+	u32 cs;
+diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
+index 72852849ba27..c4fcbf5ae091 100644
+--- a/drivers/spi/spi-cadence-xspi.c
++++ b/drivers/spi/spi-cadence-xspi.c
+@@ -1088,7 +1088,7 @@ static void m_iowriteq(void __iomem *addr, const void *buf, int len)
+ 	}
  
- 	/* Get flash device data */
- 	for_each_available_child_of_node_scoped(dev->of_node, np) {
-@@ -1761,8 +1762,9 @@ static int cqspi_setup_flash(struct cqspi_st *cqspi)
- 			return ret;
- 		}
+ 	while (len) {
+-		u64 tmp_buf;
++		u64 tmp_buf = 0;
  
--		if (cs >= cqspi->num_chipselect) {
--			dev_err(dev, "Chip select %d out of range.\n", cs);
-+		if (cs >= cqspi->num_chipselect ||
-+		    cs >= CQSPI_MAX_CHIPSELECT) {
-+			dev_err(dev, "Chip select %u out of range.\n", cs);
- 			return -EINVAL;
- 		}
- 
+ 		memcpy(&tmp_buf, buf, min(len, 8));
+ 		writeq(tmp_buf, addr);
 -- 
 2.56.1.708.g77570a6a1d-goog
 

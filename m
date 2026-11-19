@@ -1,95 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795115409;
-	b=kC4IMA1jozrGmA1y1eKrSDym9LFMLhjOjvXv4D17p9C6SRzzVYgDaKc39ye1hI3D7kJ7
-	 ryFNdf2pyj6haqwfbltxXtGJVmRJxsZAmFICcJAA1jwvdNSzt8T7fxzRIFOG9YimiQZ/5
-	 XfOc4QZCNTYEQyXTT+KHh6U4BDG/o5E0U4SuV+QrF3jY6BRShxfo10hTS0765ICkDnOpM
-	 bJxx/T2if20ghYTc4myK5719gN0P7Myn4XI4Q62pT+mCywBcKLRI18eWAHVTYHqZv25Bi
-	 rnO4GFya3vjH3EruHgfw3Oi5lBwOIanuMQ/mDORZweSl32o4F+AVOtmlTP8kO66bbCg==
+	t=1795115410;
+	b=2JJV8xagKOUznqcxmtm/srhFfdbeRvnKvv4VUU95ZLFIzW83tHUZKfrgsykAwPtTHeWw
+	 ZFPaAj8DHFB22ZF3xCT37UdKLaO1NsN70yY5MrqsGlyt7IpbUDaGQjhZmoxJZ1318tYY/
+	 DztqEAqGStGzZIsaDT9+QSkp7mXyCaPNRTdRSoTsHr+bz8WiO/lJWzLCA8G44pm3CXGP8
+	 FRCD1TRC92tu2AnzRXpr0B1l1x0tpb/x9dY/xyn1IU30aJn4mR7fki58AWQI3VQd7f+5G
+	 CUzvJOk4aIUVRYzA3mzmrf3E6uBUqGRod6qRtS+dPe/j0Csliprl9TlCOCx/8qUUHIw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795115409;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795115410;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=OWfWBSws9gh+iPoR7/7oxTfW1366liBJpIftUQNS3TI=;
-	b=0SD29jVf98n2BUgep4a44Gl272SaPFnEKTLvKpD//PyRQvKp1moZpWIOUuDZcZ6wS0bF
-	 5Jaz4TdZCv8wj7cY6rdBPHbDfqNyOAet7um0ZplOW6CKZUQJsOONhJwTX1mA5+XLZqxpM
-	 V9HpmEn/TxSPOwx+9FydgKidaFIEc8hrhql6BGj+XkjWuKLQKHNxDK8ms/AXafH+BbYip
-	 mj5Ixi6OSbBES3Btkj7KYTA15O6b5ic8t16X7RWTrBtg1byBv9PTSvCsSpAO632Lv3WLL
-	 y77w4KiPm75WhZGjXJ0PFr3isKrRv2c1VXbA/dy/F5tGhPc/Eeg4sX+UH18pB+Cl87A==
+	bh=AqdjgnKmmMIoNLYpRir+CTtV50ag4vDAldPfTLA3ruk=;
+	b=h7umLsRtFa635l2lmG2pMAiO7xj8zsuhA1BS5tBNpmNSlQJ40l6UFVjRHcCJQJwDTDeG
+	 48286ZRxhCRcB3eyC2T5pfG60c2tqQDb4bXLETIQy00Y8vtGzvYKzr5T8A5zup1KTZwJs
+	 MQm6h8UdNibQmuueE6K8/E2K6HY3H9vKI5dAtJR5+VNZqcrbj+vZgl4FvoRbiMvLPXT8J
+	 r1k65Dsz73p9sYl16fygYply5Zn4ELq4PjjNpm654gFauyzBdgL+VS+poOv5uTDgjSM5b
+	 TWSjdfwvupi7Qy03J5BTcO7y36tAYTm0tW7iD1bUx7H7vBs2ySeMoLxQFRpDwPxvJBA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="g/nsiqsd";
-	arc=none smtp.remote-ip=209.85.215.175
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Q2YhFl1g;
+	arc=none smtp.remote-ip=209.85.216.41
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3CC606A33D
-	for <linux-spi@vger.kernel.org>; Thu, 19 Nov 2026 19:10:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DC3CC606A33D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E0360A2603
+	for <linux-spi@vger.kernel.org>; Thu, 19 Nov 2026 19:10:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88E0360A2603
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=g/nsiqsd
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cde1479f76fso73364a12.0
-        for <linux-spi@vger.kernel.org>; Thu, 19 Nov 2026 11:10:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Q2YhFl1g
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3b3a914e4c8so105331a91.0
+        for <linux-spi@vger.kernel.org>; Thu, 19 Nov 2026 11:10:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795115408; x=1795720208; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1795115409; x=1795720209; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=OWfWBSws9gh+iPoR7/7oxTfW1366liBJpIftUQNS3TI=;
-        b=g/nsiqsdt4pH/tzBHE10yBClAItvjaLryQElgWH80JZmkqIvvDL1r10plqAcCXico5
-         mOJMbZBqyrQIX5gIDYrNv3ltUPLHCFFKjjq0z7n07DkPSGNT8OSpbx8+8wPGW4mHgpkb
-         MxZyFbSHhym0sV7UIudMlWJok1NPjVZIoiWwSNko3m2AMEM1Rufx2lsk/oT+AGXVpkfL
-         gv1MZjw9rMmvJSKLSBe4JSYcx+OGP6hzJ20yKs1jfTaQu5LwHJNcluI/H1dTb7cNvsP6
-         szl7egJk/kq7eofTpBMsq3hufiD2K1CtZcF+FhKJ/vjfxmADLHMVoF7RaMDFWPQvxtMj
-         9bUQ==
+        bh=AqdjgnKmmMIoNLYpRir+CTtV50ag4vDAldPfTLA3ruk=;
+        b=Q2YhFl1gRg0pEZTfWcKdSChaxi03zDeKeWn+6UN77U1MC207fnvjmPAwiv+E9RUstL
+         6LqedcqDpaujfYx/LQnOcARp5T1aelPwl3Yd63rGEBOGs4FJ7ktgtt5LiqZ6oPT8vox8
+         LZgEEZaxgbVrlMRftKV1tfCnBLEoCz0dhaPWkPfj1kPnDba1W/6VgbcnUuJo0klaYV4M
+         ak/Xc02VaqXsBd3vlkGAvESwy4NwUR+hJB0z4fag9SEdUbb3Eik5mMSD5vtTWZUHT6c4
+         MuTA5Yqb4cRAWYjnH7/9qfck28Le7SsPXeJvhxmhzMV9Ujkio2wsbqHoCtbNn92r7OJW
+         4ycA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795115408; x=1795720208;
+        d=1e100.net; s=20260707; t=1795115409; x=1795720209;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OWfWBSws9gh+iPoR7/7oxTfW1366liBJpIftUQNS3TI=;
-        b=ZeJbzsa/DNPaV3bO3nYlVR8Md8FnBb9up+fUcABLx/D7uOSVcBrAOohynVRnCbzTrb
-         U+RxwlXkeqJAeUBtoUW5eMM6c1haJEiTpJbjRIvImwfpB5l8oHSG9JDslBbAmVAXl5vw
-         /3r7C4MtnPVhpl3Fx9sdG6f42predsSj8mvKaNwhSgzLMZAlB3EqjYUxNcxes3t6M2dX
-         2UilGuxAIEEahL5jvPVWIBiaAOOU1LipskmuoQ0S6bskN3XRUFhSlyxVkX/nk7eegiRk
-         I4Y9NGUtwdhkhjtt23aFodtRr9P3Ae4wNpKVEnv+OpfGNHvLNd6hHN7rsKbcA0Wv9APf
-         UxJw==
-X-Gm-Message-State: APuU4Z/8u1g9aa1wwy53GsWvrrROQc6fb/4up+g4EYgNN7rPQ0K9TVj0
-	DdRtFcQUZxGzSA4rtQ51tKvxjl1zsds/VqlSf5Iq40ozO5MV4y0AUY83
-X-Gm-Gg: AZFdTZd7UsBI3CfVTx3hKvxxHfRgGQWzSSs9te0JahoGhPCgYA+OfGdDDUUd4FIFiK+
-	VAeEVM/awbOUsSF8mA2RFVA39EBmbdl6Gwzzskwgb8MbrIn9/Xs4UqvjwMZCeFswCbX7xDl/6AQ
-	l5mM9Mx8SqJtuMjfWldWoMtFrEnUfUnFsU1Z6O9Mk0Nx8Z1WC/5zPI5mOwPbGF4oCw0a78e7Nck
-	OWUGvoYallFoZUJ9PyBxfz+SIXPIPLFVK3iwaBtKpkC/+zUqM/66sOqSFZcY3xU6UF5dTLhNaLJ
-	+c4x9ZeeyRHvic+tuACDyM09i7HXSZYo1j3+XyhG/XBaJ/QHgG4hdZ2F0uFNTTIr5APmiXxqXvz
-	rDwUyrRpPx2fJ7JoxrfBFaPxSMlsToE6v9knvTjFDXFeONGS9YpqhjDT4T8t9RPvrJu/1aQjF1K
-	tyhSRTN7LzmWIP35tbcIq+KStqZqxSB2ajzOkf7ITv49uQgk0jDyH/makrWc4GUmbDhks+gRXB5
-	jAER4j/0ssXITLJMQhbwFGJ61vKBt1EEJZ9ZEo4C4R/i5eTJB1hBM+q8CyNBQzmN3KzWcAOymCv
-	uI3XwrZfMmrSZaxHre7U86GpQnWKgLtSIepMcXkZXbi9Hg2UZMBmT6yaOHcxmpOccDcJsZC2B1f
-	SaLj5V8Wfi4AvDzX0iKHjXgX2XP1/ZrnqYipbUGYzPYD6pGgmUSMG/ku7Wmex2aA7Hi/VbHem/T
-	Qev0MXR3RXja3H+7tKNGs/DvfLj7kvZGaXdMhmE8qY6tEPoLE/TIOaseOLWNPABcayiPmGpl9RS
-	pl3285MOBifvvU=
-X-Received: by 2002:a17:90b:2f8f:b0:3b3:bd07:665b with SMTP id 98e67ed59e1d1-3b41c9325b1mr290487a91.40.1795115408162;
+        bh=AqdjgnKmmMIoNLYpRir+CTtV50ag4vDAldPfTLA3ruk=;
+        b=O0pbT8cXb6jz8n2glJX7hP5D76cCu3H3oCKa+MkJOL4N0/PoGOM8OZ8j2aKvZsTq4L
+         tYNfWeDuR7AcMxuvoF/CDtjdiF3nhg6VPN0A1UFC818BT99CPAkB4dtNBLXgBbkbRMri
+         NBtU/0BWuKaAc1T6bVUOViw2H4f+kUR84TqDg9IJXujqzwEIY6dhPlksBXlJV1pJMBhM
+         iyFt1JiP9JsQwnHwVdhxba7XN40ffxZk70RZvclGJXE7vSbgUL45RDvUJ/QJ6L0pgHf7
+         y49x6EbtqFzo9MhkcxwmlqgDhftf/E5c3RA6auieRdtzz1yDPUdthlXUuLI7hRuF0f6f
+         Msmw==
+X-Gm-Message-State: APuU4Z+CX8X05kL8t/WPfemGKC0IY51nHuXgZWcmz3ERZoIA7XFVQBlO
+	/vyiXLdKdfYpf6xKgSb5S65VDf0ydhgb8VO8P4tCCOAoDjBjUUvnEbAJ7OMTcTC3cPtR2g==
+X-Gm-Gg: AZFdTZeYzVGunfH1oADNRZnas9/azDX/nkliTprUJjRH176136/OKSTgbJCou+ddsic
+	m4yU3zY8rELNORRJ240hXJp4xbt+D2QJVVJm762YkmJWUNcEaIUZXj35VeduAzH9hBmsFL59lYN
+	7IDS+a6DYjhzPqRJ5zukJQYMOD8LE1k8pN8sMrkw2F3p77IGULr8JyKyhvZBXyTkjIFmUeDkaCk
+	InD8Fy24hKNQ5u9d93G6R3Z4PDipg7IAo97j+YUwFuls204GHy88yxkPcbxDp0Nqt8Sm2menS2g
+	xWUyAdKHZEuIHYQdrnY9kEzT9IxC2thPZqJe9jNf36ZRSw0wHBO70+YO/Fua8IO+Alx8GJVxYWv
+	sY3wnXeWo2pjXT2PQWBkJTjRWehZCia61thqimt8MfMpjcGUDzub4bQTP1qIyrZUuR/8oBaHmPU
+	luCOqdwVbWVINXj1ng0GbEuXIZKub+rfUPExlixKwBI4uon6gBLycrJpi7Ewm1IHrc3huIF25JN
+	UEhOf001x+oTRTraUMiUwraJ/JsDudnAMfpuJBjONDfpgFmwpRcpNyP5vtToRpsYpl+3NE8JOdk
+	2ZxN0Cki1ll/XjaZrZpvJ4i/4vKVOB1xUVF5vRSzsBrnR7Gy5Nd7Q7cLKMWi+Zow0Nj/k323xiH
+	QCUnQ6kqK4yLNtkSAMXy2OIOGIWQl2iemfx3diMGB+uwYTb8ChdaUe3nTtVrKeRw9DmzItvcWR0
+	sNwx/NNa3wLBRdGLB1UBcAOVHcvH1bSsZTHCEAbv4c9xEx5lAkqy5+lsuBSV9Umc5NsVd11HWFb
+	1WhrVaaWfdchaA=
+X-Received: by 2002:a17:90b:3d4d:b0:3ac:7556:8eed with SMTP id 98e67ed59e1d1-3b41c956552mr262117a91.44.1795115408887;
         Thu, 19 Nov 2026 11:10:08 -0800 (PST)
 Received: from josephctchan-96c-1t.c.googlers.com.com (95.100.125.34.bc.googleusercontent.com. [34.125.100.95])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b405d1361fsm3678174a91.6.2026.11.19.11.10.07
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b405d1361fsm3678174a91.6.2026.11.19.11.10.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2026 11:10:07 -0800 (PST)
+        Thu, 19 Nov 2026 11:10:08 -0800 (PST)
 From: Joseph CT Chan <jctchan@gmail.com>
 To: Mark Brown <broonie@kernel.org>
 Cc: linux-spi@vger.kernel.org,
 	David Lechner <dlechner@baylibre.com>,
 	Bart Van Assche <bvanassche@acm.org>,
-	Joseph CT Chan <josephctchan@google.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 1/2] spi: spi-ti-qspi: finalize message on transfer error
-Date: Thu, 19 Nov 2026 19:10:00 +0000
-Message-ID: <20261119191001.878454-2-jctchan@gmail.com>
+	Joseph CT Chan <josephctchan@google.com>
+Subject: [PATCH v3 2/2] spi: spi-ti-qspi: add a KUnit test for transfer error finalization
+Date: Thu, 19 Nov 2026 19:10:01 +0000
+Message-ID: <20261119191001.878454-3-jctchan@gmail.com>
 X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
 In-Reply-To: <20261119191001.878454-1-jctchan@gmail.com>
 References: <20261119191001.878454-1-jctchan@gmail.com>
@@ -106,52 +105,263 @@ Content-Transfer-Encoding: 8bit
 
 From: Joseph CT Chan <josephctchan@google.com>
 
-When ti_qspi_start_transfer_one() hits an error in qspi_transfer_msg(),
-such as a transfer timeout (-ETIMEDOUT), it unlocks qspi->list_lock and
-returns -EINVAL directly without writing QSPI_INVAL to QSPI_SPI_CMD_REG,
-setting m->status, or calling spi_finalize_current_message(host).
-Because the message is never finalized, spi_sync() or the spi_async()
-callback waits forever on queued transfers. If spi_sync() took the
-no-queue path, it returns -EINPROGRESS instead of the error, and the
-message's optimize state is never released. The frame is also left
-open, because the QSPI_INVAL write that ends it is skipped.
+Add a KUnit test for ti_qspi_start_transfer_one() covering the transfer
+error handling path.
 
-Set status to the transfer error and leave the transfer loop, so the
-error goes through the existing tail: unlock list_lock, write
-QSPI_INVAL, set m->status, and finalize the message. This fixes both
-paths, and the caller now gets the error from qspi_transfer_msg()
-instead of -EINVAL or -EINPROGRESS.
+On ARCH=um, the test emulates the TI QSPI controller MMIO registers
+with logic_iomem and leaves QSPI_SPI_STATUS_REG returning zero so that
+ti_qspi_poll_wc() times out with -ETIMEDOUT. A single spi_sync() call
+verifies that:
+- spi_sync() returns -ETIMEDOUT,
+- msg.optimized is false (the message was finalized), and
+- QSPI_INVAL was written to QSPI_SPI_CMD_REG (the frame was ended).
 
-Tested at runtime with KUnit (spi_ti_qspi, ti_qspi_test, added later in
-this series) by injecting a QSPI_SPI_STATUS_REG WC poll timeout
-(-ETIMEDOUT) via logic_iomem emulated MMIO on ARCH=um.
+On configurations without CONFIG_INDIRECT_IOMEM or with CONFIG_HAVE_CLK
+enabled, the test calls kunit_skip() without registering any device.
+
+The test is not added to drivers/spi/.kunitconfig because building
+SPI_TI_QSPI on UML or x86_64 requires CONFIG_COMPILE_TEST=y, which
+would enable and alter many unrelated config options for every SPI
+KUnit run. Run it with:
+
+  ./tools/testing/kunit/kunit.py run --kunitconfig=drivers/spi \
+          --kconfig_add CONFIG_COMPILE_TEST=y \
+          --kconfig_add CONFIG_SPI_TI_QSPI=y \
+          --kconfig_add CONFIG_SPI_TI_QSPI_KUNIT_TEST=y
 
 Developed with help from the Claude and Gemini AI assistants.
 
-Fixes: 505a14954e2d ("spi/qspi: Add qspi flash controller")
-Cc: stable@vger.kernel.org
 Signed-off-by: Joseph CT Chan <josephctchan@google.com>
 ---
-v3: Rebased on spi/for-7.5. Fixed the commit message: the old code returns -EINVAL, not ret.
+v3: Rebased on spi/for-7.5; dropped the drivers/spi/Makefile change (already
+    includes tests/) and left drivers/spi/.kunitconfig unmodified (pass
+    CONFIG_COMPILE_TEST=y, CONFIG_SPI_TI_QSPI=y, and
+    CONFIG_SPI_TI_QSPI_KUNIT_TEST=y via --kconfig_add instead); moved
+    logic_iomem checks out of Kconfig depends and skipped via kunit_skip()
+    when !INDIRECT_IOMEM || HAVE_CLK; removed the stale
+    pm_runtime_get_noresume() calls (ti_qspi_remove() no longer calls
+    pm_runtime_put_sync() after commit 8b8678d3e894); reduced the test to
+    one fast KUNIT_CASE checking spi_sync() == -ETIMEDOUT, !msg.optimized,
+    and QSPI_INVAL (removed async, recovery, and tautological m->status
+    checks and the optional second MEM resource).
+v2: Trimmed the comments.
 
- drivers/spi/spi-ti-qspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/Kconfig                   |  12 ++
+ drivers/spi/tests/Makefile            |   1 +
+ drivers/spi/tests/spi-ti-qspi-kunit.c | 172 ++++++++++++++++++++++++++
+ 3 files changed, 185 insertions(+)
+ create mode 100644 drivers/spi/tests/spi-ti-qspi-kunit.c
 
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index 7e796aafd2bb..9e270c30d0d2 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -718,8 +718,8 @@ static int ti_qspi_start_transfer_one(struct spi_controller *host,
- 		ret = qspi_transfer_msg(qspi, t, transfer_len_words * wlen);
- 		if (ret) {
- 			dev_dbg(qspi->dev, "transfer message failed\n");
--			mutex_unlock(&qspi->list_lock);
--			return -EINVAL;
-+			status = ret;
-+			break;
- 		}
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index a7b343d124a9..7809acbac35b 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -1258,6 +1258,18 @@ config SPI_TI_QSPI
+ 	  This device supports single, dual and quad read support, while
+ 	  it only supports single write mode.
  
- 		m->actual_length += transfer_len_words * wlen;
++config SPI_TI_QSPI_KUNIT_TEST
++	bool "KUnit test for TI QSPI controller driver" if !KUNIT_ALL_TESTS
++	depends on KUNIT=y && SPI_TI_QSPI=y
++	default KUNIT_ALL_TESTS
++	help
++	  This option builds the KUnit test suite for the TI QSPI controller
++	  driver. It verifies that a transfer timeout finalizes the message
++	  with -ETIMEDOUT and writes QSPI_INVAL to end the frame. The test
++	  runs only where MMIO can be emulated (UML) and is skipped elsewhere.
++
++	  If unsure, say N.
++
+ config SPI_TLE62X0
+ 	tristate "Infineon TLE62X0 (for power switching)"
+ 	depends on SYSFS
+diff --git a/drivers/spi/tests/Makefile b/drivers/spi/tests/Makefile
+index 6dbf53643619..a5a8fc9435d4 100644
+--- a/drivers/spi/tests/Makefile
++++ b/drivers/spi/tests/Makefile
+@@ -2,3 +2,4 @@
+ 
+ obj-$(CONFIG_SPI_DMA_KUNIT_TEST) += spi-dma-kunit.o
+ obj-$(CONFIG_SPI_CORE_KUNIT_TEST) += spi-core-kunit.o
++obj-$(CONFIG_SPI_TI_QSPI_KUNIT_TEST) += spi-ti-qspi-kunit.o
+diff --git a/drivers/spi/tests/spi-ti-qspi-kunit.c b/drivers/spi/tests/spi-ti-qspi-kunit.c
+new file mode 100644
+index 000000000000..30fb5771dcb9
+--- /dev/null
++++ b/drivers/spi/tests/spi-ti-qspi-kunit.c
+@@ -0,0 +1,172 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <kunit/test.h>
++#include <linux/errno.h>
++#if IS_ENABLED(CONFIG_INDIRECT_IOMEM)
++#include <linux/logic_iomem.h>
++#endif
++#include <linux/platform_device.h>
++#include <linux/spi/spi.h>
++
++#define QSPI_SPI_CMD_REG	0x48
++#define QSPI_INVAL		(4 << 16)
++
++struct ti_qspi_test_ctx {
++	struct platform_device *pdev;
++	struct spi_device *spi;
++	struct spi_message msg;
++	struct spi_transfer xfer;
++	u8 tx[4];
++};
++
++static bool g_inval;
++
++static bool ti_qspi_can_run(void)
++{
++	return IS_ENABLED(CONFIG_INDIRECT_IOMEM) && !IS_ENABLED(CONFIG_HAVE_CLK);
++}
++
++#if IS_ENABLED(CONFIG_INDIRECT_IOMEM)
++static bool g_region_registered;
++static struct resource g_iomem_res = DEFINE_RES_MEM(0x30000000, 0x1000);
++
++static unsigned long ti_qspi_io_r(void *p, unsigned int off, int sz)
++{
++	return 0;
++}
++
++static void ti_qspi_io_w(void *p, unsigned int off, int sz, unsigned long val)
++{
++	if (off == QSPI_SPI_CMD_REG && (val & QSPI_INVAL))
++		g_inval = true;
++}
++
++static const struct logic_iomem_ops g_iops = {
++	.read = ti_qspi_io_r,
++	.write = ti_qspi_io_w,
++};
++
++static long ti_qspi_map(unsigned long o, size_t s,
++			const struct logic_iomem_ops **ops, void **p)
++{
++	*ops = &g_iops;
++	return 0;
++}
++
++static const struct logic_iomem_region_ops g_rops = {
++	.map = ti_qspi_map,
++};
++
++static int ti_qspi_suite_init(struct kunit_suite *s)
++{
++	int ret;
++
++	if (!ti_qspi_can_run() || g_region_registered)
++		return 0;
++
++	ret = logic_iomem_add_region(&g_iomem_res, &g_rops);
++	if (!ret)
++		g_region_registered = true;
++	return ret;
++}
++#else
++static int ti_qspi_suite_init(struct kunit_suite *s)
++{
++	return 0;
++}
++#endif
++
++static int ti_qspi_find_ctlr(struct device *d, void *data)
++{
++	*(struct spi_controller **)data = container_of(d, struct spi_controller, dev);
++	return 1;
++}
++
++static int ti_qspi_init(struct kunit *t)
++{
++	const struct resource res[] = {
++		DEFINE_RES_MEM(0x30000000, 0x1000),
++		DEFINE_RES_IRQ(1),
++	};
++	struct ti_qspi_test_ctx *ctx;
++	struct spi_board_info info = { .modalias = "ti-qspi-test" };
++	struct spi_controller *ctlr = NULL;
++	struct platform_device *pdev;
++
++	if (!ti_qspi_can_run())
++		return 0;
++
++	g_inval = false;
++	ctx = kunit_kzalloc(t, sizeof(*ctx), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(t, ctx);
++	t->priv = ctx;
++
++	pdev = platform_device_register_simple("ti-qspi", -1, res, ARRAY_SIZE(res));
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(t, pdev);
++	ctx->pdev = pdev;
++
++	device_for_each_child(&pdev->dev, &ctlr, ti_qspi_find_ctlr);
++	if (!ctlr) {
++		platform_device_unregister(pdev);
++		ctx->pdev = NULL;
++		KUNIT_FAIL_AND_ABORT(t, "TI QSPI controller device not found");
++	}
++
++	ctlr->max_speed_hz = 50000000;
++	ctx->spi = spi_new_device(ctlr, &info);
++	if (!ctx->spi) {
++		platform_device_unregister(pdev);
++		ctx->pdev = NULL;
++		KUNIT_FAIL_AND_ABORT(t, "Failed to create spi child device");
++	}
++
++	memcpy(ctx->tx, "ABCD", sizeof(ctx->tx));
++	ctx->xfer.tx_buf = ctx->tx;
++	ctx->xfer.len = sizeof(ctx->tx);
++	spi_message_init_with_transfers(&ctx->msg, &ctx->xfer, 1);
++	return 0;
++}
++
++static void ti_qspi_exit(struct kunit *t)
++{
++	struct ti_qspi_test_ctx *ctx = t->priv;
++
++	if (!ctx)
++		return;
++	if (ctx->spi)
++		spi_unregister_device(ctx->spi);
++	if (ctx->pdev)
++		platform_device_unregister(ctx->pdev);
++}
++
++static void ti_qspi_test(struct kunit *t)
++{
++	struct ti_qspi_test_ctx *ctx = t->priv;
++
++	if (!ti_qspi_can_run())
++		kunit_skip(t,
++			   "needs UML MMIO (CONFIG_INDIRECT_IOMEM) and no clock framework");
++
++	KUNIT_EXPECT_EQ(t, spi_sync(ctx->spi, &ctx->msg), -ETIMEDOUT);
++	/* Message must be finalized and unoptimized even when a transfer fails. */
++	KUNIT_EXPECT_FALSE(t, ctx->msg.optimized);
++	/* QSPI_INVAL must be written to terminate the frame on error. */
++	KUNIT_EXPECT_TRUE(t, g_inval);
++}
++
++static struct kunit_case ti_qspi_test_cases[] = {
++	KUNIT_CASE(ti_qspi_test),
++	{}
++};
++
++static struct kunit_suite ti_qspi_test_suite = {
++	.name = "spi_ti_qspi",
++	.suite_init = ti_qspi_suite_init,
++	.init = ti_qspi_init,
++	.exit = ti_qspi_exit,
++	.test_cases = ti_qspi_test_cases,
++};
++
++kunit_test_suite(ti_qspi_test_suite);
++
++MODULE_DESCRIPTION("KUnit test for TI QSPI controller driver");
++MODULE_LICENSE("GPL");
 -- 
 2.56.0.679.gc527c65306-goog
 

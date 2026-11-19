@@ -1,55 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795126492;
-	b=c6vMuQQGqUKBvkWZ5zv/OtqYGU8oV3ru66Uv41ovNs5PKFpB3ejcmid91uc1IOnUplJx
-	 3YaBSBlnp16+MStJdCRMeEOtOIuX8dfRSzAYo1/jCEyT9TOg795zqg9ag8VGo5yauf147
-	 CcIwkMDh73q024uO15qlB6TOvpVzmLHmh5KL9QFNIdNDuy7uvjRUOThbWTTm1wHiBup5f
-	 tzu/LkMly1Uk1FQSfb5P8NijdD69yiUhiTEihGirOOKh8DvuevR+FY0ujVTUNF35vgm0q
-	 fy33Wv8FIVp6R2VA48eqLmmbylO7ZibG3/mlifyuXGnYwLGq9GortmIk2+IISOVP2ig==
+	t=1795126805;
+	b=om03VdZxnaCz513cDx3v8QrS2ualuGltMtlPynH0f5ovYBg9ErICqZrBEN0TC4TyEa97
+	 6uhKwUu0zMAnHyY+nOj8R1sKRxhK0zIHGrAgBwuqkeqXDA82Xtx7E1rL0kkAG42gZBcBR
+	 n4AFjen3fJtmHS0MzDYJWwgiXHx6YLhTAYZ0fFIqVtLTkSCSOW0AlVdA53O2cJekUimw8
+	 XUfa7ThAdXk6l8UwRkU2Q/CuhIK7kmaliThytVYbaopPusWcsRSIkiEDDpngV/lNA+39o
+	 qLj/lWFVJgmO8iDf8L8tzScxrIg2doNmO6aHfhb9V8z4R/Isa8k3a0m4xBWgF5kaWGg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795126492;
-	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
-	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=fd/ERjmKCn8dZN/jdExfBIcTymNZ18o9U5B31DslFGo=;
-	b=qdSkovejmkdtx47yQaWp9ET7CbqLMNngqVBYyCJbv+LumUlIO9HrNzKxbY+PrJblwv3D
-	 ey0+OD5LaiIe28BmRZsDMwHXKdUrMiz1taMr5xR8WRuGDGSzG6WlukqGphjVmZGWZokcW
-	 RyFwNJgnt7CJbCLzbohd4/Ob6ffxJ8dzdyDfjkBPH5sY0PvQHTeVc99fcdccB/ID6EU8M
-	 H2lbRDSwFPgqd5hrA7Bn86E8H/jrCXrI+CNpYo0WKoR5zCZH0K6Oa5od8TTRIzkRl88Gg
-	 tN/9TTNf3Ravw3NCdb1Lx8wunC/a9cT4yThr0n274qkQjzjvBtqVXO/bwzYGWxdp66A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795126805;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:To;
+	bh=eEVz5MlMdLOgn4QUU5cninN7GEKUa8ao4d3C9SLleZs=;
+	b=JWsxsDJfpUZorkqT3kMCQp30NhiQy4gIuE3HqtAyvLPir1WSgF2HIcL92qKln+iJZclN
+	 sxnTGF1UAx25QkyS9wv3tn1kVqF/DQuFW2JaQV6YSYGR65TuJPKU3cwsMDWZx/GkSci98
+	 5EyCuZ8VfsyELaCsJLpHpW1aRj9f7IaOpOpGFXhYPSs2ewgtroOgUzanybM4fPa6IOtPj
+	 Qg+srme7P8KwxXfnz0NGffAueMIzKefaIiPTBbSB72ASIgWO8KqhrBOLYNX581d+s5/+g
+	 CiuRQQTrHUFR3wMjjdj+N54OWnbuZ+vZOpLuWOGRu3fEZkJZHsIEqLPYSv442eDBWUQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Koach7UQ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AVfdXZwr;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9332C606A325;
-	Thu, 19 Nov 2026 22:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6788606A320
+	for <linux-spi@vger.kernel.org>; Thu, 19 Nov 2026 22:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Koach7UQ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488031F000C0;
-	Thu, 19 Nov 2026 22:14:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AVfdXZwr
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BA91F000C0;
+	Thu, 19 Nov 2026 22:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795126492;
-	bh=fd/ERjmKCn8dZN/jdExfBIcTymNZ18o9U5B31DslFGo=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=Koach7UQGAulQ95kvVLEeSfmzau4r2VcE8Dec6HBsi8/jxgnidXisM30OjMUB1Qzs
-	 Oj4ETeZevHtPwE18NRX3cX0rv+wEOQInBD0rMXNlmDOHhOjsK8i+7+YiQGNy7opRGj
-	 QlFiOSY28vJhQTLnbOA6y9uSoKCJjXgiyMSBC5lAtjVBqlah3p9PoSVKxxaqq3IE6z
-	 QDimH9LIxvadxHMkJJvWX/sG30aQWKr5ARitGLoIj7+j2ibqaLi+1N8MWhakZzFKPu
-	 be/irJBO0RuXM8zgoH7u24JsJOHdJdZQEVbUgwToydMz/PZ5NBXNRYBwBZaL2FC3us
-	 SyRe9cJT7WfAQ==
-From: Mark Brown <broonie@kernel.org>
-To: Li-hao Kuo <lhjeff911@gmail.com>, 
- Philipp Zabel <p.zabel@pengutronix.de>, Felix Gu <ustc.gu@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20261114-sunplus-reset-cleanup-v1-1-115e32fe8c1a@gmail.com>
-References: <20261114-sunplus-reset-cleanup-v1-1-115e32fe8c1a@gmail.com>
-Subject: Re: [PATCH] spi: sunplus-sp7021: use
- devm_reset_control_get_exclusive_deasserted()
-Message-Id: <179511218138.116416.14285037012749506618.b4-ty@b4>
-Date: Thu, 19 Nov 2026 18:16:21 +0000
+	s=k20260515; t=1795126805;
+	bh=eEVz5MlMdLOgn4QUU5cninN7GEKUa8ao4d3C9SLleZs=;
+	h=Subject:From:Date:To;
+	b=AVfdXZwrWcYRlmQx23bSlyaf8itdLPBIZuZ3bqADN6WAIfq1uivivLXMmitFiU+lE
+	 clNb//OmluIiPeOQFNsBwxC5UiIkWQ1CIHlXL+28RSMDXe5/0RZ0UWHQxwIKxEo2//
+	 eO1rLrt9ptG8IbaHUCpqkVaycul/jHA0tdrlVCR4t5WEo0Q7hyl02EpMCmKjSg2lV2
+	 FB9nsq9zTMCZt0TE6XLI8WomkzM4Zvsy1gApGkPj0ei6lEbEJmWxjFgMay4zeT/Bhq
+	 ppxHQZV5KlGFITJ3dpgrzSF1ljku5aDjfLbQL4qP9ncxi+jxIS4G4jku+L1ELjMgLA
+	 R5o8Q37tVMILg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 79CCD3808209;
+	Thu, 19 Nov 2026 22:20:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -59,46 +52,30 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1150; i=broonie@kernel.org;
- h=from:subject:message-id; bh=JQrUVJL9mcKkkK/CZRdnGYM23+X1JxrWuUaGEj0Ru4M=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLL+l9xM6wkwCTT5tbDFc0uWIlPMkw4JwaTunqjLTqbO6
- 75GKGZ1lLIwiHExyIopssRlcb+sL3m9hu/gwjaYOaxMIEMYuDgFYCIc+Qz/A9a835H072B/zadN
- s88G39k9IeKwjyuHB8teTT2fW6lrdRgZ2jpjNvJfuJCSx7/3roQ+J+/7s8LGcWKntwm//XmM/Yk
- wOwA=
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <179512680412.3894933.16834927435195573468.git-patchwork-summary@kernel.org>
+Date: Thu, 19 Nov 2026 22:20:04 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Sat, 14 Nov 2026 00:47:18 +0800, Felix Gu wrote:
-> spi: sunplus-sp7021: use devm_reset_control_get_exclusive_deasserted()
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.5
+Patch: spi: sunplus-sp7021: use devm_reset_control_get_exclusive_deasserted()
+  Submitter: Felix Gu <ustc.gu@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/series/1210778/
+  Lore link: https://lore.kernel.org/r/20261114-sunplus-reset-cleanup-v1-1-115e32fe8c1a@gmail.com
 
-Thanks!
 
-[1/1] spi: sunplus-sp7021: use devm_reset_control_get_exclusive_deasserted()
-      https://git.kernel.org/broonie/spi/c/86478099f8c1
+Total patches: 1
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

@@ -1,61 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795079967;
-	b=g8FsLA5tDZfIBO0hTj0kX9qXM/Ilse/KsY1lEzWiOU6Fo5vBT3Tt5I5/zOcaRXNI8bTj
-	 Z8bm1AJfDaSdcQRUyqOA8l8wKS3VALaGqPn3SUnfJdQSNcZhrmV9jbNQiU3OtHXuBR7B8
-	 P/hRClvsMVx/FotYZI2yFjNjE3n15mamWiHBH9ahc2qDj5jPj5xveaO3csksy3IH9gZzW
-	 8IROqldKpF5jbsLsgCmQb6h1LUhmPXQe5qCeFEw/vsJPiyemyh5Zk7kxB/AEIEjGtQalB
-	 kKrUsm5KWJKPLP9w4YcHPKmlCsh3bfqjNncTQ0pBN5i2DQokkmtOla4zaIgFpjHMywQ==
+	t=1795080397;
+	b=kyD3WZHCPBTzNW810dfLvrB3JWKP9NmlWpZm17u0KlQ9YKPVx0GHakk69NcYC3NlVlmX
+	 IbNGDEt1qNw7KfZSYwQ3060zgm2/WNyynNRSxO453+uLHSUS8h67YXCkMPktwnS2nKUO0
+	 uEWY+bNAuMvGc1JnkJgN75UDdNOouqLfVal8wNEf90LcAMSc3aa32eUjnN6sBWaeKkmJ8
+	 G5+ybzzWpJZNJu2g6ear4PeFAefiw7mzY2ejXBftWV/svKdZIE/gbRGldSoPytXgXC3mR
+	 I9tEo37Ek4Su6fJyoA3er2/gmPl2R7xFSUA321xm8yT68NHQNZBvAZXQouZl4q8OWYQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795079967;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=STK9ZpfNos3+Nxtqh4zAepk2/6TXCoH1pGSTeeq0pDg=;
-	b=j86Dn7VCaWc8hcq0H/c/C/Ssd9hwuanhwCQjgIYN2xsgZ7aOHTK91tKLYasgpXvfQT1e
-	 pPXG56ceegTsXLsCq+0SWgwaC+n14AznKbWstWKVpCJY6bmxOFNghgJrt7KuOLH53tPEm
-	 E3HksfQMT2+tWC1kXuToZaJKMlHxFJcUlqBDvryhAGs+3avsnl/Sp0OZOCpHRuIQu8Aew
-	 JHlkbcIqi82mGxZgiEgmMTor4NPQy0U8F/MQoplJCw9xc3QexwRzIWJIYwuUGb/21s7QP
-	 muclkA65MrWnnHzVbX9hGopzC8xMlCvO5Bc4X1dEVuDkdT+0itQl9oBzAAAyHP3kPGQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795080397;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
+	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=/z7BAnG7MZSAVYRW5pPZLxA05bNqQ3NUtrJbGTCFDWo=;
+	b=icXWSiZ6tCUwLhZNn3/IWOruZfeHy9Kc6PFCjGQpd9MO/TcGEwUXhrbCXvbbyq6pL6Ta
+	 6F3FJ3jP8hTGKJp9562OHDT18McTzWvEKjbAc/efWdfLffm7CCzAQ509xmnnfd3lFnr+7
+	 GBCmzCaoPbjytTEwJibrVJZuHYsMWE4tkoyYmKax9gWOEie5j7RolaqtkyimLayN8UtRn
+	 E4h8mF7mb5hj42Qz+OvR1rd9I1D2mjelWx018QvidpMWL0chflarE+BXLu9/Lzf/aj8Hx
+	 7NS3QgzMH9NAPLZkNClstdrudwvrpk9B77m8+/RsOH16/+QWtbS5ZqkihUhQLiRw8Ew==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="BiL/fK68";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Cz9JAfUU;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598E6606A33D;
-	Thu, 19 Nov 2026 09:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4767606A324
+	for <linux-spi@vger.kernel.org>; Thu, 19 Nov 2026 09:26:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4767606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BiL/fK68
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831501F000C8;
-	Thu, 19 Nov 2026 09:19:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795079967;
-	bh=STK9ZpfNos3+Nxtqh4zAepk2/6TXCoH1pGSTeeq0pDg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BiL/fK68j70Yyx5AXjXgMLkcAe3z7dEAKCA392ik7Nfn/EXK99tdLvAWobuwSfY/Q
-	 F5bGqPG563i8+IzTNPuaMPcjPVJm+PKBA0cy2MXWgj29YZBTOM4lVzqsUABW247YiV
-	 lg0R7siAzWSs/xOU7GV0GiBK9rKKs75qOZ/cT1CijT404R6nvdliZlId1mG850y/Yd
-	 5CKLEiAFkt1ulPOG/DQLeHUCtHsPs/qO1U+A2iClnY3Qf89IeWegyeKKE2NFom6Nj0
-	 BMRn+vd5ZQbfds8rmwg8qYpT7GmZkdHy9RZSN0EXBlvx82maEk0oorD2bhq8M6yJ5Q
-	 N1qBSW/OVR/qw==
-From: Lee Jones <lee@kernel.org>
-To: lee@kernel.org,
-	Mark Brown <broonie@kernel.org>,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Konrad Kociolek <konrad@cadence.com>,
-	Jayshri Pawar <jpawar@cadence.com>,
-	Parshuram Thombare <pthombar@cadence.com>,
-	Witold Sadowski <wsadowski@marvell.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 10/10] spi: cadence-xspi: Skip tail read for qword-aligned Marvell b0 receives
-Date: Thu, 19 Nov 2026 09:17:22 +0000
-Message-ID: <20261119091810.3440619-11-lee@kernel.org>
-X-Mailer: git-send-email 2.56.1.708.g77570a6a1d-goog
-In-Reply-To: <20261119091810.3440619-1-lee@kernel.org>
-References: <20261119091810.3440619-1-lee@kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Cz9JAfUU
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 584BB1A170C;
+	Thu, 19 Nov 2026 09:26:35 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 24B5B60237;
+	Thu, 19 Nov 2026 09:26:35 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 372E711BC1FF7;
+	Thu, 19 Nov 2026 10:26:26 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1795080390; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=/z7BAnG7MZSAVYRW5pPZLxA05bNqQ3NUtrJbGTCFDWo=;
+	b=Cz9JAfUU7IyztCLVofDhmCUhQWcGYKI0HmupitglhbNt8Ay4Hkm7G7BPIhHVA7mPmGRq2v
+	v4OnXjpy1WnIdP/JLgPuWvD/0AwiaPVh5aDImotDmfmllARdNxV/SPL/bofqQCLjBeInU0
+	cQsFdO6gPvZL9sGKVITTIMM7PM9eawYPD0Pv1YN9a318KmLJ5cBh/310lntmvKo2ztuvxk
+	e3eVpzS877O1iX5V9BLJkufMaChuJ0PCpsohkpmc5D/nHpdAlqJRxHNyDtlp3nHAJCnZl4
+	C/o5UdXRbPnrR1sqQ1n6zlz0jMFt5wEGsJ82bVVsD3xO52hZXOtZj1ECCFpsFg==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>,  Ray Liu <ray.liu@airoha.com>,
+  Mark Brown <broonie@kernel.org>,  Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>,  linux-arm-kernel@lists.infradead.org,
+  linux-spi@vger.kernel.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] spi: airoha: Explicitly prevent continuous reads
+In-Reply-To: <37fc133b-a5f3-4b4d-ba2a-002239bbcebc@iopsys.eu> (Mikhail
+	Kshevetskiy's message of "Wed, 18 Nov 2026 21:37:21 +0300")
+References: <20261118-winbond-upstreaming-airoha-cont-read-v1-1-acc0b6410868@bootlin.com>
+	<37fc133b-a5f3-4b4d-ba2a-002239bbcebc@iopsys.eu>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Thu, 19 Nov 2026 10:26:26 +0100
+Message-ID: <87h5hdf9z1.fsf@bootlin.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -65,44 +74,35 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-In cdns_xspi_transfer_one_message_b0() the receive path reads len / 8
-full qwords and then always calls cdns_xspi_finish_read() to collect
-the remaining bytes.  cdns_xspi_finish_read() unconditionally advances
-current_xfer_qword, even when there are no remaining bytes to read.
+Hi Mikhail,
 
-The TX-only path only accounts for an extra qword when the length is
-not a multiple of 8, so for qword-aligned receives the read index runs
-one qword ahead and later chunks and transfers in the same message read
-the wrong READ_DATA registers.
+On 18/11/2026 at 21:37:21 +03, Mikhail Kshevetskiy <mikhail.kshevetskiy@iop=
+sys.eu> wrote:
 
-Only call cdns_xspi_finish_read() when there is a partial qword left to
-read, matching the accounting used by the TX-only path.
+> Hello Miquel,
+>
+> I think the patch is bad for the following reasons:
+> * As I know there is no CS issue with Airoha controller. It works properl=
+y.
+> * Airoha controller supports large reads (but only in PIO=C2=A0 mode). Th=
+us
+> =C2=A0 continuous reading may work properly. Unfortunately PIO reading se=
+veral
+> =C2=A0 times slower than DMA reading.
+> * DMA reading is much faster, but can't be used for continuous reading.
+> =C2=A0 Maximum transfer size is 8191 bytes.
+>
+> Thus for new Airoha controllers (en7523, an7581 and newer) it's better do
+> not use continuous reading and read pages using DMA. Old controllers (like
+> en7512) does not support DMA, so they can benefit from continuous mode
+> reading.
 
-Fixes: 931e389ded0f ("spi: cadence: Add Marvell xfer operation support")
-Closes: https://sashiko.dev/#/bug/linux-13cf6f1e-c300-4fa1-9cd4-08a48ec4f4b9
-Cc: stable@vger.kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
----
- drivers/spi/spi-cadence-xspi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+I had understood that the problem was CS handling. Therefore, the
+approach proposed here is not a good solution, let's drop that patch.
 
-diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
-index 4c9af6146a5d..bd0fdbbd4060 100644
---- a/drivers/spi/spi-cadence-xspi.c
-+++ b/drivers/spi/spi-cadence-xspi.c
-@@ -1309,7 +1309,9 @@ static int cdns_xspi_transfer_one_message_b0(struct spi_controller *controller,
- 
- 				for (j = 0; j < current_transfer_len / 8; j++)
- 					marvell_xspi_read_single_qword(cdns_xspi, &rxd);
--				cdns_xspi_finish_read(cdns_xspi, &rxd, current_transfer_len);
-+				if (current_transfer_len % MRVL_XFER_QWORD_BYTECOUNT)
-+					cdns_xspi_finish_read(cdns_xspi, &rxd,
-+							      current_transfer_len);
- 			} else {
- 				cdns_xspi->current_xfer_qword += current_transfer_len /
- 								 MRVL_XFER_QWORD_BYTECOUNT;
--- 
-2.56.1.708.g77570a6a1d-goog
-
+Thanks for the feedback,
+Miqu=C3=A8l

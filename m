@@ -1,63 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795098832;
-	b=SRYHwillY+9xFlGrVFZq4+NGu+cz8sHbzyStM088BoFsSg6PZk/0xas6Rz8yW6TWqx5g
-	 vzByXCgofd4p+bWmkfCvgjyfr1ygAj3kEuVSHZW/oMbdfqyKvZqR7S07aE5DFhcf/Lkpr
-	 1t3nYfLxWPLJL2a33EubavtfvOveKrZzEbYmnOY9k5BHUDQVNy6Cd/dVqYHG5dB0usXca
-	 L3yniuSn4tean4gHNdRK3P4VaBnawcZhd2wOe6zLEte1IB2sqyGZDlwKZV5auMyG9mXkT
-	 W9xfw7CmM6EJamvLOeW60SudHLB9vtprKcJOO6pVr8ax3X9rMomevU3jSoVzAO9deWw==
+	t=1795100129;
+	b=WXIxhiYmTj4WbNdueGLRYEcRVbDl1Z9OHpk56Bjfz2kSu4e642uFcelWOECveWp8+FR3
+	 CYOCvY1MRuU/Fwj10s1a/k/KpPdzPN5FdZ9W9dETFAt4qJGXzNZS/VaUB+wP82/vmmith
+	 Z+UT4zIN8giIA1xYnr6JyNY9ZiP0cyDOWz4/AQTAg0KzwOPC0zawfPMdnx/fB+fIPSjcF
+	 cWnzs0TqE0ZMc2NYgtejLjNyiylwhyHOQVYcVRZo5L/VEN8iWp1CmUtCrPJeu7PwuvAnP
+	 frx/31uzo05gizz7Hp+WlhdoLF63pVCB4XIpwCDeX3kJ9YJe0kVI33t3tohIS7CTnng==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795098832;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=dhlf17hlYcth1/KTGn94gfBGdrOLHnQzSpQfypZZWDE=;
-	b=VmSTCg98xxFXf8AcJ8ptt0HXdZ66IoeXpM0Gq5kDNMIXSxuzhA4ueSDHY4Qc5TAV/FcB
-	 wHz94WVOOHVg8UDgS1Q+y9j8/GU1IOIva5dubA0c8dQlspCobMnghjbWBh8NZjyYhPtt4
-	 tnOO5UeDDu3Yct9YdQkEKmUdoOabe31jaQ4lI13EEmWP9R6u1fyqzbZk3IXmuIfgxzw+0
-	 Y4NeEpLC+EhZuJPNf4Zmo9JAJ4wYNsFPV8qYwr23GF7LGJDDSfWTg4auvViFc08CgFRN1
-	 xNX60Gpi4tzC5lqCkYEnzpU0eTrCQ6eS+qTvrkFFNBupyVlQPiscayOtSYjfEoWzNiQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795100129;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Mime-Version:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Subject:Cc:To:
+	 From:X-Mailer:References:In-Reply-To:X-Last-TLS-Session-Version;
+	bh=aKrzxSz3hLhQkNDEUiWgUXoAj4YRodSBySP8V/h8luw=;
+	b=Vlw3hn6fme+x5wIJN5078a9fu5xzPyIPGoT/wm18HwxcDUZW7mFtupikyFoe3epp8+4M
+	 fW3cA+S+N3mOCal0cD1/xMSn4mw4v6PH27O5ols/m4uNU/sDt5mffJRW9pVfj04sWEkMP
+	 bOxWguxs/K345r8b0ZvAoW7tVjXbFZGGIH9+55ly1+/BWR2hXnyUwpOUYDhbpWFKh+t+7
+	 HvExE5eBsNURxrD6XFWaEgB8iyExramjmZRHVcn1BvmY3iqWR+J3862WfyYzKxZiQHNZh
+	 ejpJ7p1Aii81oc7KBwrN72PWGUJjhWWGtW4VoGYSHsQgFB2hPW/n+A1EIx885SuRF9Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="HR2nC5z/";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=HTrfOzxM;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1D3606A324;
-	Thu, 19 Nov 2026 14:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB98606A324;
+	Thu, 19 Nov 2026 14:55:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BDB98606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HR2nC5z/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B0371F000C9;
-	Thu, 19 Nov 2026 14:33:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795098832;
-	bh=dhlf17hlYcth1/KTGn94gfBGdrOLHnQzSpQfypZZWDE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HR2nC5z/FErj3cW4XSsKXHudQkhpI524f3NBI+iQ7JnwaZQCgZW0E4VIwpf7XCeJO
-	 3J8ks5U8kMTx1bsFT7NmhyTM06RZm6tUiDNV5p/74fYxR2IDTSq0ch2xWP7FW7+guO
-	 5Sb6Jd9UKjGApQ8imxnMSG7vR1Vp99hFO0bNBmzB/q0noEPVNuXUhSDAC3a4tH+dDO
-	 eB3nzmBZduue3hMPCFYBGr234z33RPxAwz+iX/2q9ztB04fBANJNHxz/GP11/RFAjZ
-	 oZsjWTlmMZKYlnR2BsbrUShf6kLyeyp0PGonlNhhGZjn/bgJz3G9sTVvD0jVsd6SXQ
-	 z2DxN6StUusmA==
-Date: Thu, 19 Nov 2026 14:33:47 +0000
-From: Lee Jones <lee@kernel.org>
-To: =?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>
-Cc: Mark Brown <broonie@kernel.org>, Foon Tan <lftan@altera.com>,
-	Graham Moore <grmoore@opensource.altera.com>,
-	Murugan R <vadivel.muruganx.ramuthevar@intel.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Pratyush Yadav <p.yadav@ti.com>, Dhruva Gole <d-gole@ti.com>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	=?iso-8859-1?Q?Miqu=E8l?= Raynal <miquel.raynal@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 06/10] spi: cadence-quadspi: Bound chip select against
- f_pdata array size
-Message-ID: <20261119143347.GS98456@joneslee-macbookpro.roam.internal>
-References: <20261119091810.3440619-1-lee@kernel.org>
- <20261119091810.3440619-7-lee@kernel.org>
- <DMZ3XW6ZEFDF.2WJ1XU4UKTRAH@bootlin.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=HTrfOzxM
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 48675C4CBF5;
+	Thu, 19 Nov 2026 14:55:26 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6FF2D60237;
+	Thu, 19 Nov 2026 14:55:14 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6E98211BC0B70;
+	Thu, 19 Nov 2026 15:55:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1795100109; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=aKrzxSz3hLhQkNDEUiWgUXoAj4YRodSBySP8V/h8luw=;
+	b=HTrfOzxM13WZ7n9aAmFcRFr5pAcxHA3ZqJL0kywhahRXAf//gq+yRoV22ahT0GZ4QXv3xj
+	BLpPtTSNqmnKjV5bmUeNef4QhBKJigTonGXBxBIcK1WgU0enyEOnE6EnelZ1Fmm5IWwK/1
+	SpfKUcqu7WpwkVJk/1T1UYw5FLOhcDLEc+3bS6Owx3vIcae0dPgxFt5z9Vi+kLiXvGbjUw
+	7rD0CUDgx0PmaaQZpLPfXBXBv3K5yVeS20MNsRC5kNbvbcKqRkhSrCTrTMHTFtv6oyRun6
+	YTvMF40qjQVWsvoIQUtXICu8ojYSQnzBNoDrXj197T8GqbUf16nvR4tScqBWSw==
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -66,114 +58,75 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DMZ3XW6ZEFDF.2WJ1XU4UKTRAH@bootlin.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 19 Nov 2026 15:55:04 +0100
+Message-Id: <DMZ9VNGP6GSZ.15VHI64APKAQR@bootlin.com>
+Subject: Re: [PATCH 06/10] spi: cadence-quadspi: Bound chip select against
+ f_pdata array size
+Cc: "Mark Brown" <broonie@kernel.org>, "Foon Tan" <lftan@altera.com>,
+ "Graham Moore" <grmoore@opensource.altera.com>, "Murugan R"
+ <vadivel.muruganx.ramuthevar@intel.com>, "Vignesh Raghavendra"
+ <vigneshr@ti.com>, "Pratyush Yadav" <p.yadav@ti.com>, "Dhruva Gole"
+ <d-gole@ti.com>, <linux-spi@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, =?utf-8?q?Miqu=C3=A8l_Raynal?=
+ <miquel.raynal@bootlin.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, <stable@vger.kernel.org>
+To: "Lee Jones" <lee@kernel.org>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
+References: <20261119091810.3440619-1-lee@kernel.org>
+ <20261119091810.3440619-7-lee@kernel.org>
+ <DMZ3XW6ZEFDF.2WJ1XU4UKTRAH@bootlin.com>
+ <20261119143347.GS98456@joneslee-macbookpro.roam.internal>
+In-Reply-To: <20261119143347.GS98456@joneslee-macbookpro.roam.internal>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, 19 Nov 2026, Théo Lebrun wrote:
+On Thu Nov 19, 2026 at 3:33 PM CET, Lee Jones wrote:
+> On Thu, 19 Nov 2026, Th=C3=A9o Lebrun wrote:
+>> On Thu Nov 19, 2026 at 10:17 AM CET, Lee Jones wrote:
+>> > @@ -1761,8 +1762,9 @@ static int cqspi_setup_flash(struct cqspi_st *cq=
+spi)
+>> > -		if (cs >=3D cqspi->num_chipselect) {
+>> > -			dev_err(dev, "Chip select %d out of range.\n", cs);
+>> > +		if (cs >=3D cqspi->num_chipselect ||
+>> > +		    cs >=3D CQSPI_MAX_CHIPSELECT) {
+>> > +			dev_err(dev, "Chip select %u out of range.\n", cs);
+>> >  			return -EINVAL;
+>> >  		}
+>>=20
+>> OK this does fix the bug. Here is another proposal though:
+>> ensure at probe that cqspi->num_chipselect <=3D CQSPI_MAX_CHIPSELECT.
+>
+> One slight hesitation with this.
+>
+> In cqspi_of_get_pdata(), CQSPI_MAX_CHIPSELECT used to be 16 prior to:
+>
+> 7cc3522aedb5 ("spi: cadence-qspi: set maximum chip-select to 4")
+>
+> ... and cqspi_setup_flash() overwrites cqspi->num_chipselect with max_cs
+> + 1 at the end anyway.
+>
+> Thus if an older or out-of-tree DTB (e.g. with cdns,is-decoded-cs) still
+> has `num-cs =3D <16>` while only populating flash@0, failing probe in
+> cqspi_of_get_pdata() would break a working board, whereas clamping
+> num_chipselect or checking cs against CQSPI_MAX_CHIPSELECT only rejects
+> child nodes that would actually overflow f_pdata[].
+>
+> That said, no in-tree DTS hits this, so if you prefer rejecting
+> (cqspi->num_chipselect > CQSPI_MAX_CHIPSELECT) or clamping it, let me
+> know and I will happily make it so.
 
-> Hello Lee,
-> 
-> On Thu Nov 19, 2026 at 10:17 AM CET, Lee Jones wrote:
-> > cqspi_setup_flash() uses the chip select taken from each flash child
-> > node's reg property to index the fixed-size cqspi->f_pdata[] array,
-> > which has CQSPI_MAX_CHIPSELECT entries.
-> >
-> > The range check now compares the chip select against num_chipselect,
-> > which comes straight from the num-cs property and is never clamped to
-> > CQSPI_MAX_CHIPSELECT.  A device tree which specifies num-cs greater than
-> > CQSPI_MAX_CHIPSELECT together with a flash node at a correspondingly
-> > high reg value therefore causes writes beyond the end of f_pdata[].
-> >
-> > Reject chip selects which do not fit in f_pdata[] as well as those which
-> > exceed num-cs.  While at it, store the chip select in a u32, matching
-> > of_property_read_u32(), so that values with the top bit set cannot
-> > become negative and slip past the bounds checks.
-> 
-> This commit message was hard to read! Can we do better?
-> The issue at hand is super simple.
-> 
-> Repeating the last sentence:
-> 
-> > While at it, store the chip select in a u32, matching
-> > of_property_read_u32(), so that values with the top bit set cannot
-> > become negative and slip past the bounds checks.
-> 
-> Come on! 2147483648 chip selects?
+I still prefer the clamping or erroring from probe. A devicetree (ie
+hardware description) which tells us this controller has 16 CS has, is
+and will always be wrong. I don't see why we'd want to bother with this
+edge-case.
 
-Fair point!
+Thanks,
 
-Since cqspi->num_chipselect is already u32, C's unsigned promotion meant
-a negative int would only have slipped past if num-cs itself also had
-BIT(31) set.  Matching the u32 * expected by of_property_read_u32() is
-reason enough on its own without the dramatic justification.  =;-D
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-Will fix.
-
-> > Fixes: 0d62c64a8e48 ("spi: cadence-qspi: assert each subnode flash CS is valid")
-> > Closes: https://sashiko.dev/#/bug/linux-cd463fc8-1b94-4bcf-8d06-fae21b88894c
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Lee Jones <lee@kernel.org>
-> 
-> Is this worthy of backporting to all stable releases? It is a indeed
-> a bug fix but which can only occur with a broken DT, probably during
-> development. It sounds like a lot of churn.
-
-Fine by me.  Will be dropped in v2.
-
-> > ---
-> >  drivers/spi/spi-cadence-quadspi.c | 8 +++++---
-> >  1 file changed, 5 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-> > index 844df97111d7..fbb917c104b0 100644
-> > --- a/drivers/spi/spi-cadence-quadspi.c
-> > +++ b/drivers/spi/spi-cadence-quadspi.c
-> > @@ -1751,7 +1751,8 @@ static int cqspi_setup_flash(struct cqspi_st *cqspi)
-> >  	struct platform_device *pdev = cqspi->pdev;
-> >  	struct device *dev = &pdev->dev;
-> >  	struct cqspi_flash_pdata *f_pdata;
-> > -	int ret, cs, max_cs = -1;
-> > +	int ret, max_cs = -1;
-> > +	u32 cs;
-> >  
-> >  	/* Get flash device data */
-> >  	for_each_available_child_of_node_scoped(dev->of_node, np) {
-> > @@ -1761,8 +1762,9 @@ static int cqspi_setup_flash(struct cqspi_st *cqspi)
-> >  			return ret;
-> >  		}
-> >  
-> > -		if (cs >= cqspi->num_chipselect) {
-> > -			dev_err(dev, "Chip select %d out of range.\n", cs);
-> > +		if (cs >= cqspi->num_chipselect ||
-> > +		    cs >= CQSPI_MAX_CHIPSELECT) {
-> > +			dev_err(dev, "Chip select %u out of range.\n", cs);
-> >  			return -EINVAL;
-> >  		}
-> 
-> OK this does fix the bug. Here is another proposal though:
-> ensure at probe that cqspi->num_chipselect <= CQSPI_MAX_CHIPSELECT.
-
-One slight hesitation with this.
-
-In cqspi_of_get_pdata(), CQSPI_MAX_CHIPSELECT used to be 16 prior to:
-
-7cc3522aedb5 ("spi: cadence-qspi: set maximum chip-select to 4")
-
-... and cqspi_setup_flash() overwrites cqspi->num_chipselect with max_cs
-+ 1 at the end anyway.
-
-Thus if an older or out-of-tree DTB (e.g. with cdns,is-decoded-cs) still
-has `num-cs = <16>` while only populating flash@0, failing probe in
-cqspi_of_get_pdata() would break a working board, whereas clamping
-num_chipselect or checking cs against CQSPI_MAX_CHIPSELECT only rejects
-child nodes that would actually overflow f_pdata[].
-
-That said, no in-tree DTS hits this, so if you prefer rejecting
-(cqspi->num_chipselect > CQSPI_MAX_CHIPSELECT) or clamping it, let me
-know and I will happily make it so.
-
--- 
-Lee Jones

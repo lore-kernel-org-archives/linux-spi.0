@@ -1,87 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795191226;
-	b=x0d7dufenalygkT/mGurE2uzW66t92mMCeqRR+razaxX58TsYq2cHV+aBvH87pHZJOXA
-	 1DspCH7k0IRQ7QLP/yEIzbSCsU/ZxlFYE7YNiX1HRDCosFk7HVguobz/BhDLTRFEtfJNT
-	 QXnb9PpdmUyJ57mtaSyAbjVeNOJtlwiADdlx2mOuP9y7t1/eIMXSYhNoJ41wykk0XYNRl
-	 5NireYHMmVYWMzjTTVMDnRRBom3xIWlMgHETFsAFDpELA4X2FXlqG4p55Owi2RmgbGO+l
-	 graZ9VDlQugl13bXzfXU40MxFQRLkrMmRXTL1GkhelgFeMcY/NjbhZ+uaImYkrYKrJA==
+	t=1795194880;
+	b=jdIJfBurj8UYqiJCFOIJ0UoVmvsb5IvhJUrl4HNeQwH7PsuG3YM9bYLP8+b7zoAYxeKg
+	 2WQ45CWi1pRTVARFUsSBatcqDgi29V2MVA77E2i5iKj5zSHVMDtlF1M8Co3E9KJWPtfg+
+	 BbBx0CXbx1DqyoCbrY/8dz73KVkSUt/Q/QY/AU73g9EWjz2XYY9TZo0UIXms2klGVN6zk
+	 bIQZogJwJFjOaiY6zLevkHXOObfj0MCniZ2eOkpaSfOUqCWftdcQ9Ymzz+8k38uN72CO5
+	 qJmd2vSeXsX7UYv4Wg/vOOx1bdrnefuYVx0dwRFzab+pq3nJZlLi9AQ72wlNoEUohgg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795191226;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Date:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
-	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key;
-	bh=zGFcMrIjJLW437tud2rtF8VQKm0JOFYCFRIPivRW3qQ=;
-	b=sXfO3iMs/CVi4CN4vovNPxX8DXovhXweuE2e/H1U4hp/tTumh602ZaC/0ctG09KE5FMU
-	 y5LZFsj5mM5T/xXEiozsb5x1UXLXMwnmwlqfyeVqd9W/KoD3guGUtpXAWW0hwtZ1AVpSR
-	 mMkKU42RBULAMyr45cyzWqKyTa3HmedLPTfFcrAalg+4zWNnTk8g1xXjKTPLwHaI4cxxv
-	 6sHCT8B+LHor8fm62pkqK7P0Bf2mJycpEyGpGUqyizIAMvMV0SLkrjzNkAAJU1XS4T9PS
-	 AosV/2lfbqfxeYyOOGaIwpt1MdlmLK2drM72pjrEzdPNZbosGUARX/Uf6TXmioH2ong==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795194880;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Subject:
+	 Date:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
+	bh=AfsaK7vstWBR+CIUmGq19kX6RuuD4U+3vDvduSS+ZUA=;
+	b=JBMAOwwtvC9Mxw7+j8Oo9yRSmB304YPCplx7n86nGUyfwCHpdpoSkt7LrEe/j3oU3y8d
+	 KAT2ZmKSWiQRh1sg8Ny6MLG005S3Nlqxu8HGENrHA6RKC1CJKSRrII6fewY8B0rQBMvUw
+	 V5YAXuaJQhYKeoYirRXFAXBfICQ6u0oUxUTKilnUE9MXNB91gF2DUqkLuqWcfxukBUx2e
+	 Q+pprE4VU1B8SkxhVsVzj6OD9BLuLjErCYwP0dLqLY/yQ3ZwSTnp/0HGv/gtwg3fGlScw
+	 eD5+CdpruwC+V89AM9icB0cjOIIkEP/bFfpsvxhaZ2yNhh3sRzxlhWXCIoSywwK8DkQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="a2/dabyU";
-	arc=none smtp.remote-ip=209.85.215.178
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=kaJNstor;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10AB8606A338
-	for <linux-spi@vger.kernel.org>; Fri, 20 Nov 2026 16:13:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 10AB8606A338
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2E1606A32C
+	for <linux-spi@vger.kernel.org>; Fri, 20 Nov 2026 17:14:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4D2E1606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=a2/dabyU
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cd8ba7c2694so493027a12.1
-        for <linux-spi@vger.kernel.org>; Fri, 20 Nov 2026 08:13:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795191222; x=1795796022; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=zGFcMrIjJLW437tud2rtF8VQKm0JOFYCFRIPivRW3qQ=;
-        b=a2/dabyUf74rh194g1AEE0MEUS4LPOzWQfFDISeiIB9uOWoF0wHN7yHGdLOYIg8X+x
-         0EdbggZ0JtVxqslyYzLPxMp9PukWX4BoyOiumlRBzmEo/NjYu4MJdoHDGp+kt6J87RKU
-         deIOC6/O4+cy6NDqCchQfcpLLxskFWRTIJck2BtcH3+ABtaFJI0WMD9J3X3ZXoWQSAqQ
-         Sf4s9e8adecjr9/ESfC3lnIlsv2E05TDzeJzpo9tfhrY7Bj8MsAu8oE4Njy9c3NdcoE5
-         PLxAUiSwE7JDBVlFLxn/IOPXQ8+b3NmYkV37V/PIaNT4UC2gaj1b57IdYHuIelNFJYbp
-         O0Iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795191222; x=1795796022;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=zGFcMrIjJLW437tud2rtF8VQKm0JOFYCFRIPivRW3qQ=;
-        b=B2qKGKZ70KZeJkEO4tEvth2x6BxF0Nny/QBisQYQvnU3aQsGf8ZEhUYRPZiB9osAYK
-         xpeLMG2YMYyYzsx/6eHgqim3eoRsL45QFVH1XK/InInDsi0g08QJhODmf9vZhBAeV9hl
-         QWkqAk4ZbCuhBP2xoyarYZGJ+OveEY/XONFPMIp1BkrxmihG5uUDAgw0QuTCl2btnSBi
-         snsq0aGcdqP2YnnWCGceO6/qkbrZq0PS+7Q70qZGuiUcQ5h9IRzaYt+6coMwRQqmkkb7
-         Uroo2Ck/zHZYQt0lRWHWMr591THB0PFLrkFbPStLnvuBoFb0KOUulYheg/HayrSi0wPM
-         DxTw==
-X-Gm-Message-State: APuU4Z8Jc/zYkXsCTqC+hHFwf3lrvaQK8PWSsfNQOMbZjPut0sJn+3QR
-	1X56a0P02eQLOhFG+CfkAXYzykDYytZ33JRNZbyaVYU3ZKHsm2/d3SiO
-X-Gm-Gg: AZFdTZd8Gp3aMTdd45uB+0HgkwA+cnJ2TJcfG/+F7DPOBrKUTUv+ZG4oVQmO19PXnWE
-	//2BeAK//qg6h9XpAKxn9ArBwhcmPQSK9MOo9+seNdhg9YV769MqAE1uawTShjQWk6Zove/y1hT
-	Mf1Y2oqRbkFDcHckkqOcfHt3c6Ig47tac+1tWK532dtaDYgnlKZlqkjEI01sV8LQCT7xCT+C+S8
-	K8J4jafQrA0XccHPLG7hYUrcEdAJYvJSCwg+/RR5Ru20wXGa42GbsmnsFrcv22WBFMQW1NuMbyd
-	jQ1MlVIIzeVvyZOEr71OUy0S+CcifHkx1i8kSWzhVCmBR6ulSuPkvhKx+WWzImQPs9EIIGA/0m2
-	DXrSWM4J06jJKWsbXLEYlTBw6meq9jYAu7GBh4Wf/RVk50Cv9NArQwOLTveMrWMgVxUDZ/RW6lZ
-	v+L/AIKszOWtzZwbPxd4kYBrw5JTYq2ZwNWONMA5wRBfPvCIaMKosUODZLxNojLdVc10ojViMq5
-	Efv8Vakm3s7o2kAXFjclxppPVnr0/gm3VyjuzGVvYB0TnNlqYeTO/NMVfOCVYQqPbqoExd5ixaC
-	labdF6boTrIwXrytwcr/MG5ajeHJPs01Xhd2dPTxLVtM3oJjryVHy4tySKZDfgX+Hoxq7PvfWl4
-	JpujOpbLzVY8ocTqzxuMgpXdT
-X-Received: by 2002:a17:90b:35c3:b0:3b3:cb22:72cc with SMTP id 98e67ed59e1d1-3b41c8ff73fmr3334841a91.32.1795191222234;
-        Fri, 20 Nov 2026 08:13:42 -0800 (PST)
-Received: from junjungu-PC.localdomain ([2408:820c:9009:b6e2:dea:3892:877:4c42])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-3b420e1307csm3848534a91.7.2026.11.20.08.13.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Nov 2026 08:13:41 -0800 (PST)
-From: Felix Gu <ustc.gu@gmail.com>
-Date: Sat, 21 Nov 2026 00:13:26 +0800
-Subject: [PATCH] spi: synquacer: drop redundant IRQ zero checks
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=kaJNstor
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id CF5BD1A1751;
+	Fri, 20 Nov 2026 17:14:37 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9A0AC601B9;
+	Fri, 20 Nov 2026 17:14:37 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 96ECC11BC0437;
+	Fri, 20 Nov 2026 18:14:30 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1795194875; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=AfsaK7vstWBR+CIUmGq19kX6RuuD4U+3vDvduSS+ZUA=;
+	b=kaJNstorbnqrayLL/98d3HWZsLvpTIcVlH70NLij6H5sSMGM7AyL4RC8pjazgHLM/VMnqm
+	NbzayYO5o8bFk0bjYSiYKUwEzMf3z5KmnaNseSWjzzP7yhB/IHtA+VcheGH5+cbt658RC0
+	9IfENELf3ZryHLoxyerzSxWzMdmZp1llgPwJpLC2MQgA7L/L25hlWFEhJi8XYz2LLxbe7S
+	ifwHiL5WBCdYU1+CYlj0nSA13WHpEjY+rVFdB9Ax9r8d3hoO3HIXqvJTH3+kXmKEga4j2r
+	VU6ym60q+Qmq56G0olb5tuRdb5CN/zYhNF8beEZWZ9xE945Xbz40BFwxBH8k4A==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH v4 00/11] mtd/spi-mem: Enable DQS control
+Date: Fri, 20 Nov 2026 18:14:26 +0100
+Message-Id: <20261120-winbond-nand-next-phy-tuning-v4-0-8c21e1f71f41@bootlin.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -93,61 +64,132 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261121-synquacer-v1-1-9e14702ce84b@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ5AMBBA0avIrDUxTVi4ilhUO2Usig5CxN0Vy
- 5f8/AuEIpNAnV0QaWfhKSRgnoEdTOhJsUsGXegKUaOSMyybsRSV75xHZ6zGqoTUz5E8H9+raX/
- L1o1k13cA9/0A7gZHDW0AAAA=
-X-Change-ID: 20261121-synquacer-fbdf1dac2165
-To: Masahisa Kojima <kojima.masahisa@socionext.com>, 
- Jassi Brar <jassisinghbrar@gmail.com>, Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org, Felix Gu <ustc.gu@gmail.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795191218; l=1177;
- i=ustc.gu@gmail.com; s=20261030; h=from:subject:message-id;
- bh=6qhPO5FfiGjEZI9ohXmxBjxcZP7plkTu3VyHbjgFpPs=;
- b=jB4Dkmq8XY4dQcvWIuC+B37OppC6Cc/dP49KTtDxXJsrDQ2931aRQeJNl9qHdH+ZGLOYGYcJG
- 12iURB/uVO6AGynojWgzTpsQn6OlVIT0Pl7DwZPW9ZKnSyhR+Q3BdLq
-X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
- pk=fjDJtbnSeysEBjmOfNYqYUUDS6g7Tfov9W5oGngTBfo=
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/43QTWrDMBAF4KsYrTtGP5Zkm1Jyj9KFbI9j0VhKJ
+ cVNCLl7ZWfRli5SEII3i+/Bu5KIwWIkbXElARcbrXc5VE8F6Sfj9gh2yJlwyhXlVMKndZ13Azi
+ zfnhOcJwukE7Ouj0Y0+HYU1ZTwUkmjgFHe97417ecJxuTD5etbWHr9Z/wwoCCRD2IRquRjmzXe
+ Z8O1pW9n8lKL/ybq6l+wPHMaSEbiXUzKBR/OfGDY/QBJzJnGt0LoxgqLX9zt/sSAT9Oed90n4P
+ MGKPZ9m2L57WHMSrzqwUvOROVYAIYRHhXu2RX6GVdtDMRIYfZprZYdFlB6HmuuH0BNF7cmcoBA
+ AA=
+X-Change-ID: 20260205-winbond-nand-next-phy-tuning-aabefc018032
+To: Mark Brown <broonie@kernel.org>, Richard Weinberger <richard@nod.at>, 
+ Vignesh Raghavendra <vigneshr@ti.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, 
+ Michael Walle <mwalle@kernel.org>, 
+ Takahiro Kuwano <takahiro.kuwano@infineon.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, praneeth@ti.com, 
+ u-kumar1@ti.com, p-mantena@ti.com, a-dutta@ti.com, s-k6@ti.com, 
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-mtd@lists.infradead.org, devicetree@vger.kernel.org, 
+ Miquel Raynal <miquel.raynal@bootlin.com>
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
-platform_get_irq() returns a positive IRQ number on success and a
-negative errno on failure. It already converts IRQ 0 to -EINVAL.
+For his PHY tuning series on the Cadence QSPI controller embedded in TI
+SoCs, Santhosh initially needed to access the availability of the DQS
+(data strobe) signal. This is a chip dependent capability, which may
+sometimes be enabled.
 
-Check only for negative returns when looking up the RX and TX IRQs.
+The SPI memory flag already exist but is too vague for it. Let the SPI
+NAND core and SPI NOR core set this flag when relevant (per-chip for SPI
+NAND, always for SPI NOR until we can do better). SPI controllers now
+feature a DQS capability that they need to fill. Manufacturer drivers
+and SPI controllers can now query the usability of the feature to use
+it/enable it.
 
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+I contributed the spi-mem bit in the previous cycle but my changes were
+too simple, and a more complex approach was actually needed. For
+applying this series, I would expect all the spi-mem and spi bits to be
+taken by Mark, either based on an immutable branch (in which case the
+mtd bits can also get in during the same cycle) or directly through b4
+(and we will wait for the next cycle to merge the patches). There will
+be a temporary regression if we span those patches over two releases:
+the PHY tuning will not be optimal because it won't be using the DQS
+capability for a period of time. Hence, merging everything in a
+single release would be better, but not stricly needed either.
+
+This series applies on top of v7.4-rc2 and Santhosh's PHY tuning series.
+
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/spi/spi-synquacer.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Changes in v4:
+- Added a spi-dqs-not-wired DT property to describe boards where the DQS
+  line is not routed.
+- Parsed the property in spi-mem.
+- Renamed several helpers to explain what they do more obviously.
+- Added a controller DQS capability;
+- Expose that DQS is usable only when the memory supports it, the line
+  is wired and the controller supports it as well.
+- Advertised the DQS capability in the Cadence QSPI driver.
+- Advertised the DQS capability before the SSDR/ODTR variants are
+  negotiated.
+- Only enabled the Winbond DQS output when spi_mem_dqs_is_usable() reports
+  it as usable, to avoid useless power consumption.
+- Enabled DQS in SPI NOR (always).
+- Dropped the already merged spi-mem capability patch from the series.
+- Rebased on v7.4-rc2.
+- Link to v3: https://lore.kernel.org/r/20260810-winbond-nand-next-phy-tuning-v3-0-a97c3a61e675@bootlin.com
 
-diff --git a/drivers/spi/spi-synquacer.c b/drivers/spi/spi-synquacer.c
-index 6d0cd11637b5..6e1412008ea0 100644
---- a/drivers/spi/spi-synquacer.c
-+++ b/drivers/spi/spi-synquacer.c
-@@ -667,7 +667,7 @@ static int synquacer_spi_probe(struct platform_device *pdev)
- 	host->num_chipselect = SYNQUACER_HSSPI_NUM_CHIP_SELECT;
- 
- 	rx_irq = platform_get_irq(pdev, 0);
--	if (rx_irq <= 0) {
-+	if (rx_irq < 0) {
- 		ret = rx_irq;
- 		goto disable_clk;
- 	}
-@@ -681,7 +681,7 @@ static int synquacer_spi_probe(struct platform_device *pdev)
- 	}
- 
- 	tx_irq = platform_get_irq(pdev, 1);
--	if (tx_irq <= 0) {
-+	if (tx_irq < 0) {
- 		ret = tx_irq;
- 		goto disable_clk;
- 	}
+Changes in v3:
+- Rebased on top of linux-spi/for-7.3 and dopped all existing
+  dependencies on the MTD bits.
+- Link to v2: https://lore.kernel.org/r/20260807-winbond-nand-next-phy-tuning-v2-0-73595e89d6e3@bootlin.com
+
+Changes in v2:
+- Dropped the RFC prefix.
+- Rebased on top of v7.2-rc1.
+- Dropped the spi patch for now, just allowing to use DQS on a few
+  Winbond SPI NANDs (can be improved later).
+- Link to v1: https://lore.kernel.org/r/20260205-winbond-nand-next-phy-tuning-v1-0-5e7d3976f0f1@bootlin.com
 
 ---
-base-commit: adcad7f4e6332cff3d6d7165f41584899f598534
-change-id: 20261121-synquacer-fbdf1dac2165
+Miquel Raynal (11):
+      spi: spi-mem: Rename the DQS setter and pin field
+      spi: spi-mem: Clarify the conditions upon which DQS is usable
+      dt-bindings: spi: Document the spi-dqs-not-wired property
+      spi: spi-mem: Take the DQS wiring into account
+      spi: spi-mem: Take the controller DQS support into account
+      spi: cadence-quadspi: Advertise DQS support
+      spi: cadence-quadspi: Decouple the read capture bypass from DQS
+      spi: cadence-quadspi: Check DQS usability before enabling DQS capture
+      mtd: spi-nor: Advertise DQS support for octal DTR flashes
+      mtd: spi-nand: Set the DQS spi-mem capability if available
+      mtd: spi-nand: winbond: Enable the DQS pin on W35N**JW series
+
+ .../bindings/spi/spi-peripheral-props.yaml         | 10 ++++++++
+ drivers/mtd/nand/spi/core.c                        |  3 +++
+ drivers/mtd/nand/spi/winbond.c                     | 10 +++++---
+ drivers/mtd/spi-nor/core.c                         |  7 ++++++
+ drivers/spi/spi-cadence-quadspi.c                  | 11 +++++---
+ drivers/spi/spi-mem.c                              | 29 ++++++++++++++--------
+ include/linux/mtd/spinand.h                        |  1 +
+ include/linux/spi/spi-mem.h                        | 12 ++++++---
+ 8 files changed, 61 insertions(+), 22 deletions(-)
+---
+base-commit: fd9230005e85472b81c1c7c16afe93dd878996b1
+change-id: 20260205-winbond-nand-next-phy-tuning-aabefc018032
+prerequisite-message-id: <20261105105832.2134313-1-s-k6@ti.com>
+prerequisite-patch-id: 7e80450b6b26ac3240d561a7f9f0e5fe177a89b7
+prerequisite-patch-id: 865537f117247ff4312d629514dd06f1f38f1d47
+prerequisite-patch-id: 5200192ca3b2cc4a2fdf8afff7ee5c757fdb66b5
+prerequisite-patch-id: f41f68176da636e14a8221fde30b3a32cd155bdd
+prerequisite-patch-id: d23997b62c52e24d7d92a3f795b2d64ad32a6dc7
+prerequisite-patch-id: 7d0c439461665f7c41639343042ddb96937d2838
+prerequisite-patch-id: d8770bcd1d4f60e882cdd4ad6f35409a08dc2402
+prerequisite-patch-id: 5b96154a5b95e52afc0e3f128212921984713615
+prerequisite-patch-id: 500bd167644ed25f95ee48bf7992d79d611b036a
+prerequisite-patch-id: 65a2ee2f666180289b3c38aef3e238803ba93f27
+prerequisite-patch-id: a58a38e05737feb5f097cafe49f814a4f4a1b252
+prerequisite-patch-id: d0717fa96dbc2f99111be023238973932a6c59b4
+prerequisite-patch-id: 817e0b94d11c4e7884c962781ff20131a9db1aa9
+prerequisite-patch-id: 16ba1c3be3824059d975c0e48a7056b061c2d652
+prerequisite-patch-id: f7d67c3465c65f61ec878b6d3f049addd44316af
+prerequisite-patch-id: d023f74d37fe6be398aa45a5de3cd70f775cb37a
+prerequisite-patch-id: c146c437ba46a28dc74dcebe4c66ff8107ce31a3
+prerequisite-patch-id: 14cf3f31d431b4622a4f225939b8d3d3eee21085
+prerequisite-patch-id: 95db84235391fa3a39c1947f19411634d762e1f9
 
 Best regards,
---  
-Felix Gu <ustc.gu@gmail.com>
+-- 
+Miquel Raynal <miquel.raynal@bootlin.com>
 

@@ -1,55 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795176006;
-	b=upOyNu+d+J/Q4zL9CzDVgbS8rKZb1S3MfHTmLsA9vl9EtRUvSQLl9RfwrtZg2yjRjHu4
-	 HoIeEm2R+IDPcT8fhv8i3xgG14MT+xh/hLCnzPb77ULxtvW1iuOBm7OQiie/HI3zNfHhJ
-	 f+0A9HeTqUTcOvVQ8r5L1BjnCaYF/UESgnogZQQkGHPpyLoe1zoArXebS+wUGq/Ur8gvH
-	 2yTZLHNsSBf5gHeojenMn+/e41dbwBATPF/I08DTTeFSiboxDyUBKrjV1sgXjHUESYmBH
-	 Zb5ZLzZvUGrq/oEjz3W6GxGFfg5VeFjzDXdKgHIDgasC9eQCSkrrPl6E8h3z8xNTBFA==
+	t=1795176008;
+	b=U/Ejdb0am0Uy4fJHd2wx/ei+cGnR9PJTEgp379/lsoasP4vWd3KAXSsSwbr7axIzRHM0
+	 sYQ4KQ8mSL0SMiXWT/snMcfEIbUk0FL1aCXLkfb5SB4tyoQqwIQ0UDV88kit0SV5M4NPr
+	 VFFV0IiUYTpD/meeDrHbw/j5e76D5JRT5i76qUuXS4B4N7PCYirfkZJ4iw4gUW/Qrn8fG
+	 sFpRZsSmELukwrvCRJ+pKm7fkoPa83iZYkWZaOSIWLJYl0zht6Hiu+rJlrtgBBhBoEgjk
+	 NFoLoz8FXR+flZSw1lHqHkyN6d2Nl+V70sWOngiwqxurQ+MV04Uq4sBb0tIjW5CdKrw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795176006;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795176008;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
 	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=TPR3502mWRHPpf/VdS/bn9dfjjeFIqqUIwLMoaTjDp4=;
-	b=B8IO5jyyC1sTwkvHL8JmJ4VBVfxI1n4AMqJZvLKeQq0FjC01508DcvNlnIgdCgIMODCT
-	 zIqUaV2TuvcKaV99vwhAFYWKmz+kzvacsW4L7x92LqkcmXAyFu55FSdPwM4BHuwk5uCWi
-	 e+jOpFZNqjldlXP7K5M4uU7D3kQ5pZ54yIrsNK1L5RR19J3tv99674Ahy+FqwqbWPLOyC
-	 LtWfhUBL+hJU6QHqr5DZmJNp/3qv4rA03iw0IZav55JwSzO51muAoA00+tiKhEzFp6kGj
-	 eyiWXi4i2DoKHIlITeO94VKqYcYe1y/+J4fTeFwQExzV/L84b1+FvZWMKrgfTNX5yUQ==
+	bh=py7QFooGqAuWcg2o/e52luSIV1oKyeZ6b+xRNq9sn8s=;
+	b=nCoQ7fKu6aHwKylpF0XuJt4C1MGQkxb94urAj9aGJIPZXP6SNsWLJuMaxNXEe69Qb8D7
+	 ZkUp1Gc2YMGpECrdBH7AvUVVegnci6MPG1dytgIopxcE5AYvnAlRIKwQ3uH24R6Kp+2JT
+	 geNJ7emy9djRrviBwChzJrT32uAT6SgM0twLzo0MudTdghqnMTRROG8wSUeeQIMTO9xyB
+	 Vl/rrBiQ2N8nNYpJEc1+GeKpjOTr/7z5dXb3+RARCk12Zs27VZrTE/thc235J7qcls4zP
+	 L5xvb6NdCsmJh/4EtonWS7GwP1yQamT98Ud78Yw25AcWY1c0J81X6F+E/OyxIi5awbQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=sGptb0rB;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="oi0D8/qr";
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDCD60A261D
-	for <linux-spi@vger.kernel.org>; Fri, 20 Nov 2026 12:00:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ACDCD60A261D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D510C606A32A
+	for <linux-spi@vger.kernel.org>; Fri, 20 Nov 2026 12:00:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D510C606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=sGptb0rB
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=oi0D8/qr
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 5107F4E4166D;
-	Fri, 20 Nov 2026 12:00:04 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 04838C6221C;
+	Fri, 20 Nov 2026 12:00:12 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 267BC6017D;
-	Fri, 20 Nov 2026 12:00:04 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BAAE611BC003B;
-	Fri, 20 Nov 2026 13:00:00 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 535066017D;
+	Fri, 20 Nov 2026 12:00:06 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1D4AC11BC0070;
+	Fri, 20 Nov 2026 13:00:02 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795176002; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1795176004; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=TPR3502mWRHPpf/VdS/bn9dfjjeFIqqUIwLMoaTjDp4=;
-	b=sGptb0rB0179NeSzvhahBp0pmw4ar1czGBs3MicRJhoPc6rCLijJKKCkUZAf33CeRoPhFF
-	VoJkg8G6y2wNHTUfst9GvnaZjfxW9gn/K++ueo3Gbsk/pgVHJ5NI4IrBge3TplkDwdvkNH
-	wBiIoqYPi7TDHP5B9gkTTsRm2zZIegUA+e3IKiZPoTNBqbNpg01U1Sb9yG7Yczqw21sXcK
-	uAkJL1rSl/sQ/Rc0HFWe8AVRmeRMKdQrB508ESqpuMxkMzq0i1CPwXt/8suV/ZadbcF1jv
-	NBNxjuLFVvaV+4u+Oez06Zhnm0xiK+fDlW3qQo0M1Rqfz8KTwZaxVeNN26bH1w==
+	bh=py7QFooGqAuWcg2o/e52luSIV1oKyeZ6b+xRNq9sn8s=;
+	b=oi0D8/qrYk1e4pXv9HTYQGaKXqDa/77/Nf30ifhWbnx4A0D3txfpWDy/okYof7xYZCRLl8
+	OjpeRcZQ0wYlU7G1Y2kifPpot+PQiqKVUYj8QnBGo+pusPMOGvbXzG+WPxtgy2Q5cb3Fg2
+	6sKVfB+mY0f7zkXbWuN/kZtAA68rPB4ziSl0NnAQQUyyQLhhiJNj34CZjUsuBXtnVT0rWX
+	LSK6vB+uB28A5zH7I2227yyf2DpYEqe4pkBwfR5STIYU6r0O25E9w1MqSoVa2rvoFsuCCw
+	2GDqXefJRFayl3Y6j8poG9+zTveU5uQeZnfw2P63Cw45x7CJwCOMjX0Ebk2hTA==
 From: Paul Cercueil <paul.cercueil@bootlin.com>
 To: Mark Brown <broonie@kernel.org>
 Cc: linux-spi@vger.kernel.org,
@@ -61,11 +61,10 @@ Cc: linux-spi@vger.kernel.org,
 	Jisheng Zhang <jszhang@kernel.org>,
 	George Cherian <gcherian@marvell.com>,
 	Witold Sadowski <wsadowski@marvell.com>,
-	stable@vger.kernel.org,
 	Paul Cercueil <paul.cercueil@bootlin.com>
-Subject: [PATCH v5 4/7] spi: cadence-xspi: Clear "SDMA ready" IRQ flag after polling
-Date: Fri, 20 Nov 2026 12:59:22 +0100
-Message-ID: <20261120115925.173568-5-paul.cercueil@bootlin.com>
+Subject: [PATCH v5 5/7] spi: cadence-xspi: Drop useless cdns_xspi->cur_cs
+Date: Fri, 20 Nov 2026 12:59:23 +0100
+Message-ID: <20261120115925.173568-6-paul.cercueil@bootlin.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261120115925.173568-1-paul.cercueil@bootlin.com>
 References: <20261120115925.173568-1-paul.cercueil@bootlin.com>
@@ -83,60 +82,83 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 From: Tanmay Jagdale <tanmay@marvell.com>
 
-When polling for the "SDMA ready" event, once the corresponding bit is
-set in the CDNS_XSPI_SDMA_TRIGGER we should reset it to zero. Otherwise,
-any subsequent call to cdns_xspi_is_sdma_ready() will just return early.
+Make the code simpler by just passing down a 'cs' variable as argument
+to the cdns_xspi_send_stig_command() function.
 
-Fixes: 931e389ded0f ("spi: cadence: Add Marvell xfer operation support")
-Cc: stable@vger.kernel.org
 Signed-off-by: Tanmay Jagdale <tanmay@marvell.com>
 Co-developed-by: Paul Cercueil <paul.cercueil@bootlin.com>
 Signed-off-by: Paul Cercueil <paul.cercueil@bootlin.com>
 
 ---
 
-Note that Sashiko complains about it racing vs. the IRQ handler but
-that's bogus. This function is never called in a code path where IRQs
-are enabled at the device level.
-
-v4: New patch.
-
-v5: No change.
+v2-v5: No change
 ---
- drivers/spi/spi-cadence-xspi.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/spi/spi-cadence-xspi.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
-index 29a54ffa1664..7c7a604f4c62 100644
+index 7c7a604f4c62..c752328bf267 100644
 --- a/drivers/spi/spi-cadence-xspi.c
 +++ b/drivers/spi/spi-cadence-xspi.c
-@@ -1235,12 +1235,20 @@ static bool cdns_xspi_is_sdma_ready(struct cdns_xspi_dev *cdns_xspi, bool sleep)
- {
- 	u32 ctrl_stat;
+@@ -335,7 +335,6 @@ struct cdns_xspi_dev {
+ 	void __iomem *xferbase;
  
--	return !readl_relaxed_poll_timeout
--		(cdns_xspi->iobase + CDNS_XSPI_INTR_STATUS_REG,
--		ctrl_stat,
--		(ctrl_stat & CDNS_XSPI_SDMA_TRIGGER),
--		sleep ? MRVL_XSPI_POLL_DELAY_US : 0,
--		sleep ? MRVL_XSPI_POLL_TIMEOUT_US : 0);
-+	if (readl_relaxed_poll_timeout
-+	    (cdns_xspi->iobase + CDNS_XSPI_INTR_STATUS_REG,
-+	     ctrl_stat,
-+	     (ctrl_stat & CDNS_XSPI_SDMA_TRIGGER),
-+	     sleep ? MRVL_XSPI_POLL_DELAY_US : 0,
-+	     sleep ? MRVL_XSPI_POLL_TIMEOUT_US : 0)) {
-+		return false;
-+	}
-+
-+	/* Clear the flag */
-+	writel(CDNS_XSPI_SDMA_TRIGGER,
-+	       cdns_xspi->iobase + CDNS_XSPI_INTR_STATUS_REG);
-+
-+	return true;
+ 	int irq;
+-	int cur_cs;
+ 	unsigned int sdmasize;
+ 	unsigned int sdma_xfer_len;
+ 	struct dma_chan *dma_chan;
+@@ -672,7 +671,7 @@ static int cdns_xspi_sdma_handle(struct cdns_xspi_dev *cdns_xspi)
+ 
+ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
+ 				       const struct spi_mem_op *op,
+-				       bool data_phase)
++				       int cs, bool data_phase)
+ {
+ 	u32 cmd_regs[6];
+ 	u32 cmd_status;
+@@ -697,8 +696,7 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
+ 	} else {
+ 		cmd_regs[3] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op, 0);
+ 	}
+-	cmd_regs[4] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_4(op,
+-						       cdns_xspi->cur_cs);
++	cmd_regs[4] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_4(op, cs);
+ 
+ 	cdns_xspi_trigger_command(cdns_xspi, cmd_regs);
+ 
+@@ -707,8 +705,7 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
+ 		cmd_regs[1] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_1(op);
+ 		cmd_regs[2] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_2(op);
+ 		cmd_regs[3] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op, dummybytes);
+-		cmd_regs[4] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_4(op,
+-							   cdns_xspi->cur_cs);
++		cmd_regs[4] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_4(op, cs);
+ 
+ 		cdns_xspi->in_buffer = op->data.buf.in;
+ 		cdns_xspi->out_buffer = op->data.buf.out;
+@@ -743,11 +740,9 @@ static int cdns_xspi_mem_op(struct cdns_xspi_dev *cdns_xspi,
+ 			    const struct spi_mem_op *op)
+ {
+ 	enum spi_mem_data_dir dir = op->data.dir;
++	int cs = spi_get_chipselect(mem->spi, 0);
+ 
+-	if (cdns_xspi->cur_cs != spi_get_chipselect(mem->spi, 0))
+-		cdns_xspi->cur_cs = spi_get_chipselect(mem->spi, 0);
+-
+-	return cdns_xspi_send_stig_command(cdns_xspi, op,
++	return cdns_xspi_send_stig_command(cdns_xspi, op, cs,
+ 					   (dir != SPI_MEM_NO_DATA));
  }
  
- static int cdns_xspi_transfer_one_message_b0(struct spi_controller *controller,
+@@ -1411,7 +1406,6 @@ static int cdns_xspi_probe(struct platform_device *pdev)
+ 	cdns_xspi->pdev = pdev;
+ 	cdns_xspi->host = host;
+ 	cdns_xspi->dev = &pdev->dev;
+-	cdns_xspi->cur_cs = 0;
+ 
+ 	init_completion(&cdns_xspi->cmd_complete);
+ 	init_completion(&cdns_xspi->auto_cmd_complete);
 -- 
 2.47.3
 

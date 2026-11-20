@@ -1,73 +1,44 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795176022;
-	b=PeQ3It9JN7kfvCVnUUfmFX5ZyXvFIIqnbej1VAXiSGVkYCGf6ojI4R6BDjzVuFfjtp50
-	 Gk1yJKmzAFGENZ0pCZkXgR826/uHLQGFaUJZCmlFw99TPzHXD+WxgGT5T9S98UDQohIEs
-	 Oq9kk4pxpmDqiQyYNZoybcMh8gyvfxyZ8CtVXXr6QmbTB/7J91tCfDXsVwfCNlu07+zHr
-	 J8kb8iifEU903jajI+07uP8TKdkrfxRo2rc2f9rZNKQGj/Wm201dHIUriom2V5cTxvTKc
-	 KwfQp3ayN3u5oAg12Jc3e+urM0xfRVRQVK+JXM/B5ybxB8D8H3kZl7M6ZRm3rTNFmWA==
+	t=1795179408;
+	b=41zNie+yv269SggFZOSAGapRhC+IEaFd9kX9PGz9fyLxrkn3Nk74waJ41ebkxe3ywOxW
+	 35RVDJ7jB6xWYOML0FHKAVx7NDAciFlz1yMMt4HEQwOON0R689r/nWEExhM85zcY6ZRiT
+	 h1R53KC0GJaaRzCswU7KjEjN1Qo17mjEWMhBxXZTGP/eXvu0L5EL78PVSaQAe5jxSDeEm
+	 iv6PBazKgbxq5YFfbiTWcZAdIDPw5Qe5q5cWl50Y5CUTLhXvipKCERtK1YhzYQA0WENna
+	 pMtg7m6B4b5+KNNYDxS/LX1oIoXbPQ4i1Ri9gp16dVAY1nWSL0xqeT5vv3/j57WLWWA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795176022;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=j/vFTo/WzWtYBe57jLj39Uo2vtxrhyN5lkikj6A7mWo=;
-	b=oq83JzuvUBAwPwinIwBhxPgELwVcs1CbciTb+7HutzH87G1xcO4RUV+lZIphknc6jFk+
-	 9uu4D1Cq2cfTGjOMegZ3j2BqEo2bQkDqbKyrslk2AjfyeoTReD8H4VifdMPKB5+vSWIvt
-	 OJ5QBrLqGtWSA68tXfak6Mao2w5/UUQ3W6/mC5f31ThjFD9J2jkTAzWocP43w52jwQ2oN
-	 IW/soN6uwQ4puLJ+SlpNLHlTJxJcELoJJmTjZYNnTO2ajgPYb+S9binA06jR+O3zinOuR
-	 5yBGK7Ekb2ktsjoR3Dc9702Lyfpo3eJ0SsMHawI5aKOJ19mENskZmCFLWI3l+5q+V/Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795179408;
+	h=Received:DKIM-Signature:Mime-Version:Content-Type:Date:Message-Id:
+	 Subject:Cc:From:To:X-Mailer:References:In-Reply-To;
+	bh=tFUgsonzdWZLAS1pzTBqmSJ/wCyu7F0wrC3wsF9xA4k=;
+	b=WvC/JnNyAOEDToSrs2vhb+gZKPiv3uM2b7jeJS6u+aTOUrUdUPV3kwPufau4RC1NRMM5
+	 RHgnwQEzvvgxzMyiFDkuLiHJl78pUShj1fhMa2zKWQTioUJRnrwaWL0R6QRjTl0WYbrQs
+	 mM+Wi0Kji52CKate4J0RMTpH/7ZqWxTReDJKCPoURJjmSuGX/mv8sDB3p9eRYuy6LwE9A
+	 8HzV5Nem1cEc2jPp0MZtfNLTXn3yYwuo62/8gQtFBAydxd4hn+5HnI1qjmwshfRy9MudR
+	 G7+jWtM3jmYdEy87eRl1UJrwaUydTi/V1PBbZw8Czm1I6no2WW3BrgGaUZ7hZkQPuHg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Z7lcuDRD;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QZgFJpCS;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4F8606A336;
-	Fri, 20 Nov 2026 12:00:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C4F8606A336
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id E5C0F60A261C;
+	Fri, 20 Nov 2026 12:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Z7lcuDRD
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 0CD171A174A;
-	Fri, 20 Nov 2026 12:00:21 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D64116017D;
-	Fri, 20 Nov 2026 12:00:20 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CB90B11BC00EC;
-	Fri, 20 Nov 2026 13:00:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795176013; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=j/vFTo/WzWtYBe57jLj39Uo2vtxrhyN5lkikj6A7mWo=;
-	b=Z7lcuDRDT26WhEVfIigM/Tt2PRBGllC4vsT0C/q+pa/9VcQE5w2c57H8WfmjxmRbyUiHVD
-	evZDuwAD4gL8oIXWguTxZhuhzdYBKZ4x4hDf1/0UDmZJQDw14F69gLfBCUDWzETxzQ2ntM
-	t+dAA5VnFFZi+tGQRHD281SkK9uk2gcuaUEXa1PqfIxTC0T24E19vGOFsU5O1uDbhpZZ/N
-	UPwhzbC90m800/GSqfjsIG2JqU7GJQtxq1ut1GapGH34yU5yqGEBWKZQFk6wP04iM6bQpW
-	e3MufqEaQfTRfOEFRdd0Q85YXiHkxlYWAo0D8nJM/dnqPhWMB9XUJczt/b7fLw==
-From: Paul Cercueil <paul.cercueil@bootlin.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-	Tanmay Jagdale <tanmay@marvell.com>,
-	Jisheng Zhang <jszhang@kernel.org>,
-	George Cherian <gcherian@marvell.com>,
-	Witold Sadowski <wsadowski@marvell.com>,
-	Paul Cercueil <paul.cercueil@bootlin.com>
-Subject: [PATCH v5 7/7] spi: cadence-xspi: Add workaround for old Marvell firmwares
-Date: Fri, 20 Nov 2026 12:59:25 +0100
-Message-ID: <20261120115925.173568-8-paul.cercueil@bootlin.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261120115925.173568-1-paul.cercueil@bootlin.com>
-References: <20261120115925.173568-1-paul.cercueil@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QZgFJpCS
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 427CC1F000E0;
+	Fri, 20 Nov 2026 12:56:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795179407;
+	bh=tFUgsonzdWZLAS1pzTBqmSJ/wCyu7F0wrC3wsF9xA4k=;
+	h=Date:Subject:Cc:From:To:References:In-Reply-To;
+	b=QZgFJpCSXGErrdr7UZI00oLmHhVCCzdMT8VQHkB/2F1wAFIhB2Ju7hPV/BR3TRngO
+	 2DF7hTlWHP0e56sa6XPyR0a3O+pwhnGkBosvxlP90u4xA+4hZ1iizknD54IuFKdvXC
+	 E5OV5R2Nkkdp4lOpFjF7YlbZB+687R7APSJT44S5a/zSOS+V92V4LcgaXW7ybsu3wm
+	 MCPcj3qs08uw2zjtBZude5YsTD7MdmOjbvu2xJxiaVYJ6ALPWmLOFprSq0KuQDpv/C
+	 qV4hKlPDWeom4IzCEEAZTnV6CLX1D5QJFe3IeNbVhXXCAuba4dHHR1tdGOFhGZ0z48
+	 2DRKoKoEQ/WCg==
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -76,128 +47,134 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Mime-Version: 1.0
+Content-Type: multipart/signed;
+ boundary=cd2dae19cb24704fa8f412b0fcbc099e07be2af6d62f1bb1ea7d9fe316ac;
+ micalg=pgp-sha384; protocol="application/pgp-signature"
+Date: Fri, 20 Nov 2026 13:56:44 +0100
+Message-Id: <DN01ZL81VTHB.3PB0JO4WI6WU0@kernel.org>
+Subject: Re: [PATCH v11 00/19] spi: cadence-quadspi: add PHY tuning support
+Cc: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+ <praneeth@ti.com>, <sebin.francis@ti.com>, <u-kumar1@ti.com>,
+ <srikanth.boyapally@amd.com>, <m-shah@ti.com>
+From: "Michael Walle" <mwalle@kernel.org>
+To: "Santhosh Kumar K" <s-k6@ti.com>, <broonie@kernel.org>,
+ <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+ <miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>,
+ <pratyush@kernel.org>, <takahiro.kuwano@infineon.com>
+X-Mailer: aerc 0.20.0
+References: <20261105105832.2134313-1-s-k6@ti.com>
+In-Reply-To: <20261105105832.2134313-1-s-k6@ti.com>
 
-From: Tanmay Jagdale <tanmay@marvell.com>
+--cd2dae19cb24704fa8f412b0fcbc099e07be2af6d62f1bb1ea7d9fe316ac
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-Older firmwares from Marvell used the cdns,xspi-nor compatible string
-for the Marvell-specific xSPI IP, which is incompatible.
+On Thu Nov 5, 2026 at 11:58 AM CET, Santhosh Kumar K wrote:
+> This series implements PHY tuning support for the Cadence QSPI controller
+> to enable reliable high-speed operations. Without PHY tuning, controllers
+> use conservative timing that limits performance. PHY tuning calibrates
+> RX/TX delay lines to find optimal data capture timing windows, enabling
+> operation up to the controller's maximum frequency.
+>
+> Background:
+> High-speed SPI memory controllers require precise timing calibration for
+> reliable operation. At higher frequencies, board-to-board variations make
+> fixed timing parameters inadequate. The Cadence QSPI controller includes
+> a PHY interface with programmable delay lines (0-127 taps) for RX and TX
+> paths, but these require runtime calibration to find the valid timing
+> window.
+>
+> Approach:
+> Add SDR/DDR PHY tuning algorithms for the Cadence controller:
+>
+> SDR Mode Tuning (1D search):
+>  - Searches for two consecutive valid RX delay windows
+>  - Selects the larger window and uses its midpoint for maximum margin
+>  - TX delay fixed at maximum (127) as it's less critical in SDR
+>
+> DDR Mode Tuning (2D search):
+>  - Finds RX boundaries (rxlow/rxhigh) using TX window sweeps
+>  - Finds TX boundaries (txlow/txhigh) at fixed RX positions
+>  - Defines valid region corners and detects gaps via binary search
+>  - Applies temperature compensation for optimal point selection
+>  - Handles single or dual passing regions with different strategies
+>
+> Patch description:
+> Infrastructure (1-5):
+>  - Patch 1:   Add spi-max-post-config-frequency-hz to describe maximum
+>               frequency achievable post controller configuration
+>  - Patch 2:   Add spi-phy-pattern-partition phandle for
+>               NOR flash PHY tuning pattern location
+>  - Patch 3:   Parse spi-max-post-config-frequency-hz in spi.c; adds
+>               spi_device.post_config_max_speed_hz (0 when not set
+>               keeping all existing DT fully compatible)
+>  - Patch 4:   Extend spi_mem_adjust_op_freq() with a bypass: if
+>               op->max_freq equals post_config_max_speed_hz, return
+>               immediately leaving op->max_freq unchanged. All other
+>               ops are capped to max_speed_hz. Also require per_op_freq
+>               controller capability for post-config ops in
+>               spi_mem_default_supports_op()
+>  - Patch 5:   Add execute_tuning callback to spi_controller_mem_ops and
+>               spi_mem_execute_tuning() wrapper in SPI-MEM core;
+>               serialises access via spi_mem_access_start/end and
+>               rejects GPIO chip selects
+>
+> Cadence QSPI Implementation (6-14):
+>  - Patch 6:   Move cqspi_readdata_capture() earlier (preparatory)
+>  - Patch 7:   Add DQS bit to cqspi_readdata_capture() (preparatory)
+>  - Patch 8:   Add complete PHY tuning support: DLL management, pattern
+>               verification (NOR via spi-phy-pattern-partition phandle,
+>               NAND via write-to-cache), SDR 1D and DDR 2D search
+>               algorithms with temperature compensation, AM654-specific
+>               execute_tuning entry point
+>  - Patch 9:   Reject 2-byte-address DDR operations via a new
+>               CQSPI_NO_PHY_TUNING_WITH_ODDR_2B_ADDR quirk flag to work
+>               around AM654 OSPI erratum i2383
+>  - Patch 10:  Refactor direct read path for PHY support (preparatory)
+>  - Patch 11:  Enable PHY for direct reads at the calibrated frequency
+>               when both transfer boundaries are 16-byte aligned,
+>               falling back to non-PHY DMA otherwise; also reprograms
+>               DLL on chip-select switch when two devices have
+>               different calibrated settings
+>  - Patch 12:  Enable PHY for indirect writes of at least
+>               CQSPI_PHY_MIN_INDIRECT_WRITE_LEN bytes
+>  - Patch 13:  Reprogram per-device CS timing on any chip-select switch
+>  - Patch 14:  Reprogram the PHY DLL (master config and RX/TX taps) on
+>               runtime resume, since the DLL loses its lock when the
+>               OSPI controller is power-gated
+>
+> MTD core (15-19):
+>  - Patch 15:  Extract spinand_select_op_variant() into a shared helper
+>               spinand_op_find_best_variant() with a skip_mask
+>  - Patch 16:  Negotiate optimal controller operating point before dirmap
+>               creation; iterate all read variants in performance order
+>               across ODTR and SSDR interfaces; re-pair cont_read_cache af=
+ter
+>               PHY tuning via protocol-shape matching
+>  - Patch 17:  Extract spi_nor_spimem_get_read_op() helper (preparatory)
+>  - Patch 18:  Execute controller optimization in spi_nor_probe() before
+>               creating dirmaps
+>  - Patch 19:  Reset max_read_op frequency for security register reads
 
-Add a workaround to support this case, checking for a Marvell board in
-the DTB or the ACPI tables.
+So what is the merging strategy here? Getting the first parts in and
+then getting the spinand and spi_nor in in the next cycle?
 
-Signed-off-by: Tanmay Jagdale <tanmay@marvell.com>
-Co-developed-by: Paul Cercueil <paul.cercueil@bootlin.com>
-Signed-off-by: Paul Cercueil <paul.cercueil@bootlin.com>
+FWIW, the spi-nor parts looks good.
 
----
+-michael
 
-v2: Replace the workaround based on the presence of the "xfer" resource
-    with a mechanism that identifies a Marvell SoC based on the board's
-    compatible string on DTB, and the DSDT table on ACPI.
+--cd2dae19cb24704fa8f412b0fcbc099e07be2af6d62f1bb1ea7d9fe316ac
+Content-Type: application/pgp-signature; name="signature.asc"
 
-v3: Wrap ACPI specific code with CONFIG_ACPI guards, as some of the
-    functions and structs aren't defined without CONFIG_ACPI.
+-----BEGIN PGP SIGNATURE-----
 
-v4-v5: No change
----
- drivers/spi/spi-cadence-xspi.c | 41 +++++++++++++++++++++++++++++++++-
- 1 file changed, 40 insertions(+), 1 deletion(-)
+iKgEABMJADAWIQTIVZIcOo5wfU/AngkSJzzuPgIf+AUCawBDjBIcbXdhbGxlQGtl
+cm5lbC5vcmcACgkQEic87j4CH/jlKgGAmJfvydKg0f8fTncnEJee3RHHg0horD+2
+iFLHf5kuyyb9k43qSNyXNtEh8Z9lOWHvAYC2s5jKfeXC8nMtNHHSPMfBTTj4BbZV
+boFxqVsvcIKVaEBgl0odMoW/LoONdY0SoiI=
+=fiz6
+-----END PGP SIGNATURE-----
 
-diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
-index dbfb07e6751f..4dea1a68fe8d 100644
---- a/drivers/spi/spi-cadence-xspi.c
-+++ b/drivers/spi/spi-cadence-xspi.c
-@@ -2,6 +2,7 @@
- // Cadence XSPI flash controller driver
- // Copyright (C) 2020-21 Cadence
- 
-+#include <linux/acpi.h>
- #include <linux/completion.h>
- #include <linux/delay.h>
- #include <linux/dmaengine.h>
-@@ -13,11 +14,13 @@
- #include <linux/iopoll.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/property.h>
- #include <linux/spi/spi.h>
- #include <linux/spi/spi-mem.h>
-+#include <linux/string.h>
- #include <linux/bitfield.h>
- #include <linux/limits.h>
- #include <linux/log2.h>
-@@ -906,7 +909,6 @@ static void cdns_xspi_print_phy_config(struct cdns_xspi_dev *cdns_xspi)
- 		 readl(cdns_xspi->auxbase + CDNS_XSPI_CCP_PHY_DLL_SLAVE_CTRL));
- }
- 
--#ifdef CONFIG_64BIT
- static struct cdns_xspi_driver_data marvell_driver_data = {
- 	.mrvl_hw_overlay = true,
- 	.dll_phy_ctrl = MARVELL_REGS_DLL_PHY_CTRL,
-@@ -919,6 +921,7 @@ static struct cdns_xspi_driver_data marvell_driver_data = {
- 	.rfile_phy_dll_slave_ctrl = MARVELL_RFILE_PHY_DLL_SLAVE_CTRL,
- };
- 
-+#ifdef CONFIG_64BIT
- static const int cdns_mrvl_xspi_clk_div_list[] = {
- 	4,	//0x0 = Divide by 4.   SPI clock is 200 MHz.
- 	6,	//0x1 = Divide by 6.   SPI clock is 133.33 MHz.
-@@ -1367,6 +1370,33 @@ static int cdns_xspi_transfer_one_message_b0(struct spi_controller *controller,
- }
- #endif
- 
-+#ifdef CONFIG_ACPI
-+static const struct acpi_platform_list mrvl_platform_list[] = {
-+	{
-+		.oem_id = "MRVL  ",
-+		.oem_table_id = "CN10K",
-+		.table = ACPI_SIG_DSDT,
-+		.pred = all_versions,
-+	},
-+	{ }
-+};
-+#endif
-+
-+static inline bool cdns_is_marvell(struct device *dev)
-+{
-+	const char *compatible;
-+
-+#ifdef CONFIG_ACPI
-+	if (has_acpi_companion(dev))
-+		return acpi_match_platform_list(mrvl_platform_list) >= 0;
-+#endif
-+
-+	if (of_machine_read_compatible(&compatible, 0) < 0)
-+		return false; /* shouldn't actually happen */
-+
-+	return strstarts(compatible, "marvell,");
-+}
-+
- static int cdns_xspi_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -1388,6 +1418,15 @@ static int cdns_xspi_probe(struct platform_device *pdev)
- 	if (!cdns_xspi->driver_data)
- 		return -ENODEV;
- 
-+	if (IS_ENABLED(CONFIG_64BIT) &&
-+	    !cdns_xspi->driver_data->mrvl_hw_overlay &&
-+	    cdns_is_marvell(dev)) {
-+		/* Some old firmwares use the base compatible string... */
-+
-+		dev_warn(dev, "Using the cdns,xspi-nor compatible string on a Marvell SoC. Please fix firmware!\n");
-+		cdns_xspi->driver_data = &marvell_driver_data;
-+	}
-+
- 	host->mem_ops = &cadence_xspi_mem_ops;
- 	cdns_xspi->sdma_handler = &cdns_xspi_sdma_handle;
- 	cdns_xspi->set_interrupts_handler = &cdns_xspi_set_interrupts;
--- 
-2.47.3
-
+--cd2dae19cb24704fa8f412b0fcbc099e07be2af6d62f1bb1ea7d9fe316ac--

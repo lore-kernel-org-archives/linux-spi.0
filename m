@@ -1,55 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795174538;
-	b=P2LxWLIlwzrUH+GjU2s6ndbboFTZPu0UTkQmp0DIc3Zoz57YHaVEfGIHIQS5m8dxzMy2
-	 AxtDMqKWum314RDaVOR33EuRe0nE8uBwg0f0VpynF+iL2G94VlAAPcmZ9VIhuoOTY2hH4
-	 ynn0t+d67PcCsDNcOdqF3TNGoint3X8Gcm+h+iqzekiPv3y5v+g4zwoh0SPZFM2GR8Ov5
-	 nIMYhriekRUmTQJFMjFd1uhlVN/CFL+IWs46fh1UcOooGf58MZ5Ix5fHyh8qi5Zf1gwz5
-	 65xweVIdgBy71oYnnyiBgMs4V92IvZiiGaHk3yNxWhzCuUgc/mIbnIke7DHJ/3jJCcA==
+	t=1795175989;
+	b=QFzh1qT1VIBk60lYLmlZbXznjhSRgiBDyTZR7bBhHmrCYAk4E/FJwwl2yRiWUiZHO6oD
+	 3AZkmLZYuC6OZd3lKYZNgZYHAZWUZq0TGXSiUjM1y7GyBgK/G7dwfKrOjvU5OlhFb5MdZ
+	 m/hnGmPs+l0/GIyhenPPJ3QYvqtATGEJk2kLNbdzLF2sMQOOtFbXOo/alskpjf5+IA5ZM
+	 ChGioHqa8Ifj8L8HeRwZY0kELmKWFm+ZMOQGHUV6Ij6+bxIi28pGKjo3zWmLvGe3D2rLZ
+	 auXyqHvqUcBj+z5jQ3P/imKkaNcUg/e4tqki0XE5MFR+a9MyLhwZdeg9+a21T4rOHlg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795174538;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-Cookie;
-	bh=OJ8sB8CqGQyDeYUESkBC1QwhQT3EKnox3F2/tdXe43s=;
-	b=xIC7GUD0399+2Kavy8yRcQ1uFtm93Uem16hctEa7XrMRfe+84W6Q70CJjzaHz7wKQia2
-	 l0UCkK5kHTp6mJbfzMc9NXzGKIdJjkhL7mdv/Vm1ixT2VUSzJy7hj72qE5dFKqZRNBng3
-	 UCyGsaB2aur/4eKpy2bt7iQIMGICEKueska/qCjD59i8Gvwo7kWc7xWIvks5/f+BE7jA9
-	 31ion1ISV1l8SIMDvB6DLlinw3HERTNZ9BbtnKrFmkSTCFXiqdTmUu+RzVfZvI75yNtg4
-	 dKNG5CmwdSniCRtQ4zG7+Q0tBSn3LujdaAYu30gGEKn1Uo9+BDeCEZfHgRcESp/mkBA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795175989;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=Pnfbrqsz261Ao8LkfJr3kvpI+oVHki879oH/ScAaXHk=;
+	b=gg+GsGN6JNu8dBzj3tIa7lI57Fk/AOBwlt2ZdUSFVc/hlyN0P9zR3XPnJ4iwZRMDjsOh
+	 PmBZXh/9lgoT7Hx3Q8TxW+rfPodT76XEABC1wtVGQJyW3DuFOM85QaoKk2pVA1+RZdXxN
+	 pGtGWRKIZi8wt0P5cPU6w49R5YGM1XV0ZnNDlk1qFGuH/UPa/zoYBvtHl6uqwUwKsNvod
+	 nqC0UES5szAwBHFe/AxWuuJHe1dqWLpJ1uNYt6F+BV9Zz/uNgfc8GtK/5u7ho8KN5lOuD
+	 X3Tq6DMOQ0tc1Nc9BKpQ5qmhB4gEER5eUkHHuVabEeWWHblu0pjpBng/cXsufNgRjHA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=auFkIbCz;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=clhVjqzF;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC44606A320
-	for <linux-spi@vger.kernel.org>; Fri, 20 Nov 2026 11:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6FC606A320
+	for <linux-spi@vger.kernel.org>; Fri, 20 Nov 2026 11:59:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B6FC606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=auFkIbCz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D2E1F000C0;
-	Fri, 20 Nov 2026 11:35:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795174538;
-	bh=OJ8sB8CqGQyDeYUESkBC1QwhQT3EKnox3F2/tdXe43s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=auFkIbCzl/IJOsljENZs65myXMtW15xkh6T1sDxQateK1BrnMQHm6PJwigMv1exaW
-	 g5qgRdtbTmwee4wVJ/DtCjOZdkxIT+gZCRYlOTt+Wk1pRjYGmxgP2Li9NRWEuPE/3d
-	 coI8ffs7BewoK2zecQap/DbiWBjQjVqirnETms5+ETLrZr/lW3H+vNLKQZ87eckp5t
-	 w+xyVPeJdFSTJmo+apZBLZHW/UeyBlrfD3Q6FFrQigjQBX3OI8uoueJNXrOR6eNzon
-	 Qc4stNNh4iJdv+oYG9sNwlvINvneIhsxZse+C6N7xHoDKjLfU+O/4IFnh5zskefNiW
-	 02yFsD86ltZ+w==
-Date: Fri, 20 Nov 2026 11:35:33 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-spi@vger.kernel.org
-Subject: Re: [PATCH v2 06/10] spi: spidev: Allow untainted use of
- driver_override
-Message-ID: <25b6ef12-fede-4cc7-81db-dcb5346fa0cc@sirena.org.uk>
-References: <cover.1795171088.git.u.kleine-koenig@baylibre.com>
- <3821faaf865f1f96b45f6156b577cda57eabc4eb.1795171088.git.u.kleine-koenig@baylibre.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=clhVjqzF
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 05D9F1A1749;
+	Fri, 20 Nov 2026 11:59:47 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C6FF56017D;
+	Fri, 20 Nov 2026 11:59:46 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BE43C11BC003C;
+	Fri, 20 Nov 2026 12:59:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1795175981; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=Pnfbrqsz261Ao8LkfJr3kvpI+oVHki879oH/ScAaXHk=;
+	b=clhVjqzFK2XxDnK+PQU5QHV0S6u31OvANTAUl6pM8p4JF/VvWJrzYdUlyuKXbKHXfPJf31
+	buDrJLr8TzFfXFvH3uAcWGitPqshp8wxFguHJYDR5Gv93txr58VamHjk+gXSD24RnTuou0
+	bzKl2Ir11OicBYWqGZNu0LydU0Q67Ckz+Xk53RGsmSJSsfpSlM+/VYFhr1vSQllg8AL0pd
+	Bw9/lnZvx4cshm1MTfVq+sSJaeDKrqIEVfZqOJlO7dXdkAnvdQhqnUyPCtb3e+0OcWCsJU
+	pqG2BGID3TOjpRLvihPhpkMqDnrxmqbevmGrQNHNpus8PIAB2FPNZXSAs5bVVg==
+From: Paul Cercueil <paul.cercueil@bootlin.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+	Tanmay Jagdale <tanmay@marvell.com>,
+	Jisheng Zhang <jszhang@kernel.org>,
+	George Cherian <gcherian@marvell.com>,
+	Witold Sadowski <wsadowski@marvell.com>,
+	Paul Cercueil <paul.cercueil@bootlin.com>
+Subject: [PATCH v5 0/7] spi: cadence-xspi: Fixes and ACPI changes
+Date: Fri, 20 Nov 2026 12:59:18 +0100
+Message-ID: <20261120115925.173568-1-paul.cercueil@bootlin.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -59,38 +74,43 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="humat08KGRpYilUJ"
-Content-Disposition: inline
-In-Reply-To: <3821faaf865f1f96b45f6156b577cda57eabc4eb.1795171088.git.u.kleine-koenig@baylibre.com>
-X-Cookie: Error in operator: add beer
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+Hi Mark,
 
---humat08KGRpYilUJ
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This is the v4 of my patchset that adds a few fixes to the cadence-xspi
+driver, some cleanups, as well as a workaround for probing the Marvell
+IP on firmwares that use the base string.
 
-On Fri, Nov 20, 2026 at 12:11:07PM +0100, Uwe Kleine-K=F6nig wrote:
-> The spidev driver is designed to be bound to devices using the
-> driver_override mechanism. Set .support_driver_override =3D true to
-> continue having this mechanism work for it without tainting the kernel.
+If that last one is a deal breaker then it can be skipped. Jisheng Zhang
+queried the DT maintainers about a clarification on whether or not bugs
+in out-of-tree DTs should be cared for, but they haven't responded yet.
 
-Acked-by: Mark Brown <broonie@kernel.org>
+The v5 is a minimal update from v4, only the first patch is different.
+The error path of .transfer_one_message() will now disable the hardware
+FIFO.
 
---humat08KGRpYilUJ
-Content-Type: application/pgp-signature; name="signature.asc"
+Changelog in v5:
 
------BEGIN PGP SIGNATURE-----
+- [1/7]:
+    - Reset hardware FIFO on error
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmsAMIUACgkQJNaLcl1U
-h9AbWwf8DEDkRxkPDolA8MPf7XLRKL2VZx65Q4PE3cyiACn7Vb0sHUtAZSMDyn/D
-kKBiLgxji4ZLoRotWUZxh5kSV4XUb7a22NxaY4kYVVEy+BLXBywkwwC1FGwS7MnD
-uWu/WDQrmZQsr4Y44/iImTXxZHK1mkJx4GD+l6/eZ6NMjtDXuNsujsWYqcvzyWtB
-4Wu72pP+ZT5/9+wCyI77XuTFXqfCLMYFIbmTUJ6JFofWQZDekslYXxpssE/1dlvt
-wenRCLnfjmRDwd47IGn/3/8AaT3YcZNlZiGXdZDjOfs76KGum11SJmGb+Zog9SLs
-nvw+lvjdiyEhKF9uL3JxrpONlqvXrA==
-=WMhM
------END PGP SIGNATURE-----
+Cheers,
+-Paul
 
---humat08KGRpYilUJ--
+Tanmay Jagdale (7):
+  spi: cadence-xspi: Properly handle errors in .transfer_one_message
+  spi: cadence-xspi: Reconfigure to STIG mode before SPI message
+  spi: cadence-xspi: Inform SPI core about size transferred
+  spi: cadence-xspi: Clear "SDMA ready" IRQ flag after polling
+  spi: cadence-xspi: Drop useless cdns_xspi->cur_cs
+  spi: cadence-xspi: Rework resource discovery
+  spi: cadence-xspi: Add workaround for old Marvell firmwares
+
+ drivers/spi/spi-cadence-xspi.c | 183 ++++++++++++++++++++++-----------
+ 1 file changed, 123 insertions(+), 60 deletions(-)
+
+-- 
+2.47.3
+

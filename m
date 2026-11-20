@@ -1,60 +1,63 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795195605;
-	b=eWDAXYbEgPQ97ek9+6qrByy8n49balFW5CWusnURlVYoAT7TRjQHypBC3R6mnsXnpdBI
-	 YWqnHsoqWGyY5VqVfAx64MVSp7ON3FamBfo3t2i898yo3YGM/UY2OXXjUUyvUbKSEHzvu
-	 3nG9o+sSNEKun6v9gvQ2IUHTiu6Pc4ZIYBwNPCs3XZBLL6ZYxV3CrRFwSa6f1KxeDW/u7
-	 lDZoRViUPQJ3/qX/3iqLon9a12O/HPQ17Yty1xMQuM3S2NvpZRlj7GScaea+jQWwEBLvS
-	 RJZ/OxWVRAVMZ9xb9iMeeB4sUenxMfRQ02SvYkykd+yVciM2ZXD3xIR7qvJ4sWUjgDg==
+	t=1795197108;
+	b=mUBMCuOzsLBc/R0WdKLWZ//0WNkOXLglKt1rvx1iYgdbxNaWMpPlETObvi+u4Efk+AXu
+	 iRLA8BOdEzG/6p7wb8/ZptrKSwiR/lVf31kHaT9Vas6hRrKxHDKCJ5X1KCAQbZZzoSQtX
+	 u7dJyJcHNNgRZv7pGzdHLH0SWv2vkSgtwXnchDqWgF94Zc1WXfszQGICBRN5k/BfLA/6f
+	 iumNnG5QeBP4kexnB1bmPhFmJquLJTT0o0s98Hy5MUsbfh6i2Kz77aYgFb8VU9GSl5Sz8
+	 MFcyhnaP50QrFEdj2cEHKrQXE872O4mSwaZoTKlNLl5imh+tRJsg/zdnnlNc0GouGZw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795195605;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795197108;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=fxf+nipH1Cr8jDUljHcHSs5CO02bX7aKJ8t0CkTEBBU=;
-	b=haRMOo/iTWl45lI4Gu08wjRTxxAn4Ix+J1PC1u75kp75VDa0kSaymJle15bwF9szCWfJ
-	 M5jEm8AgYuZMpSr69N/msDbtFPaDlLibUvhM0cDaD+6jTRvpg8U+sfbwvoUXvXXPnogPN
-	 Gi9OyiGqCbH8BQDmMyCC4GleEobgfvlAjxDqZow3j3RAVSuI6BVeZfO5CUZb5mon98F0W
-	 Rtbb+o63NADTNkOQZ/Jq7ku5qIBEWpktzjpIdH8cSEjFIM/tvbtoFMwHQ27bTvRC+cnGd
-	 r3kKerp8FgHcVOEog0/XtKtHmsBXZ49Yj7ZNeN0FcSndS37lM5Pf+FUtkYLGzj3dw8A==
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
+	 X-Cookie;
+	bh=VHowywnwgv+szuq/ds/5JQJQAxBZ3BU/Sr0rag1oQY0=;
+	b=DTgzD6I25emm83PAn656bMf16j1bl0FXu3D94IKqdAGi+SGvnbxUOrW6Q8hJj0+ukdlf
+	 U6FUv/wWPeUXhPmA2huvCEJOWGJSZYGv8fKWXScQHv3E5Ag95Gi3IZ9KGltT/ql3AsZMz
+	 yZfDKcCpGt6W3oYp2WhAQNffemDyudMEAyzP4EbjyFnweAE/4/CsMn+pkjA+wZAB943Qg
+	 BlyjpkT8mj9YOCeTQw3ouxcN4c03CanLsDvzplwXiwWgNlCVNFFCccc/lUO1VbKaSzVZU
+	 QNQpwUfGcWIILNK1Srde4DWMYCUg/jTj8ps73kiNXQuwYVJCawPslcRpi684UvA92Mw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IKjykBdQ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S4yOTFXY;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F23606A32A;
-	Fri, 20 Nov 2026 17:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5506606A331;
+	Fri, 20 Nov 2026 17:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IKjykBdQ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E69E1F000C6;
-	Fri, 20 Nov 2026 17:26:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S4yOTFXY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF9B1F000EF;
+	Fri, 20 Nov 2026 17:51:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795195604;
-	bh=fxf+nipH1Cr8jDUljHcHSs5CO02bX7aKJ8t0CkTEBBU=;
+	s=k20260515; t=1795197107;
+	bh=VHowywnwgv+szuq/ds/5JQJQAxBZ3BU/Sr0rag1oQY0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=IKjykBdQKK6UW+SjhXzoKfCs3ox84evesRjlgzUkRt6YulvgkWsuJ7oWEVj3R4cv6
-	 Fftdt/yPrrRSZUjOA9mkOAUBImSavMj2Dy6TuqPKpPUrulY4kci8BvV1clqgYYORo0
-	 bQnnB7toxNM/1VekBdnBdO5GsKR4cy9Mc3ZM7i/IMuPOy5hr3JmsfymyfkU5WkCn2N
-	 lB8b9+78K9kTag+XccBAZpKZq8NCcrmvZ0STC89Q4c0FGcFr9AF5/f+QkN07cB0XbA
-	 Emr1tzs/OkXsPtIdltSMHc+eDGheLG67tntbcdN2m9XB32B3myFkLcjXLcO4WKUAZh
-	 G1zd1xci164Ng==
-Date: Fri, 20 Nov 2026 17:26:39 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Navid Ghahremani <ghahramani.navid@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, arnd@arndb.de,
-	stefandoesinger@gmail.com, krzk@kernel.org,
+	b=S4yOTFXYlPAlAIiC5FyJq7AOziX/S0z49HZo9jiyPKwgkYqUlrBuu+3lLQKIakzZ0
+	 iwblUOgnJxS/D9h/p2r8vtbqmQnpkkk/Me5GfrjSVLTkgmjEXQ+1zRMVj/rAv2fFFb
+	 lN+i1hwYAZgM75bievOWLUefk0lX3VwWB+hyXKJMppgyJv3OGdLaRtGlJ2p8WwdI3M
+	 LBaXI+gmTHcd3y9Fqd2Ni3zi5cxogQJyiYqhV8cUgodMKDGo9iyk/q8+LTKZuZJ/6g
+	 IhCQcabIjHTIrpW9ad/kIVgwwNZQezu810bzM1t+smHFYTMF5hhov5KD7d8PzK5eYC
+	 3KdSl75Wu6qdg==
+Date: Fri, 20 Nov 2026 17:51:41 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 19/24] dt-bindings: spi: Add ZTE ZX family SPI flash
- controller binding
-Message-ID: <20261120-unrivaled-prong-1e95735fe087@spud>
-References: <20261014072109.1759502-1-ghahramani.navid@gmail.com>
- <20261014072109.1759502-20-ghahramani.navid@gmail.com>
- <179518848943.6016.16140133614242447239.b4-review@b4>
+	Conor Dooley <conor+dt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Michael Walle <mwalle@kernel.org>,
+	Takahiro Kuwano <takahiro.kuwano@infineon.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, praneeth@ti.com,
+	u-kumar1@ti.com, p-mantena@ti.com, a-dutta@ti.com, s-k6@ti.com,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mtd@lists.infradead.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 00/11] mtd/spi-mem: Enable DQS control
+Message-ID: <164905f5-2857-4b8e-8d99-26939b45cde4@sirena.org.uk>
+References: <20261120-winbond-nand-next-phy-tuning-v4-0-8c21e1f71f41@bootlin.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -65,49 +68,36 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="rjrmWXXpDlSqC1UG"
+	protocol="application/pgp-signature"; boundary="PdZCEK8gmvk4jFLE"
 Content-Disposition: inline
-In-Reply-To: <179518848943.6016.16140133614242447239.b4-review@b4>
+In-Reply-To: <20261120-winbond-nand-next-phy-tuning-v4-0-8c21e1f71f41@bootlin.com>
+X-Cookie: Error in operator: add beer
 
---rjrmWXXpDlSqC1UG
+
+--PdZCEK8gmvk4jFLE
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 20, 2026 at 03:28:09PM +0000, Mark Brown wrote:
-> > Add Device Tree binding for the ZTE ZX family SPI flash controller,
-> > supporting both ZX29 and ZX279128S SoCs.
->=20
->=20
-> Please submit patches using subject lines reflecting the style for the
-> subsystem, this makes it easier for people to identify relevant patches.
-> Look at what existing commits in the area you're changing are doing and
-> make sure your subject lines visually resemble what they're doing.
-> There's no need to resubmit to fix this alone.
->=20
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - zte,zx29-qspi
->=20
-> This looks like a wildcard binding which we don't normally allow.
+On Fri, Nov 20, 2026 at 06:14:26PM +0100, Miquel Raynal wrote:
 
-I figure by wildcard you mean that the compatible is covering the whole
-family, rather than the x being a wildcard character. If so, I agree
-that it should not be allowed. I don't really know why it is here, no
-other patch in the series that I looked at seems to do anything of the
-sort, it's all device-specific ones for the xz279128s.
+> This series applies on top of v7.4-rc2 and Santhosh's PHY tuning series.
 
+Please don't send patches that depend on other in flight serieses, it
+just makes things much harder to manage.
 
---rjrmWXXpDlSqC1UG
-Content-Type: application/pgp-signature; name=signature.asc
+--PdZCEK8gmvk4jFLE
+Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCawCCzwAKCRB4tDGHoIJi
-0laKAQDRGnEKIBosOkTgcH+zt5RiPxDTs6KvjxZOxByJ94lB1wD/RN9YSoRwzHfG
-KwRcBXW7isi8mBE1p07Uf0zJ4hunvwc=
-=RCwU
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmsAiK0ACgkQJNaLcl1U
+h9Ah6Qf/RSPKeIR2si02KD6m/Vb6Ibcrg5ntfGu/YQWagtnyfUCD2YgLZPVCaibq
+5HEpnLW02XdEZPlF8xN/6shfowKl5Eav9AuUiohzs7OYcyixiXsYuy309+QY7YBC
+Dx96JtZAZz8UWSl7rez096kAoGQCdgxPsPKcAjijy/VQx18DLYsk4vLaQWS0JFME
+cj1EZJ0sEpwKqPeqMp6N8Yiuq9jZBPhTcPb2itQ28aiUPi3lbJmR8MIQ3x9mZ7R7
+u8S8+J3UrCn6r8F+Pmb6Xbar6GUcg20QFftZOkM9ani8OYvAemvmzc6lsU7I2oAX
+yL0aRjtXvOftIAnWFevvA5sjuznfqg==
+=S1p+
 -----END PGP SIGNATURE-----
 
---rjrmWXXpDlSqC1UG--
+--PdZCEK8gmvk4jFLE--

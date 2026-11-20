@@ -1,60 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795194908;
-	b=tIP+Ut9hnw2U0HNQX9fCc2qEmcQSyoVGycH4xdBrmOHWlegN11wYiKb6P3VdXxLKVwan
-	 M7rDTMpgkGGIIxbANY5mcY7S2aoXptKG+k7enCMhj53Uv7GEK9mSIXe+bQH6ru60SG3k9
-	 KnJ9nduxMt6/+SVr0GY9fQw1hQMnQCWDi3Z+piwsyxDX07V3D+egU7N+AfedqhVy0zOuF
-	 ru1CEkC87TFboI/LfRv4ycIusJSXFWEnVYaEziOBdsGiQ62UVZeYWmTks/8qdqbyJBaKp
-	 vFt6G5r7sFBfvMMlFYzdy8uWNdY3pyUkDRoYoFHbYhLSM5phIoaW9Ee/J6Bviu6dLcg==
+	t=1795195605;
+	b=eWDAXYbEgPQ97ek9+6qrByy8n49balFW5CWusnURlVYoAT7TRjQHypBC3R6mnsXnpdBI
+	 YWqnHsoqWGyY5VqVfAx64MVSp7ON3FamBfo3t2i898yo3YGM/UY2OXXjUUyvUbKSEHzvu
+	 3nG9o+sSNEKun6v9gvQ2IUHTiu6Pc4ZIYBwNPCs3XZBLL6ZYxV3CrRFwSa6f1KxeDW/u7
+	 lDZoRViUPQJ3/qX/3iqLon9a12O/HPQ17Yty1xMQuM3S2NvpZRlj7GScaea+jQWwEBLvS
+	 RJZ/OxWVRAVMZ9xb9iMeeB4sUenxMfRQ02SvYkykd+yVciM2ZXD3xIR7qvJ4sWUjgDg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795194908;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Last-TLS-Session-Version;
-	bh=sbrnTC1O3lLMY5mwmHSs1TEwBYsx23gEPdvUD7iMI6c=;
-	b=WORXWEK0m86KmlZRoIVRf7bdmgKl27KCVAougQpGmjePD0GDbw+BqZuuPIdJ3bmDnrAU
-	 7QtEiCshBRrmcrel9JggWsfG8OtKWJY3vFOGuBaD9iOzGxzbneYgOhATqA6rBpqhXIPWH
-	 tezVPFYA+hA5dCvgGyuqq4/G0AV8AjKusQt/ykLvUoC+4uRQavvrSOD/0JVuQe7PzvvEm
-	 ngZpbkUPm4cMOxlq2MtbBZs1XNHw00UuYIwb66BUlxxzuuY/976QdmWp85P2PBAM4kh9y
-	 J6RjNuudamoSk99JPMK25D5yJ8R1/q5thI629oupJcy4MhduK0SQIWQ5/0vRzLqQYDw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795195605;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=fxf+nipH1Cr8jDUljHcHSs5CO02bX7aKJ8t0CkTEBBU=;
+	b=haRMOo/iTWl45lI4Gu08wjRTxxAn4Ix+J1PC1u75kp75VDa0kSaymJle15bwF9szCWfJ
+	 M5jEm8AgYuZMpSr69N/msDbtFPaDlLibUvhM0cDaD+6jTRvpg8U+sfbwvoUXvXXPnogPN
+	 Gi9OyiGqCbH8BQDmMyCC4GleEobgfvlAjxDqZow3j3RAVSuI6BVeZfO5CUZb5mon98F0W
+	 Rtbb+o63NADTNkOQZ/Jq7ku5qIBEWpktzjpIdH8cSEjFIM/tvbtoFMwHQ27bTvRC+cnGd
+	 r3kKerp8FgHcVOEog0/XtKtHmsBXZ49Yj7ZNeN0FcSndS37lM5Pf+FUtkYLGzj3dw8A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=wY1wnTDJ;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IKjykBdQ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD2D606A33B
-	for <linux-spi@vger.kernel.org>; Fri, 20 Nov 2026 17:15:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0CD2D606A33B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F23606A32A;
+	Fri, 20 Nov 2026 17:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=wY1wnTDJ
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id C291E1A1751;
-	Fri, 20 Nov 2026 17:15:02 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8A004601B9;
-	Fri, 20 Nov 2026 17:15:02 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 074FA11BC0554;
-	Fri, 20 Nov 2026 18:14:54 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795194898; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=sbrnTC1O3lLMY5mwmHSs1TEwBYsx23gEPdvUD7iMI6c=;
-	b=wY1wnTDJHs5MHmOCM+XI+uIWkVUFCTb/K5sDaV7u81Hy/T/CVml20RkhdzZRXxlSab4EBV
-	2WqIp1fEBW7KmH/nKSTQniMoSv8ivEeYuTTTgsG5ZMsLhbFs3rQ/RC8+X62fkB91yosBSA
-	FOfTOexSNkwo4w1mdQ7rFOIsJwcBeC3X5BJ/ZRnFIXANeYZNfMmoBjEXLbhMrhGWRuA2LH
-	0e5GAPDkkavzt55KA/Xd3XhoxIrTH3LhLZcZAz+TQpBQf7rs4aOgcz0v/MBd/Hm7vlHesP
-	48DSIjWUkA5voxpNor53qqcRC0mxnz0n+nFszyiJpJDiLW4KWPfyVW7ETC4O7g==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Fri, 20 Nov 2026 18:14:35 +0100
-Subject: [PATCH v4 09/11] mtd: spi-nor: Advertise DQS support for octal DTR
- flashes
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IKjykBdQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E69E1F000C6;
+	Fri, 20 Nov 2026 17:26:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795195604;
+	bh=fxf+nipH1Cr8jDUljHcHSs5CO02bX7aKJ8t0CkTEBBU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IKjykBdQKK6UW+SjhXzoKfCs3ox84evesRjlgzUkRt6YulvgkWsuJ7oWEVj3R4cv6
+	 Fftdt/yPrrRSZUjOA9mkOAUBImSavMj2Dy6TuqPKpPUrulY4kci8BvV1clqgYYORo0
+	 bQnnB7toxNM/1VekBdnBdO5GsKR4cy9Mc3ZM7i/IMuPOy5hr3JmsfymyfkU5WkCn2N
+	 lB8b9+78K9kTag+XccBAZpKZq8NCcrmvZ0STC89Q4c0FGcFr9AF5/f+QkN07cB0XbA
+	 Emr1tzs/OkXsPtIdltSMHc+eDGheLG67tntbcdN2m9XB32B3myFkLcjXLcO4WKUAZh
+	 G1zd1xci164Ng==
+Date: Fri, 20 Nov 2026 17:26:39 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Navid Ghahremani <ghahramani.navid@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, arnd@arndb.de,
+	stefandoesinger@gmail.com, krzk@kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 19/24] dt-bindings: spi: Add ZTE ZX family SPI flash
+ controller binding
+Message-ID: <20261120-unrivaled-prong-1e95735fe087@spud>
+References: <20261014072109.1759502-1-ghahramani.navid@gmail.com>
+ <20261014072109.1759502-20-ghahramani.navid@gmail.com>
+ <179518848943.6016.16140133614242447239.b4-review@b4>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -64,60 +64,50 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261120-winbond-nand-next-phy-tuning-v4-9-8c21e1f71f41@bootlin.com>
-References: <20261120-winbond-nand-next-phy-tuning-v4-0-8c21e1f71f41@bootlin.com>
-In-Reply-To: <20261120-winbond-nand-next-phy-tuning-v4-0-8c21e1f71f41@bootlin.com>
-To: Mark Brown <broonie@kernel.org>, Richard Weinberger <richard@nod.at>, 
- Vignesh Raghavendra <vigneshr@ti.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, 
- Michael Walle <mwalle@kernel.org>, 
- Takahiro Kuwano <takahiro.kuwano@infineon.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, praneeth@ti.com, 
- u-kumar1@ti.com, p-mantena@ti.com, a-dutta@ti.com, s-k6@ti.com, 
- linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-mtd@lists.infradead.org, devicetree@vger.kernel.org, 
- Miquel Raynal <miquel.raynal@bootlin.com>
-X-Mailer: b4 0.14.3
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rjrmWXXpDlSqC1UG"
+Content-Disposition: inline
+In-Reply-To: <179518848943.6016.16140133614242447239.b4-review@b4>
 
-The SPI NOR core does not advertise the DQS capability to the controller,
-so spi_mem_dqs_is_usable() returns false for SPI NOR flashes even when
-they support DQS. Controllers able to use DQS read data capture are
-therefore not able to enable it with octal DTR flashes.
+--rjrmWXXpDlSqC1UG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Advertise the DQS pin when the read protocol is octal DTR. DQS support is
-a per-flash capability which should be described in the flash_info tables,
-but there is no flag for it yet. Keep a TODO in the code and enable the
-feature by default for all octal DTR flashes until the per-flash
-description is added.
+On Fri, Nov 20, 2026 at 03:28:09PM +0000, Mark Brown wrote:
+> > Add Device Tree binding for the ZTE ZX family SPI flash controller,
+> > supporting both ZX29 and ZX279128S SoCs.
+>=20
+>=20
+> Please submit patches using subject lines reflecting the style for the
+> subsystem, this makes it easier for people to identify relevant patches.
+> Look at what existing commits in the area you're changing are doing and
+> make sure your subject lines visually resemble what they're doing.
+> There's no need to resubmit to fix this alone.
+>=20
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - zte,zx29-qspi
+>=20
+> This looks like a wildcard binding which we don't normally allow.
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
----
- drivers/mtd/spi-nor/core.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+I figure by wildcard you mean that the compatible is covering the whole
+family, rather than the x being a wildcard character. If so, I agree
+that it should not be allowed. I don't really know why it is here, no
+other patch in the series that I looked at seems to do anything of the
+sort, it's all device-specific ones for the xz279128s.
 
-diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
-index ecf5fdf38471..b78c8fb5a101 100644
---- a/drivers/mtd/spi-nor/core.c
-+++ b/drivers/mtd/spi-nor/core.c
-@@ -3638,6 +3638,13 @@ static int spi_nor_probe(struct spi_mem *spimem)
- 			return -ENOMEM;
- 	}
- 
-+	/*
-+	 * TODO: DQS support is a per-flash capability which should be described
-+	 * in the flash_info tables, it is considered enabled by default.
-+	 */
-+	if (nor->read_proto == SNOR_PROTO_8_8_8_DTR)
-+		spi_mem_set_dqs_pin_available(spimem);
-+
- 	/*
- 	 * Populate the persistent template and run PHY tuning before dirmap
- 	 * creation so the validated frequency feeds into the dirmap op.
 
--- 
-2.56.0
+--rjrmWXXpDlSqC1UG
+Content-Type: application/pgp-signature; name=signature.asc
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCawCCzwAKCRB4tDGHoIJi
+0laKAQDRGnEKIBosOkTgcH+zt5RiPxDTs6KvjxZOxByJ94lB1wD/RN9YSoRwzHfG
+KwRcBXW7isi8mBE1p07Uf0zJ4hunvwc=
+=RCwU
+-----END PGP SIGNATURE-----
+
+--rjrmWXXpDlSqC1UG--

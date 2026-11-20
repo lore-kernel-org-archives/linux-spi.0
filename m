@@ -1,60 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795194892;
-	b=zO8pmpuD60kHT34S7NCvPhN+Mvn9fBNsGqVgNkYpZTu1ZC3beL/NQkBFx1DzLe/YgIV7
-	 UBGO/Haz3ZHurSIdqTipUisI7/S3XJiJHDf13ySUt/aXkQdyQOU+xb98ZpksVDl+3crlu
-	 Zr1pF2hYZRkwKtZffZenfWzZHHmtUaulemm6SX8xrFIRh1iSGb0Pwq/XTaTlymtazmu3M
-	 sToL5Ejp2oFZjIhBb3GZJ+4/62Kef0NgncPmXu8i+yF0tBcZQabzUVRTbfrcreh6k6s+M
-	 1JNIfKjPOUjoEA7vRUcqZlfxnrPhmdzG2fgygWxBydUuRYiqKVtBWMTr/FN8Uk6C3ag==
+	t=1795194896;
+	b=TqzsylMggTotlBGbVMX0FQSrrYhI3qZhI+ncl+lmVxNp1gLgaR6p6AjsnA+Ry046FNeu
+	 diCvCKHYgM/eN7bnZdGETnbrLvBDTSDTWRlzTUo+2iXjLvQpWiTmkp8BO0n+/92Sdnj4U
+	 zp+PhOwPIqKJeesKx/eqUhGCbtIzSiqaOt4JKupRvY+e9EEiqJsWcbe9vSXBmTxMaybLY
+	 7gaaGH4N8dXOcF3sTHB4wdHxalb5hcYoKMEfJBQTC36aqQGd9fWGQn2XiJXL/uPQRGtra
+	 PDDphTDZFdpDE43rhUI0Qb2JWDN9MDMymSDNI8WoMsFbEL+v7caZYKtMP2yBfiU0jqA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795194892;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795194896;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=tsrfPaiUvmaPVI0gbwAGOP3vX19jWDCKtrGqrFFIigM=;
-	b=i8kXsZOU9d/Ue8C7WBTXii/HMoMaxKoWGUVBOV7/vaGrWMUijnA07HlKOQKFRDy5fgy5
-	 TbTWAEqii/eQdQ97Kp7Qi/ZGvooNlj8IH24yyIO4gcM858ohNyUeUixJDNCHnqnXSdAfO
-	 EE169tgq7+oZ63KJ8wBsriPYzKd5iX5REYkclkyGIb5EajVX1cAvXzczSBKFefPnwYyfu
-	 LAmgbncKnG1Zyb5cT+TuNRdk2pP4NIVzhNkLEd/5O02FxWYeBf1rr06vfNTm5yNC/mme7
-	 p9xRR7JZ+OKz21AySHnhQBtTJlg/a/viCBhTBNb4rMlUup3j9y9MtCIet1ou00pl4iw==
+	bh=lJI13tJYjzjGtIHD9Wd2cBZDEmFMRj8+hARz6pmVykE=;
+	b=Yw4nJZh60dYTTIZWNBm4sSZghWnRULZ5g9nFBGi2bF/N9CHG4z1iZom1kzkVDuuYcf7z
+	 vwAfyTT0pB9RP3iRzmf0ow6WSXHmVN2YjsdLpJZWlnlr3gThTO6nIIT/vJcoiEpoGKrP4
+	 wx7waGQKyw6zh6w6NqynwhW81xKuIp+TbDZRgvjuyywH+6QR7tr98VFp1OKExqOXNMX+U
+	 iMn/aVykHIlJzwBda2zp/PRRIs9nJ5L8cBuCwvy02agg2aHGtvB/j3xOnuragni5/VYQ/
+	 VGCuF0s2ljyC+l/QiFNitOn0hknrmh44z2XZZwWSr4xGcpEi5XYAsd2fNRYkYX7oJSQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=jFKLoJ6R;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=wyZRYaA7;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C08B60A260F;
-	Fri, 20 Nov 2026 17:14:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1C08B60A260F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C06606A32A
+	for <linux-spi@vger.kernel.org>; Fri, 20 Nov 2026 17:14:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 24C06606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=jFKLoJ6R
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=wyZRYaA7
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id C9DBA4E4168F;
-	Fri, 20 Nov 2026 17:14:49 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 51A47C62226;
+	Fri, 20 Nov 2026 17:14:57 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 97B67601B9;
-	Fri, 20 Nov 2026 17:14:49 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DF85711BC04A2;
-	Fri, 20 Nov 2026 18:14:44 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8A0A0601B9;
+	Fri, 20 Nov 2026 17:14:51 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 015A511BC0500;
+	Fri, 20 Nov 2026 18:14:47 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795194887; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1795194889; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=tsrfPaiUvmaPVI0gbwAGOP3vX19jWDCKtrGqrFFIigM=;
-	b=jFKLoJ6RE/FYxMxZAW0WTZ1joLtkA/hP6h3yobZOfG6YWFX9ThxuS+uRRXENQEDSgBAqiw
-	tI+bZ+tPYg+hYa59hOjnQRf6hBtXlL/y+A1eKddx8WLxw5/yejun1lb8fQ6c2FDUcAaUmo
-	hZk77U/R3nJ+l6Cz6ijvnACGJiBjHEPtvqddHXPe6V4wkAyp/zP7Gj742uyq9CYl1h0sSP
-	fbv/aa0OljEhjAAAIwso42ebpqrGxEYNaN3ho404f5s09smKsh//K/GMFKPUERzsSREr9a
-	Owcd0vmual8JjD0SkIRLr5sv7wb1aBug09jgPsWXAKksE3VGF5t3xWhPtDy7ow==
+	bh=lJI13tJYjzjGtIHD9Wd2cBZDEmFMRj8+hARz6pmVykE=;
+	b=wyZRYaA7rdUucPHhAgRe3w46AtJR27dhbOgZmFrDyPf3Qj9Z2yWMvm35Jzj/Ce+EcEIhA/
+	AUMvShEeawcwrFFZFNmpmKPlkrrCeUjtXBjfcWGZEPNJLCUs0KSi8cvX6el/rKF64hWQ8p
+	yWNeA0doxrInbs7qQmBIb0VFVf6i1XRm4meS+c3CRVXjpYQS7TJhclXFp9A6V7Ra377TW1
+	LTWwhqSM0yZB9CTnbXAvIfHhrTMYocVLcyCI8zsQyXUZ7Qu0REy7y8Jw0iDU76AKzISD0v
+	kTpcZlFbWooysaos0m7hhq6p03SF9ZFaK+aC60cbcoZZt0OcCe3sHZz5jyXsEQ==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Fri, 20 Nov 2026 18:14:31 +0100
-Subject: [PATCH v4 05/11] spi: spi-mem: Take the controller DQS support
- into account
+Date: Fri, 20 Nov 2026 18:14:32 +0100
+Subject: [PATCH v4 06/11] spi: cadence-quadspi: Advertise DQS support
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -66,7 +65,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261120-winbond-nand-next-phy-tuning-v4-5-8c21e1f71f41@bootlin.com>
+Message-Id: <20261120-winbond-nand-next-phy-tuning-v4-6-8c21e1f71f41@bootlin.com>
 References: <20261120-winbond-nand-next-phy-tuning-v4-0-8c21e1f71f41@bootlin.com>
 In-Reply-To: <20261120-winbond-nand-next-phy-tuning-v4-0-8c21e1f71f41@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Richard Weinberger <richard@nod.at>, 
@@ -83,59 +82,38 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, praneeth@ti.com,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-Require the controller to advertise DQS support through the new
-mem_caps.dqs capability. A controller that cannot use the strobe would
-otherwise leave the memory driving a signal that is ignored, which costs
-power and EMC pollution.
+The Cadence QSPI controller supports DQS read data capture. Advertise this
+capability in the controller memory capabilities so that
+spi_mem_dqs_is_usable() reports DQS as usable when the memory supports it
+and the DQS line is wired.
+
+This lets memory drivers enable the DQS output only when the controller is
+able to make use of it.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/spi/spi-mem.c       | 8 ++++++--
- include/linux/spi/spi-mem.h | 2 ++
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index f2e1ecd49fd6..c07156e22ccd 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -571,11 +571,15 @@ EXPORT_SYMBOL_GPL(spi_mem_set_dqs_pin_available);
-  * @mem: the SPI memory
-  *
-  * Return: a boolean indicating whether the DQS signal is usable or not. DQS is
-- * usable when the memory supports it and the line is wired.
-+ * usable when the memory supports it, the line is wired and the controller is
-+ * capable of using it.
-  */
- bool spi_mem_dqs_is_usable(struct spi_mem *mem)
- {
--	return mem->dqs_pin && mem->dqs_wired;
-+	struct spi_controller *ctlr = mem->spi->controller;
-+
-+	return mem->dqs_pin && mem->dqs_wired &&
-+	       spi_mem_controller_is_capable(ctlr, dqs);
- }
- EXPORT_SYMBOL_GPL(spi_mem_dqs_is_usable);
- 
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index 73fab3b004b5..ad438816eebb 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -405,6 +405,7 @@ struct spi_controller_mem_ops {
-  *                   is a pause in the transfer (eg. internal bus contention or
-  *                   DMA arbitration on an interconnect). Features such as NAND
-  *                   continuous reads shall not be leveraged.
-+ * @dqs: The controller can use the DQS signal provided by the memory
-  */
- struct spi_controller_mem_caps {
- 	bool dtr;
-@@ -413,6 +414,7 @@ struct spi_controller_mem_caps {
- 	bool per_op_freq;
- 	bool secondary_op_tmpl;
- 	bool no_cs_assertion;
-+	bool dqs;
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 2982df7fd092..72a5101c4a8c 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -3770,12 +3770,14 @@ static const struct spi_controller_mem_ops cqspi_mem_ops = {
+ static const struct spi_controller_mem_caps cqspi_mem_caps = {
+ 	.dtr = true,
+ 	.per_op_freq = true,
++	.dqs = true,
  };
  
- #define spi_mem_controller_is_capable(ctlr, cap)	\
+ static const struct spi_controller_mem_caps cqspi_am654_mem_caps = {
+ 	.dtr = true,
+ 	.per_op_freq = true,
+ 	.no_cs_assertion = true,
++	.dqs = true,
+ };
+ 
+ static int cqspi_setup_flash(struct cqspi_st *cqspi)
 
 -- 
 2.56.0

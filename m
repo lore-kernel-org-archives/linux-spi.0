@@ -1,55 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795189655;
-	b=EZhQf+pbpqZPW648pT4z74x+OV2tjvnUpuiz5ImQhXPurpys04Edd+VunX/qvbHGjYhd
-	 dCHxEIbioGXdp7s5aNXRraiVRSKw8lG/peSXfaRPC5UICYuMhTS02JdrDkgzUh3h8NVQh
-	 7PgTvVP7yo5zQ4q+tdQqiuEUbz/a+ARBkAoVaI32Nj6iyZtuCkaOFOv3Fe2TKIUycrqRe
-	 xAlKlEnuT8IlSlxBjyvLr9LaU2J/KTyCBe8ojORqE54tEAvUyQnHhB9YLBLhED9PGG8nk
-	 ft503ez0epAzQBscV8KHQxETBOhpnfZwOaSv4Q2edN4381RGuA0t2qP34A8GdZ7tFMw==
+	t=1795189806;
+	b=JIbef9/0lc1hBGxwypjfYOk4kRGG4L3qdvc51qC/6tV3nUQVIgHXiSGYSTf1hS6InbP6
+	 NhQnG+/QerH9s3fnkoC4CtQJo3Zdrr4hFhuGM4w3Cc17a/6xdVrDbOuj4odIJy0LDt5mi
+	 7iGSLvUOnvMg21uBX+gIUawbOkYsKe3gxrNkFVyFIZE8nvsp6C4mdoPEcQCZO5/5WaT2t
+	 /vcmdCZvNcak8R1LrTAHPTj05EQyhjGhQ10HHlLrlHGCxr+Lr/FpXKyyrKOwKrFyR5laK
+	 q9EdgjQTeVi47glseYxhr2NsNxWW1A9eWd/GDJVlOIjaKBPfzOMa1FhvSret2LfWgGg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795189655;
-	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
-	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=UnIrLleibdpNMIOXtwZG8YeOO3gQ5y5u8J5L9x5ytFs=;
-	b=CmeCC3po7ewEyV0+C1hTTYKTyeAHAB7B741k6VlKt0ui40iQbuE0/pW3cI0G4406Ifpk
-	 HTMqqBkevnIjxBORP1Y2cAa/6LNQU3/K0xde8fs0taoV4MRQaIyTvAVv0QoD0sxpQ7lfP
-	 eHAW4KSBZjGCmpWYXGBdn0WSTdpicB/BynRkKJ8sOx7hGk3LusgM8Xt3BMCXx0NcYiZvv
-	 IhUNIaEdNVxQveewLOWk6jTDESdbsRlfNUXZxRCn82UXp41xQcMacAnMESwKw/nu1HdSo
-	 +h7iMiza9ONnESXDf/V2lkyJdhHlPfoq9AANM2x17LNI8kt6kLKE77VnnVSdSOyreYg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795189806;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:To;
+	bh=tG1wUF2wKqeHFZbHEgCOitzk2QWxov8zQUD8SYGoCqc=;
+	b=zHF0ObBPjx5aNzFpbH/dJ1IhhhxyeKkpU5g5QmCUROxR6r0d/LfzEjJDgFPuVOzrzHrW
+	 CZIURm+GMZrYJw+N8DUYE/q9IFTSoZF69milhzO4qyHTTw0G/EIPcrjsGzUXAtIOswKzw
+	 dkjCu2PXoDJ0Z4HbizG5OmbRZljcLZjJesHFzXvxCihkqKU/kGNw9Oz36dTwz1c5jYpGw
+	 p2Dy1cZ1lS6Qdp00e5tjg9Ra5hWn+rSYGFUgGrFHHcCszZB5QWkt8K1Pr5Hpya4IJFQQz
+	 YxuF+T71beeuZKcP0ZI5eGOGTK0MisQZdXG+dSeC25VTjEaQKnOF3yVObxu4S8kz/Mg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="BncA8C/d";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WN7BV+LS;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A99606A320;
-	Fri, 20 Nov 2026 15:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C8760A260D
+	for <linux-spi@vger.kernel.org>; Fri, 20 Nov 2026 15:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BncA8C/d
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204551F000CF;
-	Fri, 20 Nov 2026 15:47:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WN7BV+LS
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09D61F000D8;
+	Fri, 20 Nov 2026 15:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795189654;
-	bh=UnIrLleibdpNMIOXtwZG8YeOO3gQ5y5u8J5L9x5ytFs=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=BncA8C/diXekHdXHA7zQ2+cO+rYwzyTUF2xu6twwt4ajPPaSj5+H4Y9URlowbOiax
-	 w+e7tNRX+QwDYAFWX+RyLahI9lpzWyXQzm1AsgieaD3dovycYL0S0+QWI85wEHtvp6
-	 hvSk/Y+NbLhxTNs4b/ucD7+hRH6Rr5h+FePyKRCWGr/eHAnNaRSyVh88Ik5E+xN7rz
-	 +cC3YbYlrGvspHatHdZNRGXPMTpRrEGK1+oEvRclL6PPaCNS8HT4upgNCSoTXkxlOV
-	 CSj8zW2EDHTXwcx0YxAnS930/k1Z91nR3tEowgUujoWhNAGpxnAzysgThCvykEDviB
-	 IdzgqcCrv9Svw==
-From: Mark Brown <broonie@kernel.org>
-To: Zhu Jun <zhujun2@cmss.chinamobile.com>
-Cc: rdunlap@infradead.org, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20261120061922.98182-1-zhujun2@cmss.chinamobile.com>
-References: <20261120061922.98182-1-zhujun2@cmss.chinamobile.com>
-Subject: Re: [PATCH] tools/spi: Return failure from spidev_fdx on I/O
- errors
-Message-Id: <179518559024.6016.15080786909658204719.b4-ty@b4>
-Date: Fri, 20 Nov 2026 14:39:50 +0000
+	s=k20260515; t=1795189805;
+	bh=tG1wUF2wKqeHFZbHEgCOitzk2QWxov8zQUD8SYGoCqc=;
+	h=Subject:From:Date:To;
+	b=WN7BV+LSyKYD26EvTDLaBKPxbWpxAisflfVnevRdHzHZMVWI5Fd8n+VJ/MJFltfkl
+	 VjiOORs1q2xYaCGSiB9zMolad7PyxB0CuGgaEtoGLJM5ZSJmGsrNTFQHnXR95lIHdc
+	 yPjM+jpMHS2P4dXc/vAO+aQSn6X6jWWhwU/NY22Y7pUdazmRHrkOA+GRff4y2xjHkc
+	 SRQe0mu2ZhYafdBOhOND1bAhHuuxE+aD4VnZaf0T5dFfgLToJje7aY6shOdtAuxrLn
+	 +vIS67J0Z4at76+0ydtuLvv9X4ftnARRhE5USkuMPGO3Z0E284q6HqqjcFBrbKtXyA
+	 7OmOvhERjcmuA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B6C243809A29;
+	Fri, 20 Nov 2026 15:50:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -59,46 +52,30 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1119; i=broonie@kernel.org;
- h=from:subject:message-id; bh=V9jG8Fd+kN3dwt2ADmgsCSzW6ZLlsH8rLhvB9ziiFR8=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLIZsqccvbFjLosc74OkVT5FKmIn3hra5x71fSspf4xh6
- 9ksrkcNHaUsDGJcDLJiiixxWdwv60ter+E7uLANZg4rE8gQBi5OAZiImjDD/7JKLlsdjcpJEWWL
- Wc5MWVXEumC7N5PQqss1PXWTmJTmJzH8U6+7/o0v+pfcu/4P1/4eElkbUMkQc6erPXHGzznSzR4
- 7WQA=
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <179518980438.150772.10593694217442982408.git-patchwork-summary@kernel.org>
+Date: Fri, 20 Nov 2026 15:50:04 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Fri, 20 Nov 2026 14:19:22 +0800, Zhu Jun wrote:
-> tools/spi: Return failure from spidev_fdx on I/O errors
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.5
+Patch: tools/spi: Return failure from spidev_fdx on I/O errors
+  Submitter: Zhu Jun <zhujun2@cmss.chinamobile.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/series/1216952/
+  Lore link: https://lore.kernel.org/r/20261120061922.98182-1-zhujun2@cmss.chinamobile.com
 
-Thanks!
 
-[1/1] tools/spi: Return failure from spidev_fdx on I/O errors
-      https://git.kernel.org/broonie/spi/c/ea07700fb8ef
+Total patches: 1
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

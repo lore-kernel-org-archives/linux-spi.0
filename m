@@ -1,80 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=149.28.215.223
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795369491;
-	b=RRxC7jZIvDRT/395ARQcT9HzYknEvQxUf3gYJjBvILTopWdHoxK/33dI7UvU4nB5lBUK
-	 afxFwOYt0e08Z0/3rx8y8EC29Nfru4LZxD38vkMxKaWFtFOUEq7G5/cTynIVaBkDtLiRf
-	 ZMjvROGE/hmSSA811SdO2YOuyVOiPl1xW7Plynso6z6f2LRnVtYmdFyIbTT1a+sVN4NUo
-	 4Et1Ew3OHNXEN99uOMpF8vVjooeUCtZayfp4Ssal2IS9Nr9ZM1bRuiMw8Rxv7zIvWGcpU
-	 LaDMKOSI4n/fUrsvN0KP9MV8v4Tr2GCBPN95PX9CjLKNWrkfvbRHni+XnjPv1K7gRZA==
+	t=1795371373;
+	b=ujvD/lVt6xOxzCk2LBk2Yal0wORTqtLipqmXvjHnVMgElWXaXYakEzSFo+AkOJirBkZ8
+	 vy+6D9yVGMEyeg/t+jjGdu9fEsxQRdVgF1PKoK9s3s0oKB5GQyoU7jGaqF27Pndzfhtx9
+	 FhqQoUuiqdpDUzqOuiQvuQOy8OK2/qEOERc3d0gd4QOdzr4Tmrzt0r2XT/zgQZuVxonM4
+	 2qxYQnQ9RINR7TF3Kz7jyXsglG/R5FT5qP0B1NKANP6PJ3yBLlxESp+T4K8U4EklY4fdL
+	 2mr1xidAa5ikbEaTCGUllCZIuRPZ8J3pC6u6tH8f1VJlSFGifpCCraxqt0P1XfjGjSQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795369491;
-	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:CFBL-Feedback-ID:
-	 CFBL-Address:X-Forward-Email-ID:X-Forward-Email-Sender:
-	 X-Forward-Email-Version:X-Forward-Email-Website:X-Complaints-To:
-	 X-Report-Abuse:X-Report-Abuse-To:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=YC+Ogj9wmHA/Qf6zYsQ4fT2IqAwJLhOnqw7/ALnfGek=;
-	b=x/Fv4cnlKFbWeYT3sG6cVBo33HJoYn8waMi2y+DOE8MDYQq2XvZFCp8JLC3rDTSuQNWz
-	 5oKlfDOu/5jOa22huud+3QvzoC0y7eidjPhYh7YRTZ1S5hLdV80t1eYv40Z84FGqB031T
-	 qj/iGjFCQYPNqviuMpzy/rxax/YMIQNnUnNWpBdyDHf5fAPafcN4banhoqsa2QEtdMgmI
-	 YvdgY/xzsieVcEZ1eEz+KBUf3rwhFvdXw7ZV4YbllayXsVlMwi7PYTb2e2bHnLhfCbOI2
-	 W2pQ8HwqdK51HoCKXB6UG/VIA5Ig/PMR/ieYFiNXoZDHp2LAXgQ/yuhjZhcMUok95kw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795371373;
+	h=Received:DKIM-Signature:Received:From:To:Cc:Subject:Date:Message-Id;
+	bh=DvXsH8NCyEWyEME9bF/JUROsC+55vAO6SFEcywf5RI0=;
+	b=J1okxUdRJhXNDmT/mWmPkLzQNRe+d1ZYn6NDsLR5J3+QtQHCIVDtPXkL+SDTf3lrmhbX
+	 zhQaozvRlMKXKHWDToTOS39mmgyCH+y2hxVpTK1Dc3TT9SqPMFqYvmxdF09FOlnyWpMI1
+	 FF8SGEj4bzzuJH3SwNzDVl+uxYHuv4A9Rk6cnya2LJ1bpYXO3H5yUrg17GQsyQ11OV1xw
+	 IUQtdn4oCHT+j81v0Y5tQd46/NmXrKxIQCcsqeFjThpiHRIrLE5e7WsINFfVENEzTpydy
+	 SNZNhndqLVbjwBBrwx0qcXliBeJAt5/HvlpWLvp7ppuSSY3r6SitZQHo6UmF1ILod7A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=kwiboo.se;
-	spf=pass smtp.mailfrom=fe-bounces.kwiboo.se;
-	dkim=pass header.d=kwiboo.se header.i=@kwiboo.se header.a=rsa-sha256 header.s=fe-e1b5cab7be header.b=eQSO7jbW;
-	dkim=pass header.d=forwardemail.net header.i=@forwardemail.net header.a=rsa-sha256 header.s=default header.b=NrQvOlmR;
-	arc=none smtp.remote-ip=149.28.215.223
-Received: from smtp.forwardemail.net (smtp.forwardemail.net [149.28.215.223])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IurZyZ5c;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB444606A682
-	for <linux-spi@vger.kernel.org>; Sun, 22 Nov 2026 17:44:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB444606A682
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6417606A32C;
+	Sun, 22 Nov 2026 18:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kwiboo.se header.i=@kwiboo.se header.a=rsa-sha256 header.s=fe-e1b5cab7be header.b=eQSO7jbW;
-	dkim=pass (1024-bit key, unprotected) header.d=forwardemail.net header.i=@forwardemail.net header.a=rsa-sha256 header.s=default header.b=NrQvOlmR
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kwiboo.se;
- h=Content-Transfer-Encoding: MIME-Version: Message-ID: Date: Subject: Cc:
- To: From: CFBL-Address: CFBL-Feedback-ID; q=dns/txt; s=fe-e1b5cab7be;
- t=1795369489; bh=YC+Ogj9wmHA/Qf6zYsQ4fT2IqAwJLhOnqw7/ALnfGek=;
- b=eQSO7jbWwdzVmf48iiCsdCn2MIUs08sRiqBjROm719HHzGwCWm2NFQkBQfr/Gp1JKY5dDLX0h
- HIST4Z7ee9P1NMgoUGGOH15SZ4DkogMyHQqWjIkVsrZrlJ/5Lp5bQM6AZf6CDAta06iUkGgQhQ3
- Kl60xWiiyOxsIlIXp0V9URbLiU5skogjUM7qOP8MX0SIxfiPsCM/IxivUThVevGzwnbgI5a0cpm
- 9HwU0kqXWlMgzna7rzHZP3ob76tFvzVMbrv6y+7cFtP54W7aXzSkXEitusDfLAZ5+OsZg2iK9dq
- 6zpqF5Y4KQ+rIvmfdqbmpz/JGxPVM+fWG+74jOLsA1Jg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=forwardemail.net;
- h=Content-Transfer-Encoding: MIME-Version: Message-ID: Date: Subject: Cc:
- To: From: CFBL-Address: CFBL-Feedback-ID; q=dns/txt; s=default;
- t=1795369489; bh=YC+Ogj9wmHA/Qf6zYsQ4fT2IqAwJLhOnqw7/ALnfGek=;
- b=NrQvOlmRKhhYGs6uxbympWPpIFWPDp+W2j9E2qYvBDDfOl2ZexQ9XaSSvK77w7JQSnnJlKrxd
- leYSQi1kJpb7ty/i+Hkuqnae4X7mColyiqQhdXlvGniZps7kWUp2AMt8nHYb/lguH24JHKDIvYl
- n2ftpMPmDjEFHghkD/CLsjI=
-CFBL-Feedback-ID: 6b0329e237459da6a917fd20:615e4b675148a362b7f544948ebb1200
-CFBL-Address: abuse@forwardemail.net; report=arf
-X-Forward-Email-ID: 6b0329e237459da6a917fd20
-X-Forward-Email-Sender: rfc822; jonas@kwiboo.se, smtp.forwardemail.net,
- 149.28.215.223
-X-Forward-Email-Version: 2.19.37
-X-Forward-Email-Website: https://forwardemail.net
-X-Complaints-To: abuse@forwardemail.net
-X-Report-Abuse: abuse@forwardemail.net
-X-Report-Abuse-To: abuse@forwardemail.net
-From: Jonas Karlman <jonas@kwiboo.se>
-To: Heiko Stuebner <heiko@sntech.de>,
-	Mark Brown <broonie@kernel.org>,
-	Jon Lin <jon.lin@rock-chips.com>
-Cc: linux-rockchip@lists.infradead.org,
-	linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Jonas Karlman <jonas@kwiboo.se>
-Subject: [PATCH] spi: rockchip-sfc: Only use x2 clock rate on version 10 and later
-Date: Sun, 22 Nov 2026 17:43:57 +0000
-Message-ID: <20261122174357.1295391-1-jonas@kwiboo.se>
-X-Mailer: git-send-email 2.56.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IurZyZ5c
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3420B1F000C6;
+	Sun, 22 Nov 2026 18:16:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795371372;
+	bh=DvXsH8NCyEWyEME9bF/JUROsC+55vAO6SFEcywf5RI0=;
+	h=From:To:Cc:Subject:Date;
+	b=IurZyZ5c//W36qInL+tZAOh0d/FlEvjQ8kSi/Q+2VtaVBU6IHrVfXg9Aptxte+Cr7
+	 9BLQfmPuKy0iDWSEoSeMDGl4Vu1zF4KgjRbwlXAIICSvL0TciiViQ+j/AvlXSiAhgh
+	 4z+eGyk5u9WlDCboZODhGT61AK1bLAi8GWMNN/Uf+JILFcFsCcU1u4fsN8UogfO2Re
+	 YfIDB2m4mPNLYcRGWaF2pryEv9qd2Lzs+91MyNQJsTpdsyLN/jNkmWp6YPfI/m8O6z
+	 Hi/q6/U28uGzXM9/YI/iWmcUV1CrJtyV7RijJs7DGK/AwKPMoc6M80Vh8ttOt143L6
+	 bAh3uBAP6ibhw==
+Received: by traversing.sirena.org.uk (Postfix, from userid 1000)
+	id 535713464378; Sat, 21 Nov 2026 12:30:38 +0000 (GMT)
+From: Mark Brown <broonie@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI fixes for v7.4-rc3
+Date: Sat, 21 Nov 2026 12:29:44 +0000
+Message-Id: <20261121123038.535713464378@traversing.sirena.org.uk>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -83,92 +54,34 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The detected NAND ID is read back incorrectly on RK3506 using SCLK_FSPI
-rate above ~50 MHz.
+The following changes since commit aebb7274476403040d582c61478df8f4a7bf9cd3:
 
-  spi-nand spi0.0: unknown raw ID f7d511000000
-  spi-nand spi0.0: probe with driver spi-nand failed with error -95
+  Linux 7.4-rc3 (2026-11-15 14:30:11 -0800)
 
-The FSPI_VER value, clock names and vendor kernel sclk-x2-bypass
-handling seem to indicate that x2 clock rate should only be used on
-FSPI version 10 and later, not 8 and later.
+are available in the Git repository at:
 
-Summary of FSPI_VER reg, clock names and vendor kernel workarounds:
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.4-rc3
 
-   SoC       Reg address       Value
-  rk3568  FSPI_VER  fe30002c: 00000005
-  rk3588  FSPI_VER  fe2b002c: 00000005
-  rv1106  FSPI_VER  ffac002c: 00000006
-  rk3528  FSPI_VER  ffc0002c: 00000008 (vendor sclk-x2-bypass)
-  rk3562  FSPI_VER  ff86002c: 00000008 (vendor sclk-x2-bypass)
-  rk3506  FSPI_VER  ff48802c: 00000009 (sfc->version set to 6)
-  rk3576  FSPI0_VER 2a34002c: 00070010 (SCLK_FSPI_X2)
-  rk3576  FSPI1_VER 2a30002c: 00070010 (SCLK_FSPI1_X2)
-  rv1103b FSPI0_VER 20d4002c: 00070011 (SCLK_SFC_2X, sclk-x2-bypass)
-  rv1103b FSPI1_VER 205c002c: 00070011 (SCLK_SFC_2X_PMU1, sclk-x2-bypass)
-  rv1126b FSPI0_VER 2146002c: 00070011 (SCLK_2X_FSPI0)
-  rv1126b FSPI1_VER 208c002c: 00170011 (SCLK_1X_FSPI1, sclk-x2-bypass)
-  rk3538  FSPI_VER  fde2002c: 00670013 (SCLK_2X_FSPI)
-  rk3572  FSPI0_VER 2a02002c: 00470013 (SCLK_FSPI0_X2)
-  rk3572  FSPI1_VER 2a08002c: 00470013 (SCLK_FSPI1_X2)
+for you to fetch changes up to 6008a6e34ca0446739abfff189902af2214cfff1:
 
-Vendor kernel use x1 clock rates for RK3528, RK3562 and RK3506 thanks to
-use of vendor sclk-x2-bypass prop or version downgrade, effectively only
-use x2 clock rates on version 10 and later.
+  spi: fsl-lpspi: expand FCR TWATER and RXWATER bit fields to 4 bits (2026-11-19 17:32:16 +0000)
 
-FSPI1 on RV1126B should likely also use x1 clock rates, and DDR_UNSPPT
-(bit 20) of FSPI_VER being set could possible be used as a runtime
-indicator.
+----------------------------------------------------------------
+spi: Fixes for v7.4
 
-Runtime testing also seem to indicate that SCLK_X2_BYPASS (bit 24) of
-FSPI_EXT_CTRL only stays set after being written on RV1103B, not on any
-other version 8 and later controllers.
+One core fix here, for error handling with runtime PM when a transfer
+fails.  That was seen by a couple of people on actual systems and the
+fix verified.  There's also a fix for a quirk in the fsl-lpspi driver
+which needs a bitfield widening on newer chips to work properly.
 
-Change to only use double clock rate for version 10 and later to fix
-use of SPI NAND on RK3506.
+----------------------------------------------------------------
+Carlos Song (1):
+      spi: fsl-lpspi: expand FCR TWATER and RXWATER bit fields to 4 bits
 
-  spi-nand spi0.0: Winbond SPI NAND was found.
-  spi-nand spi0.0: 256 MiB, block size: 128 KiB, page size: 2048, OOB size: 128
+Sebastian Reichel (1):
+      spi: Fix runtime PM imbalance on pump transfer message error
 
-Fixes: af103eb7d7d8 ("spi: rockchip-sfc: Support sclk_x2 version")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
----
- drivers/spi/spi-rockchip-sfc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-rockchip-sfc.c b/drivers/spi/spi-rockchip-sfc.c
-index a85a260ba95f..8cc300d533e4 100644
---- a/drivers/spi/spi-rockchip-sfc.c
-+++ b/drivers/spi/spi-rockchip-sfc.c
-@@ -113,6 +113,7 @@
- #define  SFC_VER_4			0x4
- #define  SFC_VER_5			0x5
- #define  SFC_VER_8			0x8
-+#define  SFC_VER_10			0x10
- 
- /* Delay line controller register */
- #define SFC_DLL_CTRL0			0x3C
-@@ -220,7 +221,7 @@ static u32 rockchip_sfc_get_max_iosize(struct rockchip_sfc *sfc)
- 
- static int rockchip_sfc_clk_set_rate(struct rockchip_sfc *sfc, unsigned long  speed)
- {
--	if (sfc->version >= SFC_VER_8)
-+	if (sfc->version >= SFC_VER_10)
- 		return clk_set_rate(sfc->clk, speed * 2);
- 	else
- 		return clk_set_rate(sfc->clk, speed);
-@@ -228,7 +229,7 @@ static int rockchip_sfc_clk_set_rate(struct rockchip_sfc *sfc, unsigned long  sp
- 
- static unsigned long rockchip_sfc_clk_get_rate(struct rockchip_sfc *sfc)
- {
--	if (sfc->version >= SFC_VER_8)
-+	if (sfc->version >= SFC_VER_10)
- 		return clk_get_rate(sfc->clk) / 2;
- 	else
- 		return clk_get_rate(sfc->clk);
--- 
-2.56.1
-
+ drivers/spi/spi-fsl-lpspi.c | 4 ++--
+ drivers/spi/spi.c           | 4 ----
+ 2 files changed, 2 insertions(+), 6 deletions(-)

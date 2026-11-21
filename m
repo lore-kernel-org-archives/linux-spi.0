@@ -1,85 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.209
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=23.251.234.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795246376;
-	b=NpCR/vffFK3qRuuWhJqSPlSFxhrvgahDkXOuXdAVcCQPC49bwDYgavdxYHclrv/gadl3
-	 HQbzi/HTXd8t0sm7krPsoV0lRfctxTUVgcVe/jz0a0qMama5FN8JhHHeWD0Kswz8m6rOs
-	 LC5iahVsUPJgo82SM3RQ6vwRgi4frolnvQexys/EUBEpNSRH1/f7N/Hh59SXxjgzzGFaK
-	 VppaNg2rIHsxv83FdrK9xQyDVkqj8gPApAkJ/+3YJr1CpEN+QX63VHJkBOpWuYKBs/lhU
-	 LLUKGloOtEmrkFvg7alTFK2GVjjUi5m0SosBCWnEFh9oQ0ZaJdGHMemVtFXID6780bg==
+	t=1795278254;
+	b=u/fu9DV2/wUWYAlyIkW2HjCZNGxGEeLC5P3CZStb5JOT8WG1I8YS6ym3+vahrmGIiBRa
+	 2mv7KwnleMcrI3cjzNl+tJ4pfwy4kwWkxphhd1kHFj5Zmxrr8kds8fV7+Ujir0+AwW+Tu
+	 J6A26Ej4IffhCZTK0uSPpEO8VSoLNE/3DgEac0dhxjp93kZcSOf0t6y1h7cP5Ij/e/qZi
+	 Q6gIDe1B/Ok6CBps15666ICx5qX4wPU2cPcbxbl610HdL92ij9QMMytsW/gGfZze4B0uk
+	 dqdVgRexX1tScG2jnfSUpIeOMrrh3dfAuX9JpGtKaH7ggCw9TxuVPvAWMA6yWHL0s6A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795246376;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=J+dcPkcXZ3s3MrRG1MQfLHmivGBQKC1Xk8mvOi8nCLY=;
-	b=AK1Vzwy7baLy3zk12xKfW++5OoE/+EH9Z28dowSg59UWPDrPQ6H4ekgg+SJxiX8fGlUU
-	 45yqGcbvzfy+brPqpt7gtnN/WJJOzDO2dCy82AJuEEm7+2ihI6u5douQlItaabpMDOXCq
-	 YPubjztL2Xl3BHpr+PylAh9zVl22/L9WttcYkx8LbHHtRIsqyG+eXCgfac3gsGP7i3nq6
-	 tfAQv6M6MJ8+nnvjzREkEJeOzD5bqQjWHaxs90czi5t0P6/45fN43pOKTa1SOPCOLU1kg
-	 7vk6tdypOEOmvSwFtXPPgIbl69byJftU/98VFJfcRtZfaNFoMeRPoyjj7C4xWya3p7Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795278254;
+	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:In-Reply-To:References:
+	 X-Mailer:From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:
+	 MIME-Version:Content-Type:Feedback-ID:X-SES-Outgoing;
+	bh=471W5chLXn50gR/+buvj/gyEydSS5vORYAWz/ynvgxQ=;
+	b=QbYTd1Lp+RQM6U7xa66w4fjQyqOgUiPOMUx0G+TaIHJEirll/4ETOgU5vFacFlb4oZLs
+	 nrSneyws8w0WJ+SAJOkCLX15Y4fLlcauhkXmciUAw31w3DGFujEhJBi+zc74WxRRJ//Qg
+	 vbUNeyZE+IafxPqB+WqAxxiwFH338sr+7dPPIQ72PrXlEV1Rylc02jcDMGecGD/JLz+Gf
+	 SP2Jo3NrFpB/pX6bKg13s8brVx7zQwc+oWqHLar/y1RjhHScptAENX/NSsMuhZAta22ax
+	 xsgUkGtF+rPaqCMahiPsab2jHqf15gXHSoNdqvkOoAWGg9DpKpH1alBnu79qdRWl7eg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=cdVaEk5e;
-	arc=none smtp.remote-ip=203.205.221.209
-Received: from out203-205-221-209.mail.qq.com (out203-205-221-209.mail.qq.com [203.205.221.209])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=fqwqf.xyz;
+	spf=pass smtp.mailfrom=send.fqwqf.xyz;
+	dkim=pass header.d=fqwqf.xyz header.i=@fqwqf.xyz header.a=rsa-sha256 header.s=resend header.b="kfw/5V2H";
+	dkim=pass header.d=amazonses.com header.i=@amazonses.com header.a=rsa-sha256 header.s=zh4gjftm6etwoq6afzugpky45synznly header.b=RmoFgy+L;
+	arc=none smtp.remote-ip=23.251.234.52
+Received: from e234-52.smtp-out.ap-northeast-1.amazonses.com (e234-52.smtp-out.ap-northeast-1.amazonses.com [23.251.234.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9BF606A334;
-	Sat, 21 Nov 2026 07:32:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AB9BF606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1632606A320;
+	Sat, 21 Nov 2026 16:24:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A1632606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fqwqf.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=send.fqwqf.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=cdVaEk5e
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1795246373; bh=J+dcPkcXZ3s3MrRG1MQfLHmivGBQKC1Xk8mvOi8nCLY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cdVaEk5eAIPmIOk5+F6iMsEjzv/6emr9/7h2mxKPmyKZLAUvRxaK4ZINgaScYjX8E
-	 5qUruKO6tpmBZ7BiX5sgmPmY+nvwdXQFxI/bgQlLEoRTS5Fgrq/bhFwCU6eLTzD69j
-	 ZWwlvXhWWmreQC3PGSWE87ou6cNTxlG5wW/cmTEg=
-Received: from jerry-PC.lan ([2408:8249:5f:7101:71a:8713:56b4:5043])
-	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
-	id 830284BE; Sat, 21 Nov 2026 15:32:48 +0800
-X-QQ-mid: xmsmtpt1795246370tpq3bznqd
-Message-ID: <tencent_E24973E955D1A26CF5A4F983929F8F8B0006@qq.com>
-X-QQ-XMAILINFO: OATpkVjS499uL2TWbxEEsFmnEnc19DykXbomcd2rucq3Q6VPPxwPpOeHB46Rxg
-	 npusd0Ly+Fokip3MjyxvihICinj3t8vmi16KbS+EOadnd+Pendf3RXwhFo7NgyNQ2bNs1H/C+KMw
-	 mVGG7wUFNhi/kv01GV2CUaCFeFj1FH9zUoPrE8TomhHlG/jx1Z7bMJbkV6dsxYoI8fZE9H5FQ/un
-	 W4il3/9nuVDr1++Js9FwfFTxFofpJiKcb0eMNNZ/O+Hc00Lh6xc51JRm/IpJN67BMeD+wTvjpPVR
-	 OKmcs6pGNAzBqRsosgX/UOFCJM83v6nNtmPx67Jbvh8vjOtLKJYmXECPmCGS5eiC0RrT+ryhBkiR
-	 BV/clgdO53uRIr5ppUPA1RGgLgLaT7x0qU47/6pk247M+3sLAFF19/wr4IozDoahbm6csbcg1WWJ
-	 F3GhZHviwUT/DNBTv4mbW+qLUj/4jaobcMu+78J0RogRxxMBt4AlzgofwAeLUcqS7UpAfu+7c11p
-	 mYLKVOLzDO7Lpkw/6m8cekqwfDZs4qvP/hnT+Gm21YdCv//eAbBgjgPsxX/b4TVLxDz7Ik0m/5An
-	 4y/V3J2cu02gSUBq411+z7aFIwEjSxL9NwXtH1H6nPMMCo2SVen7wH1FwLRgo6GNqXYbtgwwP3qp
-	 UWcfdBh4Uc0o/seo/OhrLgk7sWFsyQfjkKsGYt9cCeXDlYrTQ15nlqkzjDVSXHr3AoPnJyLabg/Z
-	 2O595qusTXNq3sG8wtDaHeyN9vCFCVqS/KPWRV85Vr6HN4Nj3u4qkDySk85w192Pr5md2E/iTgEJ
-	 piEiue83T/I9qW7B4XvsBKgXO2FZZ4FvrQRlrzcOksliwCzxNjIlDFSccFIAlo7RYKVkxYaj15J1
-	 D/nRnNybZnL86uEs8ILw1GE21Jw9a43FGVcChcVt++IJp3vrSHR1RbgXotjixOHpBRiKj+ebx+H3
-	 Edgg9Y0RiR4/FUi31QFHviFszp8+Q+rjuruPKhct5Pky53qHrFBkohkO+8VmGqePK7Q0Pt5mUSOY
-	 m5d+V3na/Yspj1jjf751kzbRrXkTIEliA/YC6cDXQyJHFSIDKUHi8ZcEfTSWtqv0pDGAoFoA0RFe
-	 KB7byoRic0F++fgksk+yFnEZC/tQ==
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
-From: ZhuXiangyu <1194781887@qq.com>
-To: Mark Brown <broonie@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>
-Cc: Chris Morgan <macromorgan@hotmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ZhuXiangyu <1194781887@qq.com>
-Subject: [PATCH 2/2] dt-bindings: spi: rockchip-sfc: add RK3506 support
-Date: Sat, 21 Nov 2026 15:32:46 +0800
-X-OQ-MSGID: <20261121073246.1233736-2-1194781887@qq.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261121073246.1233736-1-1194781887@qq.com>
-References: <20261121073246.1233736-1-1194781887@qq.com>
+	dkim=pass (1024-bit key, unprotected) header.d=fqwqf.xyz header.i=@fqwqf.xyz header.a=rsa-sha256 header.s=resend header.b=kfw/5V2H;
+	dkim=pass (1024-bit key, unprotected) header.d=amazonses.com header.i=@amazonses.com header.a=rsa-sha256 header.s=zh4gjftm6etwoq6afzugpky45synznly header.b=RmoFgy+L
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=resend;
+	d=fqwqf.xyz; t=1795278252;
+	h=In-Reply-To:References:From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:MIME-Version:Content-Type;
+	bh=471W5chLXn50gR/+buvj/gyEydSS5vORYAWz/ynvgxQ=;
+	b=kfw/5V2HUSv3CJTPnxjWRBtdPQQ83tRMU6dp++CVBiPcehN2KhAaHXQn+JsmiHBd
+	2Jm5mn6vleQdgQ/v84zGhkmJkvim1bUoHXlv6E7Tn1zYmLDYxkhDfkiwQX3QgLY974R
+	58tbUQm1q5//Z0ZZxwsVnlPytduYbXyiNEH8cFLo=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=zh4gjftm6etwoq6afzugpky45synznly; d=amazonses.com; t=1795278252;
+	h=In-Reply-To:References:From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:MIME-Version:Content-Type:Feedback-ID;
+	bh=471W5chLXn50gR/+buvj/gyEydSS5vORYAWz/ynvgxQ=;
+	b=RmoFgy+LHfrPwlTP+SZwVnqZUl5bRGYoCONFZzjJrdoEczSDmgLMznlkTW4lS0V8
+	rjwXYnhSHAwNOngJVVsm6d7FBkj1jA/Y2mW1UD8uS8Pqc1Ozotx36u5nvMjtbmtI3PV
+	3yqlv3hTjfNomzbNcCZVMiu2KRqiivXcAmtVgf2A=
+In-Reply-To: <20261106-provoke-capably-b7de457b9710@spud>
+References: <20261106-provoke-capably-b7de457b9710@spud>
+X-Mailer: git-send-email 2.53.0
+From: Jizhou Tong <fqwqf@fqwqf.xyz>
+To: Conor Dooley <conor@kernel.org>
+Cc: jingyliang@chromium.org, broonie@kernel.org, robh@kernel.org, 
+	linux-input@vger.kernel.org, linux-spi@vger.kernel.org, 
+	devicetree@vger.kernel.org
+Subject: Re: [RFC PATCH v3 4/5] dt-bindings: input: hid-over-spi: add the
+ Surface Laptop 7 touchpad
+Message-ID: <010601a1feec27d4-7cd024a3-e91a-4d7f-8205-2f94096554ac-000000@ap-northeast-1.amazonses.com>
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 21 Nov 2026 16:24:12 +0000
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -89,68 +71,29 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Feedback-ID: :1.ap-northeast-1.6BGMgStFQE7EJYq5syaCRzdneEHVt/+DAaGDrqUmDs9QLO4/SllUBZ3fHvnZ8rcAX/3IjUyTRgi5JFZsWrikFHwlPJqCkqEMlxDFM4JXh+ycxH/J5Tudg5bGdz6h4331g1L1EFsGR8kuYNfGLsrxz4Nym4YXoPcZxeVkrHry4Zx21n8vEVLEjc7s+OCM8PU9:1.ap-northeast-1.DTXDV/V9GPBWozcllKo8innbNB2qs2O/3F8XZSzd9ZM=:AmazonSES
+X-SES-Outgoing: 2026.11.21-23.251.234.52
 
-Document the RK3506 FSPI compatible with the generic SFC fallback, and
-the rockchip,grf and rockchip,max-dll properties used for the
-power-good handshake and DLL training.
+Hi Conor,
 
-Signed-off-by: ZhuXiangyu <1194781887@qq.com>
----
- .../devicetree/bindings/spi/rockchip-sfc.yaml | 30 ++++++++++++++++---
- 1 file changed, 26 insertions(+), 4 deletions(-)
+I rechecked this: spi-peripheral-props.yaml defines both =
+bus-width
+properties as uint32-array, including in current mainline [1]. =
+With
+dt-schema 2026.6, changing these constraints to plain "const: 4" makes
+the valid example fail with "spi-rx-bus-width: 4 was expected" (and
+likewise for TX).
 
-diff --git a/Documentation/devicetree/bindings/spi/rockchip-sfc.yaml b/Documentation/devicetree/bindings/spi/rockchip-sfc.yaml
-index ac1503de..428740c8 100644
---- a/Documentation/devicetree/bindings/spi/rockchip-sfc.yaml
-+++ b/Documentation/devicetree/bindings/spi/rockchip-sfc.yaml
-@@ -13,13 +13,27 @@ maintainers:
- allOf:
-   - $ref: spi-controller.yaml#
- 
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: rockchip,rk3506-fspi
-+    then:
-+      required:
-+        - rockchip,grf
-+
- properties:
-   compatible:
--    const: rockchip,sfc
-+    oneOf:
-+      - const: rockchip,sfc
-+      - items:
-+          - const: rockchip,rk3506-fspi
-+          - const: rockchip,sfc
-     description:
--      The rockchip sfc controller is a standalone IP with version register,
--      and the driver can handle all the feature difference inside the IP
--      depending on the version register.
-+      The Rockchip SFC controller is a standalone IP with a version
-+      register. The driver handles most feature differences based on the
-+      version register, while SoC-specific data such as the power-good
-+      GRF offset is selected by the SoC-specific compatible.
- 
-   reg:
-     maxItems: 1
-@@ -44,6 +58,14 @@ properties:
-     description: Disable DMA and utilize FIFO mode only
-     type: boolean
- 
-+  rockchip,grf:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: Phandle to the PMU GRF used for the power-good check.
-+
-+  rockchip,max-dll:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: Maximum DLL cells used for delay-line training.
-+
- patternProperties:
-   "^flash@[0-3]$":
-     type: object
--- 
-2.47.3
+The one-element items form passes the examples and =
+rejects missing,
+incorrect and multiple widths. I have kept it for now; is =
+there a
+preferred form for this array constraint?
 
+[1] https://git.kernel.=
+org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetr=
+ee/bindings/spi/spi-peripheral-props.yaml
+
+Thanks,
+Jizhou

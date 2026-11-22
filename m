@@ -1,94 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=149.28.215.223
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795335787;
-	b=sSWhT7qUo7oeUjIyxxIqLdOHDGlDUm8dqtbAgyiM4AyygyqGox7feiORkT6jpTzXJgSI
-	 Hki0SvpaosDFJy7MvmZiPuWs60ar47oQolOTcffPHAO90+0RV+McMaySdyVqnu28ek/gY
-	 /zIC2r8+sbdk5Gq3DeXyXXYynnFWzxJiOZY4jlv72vdRMY5qNJNN53cgsRZOhdF8BaKyM
-	 p/Be6u2KQx9JLQitezYOVQMD0nJokHazxtaejWnyn2wYV0XeMnVEfMcfS05lMewiO/16v
-	 4VYPeUBTnWF+V5mJkXj+LaEzNzgf+82mC6a0LbSP9MARZk5cALhLy1MHpIitocdahnQ==
+	t=1795369491;
+	b=RRxC7jZIvDRT/395ARQcT9HzYknEvQxUf3gYJjBvILTopWdHoxK/33dI7UvU4nB5lBUK
+	 afxFwOYt0e08Z0/3rx8y8EC29Nfru4LZxD38vkMxKaWFtFOUEq7G5/cTynIVaBkDtLiRf
+	 ZMjvROGE/hmSSA811SdO2YOuyVOiPl1xW7Plynso6z6f2LRnVtYmdFyIbTT1a+sVN4NUo
+	 4Et1Ew3OHNXEN99uOMpF8vVjooeUCtZayfp4Ssal2IS9Nr9ZM1bRuiMw8Rxv7zIvWGcpU
+	 LaDMKOSI4n/fUrsvN0KP9MV8v4Tr2GCBPN95PX9CjLKNWrkfvbRHni+XnjPv1K7gRZA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795335787;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=6akX7pzAHH0ivf8SsSGJ7CYw3qAkgFrjvzXEYBsaGuI=;
-	b=TXuSFDeYV2FCH643EX80ogetk8j0r3e9PtmZXZBePXInezymvmCf8X/rZR4vanzuQCTE
-	 n4E66XSpoA4TUSvmDcTvIitoivWBvZrE52trqe8aaS1EgsYa80VBrlavhvgqMPE1mtnk3
-	 1ddU+aF8k1FCHC3BSWb96dwfPY0M52i/dFpcGxKWDEZmIiD/QPlfQwW2ACUZpc+7eCFHD
-	 /aA2OC5V5Z3F3/dibPAcXboXMRNqkC/ar5xyd9CUfIsDYI4KsB/6M2F7YJ5AsnRDdbPmG
-	 J7yIyeNafkD5o0MEaT73OaNG2FoAOanwf2xNVTWxaMjfYQbVVNDLxGqDGWHjo2nBNuA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795369491;
+	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:CFBL-Feedback-ID:
+	 CFBL-Address:X-Forward-Email-ID:X-Forward-Email-Sender:
+	 X-Forward-Email-Version:X-Forward-Email-Website:X-Complaints-To:
+	 X-Report-Abuse:X-Report-Abuse-To:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=YC+Ogj9wmHA/Qf6zYsQ4fT2IqAwJLhOnqw7/ALnfGek=;
+	b=x/Fv4cnlKFbWeYT3sG6cVBo33HJoYn8waMi2y+DOE8MDYQq2XvZFCp8JLC3rDTSuQNWz
+	 5oKlfDOu/5jOa22huud+3QvzoC0y7eidjPhYh7YRTZ1S5hLdV80t1eYv40Z84FGqB031T
+	 qj/iGjFCQYPNqviuMpzy/rxax/YMIQNnUnNWpBdyDHf5fAPafcN4banhoqsa2QEtdMgmI
+	 YvdgY/xzsieVcEZ1eEz+KBUf3rwhFvdXw7ZV4YbllayXsVlMwi7PYTb2e2bHnLhfCbOI2
+	 W2pQ8HwqdK51HoCKXB6UG/VIA5Ig/PMR/ieYFiNXoZDHp2LAXgQ/yuhjZhcMUok95kw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Uy+MW7EX;
-	arc=none smtp.remote-ip=209.85.216.48
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=kwiboo.se;
+	spf=pass smtp.mailfrom=fe-bounces.kwiboo.se;
+	dkim=pass header.d=kwiboo.se header.i=@kwiboo.se header.a=rsa-sha256 header.s=fe-e1b5cab7be header.b=eQSO7jbW;
+	dkim=pass header.d=forwardemail.net header.i=@forwardemail.net header.a=rsa-sha256 header.s=default header.b=NrQvOlmR;
+	arc=none smtp.remote-ip=149.28.215.223
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [149.28.215.223])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B82606A32A
-	for <linux-spi@vger.kernel.org>; Sun, 22 Nov 2026 08:23:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 75B82606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB444606A682
+	for <linux-spi@vger.kernel.org>; Sun, 22 Nov 2026 17:44:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB444606A682
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Uy+MW7EX
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3ac78f4c10bso1084320a91.1
-        for <linux-spi@vger.kernel.org>; Sun, 22 Nov 2026 00:23:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795335786; x=1795940586; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6akX7pzAHH0ivf8SsSGJ7CYw3qAkgFrjvzXEYBsaGuI=;
-        b=Uy+MW7EXTLIpQBzhIhKP63fq5Q+zqrn/Jpb0imjgiKMDFrrt+OQ9nVUz/T/afveEGj
-         dt/5U+42E9umaWXPuya3mQYpWFCpaS0VvPDOU8HPqIR+df1ib6rmAyZ0TAgwNSTYJ+Sa
-         sWlhJTacjQqNDNrIu9oUMs6ub/2QNGLkb6cf2hHNWr+sP3+U3gst3F/IIgdyK6bOucc+
-         Kqsx+5olkVWetZ11Cr51mWE04jjGROljhZDU5OJoiKnq1LU/ew/IkZLxEvrX/Vs4P5Jx
-         K880+r1RSuaHP+GIVhRtRKgi6EIRdFfQz1PVixhcJxzUbQqEqkh2+KnpYfdp8y+tNT0r
-         zKeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795335786; x=1795940586;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6akX7pzAHH0ivf8SsSGJ7CYw3qAkgFrjvzXEYBsaGuI=;
-        b=Ocf4x+qpY3m3GWFeMLs5W8M97UV8ClkPYUVmqdn3z0b5G+Mm7Y+oigRpJtzMqWKKzU
-         7+XBOAdu13OXHfotZPuv9i90+yc5UuWAh8mNix6qBvAsEsc5vjwrG1e6qTiLEABWb2oa
-         BCD2XmLgUPSZQRlo7Fakk8zCmg2W+OnFmrpWd9Xd02lk+YC/syLuVGjwghf6oJ+phJT1
-         RPksvyDB4ihZQsKjbnp2agvojN0A9I2Kfbl5cPBNmbAmQn/kWqHzPlEOyJ3ToLNcRtEB
-         xXQFEsuUeZfxDmHktPMXOMCqMZtz8gVd8Z3b4HoQbAg49kTqNeQ/fUCphF/jnH5vdkYZ
-         OVAQ==
-X-Forwarded-Encrypted: i=1; AL+hErH3j0vz6GIovBFt1X+iHjAgK3cLfJHxyEPSFBdFsCbexrSo3qQCc9qf8wJddsCzZeG+xmN5JhfC23w=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+9RQ7/KA8taVSi1+rsMbXx2a29zI0El4qaYLzfr4aisw9mZ8TJ
-	MR3TRSdp3YfK7uy3Vq6hoRQWYVJopypn4tT0+MwhddsDfWMQ3Czkeb6/
-X-Gm-Gg: AZFdTZfEYcEOIq3sAtA06WaTvuUyLVo8JbycbIf6AF17WG/9Rqpmg8OvvyVJjKDmZBX
-	ecBZBbnHw+4R3YtlSQ7di7X8M3Lpq2bdG+x6DuGdPla5SLwwKQhX/U9W2st/ZBjj9Xdnuwc2qom
-	xOEBeyfjkKy2jQIMFzBxOovKixFTTFHeTSFqQUh4BVRQn83gjLMJXuGpaBmyguUMpYJ3KxercTv
-	0GoJLXzy8FpIpfxEcP/zk8V2f5NEFZxsvN6g7gbt6qicRaxQ/yIjc28SUPkM5chKaJ4rqumG47i
-	49a5xV+i7MtqoR3bB14Xb0Sw9a1Mpbno+ZRPDVtyryZ46dI2/pgZ/oMN7FLdvm3FioSo6AUi/Rz
-	DkKjaywAyvg7KwNxrj9yFxbaD5C5Cs69W9EMy+dNZKs8tytcL1oIfJJun7m+Ta7Y1jLBVC9I7Bk
-	j6tz6k08QjL5WS2KU5Y4KBP25hZfG/BcXGIWdHj41ELWF7Hs/JHwMgqt0zjn3dbTWHhKKg8CY8m
-	gUvWh/tipu+d7VEFxa+eZ/IiDnNwBHnV4rWB4gAMA1fcZIT1c0a8OmBN7btu1HjPjaBpEsJUTwp
-	QPtI0oxO+94K/KN7cCKVulvksQKqfYkcXreTwyzOEN6vLF3hYg==
-X-Received: by 2002:a17:90b:2f8c:b0:3b4:1997:3495 with SMTP id 98e67ed59e1d1-3b41c9613bbmr7277675a91.57.1795335785650;
-        Sun, 22 Nov 2026 00:23:05 -0800 (PST)
-Received: from fedora.tailc1fb0a.ts.net ([172.219.65.15])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41ad0b2c4sm11723350a91.4.2026.11.22.00.23.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Nov 2026 00:23:05 -0800 (PST)
-From: Artem Novak <artem122novak@gmail.com>
-To: broonie@kernel.org
-Cc: florian.fainelli@broadcom.com,
-	bcm-kernel-feedback-list@broadcom.com,
+	dkim=pass (2048-bit key, unprotected) header.d=kwiboo.se header.i=@kwiboo.se header.a=rsa-sha256 header.s=fe-e1b5cab7be header.b=eQSO7jbW;
+	dkim=pass (1024-bit key, unprotected) header.d=forwardemail.net header.i=@forwardemail.net header.a=rsa-sha256 header.s=default header.b=NrQvOlmR
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kwiboo.se;
+ h=Content-Transfer-Encoding: MIME-Version: Message-ID: Date: Subject: Cc:
+ To: From: CFBL-Address: CFBL-Feedback-ID; q=dns/txt; s=fe-e1b5cab7be;
+ t=1795369489; bh=YC+Ogj9wmHA/Qf6zYsQ4fT2IqAwJLhOnqw7/ALnfGek=;
+ b=eQSO7jbWwdzVmf48iiCsdCn2MIUs08sRiqBjROm719HHzGwCWm2NFQkBQfr/Gp1JKY5dDLX0h
+ HIST4Z7ee9P1NMgoUGGOH15SZ4DkogMyHQqWjIkVsrZrlJ/5Lp5bQM6AZf6CDAta06iUkGgQhQ3
+ Kl60xWiiyOxsIlIXp0V9URbLiU5skogjUM7qOP8MX0SIxfiPsCM/IxivUThVevGzwnbgI5a0cpm
+ 9HwU0kqXWlMgzna7rzHZP3ob76tFvzVMbrv6y+7cFtP54W7aXzSkXEitusDfLAZ5+OsZg2iK9dq
+ 6zpqF5Y4KQ+rIvmfdqbmpz/JGxPVM+fWG+74jOLsA1Jg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=forwardemail.net;
+ h=Content-Transfer-Encoding: MIME-Version: Message-ID: Date: Subject: Cc:
+ To: From: CFBL-Address: CFBL-Feedback-ID; q=dns/txt; s=default;
+ t=1795369489; bh=YC+Ogj9wmHA/Qf6zYsQ4fT2IqAwJLhOnqw7/ALnfGek=;
+ b=NrQvOlmRKhhYGs6uxbympWPpIFWPDp+W2j9E2qYvBDDfOl2ZexQ9XaSSvK77w7JQSnnJlKrxd
+ leYSQi1kJpb7ty/i+Hkuqnae4X7mColyiqQhdXlvGniZps7kWUp2AMt8nHYb/lguH24JHKDIvYl
+ n2ftpMPmDjEFHghkD/CLsjI=
+CFBL-Feedback-ID: 6b0329e237459da6a917fd20:615e4b675148a362b7f544948ebb1200
+CFBL-Address: abuse@forwardemail.net; report=arf
+X-Forward-Email-ID: 6b0329e237459da6a917fd20
+X-Forward-Email-Sender: rfc822; jonas@kwiboo.se, smtp.forwardemail.net,
+ 149.28.215.223
+X-Forward-Email-Version: 2.19.37
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+From: Jonas Karlman <jonas@kwiboo.se>
+To: Heiko Stuebner <heiko@sntech.de>,
+	Mark Brown <broonie@kernel.org>,
+	Jon Lin <jon.lin@rock-chips.com>
+Cc: linux-rockchip@lists.infradead.org,
 	linux-spi@vger.kernel.org,
-	linux-rpi-kernel@lists.infradead.org,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Artem Novak <artem122novak@gmail.com>
-Subject: [PATCH] spi: bcm2835: clarify native chip-select fallback
-Date: Sun, 22 Nov 2026 02:23:02 -0600
-Message-ID: <20261122082302.170387-1-artem122novak@gmail.com>
+	Jonas Karlman <jonas@kwiboo.se>
+Subject: [PATCH] spi: rockchip-sfc: Only use x2 clock rate on version 10 and later
+Date: Sun, 22 Nov 2026 17:43:57 +0000
+Message-ID: <20261122174357.1295391-1-jonas@kwiboo.se>
 X-Mailer: git-send-email 2.56.1
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -101,45 +86,89 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Document why the driver uses GPIO-controlled chip-select instead of
-the hardware-controlled native chip-select.
+The detected NAND ID is read back incorrectly on RK3506 using SCLK_FSPI
+rate above ~50 MHz.
 
-Also explain how the temporary GPIO lookup table is used when the
-device tree does not provide a CS GPIO descriptor, and document the
-fallback's limitation regarding the alternate GPIOs 36/35.
+  spi-nand spi0.0: unknown raw ID f7d511000000
+  spi-nand spi0.0: probe with driver spi-nand failed with error -95
 
-Signed-off-by: Artem Novak <artem122novak@gmail.com>
+The FSPI_VER value, clock names and vendor kernel sclk-x2-bypass
+handling seem to indicate that x2 clock rate should only be used on
+FSPI version 10 and later, not 8 and later.
+
+Summary of FSPI_VER reg, clock names and vendor kernel workarounds:
+
+   SoC       Reg address       Value
+  rk3568  FSPI_VER  fe30002c: 00000005
+  rk3588  FSPI_VER  fe2b002c: 00000005
+  rv1106  FSPI_VER  ffac002c: 00000006
+  rk3528  FSPI_VER  ffc0002c: 00000008 (vendor sclk-x2-bypass)
+  rk3562  FSPI_VER  ff86002c: 00000008 (vendor sclk-x2-bypass)
+  rk3506  FSPI_VER  ff48802c: 00000009 (sfc->version set to 6)
+  rk3576  FSPI0_VER 2a34002c: 00070010 (SCLK_FSPI_X2)
+  rk3576  FSPI1_VER 2a30002c: 00070010 (SCLK_FSPI1_X2)
+  rv1103b FSPI0_VER 20d4002c: 00070011 (SCLK_SFC_2X, sclk-x2-bypass)
+  rv1103b FSPI1_VER 205c002c: 00070011 (SCLK_SFC_2X_PMU1, sclk-x2-bypass)
+  rv1126b FSPI0_VER 2146002c: 00070011 (SCLK_2X_FSPI0)
+  rv1126b FSPI1_VER 208c002c: 00170011 (SCLK_1X_FSPI1, sclk-x2-bypass)
+  rk3538  FSPI_VER  fde2002c: 00670013 (SCLK_2X_FSPI)
+  rk3572  FSPI0_VER 2a02002c: 00470013 (SCLK_FSPI0_X2)
+  rk3572  FSPI1_VER 2a08002c: 00470013 (SCLK_FSPI1_X2)
+
+Vendor kernel use x1 clock rates for RK3528, RK3562 and RK3506 thanks to
+use of vendor sclk-x2-bypass prop or version downgrade, effectively only
+use x2 clock rates on version 10 and later.
+
+FSPI1 on RV1126B should likely also use x1 clock rates, and DDR_UNSPPT
+(bit 20) of FSPI_VER being set could possible be used as a runtime
+indicator.
+
+Runtime testing also seem to indicate that SCLK_X2_BYPASS (bit 24) of
+FSPI_EXT_CTRL only stays set after being written on RV1103B, not on any
+other version 8 and later controllers.
+
+Change to only use double clock rate for version 10 and later to fix
+use of SPI NAND on RK3506.
+
+  spi-nand spi0.0: Winbond SPI NAND was found.
+  spi-nand spi0.0: 256 MiB, block size: 128 KiB, page size: 2048, OOB size: 128
+
+Fixes: af103eb7d7d8 ("spi: rockchip-sfc: Support sclk_x2 version")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
 ---
- drivers/spi/spi-bcm2835.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/spi/spi-rockchip-sfc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index cc5748973281..d4c938fa3a23 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -1310,13 +1310,16 @@ static int bcm2835_spi_setup(struct spi_device *spi)
- 		return 0;
+diff --git a/drivers/spi/spi-rockchip-sfc.c b/drivers/spi/spi-rockchip-sfc.c
+index a85a260ba95f..8cc300d533e4 100644
+--- a/drivers/spi/spi-rockchip-sfc.c
++++ b/drivers/spi/spi-rockchip-sfc.c
+@@ -113,6 +113,7 @@
+ #define  SFC_VER_4			0x4
+ #define  SFC_VER_5			0x5
+ #define  SFC_VER_8			0x8
++#define  SFC_VER_10			0x10
  
- 	/*
--	 * TODO: The code below is a slightly better alternative to the utter
--	 * abuse of the GPIO API that I found here before. It creates a
--	 * temporary lookup table, assigns it to the SPI device, gets the GPIO
--	 * descriptor and then releases the lookup table.
-+	 * The hardware-controlled native chip-select can produce short
-+	 * glitches during transfers, so use GPIO-controlled chip-select
-+	 * instead.
- 	 *
--	 * More on the problem that it addresses:
--	 *   https://www.spinics.net/lists/linux-gpio/msg36218.html
-+	 * If the device tree doesn't provide a CS GPIO descriptor, create a
-+	 * temporary lookup table to obtain the GPIO through the consumer API.
-+	 * This fallback assumes GPIOs 8/7 and doesn't detect whether the
-+	 * alternate GPIOs 36/35 are configured.
-+	 *
-+	 * See https://www.spinics.net/lists/linux-gpio/msg36218.html
- 	 */
- 	lookup = kzalloc_flex(*lookup, table, 2);
- 	if (!lookup) {
+ /* Delay line controller register */
+ #define SFC_DLL_CTRL0			0x3C
+@@ -220,7 +221,7 @@ static u32 rockchip_sfc_get_max_iosize(struct rockchip_sfc *sfc)
+ 
+ static int rockchip_sfc_clk_set_rate(struct rockchip_sfc *sfc, unsigned long  speed)
+ {
+-	if (sfc->version >= SFC_VER_8)
++	if (sfc->version >= SFC_VER_10)
+ 		return clk_set_rate(sfc->clk, speed * 2);
+ 	else
+ 		return clk_set_rate(sfc->clk, speed);
+@@ -228,7 +229,7 @@ static int rockchip_sfc_clk_set_rate(struct rockchip_sfc *sfc, unsigned long  sp
+ 
+ static unsigned long rockchip_sfc_clk_get_rate(struct rockchip_sfc *sfc)
+ {
+-	if (sfc->version >= SFC_VER_8)
++	if (sfc->version >= SFC_VER_10)
+ 		return clk_get_rate(sfc->clk) / 2;
+ 	else
+ 		return clk_get_rate(sfc->clk);
 -- 
 2.56.1
 

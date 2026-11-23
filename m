@@ -1,56 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795523326;
-	b=RJHIkaygRnjACOHBLCDbci4mo6z4BGD8XeQ0IPR71ztcoTW68MW/ooobnX3T2y7suSYR
-	 Fsyy7wIfXYxnNuKVZqriofjIUGMo3eXf3XUj7iDn73G6PHnpqxzrS82yKZMBMbqSFhWsR
-	 GpGL3NJJyfanTMRAg54cMLUA9ry7iyi2TLGOh7h8cjP9tHcJfq3QdBWYoeXGDtUijxBnl
-	 9Z80fclHGxBWSMKdSvdrwOzjtU5HXk3pudt5TOOa15uyoryAaFcfxzXKW4jSy/pGDNASo
-	 HdzfUGiMP3r8scUIreMIGK4FJTz05p/1a3eIT2hup4flVtvfK9fAIwDF7ZjvkkFhCNA==
+	t=1795523322;
+	b=HkFhZxiTSa4WA4BRPLQCA7pNvcNwbAaBk5iy391NkGKsMEgWzg8BIs76Rx+zuTO8r2Hw
+	 LGtFFH8mJvFj8XwQFAq0KSZOnIicovxXTYv4/1MXc3zVMeOZXT5BGKKw24uNckpiq2kjg
+	 1gE56ZvIvhkIYtd+Jdji208yXY7tDJUpbxGU3HSfR94udiuyMB573mw9lOF5pCW98FHO6
+	 pZipARiApRdJaMEW9f035uBZ2S/CwCCTAajRbp7/90DNA8hKnUC8cQZnhcn9A8eB8eJ9l
+	 7Cg1FYq4abHhYHCy97Lfbt3QX9Lyqx9WOkVH1H1wtLTMzNloLFUMoUOEMjUkStDxLwg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795523326;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795523322;
 	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
 	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=/myQxVwBGatEya0bvaatkH8WGVvA8hp8Uie/NDgTxTo=;
-	b=3RZw51jS9MlyRIT0nrlxUfkjtq3VoeYecKxLoX7mHxB/bwWdJHnrJ64MJIMr7vT4Qxow
-	 Do6KJTLWmbPsTp2QE/vfgveVa1hmR4m0Ewi/LFVGCQgIiG3At3IOOUUFwf0NVw+pn79lz
-	 oNqeFhUc4yhM979xocwLc7eOSrmojC0lus9RwkWXjBW0x4MlL/qkvLeBAC7rOPiibnrGS
-	 KyrylE85nJ3G3kggL1g2SoHpo1JTjCjiWBX8t+z+HlzIAUFknLp+HYOrUhDgUBiQTCDBJ
-	 fdwmpIE0h2YOSVZfUQwWs9i1CZukmcztReyeh+atFAxGmKP9W1+FjZXI/AUOd2KMHww==
+	bh=2juA0rqU8pu1DpmHAS526Dnda9RFqW2YMGL8zHBIuM4=;
+	b=FwKuSBbbUok9PDjg97E6PRcwjqNYaMsvYAc8hA8EpMAye0lVzvT2VH3gTVjgJ6h+gRr0
+	 ycglobwdw9cy9uol4aCMnpCo4+1cF8FSj94vmuktTA03T86LjDjkeoUr8OJLoA1miD5H4
+	 c1sjaEckza1c8mYy45uiJMWZDIFkh7/mtuM4hf81na32RB7oJVE19IE91dPJTxqzY3Six
+	 p5kA4pwvkQE6CsrTuffluWGV5YVSfriQy+HGAygqSELQjW+gz3Nl4IBcooQqNlcdmR6rZ
+	 WPWAyA5ftgdYbnFAQF1DEPuLPY3YpEFYpxOjickN8Z4lMLg1dO7XcqV7vrFyPUo3F3Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FJI8Ez1c;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KNapicCu;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A448606A336;
-	Tue, 24 Nov 2026 12:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4673A606A32A;
+	Tue, 24 Nov 2026 12:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FJI8Ez1c
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4331F0089E;
-	Tue, 24 Nov 2026 12:28:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KNapicCu
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538501F0089E;
+	Tue, 24 Nov 2026 12:28:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795523326;
-	bh=/myQxVwBGatEya0bvaatkH8WGVvA8hp8Uie/NDgTxTo=;
+	s=k20260515; t=1795523321;
+	bh=2juA0rqU8pu1DpmHAS526Dnda9RFqW2YMGL8zHBIuM4=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=FJI8Ez1coksaOFZBl+Tt+V0lzPFKxNxU8ifqRlBElxuj0Rwx5vfAxqrVbhJzfhB9g
-	 B4JC0/DyxVR02Lg3ZVnvEgM5PDeNUsLXLgUdefMEaCPzhEQ4158/nM6qdwS+PcpaXI
-	 bjMMgg9YMr/Olw2MBHs3a/KrQXKscPuQqe5oP0oGnsFb9ZyAfrzgmZZZt4mE6LVuLL
-	 zLI/nRffhxaDNnQRki3LRsTiwyuC3HbgPwjSnMNl9fM/kNmj/JuZ+cEZDlt0Z8+Dm0
-	 y0wxJCrSQis2sgHBQAn2XFMuM/uLm1NPstJ82eJsOO830+F8eUCQUPhPrWftCP+T1Q
-	 cmgq8FIMr/kdQ==
+	b=KNapicCuWhX/vW62nc3qkqVu6EVdptRq5g7QrCTBE7iTolKDnGTd+/SoZD2r2skx5
+	 Gl1VhBF2gtrhLXGPeFJrQ7DVI3zg3/IcyAw5RGZMoSV7vbIuM/RPILwGikSX0X64IE
+	 lWf5Bh1DRIzHumptedgqKhyav21cxBdmr2oumhTxQZmGLB+Nt2UhENm3HNg8XfpDg+
+	 +MOPE+oicT1XvPkVsIWOjVEU07jjU3mflUZ8YkxLi0OEe+IcXflO/63d9tKWLxqiFY
+	 Ovieuvz5a7sZAVg0L2OEB6/lgWmRbobe8+pP5UATDj0AVFPWCacr9t3T2E3nWQSeCk
+	 ZPaqgNIRX89vQ==
 From: Mark Brown <broonie@kernel.org>
-To: michal.simek@amd.com, ranjit.waghmode@xilinx.com, 
- Srikanth Boyapally <srikanth.boyapally@amd.com>
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-spi@vger.kernel.org, git@amd.com
-In-Reply-To: <20261115-qspi_14_11-v1-0-23425ed177bf@amd.com>
-References: <20261115-qspi_14_11-v1-0-23425ed177bf@amd.com>
-Subject: Re: [PATCH 0/5] spi: spi-zynqmp-gqspi: Fix remove and IO-mode
- reads
-Message-Id: <179546075004.25092.12167808449795395139.b4-ty@b4>
-Date: Mon, 23 Nov 2026 19:05:50 +0000
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, Maxime Ripard <mripard@kernel.org>, 
+ Arun Iyengar <aiyengar1990@gmail.com>
+Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20261116-spi-sun6i-h616-dual-read-v2-0-e0c66eb71e20@gmail.com>
+References: <20261116-spi-sun6i-h616-dual-read-v2-0-e0c66eb71e20@gmail.com>
+Subject: Re: [PATCH v2 0/2] spi: sun6i: Add dual read support for the H616
+Message-Id: <179546093021.25092.9731522702680875589.b4-ty@b4>
+Date: Mon, 23 Nov 2026 19:08:50 +0000
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -63,22 +66,24 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1880; i=broonie@kernel.org;
- h=from:subject:message-id; bh=3CsvrBpOzx0ATu/gP5GIgfz4fWC33UG1X5kPugufffQ=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLJZm377VYpxr2FqSumznSm0gHFxaYdb7MZrZfcuHVC60
- WMRrHuwo5SFQYyLQVZMkSUui/tlfcnrNXwHF7bBzGFlAhnCwMUpABNh62BkuH1HfuWLSQaW63hX
- H/Nk13vBumPJ3uPbH5+bzftHroB70ylGhktTZjl8/vrfeqGjicC1hP4Ui07HL8bRK+9y+0wvdF+
- 9mgUA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1598; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=Gl/xhCYINcG9OHOKX7Xhzx/xdThzJjdJ2Z4+WZuW27E=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLJZm76yZzvv2j7z+uWwWfyFzA9+7Rae+01toovFWvUpU
+ 0pO3dCI6ihlYRDjYpAVU2SJy+J+WV/yeg3fwYVtMHNYmUCGMHBxCsBESjYzMnzdvzjnyO26xjy1
+ c09msOUFZ1p4iaScOiko7iBjv0PgSAQjQ8eu45GFnd88Ofd+PJv4v/CD/BmGOvG1FxIL9qjLLvP
+ byAcA
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Sun, 15 Nov 2026 22:26:39 +0530, Srikanth Boyapally wrote:
-> spi: spi-zynqmp-gqspi: Fix remove and IO-mode reads
+On Mon, 16 Nov 2026 05:55:24 +0000, Arun Iyengar wrote:
+> spi: sun6i: Add dual read support for the H616
 > 
-> This series includes improvements to the ZynqMP GQSPI driver, covering
-> unaligned RX buffer handling, controller shutdown during remove,
-> interrupt and clock handling, and RX FIFO draining in IO mode.
+> The H616 SPI controllers support dual and quad transfers but bind
+> through the H3 fallback. Patch 1 lets the binding allow those bus
+> widths for the H616, patch 2 enables dual reads in the driver.
 > 
+> Developed with Claude (Anthropic), which wrote the code and the commit
+> messages. I reviewed them and tested on an Orange Pi Zero2.
 > 
 > [...]
 
@@ -88,16 +93,10 @@ Applied to
 
 Thanks!
 
-[1/5] spi: spi-zynqmp-gqspi: Factor out zynqmp_qspi_disable_hw()
-      https://git.kernel.org/broonie/spi/c/128166704b97
-[2/5] spi: spi-zynqmp-gqspi: Mask the interrupt before gating clocks on remove
-      https://git.kernel.org/broonie/spi/c/e822c0e154ac
-[3/5] spi: spi-zynqmp-gqspi: Stop the controller fully on remove
-      https://git.kernel.org/broonie/spi/c/1cd11b56fc3d
-[4/5] spi: spi-zynqmp-gqspi: Drain RX FIFO on RXNEMPTY in IO mode
-      https://git.kernel.org/broonie/spi/c/bfc9ad332132
-[5/5] spi: spi-zynqmp-gqspi: Use IO mode if RX buffer is not cache-line aligned
-      https://git.kernel.org/broonie/spi/c/07edbea685d7
+[1/2] spi: dt-bindings: sun6i: Allow Dual SPI and Quad SPI for the H616
+      https://git.kernel.org/broonie/spi/c/b4d26b2d6b61
+[2/2] spi: sun6i: Add dual read support for the H616
+      https://git.kernel.org/broonie/spi/c/908db9a4ca30
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

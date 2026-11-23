@@ -1,61 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795453552;
-	b=czFJGTY9QNPzZ+Ifzyr4MyNFzZ9jV1pOUg/j82JT1zZ18j6NsUnD3uodYyUp1lPDykbS
-	 Y2Bm7CXKMMoxDhcXDyHkkB63nra9FIqOS3pRMplFkI8/npJyJTDT1Mr1+GHgiiTH1aMBZ
-	 A7x435KZrRlVv25z/+KA+u70gvVUyiMT0WpXVfRyPbkaO4UPeWF0fanf138CWOIQLWENH
-	 khh4LSq0jv4b2h9UqenLVcwTzcwtxRbu4fYNNB5NjkU/gR4Aa8+do0oZ0RV9RydaWb7nq
-	 KHo1GDwUuaHVn5uvYQv7jDPEZ3HSQhFh8Hdh/Kd/jFqnc6L2J4KTVvPdoHXZcD4c9ww==
+	t=1795454867;
+	b=L5H+bQbOoyvDxLxWKJDemzYJBg+zE1tDapgB3TAuKw0u99ynhbgc354triccp88ZMsxz
+	 1sPFg9oQXamyEymOQaNOfnM5xNkbwR+hOqtMZmUli1ecwe6MltfgjcOzLXAUAgQTg4uOJ
+	 oMuWjiuYe9MJbWYHd4IMCJTE6zCVQy8jn0h5Y76TXo+iSuKcvvUEqIQ4PZ/RaxuzSigvK
+	 ObVqcuy0n5ly32vLI6gBPwqs54OZiuqw4hJj3Bcc4K/IKtdrsNsR0mXrh8s1HTB09gQop
+	 Jgv22zWUYOAQnqFsP5Z9bXR5OnHzvKB4G26Iv+W90l9POXlC12k70ZMUki2xl5PGjjA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795453552;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=UdOz9tM78aKCNuwtvaRDMGailtWmOr3a12bo3DCQKKM=;
-	b=titz/ARUq9+2YeHutPVQ055ORFZfDrwXJkNzWIFoRmbS7BZ8OT5vg12FwVkib9TvPVLT
-	 bKDqziBjeUQueg72HmVkk0oN+oShA/RJJ0vkLBuTVVnd8fiA4cTEs9HVSRTqCaWApjr7o
-	 pHDSeQWyXj22ynbqFMXoSD9RXj4CgKCeA7KavtZrZGZ4sL2amrPLsPczYRVer5njJ9iQu
-	 fgoDzxwRJpL8zo+arbAkf4Nl6jD8IYwf471KzEgrWaP3hxclD6gMSgOZb6i/ydYViMsUO
-	 kUTD8TGRA3UaxUFpfWRzUzznA0v4CUjRmob+uFXs5Sw11kyMMYNyrQ7OVPC+zUW+Z6A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795454867;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:
+	 Organization;
+	bh=BGorJs6MAne/EhbfWhhLdgvrIugkfOpSJMie/q8kNWI=;
+	b=OxNwdHsctn0mX4qKHkctcLXVeOCmH3pr8tFxtFtO1tSR7Uvx4WBOlws0aAdAS8JP2Ab/
+	 CfZynS9LIUbMTw4oUdCkC8bthYaGQYmA5/FA1yYYI23OhUrGpG4CFJHB2RQT1gtR9zQTx
+	 H8/XU2WI1AZVkoYwnffpG8QI96kdT2EsaDPCRjiEyOc2YuAWBxCW9LTtWaLayqdN5DEVS
+	 G7ynUlkChaMmysjHSzfFXky9jUeGmAaUkwBLXgrcjUBroWYyaNnGFVJeufp79zqYBiAXK
+	 zNYjffpTF84AG9IuKJAicMXPsnpj2sZw7gMB7DCMKKGjgVRwQfnHxsKOlp/hjOHsqQw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="lw/4s7PA";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eSbP3CbG;
+	arc=none smtp.remote-ip=192.198.163.9
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D45606A31E;
-	Mon, 23 Nov 2026 17:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C288606A31E;
+	Mon, 23 Nov 2026 17:27:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9C288606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lw/4s7PA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B40AB1F000C4;
-	Mon, 23 Nov 2026 17:05:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795453551;
-	bh=UdOz9tM78aKCNuwtvaRDMGailtWmOr3a12bo3DCQKKM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lw/4s7PA9Qla9M6pyfDknLccka+tq6vuVRz/vbaY/sABfmgf3JY7C86z7VRe3+khP
-	 4XmqAScsw3+Ph3jikfOvUSiWg/MhO4vN2nGE1whUyTpSby5BUPtBigqzPGDi9pfPtM
-	 1d5b966w+CW0ATxP3b4D12pJbua7UYD4k4DY/2nJ6fvoNdqo3PUTKPpKqzOQDCSAPM
-	 DRmcCJ/6n6OhM85v6JAlqEVJrNRl88UDcOHdmfiYbFLqKzYSk711DpfABfpppbg8K6
-	 5ulk8ekabYv0IBnTLLE/MrY6Nm1l/iWiCGmiZTt1Mw/rl3J+1siDwG+sK0wnhbmnan
-	 GiITtjhTImdAQ==
-Date: Mon, 23 Nov 2026 17:05:46 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Binbin Zhou <zhoubinbin@loongson.cn>
-Cc: Binbin Zhou <zhoubb.aaron@gmail.com>,
-	Huacai Chen <chenhuacai@loongson.cn>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Yinbo Zhu <zhuyinbo@loongson.cn>, Mark Brown <broonie@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Xuerui Wang <kernel@xen0n.name>, loongarch@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-	Bingxiong Li <libingxiong@loongson.cn>
-Subject: Re: [PATCH 2/5] spi: dt-bindings: loongson,ls2k-spi: Document
- loongson,ls2k0300-spi-io compatible
-Message-ID: <20261123-bulldozer-corporal-630630eb69b9@spud>
-References: <cover.1795425389.git.zhoubinbin@loongson.cn>
- <f4b1bbc084281212070f4aacd19fafbaaff11b42.1795425389.git.zhoubinbin@loongson.cn>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eSbP3CbG
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795454866; x=1826990866;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=BTSVDrbAJDTCXRKEQem0cmfMprjd3jaaHHt/48c53dI=;
+  b=eSbP3CbGHAnQHZFYGJLFyMshITGP5K/OCFtxZ5o6PUvkcVebZM5Sf4I+
+   gwE37CngAzVuwRK81pTywUbAtVwe5h5KZOalByCIvKUuqTYoSxgshkH96
+   UPiYRIQTInpd5rPZoqdniuBdRzWEZejPGg35nNhL8FOyszzyqqeCwOpg/
+   V5jMIiTGJpBMtp0XVbPCPsCV6Q1+vfmb50Xll9Wxf/tBJHVjNR48Il18j
+   n3vpMpxfwim9PUqqGFzhEmD8t0feXcxCotf5kNlrUFTI5EOrPpjI89dE3
+   gJDrkcMkgZPzvBIrmMRd2wcfh7/fn0aVOHhyZJ7TlwbpZkhkAR4WuwxSE
+   g==;
+X-CSE-ConnectionGUID: i07d+L4SQR6+vw8KNYfDSw==
+X-CSE-MsgGUID: ShDOCOK9Tn2poofhNAmPlA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4160034"
+X-IronPort-AV: E=Sophos;i="6.27,229,1787036400"; 
+   d="scan'208";a="4160034"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 09:27:45 -0800
+X-CSE-ConnectionGUID: EJOu3Ye0QOiLP7SCRiYRsA==
+X-CSE-MsgGUID: Udz6c8q8TN+hoMFsvXLt0A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,229,1787036400"; 
+   d="scan'208";a="11714619"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.204])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 09:27:42 -0800
+Date: Mon, 23 Nov 2026 19:27:40 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: imx@lists.linux.dev, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Johan Hovold <johan@kernel.org>, Mark Brown <broonie@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	LKML <linux-kernel@vger.kernel.org>,
+	kernel-janitors@vger.kernel.org,
+	Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Michal Simek <michal.simek@amd.com>
+Subject: Re: [PATCH] spi: imx: Use devm_clk_get_enabled() calls in
+ spi_imx_probe()
+Message-ID: <awR3jGcH97PrYNqc@ashevche-desk.local>
+References: <895d50a6-3a42-44d2-8625-3b8cba8fbfff@web.de>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -65,29 +88,29 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="BiGc8CbVpXuZRysG"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <f4b1bbc084281212070f4aacd19fafbaaff11b42.1795425389.git.zhoubinbin@loongson.cn>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <895d50a6-3a42-44d2-8625-3b8cba8fbfff@web.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
---BiGc8CbVpXuZRysG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Mon, Nov 23, 2026 at 05:23:12PM +0100, Markus Elfring wrote:
+> 
+> * Reuse existing functionality from devm_clk_get_enabled() instead of
+>   keeping duplicate source code.
+> 
+> * Delete clk_disable_unprepare() calls on error handling paths.
+> 
+> * Omit the label “out_put_per”.
+> 
+> This issue was detected by using the Coccinelle software.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-pw-bot: not-applicable
+This now messes up with the PM callbacks at remove stage.
+It's not trivial how to make it correct.
 
-Sashiko comments on the other binding patch however are worth looking at.
+-- 
+With Best Regards,
+Andy Shevchenko
 
---BiGc8CbVpXuZRysG
-Content-Type: application/pgp-signature; name=signature.asc
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCawRyagAKCRB4tDGHoIJi
-0q6dAP4o3xF06bi8JXip8F7kt3m3k+/i7n/Kchl4KRL6Ls++uwD/XF17S/Wrg/bK
-PR7gr3s+yLbRjj1aq9h6y/0FtY3V4Qg=
-=jpFS
------END PGP SIGNATURE-----
-
---BiGc8CbVpXuZRysG--

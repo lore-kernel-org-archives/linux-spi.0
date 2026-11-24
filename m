@@ -1,56 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795614684;
-	b=DdFjE20bwi5xzYvQ6rY7AwYAaUmbYHDNZfkM7QaT8TSCPrKYnXtqQ//cYA58G9TAOzJ9
-	 NxCvs8JbCaWcwMMvm3ZcK9YcI+YuHunq3B140Sn9J02F9eg/0h2IHjGCBYVEhT8mUmQmO
-	 FozV2UiKDKGrEYVB8ib5Gv4h7y12zegkdktuAfsV2SP7Wbu2LvWUNE/ieAu3DgLP5Tkem
-	 qoAfTeKp2kBfP9YzKB4Z52gd4uEtUP8KaxSUsQzQnS6QXmKfQkUYqOC/65SAgjDonCRA4
-	 xquz3XGyxtOOXlCTGQ2P3dV1GK/Lui8heZPo/zCSZS3OEE60OYVWpIx1s05hw1B9cxw==
+	t=1795620198;
+	b=j0D8rhouOgRpQOMhc3p0KatZJLGpq75jaqTi6oVkw/9K/79sxT6hLpIZLQ0SAubjJ3w8
+	 x5t8aVs1i/cOAnJvDu10ir6b1wTOkJ8dqLXskF1pwSBErqHcOYBrIc6xfg/HD1IgaFRAv
+	 TPR32djlaBjHuQUUws9/bBuOr9M5oUYnqVw/pFg8MDEEfA+208ddB+aM23UP8ygHcRhND
+	 Ne886VPZe6yV5julT10g1pdFir6oPWR0UFQzhRXOKzyyuxNmkgPYe9dnosJ0MtuS+E7I1
+	 R/xNkG3mgxZDJ+BNZA67zH5gm/KM7cPCOINKchpN6uaa/Z8f8+WT1NOpAcidzOCwaLw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795614684;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:DKIM-Signature;
-	bh=3Rq38XxkjACL0/OGLR5KBDTwPVooeMif9uBlERBExiI=;
-	b=1+qopaKL+rrmRcQ74QC37lw1vONpsTwsvaErt9msafHyXJkF2mwEOSo4qqHDMyBd923I
-	 0x9Xn9g+v6Dz4jpseO5wOIi+oLcHSRq+g3VwQ8e2pj5oGicXaU6Sd9tAaoanPaRAekpws
-	 l/18yzznuGoR5urSc0PDZO11iophrh8JVNUHQ9VlPrk8j1K2v021eZMbNy4kDASiSY9D1
-	 OttctPDISBC6eBLlSBfWvcFMcDJP3oMF8UXp3cEJMfAOE4IgGLbt5y+SnjGAJ4MzqAlBD
-	 U1Faj+9reUgKKMqyKqikJyqCOjWDdEVByi7Jh4j25q3PSiP8x9bWcmIkz+g8cvwGI9Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795620198;
+	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
+	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=uNCx6F0Jb50sazmOSgNSIQP2RpHDiNerOJw/r/EpMcg=;
+	b=s/xyh3T/7/M++gi7AhZVJ2NHFEi/6po7ayy+qODMIJjlRM12R1TOlhXU9TijwCdhgoy7
+	 n9YQO7H+ar5rHNbyOa2dGaOw9OhPRBQadHVZ+VOYGIS/hz/uqMYeucc5VHDtbfBcstzJ/
+	 eQF+N+CaIR+ox9dNNWNYUd9cl7mmIDePT06RsXh7IeQRQvQugwLywSHUskbmX/KWkXkfd
+	 AD+4TiA60MZNJT0MFq17f60h+UF7uqrnWUDW+PMR/wAz1WGEkVYZkpRYoFo6aW9FDYaGd
+	 iBfIj8bLDg/s+gIcF5CYHsyus9CS1ahq/CpuBRiLWu0WPMBw8kaVDXahnoX1TCIKuaw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=molgen.mpg.de;
-	spf=pass smtp.mailfrom=molgen.mpg.de;
-	dkim=pass header.d=molgen.mpg.de header.i=@molgen.mpg.de header.a=rsa-sha256 header.s=20260906 header.b=aSILj+Kx;
-	arc=none smtp.remote-ip=141.14.17.11
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kmjlBZil;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E443606A31E;
-	Wed, 25 Nov 2026 13:51:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6E443606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2F1606A327
+	for <linux-spi@vger.kernel.org>; Wed, 25 Nov 2026 15:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=molgen.mpg.de header.i=@molgen.mpg.de header.a=rsa-sha256 header.s=20260906 header.b=aSILj+Kx
-Received: from abreu.harnackhaus-berlin.mpg.de (hh-wlan-01.rz-berlin.mpg.de [141.14.51.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 00B4B4C442F960;
-	Wed, 25 Nov 2026 14:50:44 +0100 (CET)
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-To: Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org,
-	Lixu Zhang <lixu.zhang@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Paul Menzel <pmenzel@molgen.mpg.de>,
-	Hans de Goede <hansg@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] spi: ljca: Do not wait for an ack after every write chunk
-Date: Wed, 25 Nov 2026 14:49:38 +0100
-Message-ID: <20261125134941.309622-1-pmenzel@molgen.mpg.de>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kmjlBZil
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8461F000C6;
+	Wed, 25 Nov 2026 15:23:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795620198;
+	bh=uNCx6F0Jb50sazmOSgNSIQP2RpHDiNerOJw/r/EpMcg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=kmjlBZilBpRLesFyxaHfvlpUsDA53eQMDbSrz0P5ZoSpdl/WEy3QIQPTICnYOLInQ
+	 oh0SDdImWewF5vAnS6h/1R7v0rfpdZLX1cpM1S0j+j2R3FCcTSZ6P/7i1b2JBiWDmZ
+	 2ATK8TqMSw7z9EvU9exJyjwr+K5MQIAlFC2qJePcdeSVIxtbt4I9KU2+I1jhSp/6I7
+	 TATbxIyWdoVJTXeZvhJjDBIy244Nfei/nf65YxGZQUx8BFulyeGYbjBbHGDS6uyykP
+	 1don6BG/kIeEzHyZHru26XxDbLlMvpIjF2lOZM5G6u0qmis7rEm9VIxRNBc2atGSG6
+	 e5WfeSuLYNECQ==
+From: Mark Brown <broonie@kernel.org>
+To: Heiko Stuebner <heiko@sntech.de>
+Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-rockchip@lists.infradead.org, quentin.schulz@cherry.de, 
+ Lee Jones <lee@kernel.org>, 
+ Sebastian Reichel <sebastian.reichel@collabora.com>
+In-Reply-To: <20261119135808.2377849-1-heiko@sntech.de>
+References: <20261119135808.2377849-1-heiko@sntech.de>
+Subject: Re: [PATCH v4 0/6] spi: Implement a atomic transfer as a last
+ resort
+Message-Id: <179554960286.947306.16162137377244301666.b4-ty@b4>
+Date: Tue, 24 Nov 2026 19:46:42 +0000
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -60,97 +61,65 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=molgen.mpg.de; s=20260906; 
-	t=1795614645; 
-	h=from:from:subject:date:message-id:mime-version:content-type:content-transfer-encoding; 
-	bh=3Rq38XxkjACL0/OGLR5KBDTwPVooeMif9uBlERBExiI=; 
-	b=aSILj+Kxq3vsUitNkqbp6gn9PVYdP6IJaxX90u5EFyMmx2xfOIcObFC7UUJBWIteu+DQZzyvy4cF
-	qFQ2BVrZYhd/v25W9fwPrXeay4VJi5AXYHzriuG8EMtTRZEpRlO6MVX03PXEOSPto0Sj8J5gqwiMdG
-	uryBmebZ2UGZzA+/E0yM5TbKxayELdGOget2V2jQylQ1Zt+HGm2QoVB4RPIj7FaGRYjJwTFAXBKZiC
-	038jHUoDMlnRiPrJmrVuNHP0RyJcvMg7DcKPPxBULkmL1tQ30zCWeUEbyFKXCqLXQ4cAD1swhMsoNR
-	4j454Tf1cuV5XLX0rqHFpo3ll/S0EpMA==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2012; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=BkRnoZ6dXxdejugLnRSwCT4+Gvx/LKOaQRRGFM8oQfc=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLZ/ia3cWf/26wj2uthZiV6J1rtcaB7mNXy9W5T2ef6b
+ 14pEyvTUcrCIMbFICumyBKXxf2yvuT1Gr6DC9tg5rAygQxh4OIUgIn8eMTwP/qcmtKhyz6ydh5J
+ Oxv3rrSeez77sqFy64Sfwb+u7TTfbczI8Kl+Yqxpl590/dcLH5+cmpHFzcSieltc7lz3jhTTutC
+ rbAA=
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-The LJCA adapter in the Dell XPS 9315 (8086:0b63) is a USB Full Speed
-device with 64-byte bulk endpoints, so ljca_spi_transfer() splits each
-SPI transfer into chunks of 58 bytes, and ljca_transfer() waits for the
-adapter’s ack after each of them. On the Full Speed bus, every such
-round trip takes about 0.3 ms.
+On Thu, 19 Nov 2026 14:58:02 +0100, Heiko Stuebner wrote:
+> spi: Implement a atomic transfer as a last resort
+> 
+> SPI devices at times are used as PMICs including a power-controller
+> functionality that should turn off a system.
+> 
+> This happens in an atomic context very late during the shutdown, where
+> no interrupts are available anymore and conflicts with the asynchronous
+> nature of the SPI subsystem.
+> 
+> [...]
 
-This is most visible when mei_vsc boots the Intel Visual Sensing
-Controller (IVSC): it downloads about 1.7 MB of firmware with write-only
-SPI transfers, which takes about 12 seconds. Tracing `modprobe mei_vsc`
-with the function_graph tracer:
+Applied to
 
-    SPI device statistics:   1730864 bytes in 3407 transfers
-    ljca_send():             30085 calls, median 279 us, 11.1 s in total
-      usb_bulk_msg() (OUT):  median 133 us, 4.6 s in total
-      waiting for the ack:   median 146 us, 6.5 s in total
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.5
 
-Only request an ack for the last chunk of a write, and send the others
-with ljca_transfer_noack(). Bulk messages arrive in order, so the
-transfer still completes only after the adapter has handled all chunks.
-A write chunk then takes 112 us (median) instead of 279 us. Reads and
-full-duplex transfers are unchanged, as each of their chunks returns
-data.
+Thanks!
 
-On the Dell XPS 9315, with Debian’s 7.3.5 kernel and only spi-ljca.ko
-rebuilt with this change, `modprobe mei_vsc` (mei_vsc blacklisted, so
-that the IVSC is in its reset state), two boots each:
+[1/6] spi: Allow spi_toggle_csgpiod() to get called from atomic contexts
+      https://git.kernel.org/broonie/spi/c/bf7dd2bcdb4b
+[2/6] spi: Allow spi_delay_exec() to be used from atomic contexts
+      https://git.kernel.org/broonie/spi/c/3a54ec9ea89f
+[3/6] spi: Export spi_set_cs() function
+      https://git.kernel.org/broonie/spi/c/a26e42ee67cb
+[4/6] spi: Add infrastructure for atomic sync transfers
+      https://git.kernel.org/broonie/spi/c/4ab1c64f3f04
+[5/6] spi: rockchip: Fix runtime resume error handling
+      https://git.kernel.org/broonie/spi/c/2aa087742af9
+[6/6] spi: rockchip: Add an atomic transfer function
+      https://git.kernel.org/broonie/spi/c/324d55c0103c
 
-    without this change:  12.28 s, 12.08 s
-    with this change:      7.56 s,  7.34 s
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-Both cases transfer the same 1730864 bytes in 3407 transfers, the IVSC
-boots, the IPU6 finds the sensor, and libcamera captures frames.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Sending several of the 64-byte messages in one bulk transfer was slower
-(8.4 to 8.6 s for 8 messages), as the adapter seems to NAK the next
-packet while it still forwards the previous chunk over SPI.
----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-Notes:
-    The analysis (function_graph traces, the A/B boots), the patch and this
-    commit message were drafted with claude-opus-5-5 (Claude Code), asked to
-    speed up the IVSC firmware download, see
-    Documentation/process/generated-content.rst.
-    
-    Only one LJCA firmware was tested, the one in the Dell XPS 9315 (BIOS
-    1.26.0). It honours the missing ack request for SPI writes. If other
-    LJCA firmware versions still acked such messages, the late acks would
-    complete the wait for the final chunk early. Lixu, Sakari, can you
-    confirm the behaviour for the other adapter firmware versions?
-    
-    The hardware test used the v7.3.4 spi-ljca.c, which equals the one in
-    origin/master 4dce97c6c2655 and linux-next 3dd8c790a7b70, with
-    the same condition; this exact commit is compile-tested (W=1) only.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
- drivers/spi/spi-ljca.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/drivers/spi/spi-ljca.c b/drivers/spi/spi-ljca.c
-index b1babd43adda1..37050d0b01bde 100644
---- a/drivers/spi/spi-ljca.c
-+++ b/drivers/spi/spi-ljca.c
-@@ -100,6 +100,17 @@ static int ljca_spi_read_write(struct ljca_spi_dev *ljca_spi, const u8 *w_data,
- 		memcpy(w_packet->data, w_data, len);
- 	}
- 
-+	/*
-+	 * Each acked chunk is a USB round trip of about 0.3 ms on the Full
-+	 * Speed adapter. Request an ack only for the last chunk of a write;
-+	 * the bulk messages arrive in order, so the transfer still ends only
-+	 * after the adapter has handled all chunks.
-+	 */
-+	if (cmd == LJCA_SPI_WRITE && !complete)
-+		return ljca_transfer_noack(ljca_spi->ljca, cmd, (u8 *)w_packet,
-+					   struct_size(w_packet, data,
-+						       w_packet->len));
-+
- 	ret = ljca_transfer(ljca_spi->ljca, cmd, (u8 *)w_packet,
- 			    struct_size(w_packet, data, w_packet->len),
- 			    (u8 *)r_packet, LJCA_SPI_BUF_SIZE);
--- 
-2.54.0
+Thanks,
+Mark
 

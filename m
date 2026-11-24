@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795520405;
-	b=tIOwhaDlaH8y6iu5bJrX2nAY5fb2qFVtXZuGNK9YNsN6DJo1lot2TfgLq36CU8BkuJ0V
-	 4BF5p1Z0QY/QWlypBoUHT6o6cDAzs1/rSCqjAftovmo8uu1q9VieFlze3t9zHClMsQOKO
-	 OaXt7CP6+LSJvCB/SPek06fFPVUYWxCMOzfQoTma9CUbaPdo1Q+qFBsHOPuYQ+FqLLeyv
-	 bsXh5i8M2+1a45NroHtytBFr+l23GJACGz6uOFDcP757JHXZXqLKeD8g/fZg+Keo/84WC
-	 fY8IoqhWdeA1kEVwPjd7f2xpJEIiFcXdFV+SmQqoORUewcXgTdKQQnYL35bb6Kfbmlw==
+	t=1795521485;
+	b=YinOcMHloM+IVkH8KPDpJU9I5B+TRqb9hfXbaEotWYRF+G4DR3lUM1ZyGriGtisLcB2g
+	 pLZ2cUo9njmixwgkjUYZ14uxaOQ9H9duIeHy/wxbzn2p4yMpkGUmc6VBNLOahq1XL5/f2
+	 Cyo7qu//VazKGJOfOEZLOVnP0SGaLpTWvvRFYti8XHhhJwzHGZir58G0bbmemieduo1wB
+	 7XppByOVg1KqLPboZXVH7HV18Y/eylXD9R5QW/9gysqNc0sG3U/gL2m5qICXNNjzQz6tQ
+	 RxI7/esalkhXYTkDIkzPhh/RcKa3uNgRTn4D/unQDv2CV6l5NqjtxNhymuhkE97GdiQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795520405;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795521485;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:To;
-	bh=wcaup1zib/sxVTglI9kiBLdzkBPnbeXkKjcKTMyvd4A=;
-	b=jroAOlpRRP2R6zkFEPjHmwCpMIHVJDHFD3PKMMZYvyCqGml9xHCoWC8kPWvKp2llNslp
-	 NxCGC+NY5HFPzbpvTAEmxteQyn07J8C7s78jlcrIqYb8u+Te0SFjqMDH76rMcMmF+YGtd
-	 qj3DRHoxl55bBtqA+rpwTGPx4WCO/VWggfa00cN6u2GO0oAaA+ZjycTkb165EWZrmyPRI
-	 Dhi1jVb7WhwhcU31S5v/ll1DU011lEnSx07pxh5hNKo2+4L4JVf8sQvCgRTuVgxtIgof0
-	 MZN6ssYbLDFEdyZew3IclKnqGs+DEKNUPRb6iOD5uR2KoMhHWX+MEqFETRjQD1JcWKA==
+	bh=DF7sP+tAZjvTgLiD1GkuE/17wPQzBc+OhRdiDaJdPBY=;
+	b=pegGCQ6mFfbuOevrLVIlvL/oPW1skqzIuwR+plx70EdC+8HfhdxOG5ahY/srirqmIZj/
+	 J9Zt8Vdh5DKCxdFNXTiW+TU/8qgzD527R65wIlMPvBmv5SjKC6LMrsdn7PP3QbX8RLqNG
+	 po08xJenVSUfSivNsu6YohW0Sccz+DI5WzwrkSiXcGZS9Pxjj0Iwbpj650kq708HoM6xV
+	 PG/d52iiimJuMQKpiHBoNZTIrazVmLddJRfzozMQL+kqygauyq25KDwtyBtyypXp+cDQu
+	 UqHSajiWePn1lTBfGn0rSF5E3oonQSgO6KmvBWZLhYisfaBXHuv61l8TAVg3/XTiF+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h6Fw6qc3;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kyur5lLC;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337E4606A31E
-	for <linux-spi@vger.kernel.org>; Tue, 24 Nov 2026 11:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD770606A31E
+	for <linux-spi@vger.kernel.org>; Tue, 24 Nov 2026 11:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h6Fw6qc3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0AA31F000C4;
-	Tue, 24 Nov 2026 11:40:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kyur5lLC
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538CB1F000C6;
+	Tue, 24 Nov 2026 11:58:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795520404;
-	bh=wcaup1zib/sxVTglI9kiBLdzkBPnbeXkKjcKTMyvd4A=;
+	s=k20260515; t=1795521485;
+	bh=DF7sP+tAZjvTgLiD1GkuE/17wPQzBc+OhRdiDaJdPBY=;
 	h=Subject:From:Date:To;
-	b=h6Fw6qc32sDzTzYLI76hiQxx1Z5blwmLPvvOIH2t6p1wf+ZGDiNSIcR1ohSEt79Do
-	 dnDk5MLNqpHH0u7nfQZGbNcHBLMfMcmP1BF6pgOv7+KbZV5H6bjZRQUYDviub8OzAP
-	 MkIZKDHdQiLlQ4ytQJc4o+UzTgyGI+J6jU8ZNsdYgaSzwQwcyv0+yhzScuLUHY5W9M
-	 eGArj7Qy0Y7uyuCgVGkd5uC9iW5Vh5aiskZhAD9iC2SOyC5H7a94z6afWhvy2Jdp6o
-	 Yp4LiZe06q0EXRCeOEQj6vN1o+j1OWhJO8CgSRqJhArBxIhd9/H2oa7PLpPMzx71UT
-	 PGU0SZVB/YwbQ==
+	b=kyur5lLCbH2QQw7sCYRB3BFtMRPBcKk4Gt7LX9dFcC9wTFVfI5Um2ezaB5+ZewD0O
+	 e6lYsFp9IRPOIj+/sl6MS+Pu9B+5zGw4kMrLsb+lZjKyESTFSZtMFA1R3Evo0HDxQc
+	 vZ6Pczxg/57pazGl3K44Vh6hk58KvRXEm7V4hzsUrXzrhfnA++9VnwrQmc4wKtq3Ff
+	 GB2CY/jd9q9wHQBL2NGm+f8vuj2EeMxWvlRaqQFIV+Z2XGplvc085saS7MJsU57IU1
+	 gKemlSvLiSGiCvIZGL8b4WE2bwdGAnRhlit56jZJ/OWvlPKgv5UModncWK5FXYD6np
+	 IBFwXJuEgbI4A==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 79CB33931063;
-	Tue, 24 Nov 2026 11:40:04 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3C9933931072;
+	Tue, 24 Nov 2026 11:58:05 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -53,29 +53,30 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
+Subject: Patchwork housekeeping for: spi-devel-general
 From: patchwork-bot+spi-devel-general@kernel.org
 Message-Id: 
- <179552040301.3468865.16482346723661721231.git-patchwork-summary@kernel.org>
-Date: Tue, 24 Nov 2026 11:40:03 +0000
+ <179552148379.3477101.9408834905624610654.git-patchwork-housekeeping@kernel.org>
+Date: Tue, 24 Nov 2026 11:58:03 +0000
 To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-Hello:
+Latest series: [v7] dmaengine: Support bus widths of 32 bytes and above (2026-11-24T11:19:41)
+  Superseding: [v6] dmaengine: Support bus widths of 32 bytes and above (2026-10-14T14:19:11):
+    [v6,1/9] dmaengine: Support bus widths of 32 bytes and above
+    [v6,2/9] dmaengine: dma-axi-dmac: Use bus width capability helpers
+    [v6,3/9] dmaengine: dw-axi-dmac: Use bus width capability helpers
+    [v6,4/9] dmaengine: qcom: gpi: Use bus width capability helpers
+    [v6,5/9] dmaengine: stm32-dma3: Use bus width capability helpers
+    [v6,6/9] iio: buffer-dmaengine: Use dma_slave_caps bus width accessors
+    [v6,7/9] ALSA: pcm_dmaengine: Use dma_slave_caps bus width helpers
+    [v6,8/9] spi: dw: Use dma_slave_caps bus width helpers
+    [v6,9/9] dmaengine: Drop legacy bus width fields from dma_slave_caps
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Checked 231 series in 3.37 seconds.
+This project currently has 17162 active patches.
 
-Patch: [v2] spi: atmel: poll short PIO transfers
-  Submitter: Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1210675/
-  Lore link: https://lore.kernel.org/r/20261113-spi-atmel-poll-short-pio-transfers-v2-1-f280762685e2@microchip.com
-
-
-Total patches: 1
 
 -- 
 Deet-doot-dot, I am a bot.
 https://korg.docs.kernel.org/patchwork/pwbot.html
-
 

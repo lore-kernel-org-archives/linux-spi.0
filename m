@@ -1,59 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795531428;
-	b=XWYaXzUXi5hdYp7t59yHQ+iJIRApzv74mvXcG2zd/ydPqcWRFFRbOQ6MrgKlND0kNCIf
-	 U6mDpkmgzgH56lPGeQGPiyjR0fnGwXv3bbVTn/4dpg6wBAPcMTkXNs1n2MzUKFujMxREx
-	 LIaMhxW9P941Yc0eS1TxzIgIGyZ9CxBE6ypQEGweCxX+P1OnIGN+N/Oxt1aXBfd1lLWEp
-	 ONVhuMML6qz4lCKzPqcQ+FNrskCwXbjWYMfKR0gsLjPCZha10SNv/qqNTi0avQTNR3P00
-	 dSguUdQ7kRMj4R2uQYu+k44ctnD0tr++aEd5T8/jpJfoAwjho61BvQqRzRmpf0MAeLw==
+	t=1795531806;
+	b=RFjDVFe0sp0ylZ9F2eZvmNJX6Rspbw/ryMS+KEKsn3maeYkPLEaoJzBQqBo98jIGwV/C
+	 IBj92/UNLCrGneI0FkM9WC8MJw0n7muLL1FWHEBPWnX4GboO7oSc99lKBBxIdzrTxqy4f
+	 PsEkYe6qMHBALUU2OB2WTMKLHOjLIwuYnvwSM6bC0pphF7HEGjmBG+JNVMHITjHbMrJ15
+	 20TEMKM5TPN+Wx/NyOmUSwUGuOgl9PC7otku41CXaIpf5lAWaWpyW4M627s9zWAQbIXpc
+	 2IjD4b3g2ZGcyqTalXqsyCvjRLTpxVbPEyP4FHnoPJ+WixiWa/mKZk13piZcfAStdWQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795531428;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Last-TLS-Session-Version;
-	bh=JtGhgqBAQuqqN1KtexCFqV91pTqo3Nnc4XqxMUDBzPI=;
-	b=vokOyD1OyMUUWayNFcrjYLsy9Cdi6K51SLKPqQL4/xGebEYbjYqfpGWL6hyfpFbRxE0y
-	 TxmrNcuY9/mjPI11/gYSaiBqHXX9ym48E6T2NyjPOYJnoEV2gmO1R2VxFrknNjUGeDP0j
-	 bNI5x59LEP+y/j3fwxCwzxDf7AInAmWwR4d1aynAG9PBnkFZaY05Yuu92tazJ0FoeENh6
-	 GtDlSey8Vf29q3XJaSewczxFBeHUbyN4vdUP7MJ/QLAjyvb5Z9VJb46FMHnRR8j53wELD
-	 dT5aFZ9utNHk48eNiTMmiXGdUy12tJ6uK21bqnXkddr54ZJzMQT4hGYmI6/uAubVTlQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795531806;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:To;
+	bh=GyxdzBw1tIgco0I4kunliwJDK0dmXe5/N1iPTLZsPrc=;
+	b=3j/9DS/A1FUwSdpElgcFf5PLKkH2t2aDW0L/XtxiguX617r7rJ9SqUpBttqRuhMh6/SF
+	 D80E0/cw+ZBbqOtIHAQzbaxy2K5oLMj5aBIqY4PBRR3fqT3Qm0IEZ5g3gjyXPDWsytSzW
+	 li40Ga/DITSSBcJljUp00siXJh77RHi30uKeDuu+NrKaRYcyk3GKAtpGRFOM4Lmsj33i7
+	 yrU51ZS47wk4O0wClOb/lld625tAoZARHIA/YdmT7VQty8xcvHRgVB8UzQVlgjFX7QUXe
+	 m0z3XqMB9R+9cEHpQkJZ7BrTGIwvLllIdp5brBhYFuZb2kYFRT8qTQpyULbYHNhYmQg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=trqpXtGI;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M9cicL2x;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA33606A330;
-	Tue, 24 Nov 2026 14:43:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4BA33606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80CD606A327
+	for <linux-spi@vger.kernel.org>; Tue, 24 Nov 2026 14:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=trqpXtGI
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id CF5554E41763;
-	Tue, 24 Nov 2026 14:43:46 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9DA2D601E1;
-	Tue, 24 Nov 2026 14:43:46 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 068D111E6998D;
-	Tue, 24 Nov 2026 15:43:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795531425; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=JtGhgqBAQuqqN1KtexCFqV91pTqo3Nnc4XqxMUDBzPI=;
-	b=trqpXtGIsqg7UK+KQZ5ZBMwauS50UfWktjROQpsjI7vjgdt41G3luHLFPdA6zVf9mQRIzc
-	U++NBM9IUlHGihbUP5rU6fQAAQLyV8QuQKXZdcxSHLlxvV2eSs4xJzQ7VdwPmUF4jua4KF
-	/sQvsG2DtuGRsdtyZcECKY9CGWJELkWEwcq3ic2RgZsJuApV8pWLO4p+rrdQphozLwGJbF
-	u506w12QOEmr6xrur8Jx/MYLeOZ8JqF/Tm9bU+lc9CucIUcZcP1PV3tfZnTKqHj4ehtxUt
-	RRJ5ZWI29K2uH8QIOj2vCS+0/StB4LDvCvvCuVeqQGllqdEkqaCzUP+sxlzhaw==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Tue, 24 Nov 2026 15:43:07 +0100
-Subject: [PATCH v5 6/6] spi: cadence-quadspi: Advertise DQS support
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M9cicL2x
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C9A1F000D3;
+	Tue, 24 Nov 2026 14:50:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795531806;
+	bh=GyxdzBw1tIgco0I4kunliwJDK0dmXe5/N1iPTLZsPrc=;
+	h=Subject:From:Date:To;
+	b=M9cicL2xM7lXlTzf2DAoOWYA4XFMt9G76qLMSQe3DA7r0rDEUT36dEV7Cv2IM94Og
+	 cuE8Yj8c+Hp+KDYWXohUxPkuza7+43KU5SjCm+LGm8gcmMD/GYCa6aS+nf7vlwfdaO
+	 gFVkr7KMgCWXUOtG7DLpTu21gM3EwYONvJM7OH3IT4xvWQJNcawKzIXs5eKKyOqxds
+	 fYcdk96Av22y74f1B8NXM1VYtgyrNEXblMxAEpgXDc/raiB1N3CRSld9TN9PlCenAW
+	 BXkf/yIYseySTB+k2sOUDuIyIExXZfD0rbue3b9Ll0IIlrstNz9ln6/rzgJyAAFBpO
+	 4cTcwycEfwVuQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F3ABD3931128;
+	Tue, 24 Nov 2026 14:50:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -63,58 +52,30 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261124-winbond-nand-next-phy-tuning-v5-6-261e0e712857@bootlin.com>
-References: <20261124-winbond-nand-next-phy-tuning-v5-0-261e0e712857@bootlin.com>
-In-Reply-To: <20261124-winbond-nand-next-phy-tuning-v5-0-261e0e712857@bootlin.com>
-To: Mark Brown <broonie@kernel.org>, Richard Weinberger <richard@nod.at>, 
- Vignesh Raghavendra <vigneshr@ti.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, 
- Michael Walle <mwalle@kernel.org>, 
- Takahiro Kuwano <takahiro.kuwano@infineon.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, praneeth@ti.com, 
- u-kumar1@ti.com, p-mantena@ti.com, a-dutta@ti.com, s-k6@ti.com, 
- linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-mtd@lists.infradead.org, devicetree@vger.kernel.org, 
- Miquel Raynal <miquel.raynal@bootlin.com>
-X-Mailer: b4 0.14.3
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <179553180461.3581158.12493601373200275580.git-patchwork-summary@kernel.org>
+Date: Tue, 24 Nov 2026 14:50:04 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-The Cadence QSPI controller supports DQS read data capture. Advertise this
-capability in the controller memory capabilities so that
-spi_mem_dqs_is_usable() reports DQS as usable when the memory supports it
-and the DQS line is wired.
+Hello:
 
-This lets memory drivers enable the DQS output only when the controller is
-able to make use of it.
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
----
- drivers/spi/spi-cadence-quadspi.c | 2 ++
- 1 file changed, 2 insertions(+)
+Patch: spi: orion: handle clock failures on runtime resume
+  Submitter: Luo Yifan <luoyifan@cmss.chinamobile.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/series/1213323/
+  Lore link: https://lore.kernel.org/r/20261117020646.20111-1-luoyifan@cmss.chinamobile.com
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 44d96b8cf8f0..6b4363466388 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1739,12 +1739,14 @@ static const struct spi_controller_mem_ops cqspi_mem_ops = {
- static const struct spi_controller_mem_caps cqspi_mem_caps = {
- 	.dtr = true,
- 	.per_op_freq = true,
-+	.dqs = true,
- };
- 
- static const struct spi_controller_mem_caps cqspi_am654_mem_caps = {
- 	.dtr = true,
- 	.per_op_freq = true,
- 	.no_cs_assertion = true,
-+	.dqs = true,
- };
- 
- static int cqspi_setup_flash(struct cqspi_st *cqspi)
+
+Total patches: 1
 
 -- 
-2.56.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 

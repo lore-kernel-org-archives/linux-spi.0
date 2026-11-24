@@ -1,48 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795532296;
-	b=0b6SCFoCfizzj7i7jd3bGPiIrGpd0NPXv1jsgtExtfgrgP0znpafMaUuj9LMYq7cyiP2
-	 yw763LxMnGSG7zCzQUIZbmWEkwxsy5wIc7nxShBhQKVUnSLfwYbpJa4N/8zWIs+cK+5MA
-	 MDxNSyPyXRsllMtEj2wxN4MFmvJfZKBlHNPBxeCNRHCRmet98pXN1vbFbG/6au/aeodP2
-	 RQ0Dp4pfySIPrqkYG/OoU5//qQwhmOtR0dckz1yYlKeZjtZuxQJb4WsoW4fnj+ebOnV7q
-	 MhQXir3lGSe/6L97N3BWbN89GPssX0ri9+mvn4vgSHSE9TJtJVnvVrXk3ZW+99P6CXA==
+	t=1795533885;
+	b=eXFnZKixsV/JUGHGKYa2uFBjNfEKw1ZEDMr2jpnPm8QoDXxwR1gfHw3Hvdq0qZP4IdAX
+	 dKhPxdrj6n0G9XZugToqkkHKboEr8TAMGUkKoB5xQBF79w4WEDMKGktiNwzpJJ0DYQ5cZ
+	 c6qfl99CXnzREFBFhThq7FIo1IwOLnufFbgZUn7itTc/TCmn+zOnKJEWyuHg2RMLAADDb
+	 WbyNj1v9tb1uCbaWgW6yNorxhLIZokxa3bVpvzCh6PIrIhbodZ3tdNGf6ThUKLD8iwRLF
+	 xRhqg4aqT+xbEtSZJug0Xxcos9hDYOdF1dSvUnCH8YNtm+sA4Ha3c06jfn9OcpTZY8w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795532296;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:To;
-	bh=F8SpfrgJljBpYXkJktGSC0CUtlMz1/0LwBAT+/bgL50=;
-	b=LOoxtlCYaQvpV5y+LDSoUECFBs6bW7v9KfeVLAUp27t8fQlgobvH+cLVE7PgO/uR6OCi
-	 nyv6CIDKldnwvdZBNAglmMNHU43sAl95fhQGD587TrycCFIL3hr79dXZ7QLk4t2Kulsfd
-	 HQ4VTudwNZMYY0dEImtRHyofJr9bxIcroLY2C5A8/Smp+1q8rnn2M8BRcYGFE3D0BoM4O
-	 p6/o94CDnsyGXrUEefO0D2QBotVPj0vkRWbyfPjUJ4RH8ZbDDFwtP7hlLko58nrbKWPES
-	 Fm64wOK2ylZ3Fjg40HeUm1uuVQthj2jcF8fx1jncizXERWA1zWLJ6MseXluXcf/KVhQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795533885;
+	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
+	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=L5RaIVDqU7NPWHLGOuRCt1JyYN8BSygwNONuqz946MI=;
+	b=gpXZJiewMNSvGyAWtPZlMxmKYYDMq8KDmj18+wdu22VXP65vhZ1BouZsD24BaqJ89qBh
+	 zVSfFlbTpc+Lu97MrRHVWtcEpDAwScjZcvgQbgACve7EcYNVtIqsDnFYPKDoqL6p3YXDI
+	 9JRn5c3Ioep4LHur/XJ2MvS4SBexR1LYVA2v3q/66SXoQJ6doeTmwE4dGv67+djXkLD/N
+	 Culyshua5lcNB56edQhJsGR1mRxGAMx0vPtXpNLIWC48URra2jfk4xWam6oaYL+28lffu
+	 sEAw7+9mT5yWsDl2qM3qzxco+lk4by19oTgwI9cuXneFQ3jnMG7kjjQkaqJw8IULr+Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TngDvwFV;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=etFNhmHb;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21433606A31E
-	for <linux-spi@vger.kernel.org>; Tue, 24 Nov 2026 14:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D615606A31E;
+	Tue, 24 Nov 2026 15:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TngDvwFV
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456A61F000C6;
-	Tue, 24 Nov 2026 14:58:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=etFNhmHb
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930981F000D2;
+	Tue, 24 Nov 2026 15:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795532295;
-	bh=F8SpfrgJljBpYXkJktGSC0CUtlMz1/0LwBAT+/bgL50=;
-	h=Subject:From:Date:To;
-	b=TngDvwFV1j7sClJjjFYevUPzKxK4Aibu8PsB9c8jajpswokmzN7ur2Tsy7iKgJ/06
-	 GYhuHZFupI65Jzg/Wh4BvXXjPSLdZ5UsJTdCsN2iRBnkGv8PRmOofSww8dCdTs3hwB
-	 rW/LYDaTkzHJdFXoSKOYzhq51UJNFWt+KHw6tCFFo+NTjeE6v06I/jlVgym0UW6RXB
-	 HXmyzefWh6GdeI2B+CAjAw1oWDX8Wr7B2pwrTWnrfyLCx0jv6ZyNQcxrZojAXtcyMj
-	 /yQlABFKJqUme7WssclBDfer5FyZ6TmA6995FjV6S/67LqPzDA4mE3PPdM9B4sQ0OI
-	 JsSf3J+x7rVLg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A3373931128;
-	Tue, 24 Nov 2026 14:58:15 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1795533885;
+	bh=L5RaIVDqU7NPWHLGOuRCt1JyYN8BSygwNONuqz946MI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=etFNhmHb+TIXhCbCawFK1wBDk7pLIZ8Qsl6s6uW5t/ybXoSlqiyZMtdQ4iEYJ8BsS
+	 Hz+9DrgQPPC+DdXXsYQVhGiZDlyOF6Y+dq2EZ9dGg4FgEImNEGJ4Cq64xZydwOeBoB
+	 sE5Uut+3xlh3uIlekwfj7JPE8Bh8iov4p0DQJ/woEbwK7XL9dLzLvk4w52LeMfCqvz
+	 y85KpMUZVmhP6bf6TUPqexDPqjwn19UAmwC0wTxTi5LrIgBSB2txogXCqSrHsDLNmD
+	 S4UC4RdHke/PoL3r0EpL2bmjgFxn6AMPZvBM4S+xdN0Iwk9HFIeTtE5/wHRhb92Ti6
+	 JiWe3JuUe45AA==
+From: Mark Brown <broonie@kernel.org>
+To: linux-spi@vger.kernel.org, Luo Yifan <luoyifan@cmss.chinamobile.com>
+Cc: linux-kernel@vger.kernel.org
+In-Reply-To: <20261117020557.20019-1-luoyifan@cmss.chinamobile.com>
+References: <20261117020557.20019-1-luoyifan@cmss.chinamobile.com>
+Subject: Re: [PATCH] spi: dw-mmio: handle clock and reset failures on
+ resume
+Message-Id: <179553041910.264265.7756516182543226325.b4-ty@b4>
+Date: Tue, 24 Nov 2026 14:26:59 +0000
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -52,33 +58,46 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <179553229375.3584200.13770732310560477677.git-patchwork-housekeeping@kernel.org>
-Date: Tue, 24 Nov 2026 14:58:13 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1121; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=VZ0m0jl+lPz8Pgr79+Hp+5PrDWCxliOKMJsaQ9UAydc=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLJZ11gd81/qVvhp6szjD9WvvFyeUVgRI7dQUotfQG/2p
+ sCAhID9HaUsDGJcDLJiiixxWdwv60ter+E7uLANZg4rE8gQBi5OAZiIJjfDX4kGF9nv33s72c7M
+ N1o9+ce7g3ousZU8om8YjK432ifPTWD472ESt9TMRyHNs92B4dsavc137nX52n5y7CoOeX5q/Ws
+ 7RgA=
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Latest series: [v5] mtd/spi-mem: Enable DQS control (2026-11-24T14:43:01)
-  Superseding: [v4] mtd/spi-mem: Enable DQS control (2026-11-20T17:14:26):
-    [v4,01/11] spi: spi-mem: Rename the DQS setter and pin field
-    [v4,02/11] spi: spi-mem: Clarify the conditions upon which DQS is usable
-    [v4,03/11] dt-bindings: spi: Document the spi-dqs-not-wired property
-    [v4,04/11] spi: spi-mem: Take the DQS wiring into account
-    [v4,05/11] spi: spi-mem: Take the controller DQS support into account
-    [v4,06/11] spi: cadence-quadspi: Advertise DQS support
-    [v4,07/11] spi: cadence-quadspi: Decouple the read capture bypass from DQS
-    [v4,08/11] spi: cadence-quadspi: Check DQS usability before enabling DQS capture
-    [v4,09/11] mtd: spi-nor: Advertise DQS support for octal DTR flashes
-    [v4,10/11] mtd: spi-nand: Set the DQS spi-mem capability if available
-    [v4,11/11] mtd: spi-nand: winbond: Enable the DQS pin on W35N**JW series
+On Tue, 17 Nov 2026 10:05:57 +0800, Luo Yifan wrote:
+> spi: dw-mmio: handle clock and reset failures on resume
 
-Checked 231 series in 3.44 seconds.
-This project currently has 17174 active patches.
+Applied to
 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.5
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Thanks!
+
+[1/1] spi: dw-mmio: handle clock and reset failures on resume
+      https://git.kernel.org/broonie/spi/c/f18eef622542
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

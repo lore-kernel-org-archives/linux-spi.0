@@ -1,45 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795460665;
-	b=DjAfJBCsUN7MolBxjHMIvBjPn9biGhUTU0v/jFM2FyefEAypda83GTUf9WQg/3EiXiWk
-	 71QJ5fBo7d/6M2X8y/HcoQ6dbuU2VcwWxgSCc5OATUmvwAsXj9YXeyztesjwtn6Dz4xSq
-	 e1gfOYilQU9KxDE94yLmZ7agLEQyIgab7NEOeljf1DJdMcmehHtAfU6MQya94+sj8ZoUE
-	 WoslKVTHYyOP8K+PE5mkx9hkrVPTTN52gqR5JyFDmVdE6WBfoHJmQsQAh9jO2sufijOA5
-	 3b1A+CfA6BE/TsnxOJMTB0m9bHXDaDyRPprlD97iRnVczHtPpbEW7cPzP00HyV8Z+6A==
+	t=1795515975;
+	b=LxU6TJdnvXo+GLmcEBMmjCGu5Oo16uU6CRBb9tui0LAuEikPwhMSW6WG68Hj3YRyis1Z
+	 xyOSpBDXXoDQfOfDVSwmYj3t02XdsJ7TZjgDZuQ8We7qxHMi1MWdajUa4DIcKdgl0mfV/
+	 wzCTP8i8z37Sluu/wBAH6ry+C+dI3j5/4HuEikTxoHy1SQwVMZwzef9Z8fyxXfDYJ/sZl
+	 qLj4zPmPrBgVvDV0RV4hMKNMQ81U22XAgdR730jjDSmXspenpG7M87S/xaddIPiK/2Whr
+	 6hUy3gw+ZpnCz6Ux30uAEkCGWv9LGGv39HACg2Wx8QPPx/Yq59gApfz7kFDVtHiJ7Aw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795460665;
-	h=Received:DKIM-Signature:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
-	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=UxLUxK2Bj2Hah+1W4IvnMCJg9pItMlb0NA+amZkkOkc=;
-	b=ONuPbMTFcBLErx7wI9V5PQZtzcohaUo47VTaLmFcv+cfKP+EYw8sD7cJPPMFq+7zS9Tc
-	 0IcAxyvVSRewW3lC5ziRpqDDqZQdiqfL0YvYnm3hi3vM7Wg//Ss+X+imiy8wp13QBI5YH
-	 c32nyOawejP4Yrmtm9eA+nhjj2I2Tr+kwDcCRifLXDbZIzVg0LqSGfjXNqdb/VhR+R76h
-	 jdPLh4dYTPvSD8X5mYUhif9BmHrK99y3svfHbr/K4ojxoiuoJGNINLxfVECEVSZA7i+G9
-	 zSOWQpqKYSootvYXgeYSYGL2F3Fozp7KgCY5zdk2dFhhtgQe6UoCrY9WJSdBA8qiraw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795515975;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
+	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=UoCrI4A7Hlf20jxhBPJOheOwVhrEFPq+18YbW/SpkGs=;
+	b=T3uDpty1kzNtppsm2ZkmARbkqZOnURXjnoVOGfpvJOo01sPgBr6qlITxL+69RsjKtE1D
+	 am7Nj8wAVKmslr93neW1oDzJRtOrjsoGQNTxYIG1wsZY8DHWMlVaOnfyMmdggoAS2A5aM
+	 tUpgLYYa3mbxQb2dQ019PhhhNXOD66yWxM7Um2dL/REGupxUz76E6YSiii+X5gRsqjGq8
+	 GiPPUf36xJ43F3KREzi0P5OsdFIOXBNbXt3Iaqg7n3f+9b1npNGwyEvzmkEQrPnElx42T
+	 gDq2vKXHb9BtUUeIYCfmEFLiW3em1Q3ybcV8zm2XlucVvVOVsTXyQf+rb4Xecti9Uhw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DAFMNOID;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=bJYtdM0n;
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A3B606A31E;
-	Mon, 23 Nov 2026 19:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E8D606A32D
+	for <linux-spi@vger.kernel.org>; Tue, 24 Nov 2026 10:26:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 47E8D606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DAFMNOID
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DABFB1F000D8;
-	Mon, 23 Nov 2026 19:04:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795460664;
-	bh=UxLUxK2Bj2Hah+1W4IvnMCJg9pItMlb0NA+amZkkOkc=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=DAFMNOID9vMzU0vYOFuL1Xz3Xke0tVRzaORGHNG/frKMoY98uFaRd4XHIDQmXT0d8
-	 yGDRUnUIichRGxU05Z76vXJsJKQ0G290Wf3cb2GHQFmb/Q+/OJfZrDguJQmqQBBrpZ
-	 G/T0mszHbO+eNhcNPT4avUeabnWfXdhprnPy/HAT892FklPz6NwL7e+GDDVQjejtuq
-	 a9nzMxghzPhLXr1zG23bsRPf4PDVlGVFonUWcxKmVTxBNTdHWAJFk2NdadLTjJ2d9h
-	 wfBd3WddBFP1tVNl4LME6V7Mwv9ra2aaN56MggmjknlJa6m3Lvl3IsgUJ8SLTNI63J
-	 HPn1/bCra/u9Q==
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=bJYtdM0n
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 9A79E4E41755;
+	Tue, 24 Nov 2026 10:26:13 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6F05F601E1;
+	Tue, 24 Nov 2026 10:26:13 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DFA1411E69B4F;
+	Tue, 24 Nov 2026 11:26:04 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1795515968; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=UoCrI4A7Hlf20jxhBPJOheOwVhrEFPq+18YbW/SpkGs=;
+	b=bJYtdM0nd0zscJzwMib6gs+d/tH1oQ4iS0FdZefiInpKNrIBCF9Kr3j1ZrTLB44Yw4v2Iz
+	y3R9sA8etT7hAVTffx/md6s9HhwcTr+zXTirk+pP6RrmvCC3TmZ3FOyqbfoab5LoxutBk2
+	ObUnzIcjjzvQVhJvcnegg+7tFG10ZAd8BWewOKiCIJ/R1EBuvVAm4h5V/mu5ABcE9aTJRf
+	fxB/QzDLuQ4gHFXHadLXeF/R0roEZgq5w/zOtTV8m1aOWcO73HQVeDA/DtTc4alo4tonzh
+	DpqpO2gjb5vRTPTA7nyDYphvh5RVeuFQlVvCjRdn800y9sUKsAb/J5sHn7TDNA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
+ <vigneshr@ti.com>,  Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski
+ <krzk+dt@kernel.org>,  Conor Dooley <conor+dt@kernel.org>,  Pratyush Yadav
+ <pratyush@kernel.org>,  Michael Walle <mwalle@kernel.org>,  Takahiro
+ Kuwano <takahiro.kuwano@infineon.com>,  Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>,  praneeth@ti.com,  u-kumar1@ti.com,
+  p-mantena@ti.com,  a-dutta@ti.com,  s-k6@ti.com,
+  linux-spi@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  linux-mtd@lists.infradead.org,  devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 00/11] mtd/spi-mem: Enable DQS control
+In-Reply-To: <164905f5-2857-4b8e-8d99-26939b45cde4@sirena.org.uk> (Mark
+	Brown's message of "Fri, 20 Nov 2026 17:51:41 +0000")
+References: <20261120-winbond-nand-next-phy-tuning-v4-0-8c21e1f71f41@bootlin.com>
+	<164905f5-2857-4b8e-8d99-26939b45cde4@sirena.org.uk>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Tue, 24 Nov 2026 11:26:04 +0100
+Message-ID: <875wxmttj7.fsf@bootlin.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -49,51 +79,25 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 5/5] spi: spi-zynqmp-gqspi: Use IO mode if RX buffer is
- not cache-line aligned
-From: Mark Brown <broonie@kernel.org>
-To: Srikanth Boyapally <srikanth.boyapally@amd.com>
-Cc: michal.simek@amd.com, ranjit.waghmode@xilinx.com, broonie@kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-spi@vger.kernel.org, git@amd.com
-In-Reply-To: <20261115-qspi_14_11-v1-5-23425ed177bf@amd.com>
-References: <20261115-qspi_14_11-v1-0-23425ed177bf@amd.com>
- <20261115-qspi_14_11-v1-5-23425ed177bf@amd.com>
-Date: Mon, 23 Nov 2026 19:04:19 +0000
-Message-Id: <179546065952.25092.7376341777366576138.b4-review@b4>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1069; i=broonie@kernel.org;
- h=from:subject:message-id; bh=6J5LbQXDLSxrlIn/vwqRS5ku7TEEOJ8FFvjaAbWH1Mo=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLJZ+kxtr4R1T/W5bxasHxy6sU36Ic/cj0dORqtmPlysY
- rvRfN3sjlIWBjEuBlkxRZa4LO6X9SWv1/AdXNgGM4eVCWQIAxenAEzkViQjw7xXb5bLHa34N/Ol
- 6hHnwC/ndzUnyGWw8XEw+Uc7ycq9/s3wv2BltqH1tQ/xi1rz1/dNlroj7eYydU3lMh6lwD7zd/9
- n8wAA
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-> The QSPI DMA maps the receive buffer with dma_map_single(). That API
-> requires the mapped region to start on a CPU cache-line boundary,
-> otherwise the cache line can be shared with unrelated data and the
-> received data can be corrupted. The 4-byte alignment check does not
-> guarantee this.
-> 
-> The ZynqMP QSPI node is not marked dma-coherent. Fall back to IO mode
-> for the whole transfer when the receive buffer start address is not
-> aligned to dma_get_cache_alignment(), in the same way as the existing
-> short-transfer and 4-byte alignment checks.
+On 20/11/2026 at 17:51:41 GMT, Mark Brown <broonie@kernel.org> wrote:
 
-> +++ b/drivers/spi/spi-zynqmp-gqspi.c
-> @@ -871,7 +871,8 @@ static int zynqmp_qspi_setuprxdma(struct zynqmp_qspi *xqspi)
->  	u64 dma_align =  (u64)(uintptr_t)xqspi->rxbuf;
->  
->  	if (xqspi->bytes_to_receive < 8 ||
-> -	    ((dma_align & GQSPI_DMA_UNALIGN) != 0x0)) {
-> +	    ((dma_align & GQSPI_DMA_UNALIGN) != 0x0) ||
-> +	    !IS_ALIGNED(dma_align, dma_get_cache_alignment())) {
+> On Fri, Nov 20, 2026 at 06:14:26PM +0100, Miquel Raynal wrote:
+>
+>> This series applies on top of v7.4-rc2 and Santhosh's PHY tuning series.
+>
+> Please don't send patches that depend on other in flight serieses, it
+> just makes things much harder to manage.
 
-Note that we have the same requirement for the end of the buffer.
+I understand, just wanted to let Santhosh et. al. know about this
+publicly.
 
--- 
-Mark Brown <broonie@kernel.org>
+What is your plan with Santhosh's series? If his series will make it
+this round I will respin once applied. Otherwise I can just respin the
+independent spi-mem bits.
+
+Thanks,
+Miqu=C3=A8l

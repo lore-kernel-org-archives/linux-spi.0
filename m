@@ -1,56 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795620204;
-	b=y8/1f0IXwPS/3ySwKvXYjWKB0M7xlE7m96LvH22sablBRx7WPtp/M79Bpb3NXCU9s/e6
-	 qeRwnl1x48flnxAX2icxdWYcnYpjSUnFRStsu5eOG4gQoxDzW9LoiDsrSsGSw8EY2sl3M
-	 h53j0Qh8aAWE/Bm99uq928/myHcBcvTPpjrbJUznR91Df+MLMKZ5eg7keFaKnMayF5z05
-	 gSk3/uK9Io6/Dsp7G9qeFkQddslRjLmNL0/IQUEaP0UTL78odGtC1u+LBNt+AmuWaEkoq
-	 369VRmeCFH+bAk5hTJpRHOm5BwQufU5R57Ge/16Vs/4XsihW0IY5udxjctcmEOzJYxA==
+	t=1795620207;
+	b=SZkEaZOu2YLtROVsXX+eLzEjlnFhVQP7eajnOm7jHc1dyY1/jw1K+LJ39WfTQFrzXqDZ
+	 TjF3Lh0ZpB9WIgCDzh7UUgbq/z5HR2BE44FF1/TGmMFdmmxw0GK+ixeYcaN83SyyEodOD
+	 AO/AWir/RYLbrsMdEoMx98Z7RoGxvVK33jgJaSxZMCfMtvgF86Q8Zkqsvqkk5zR7FVE/M
+	 ahjTSYSSHk1eqnuiQygTW73u9r2XYeM0zF4TVxwZ0SavAckjZQ01lfVDa5XChEgCzlCIV
+	 AfShxG0nYtnXJrV7rtv7FCpG6lkGFZ3SIRQTzsax+GhY8yUflN868kpJpSSK2dRmZ8Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795620204;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795620207;
 	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
 	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=L3C9eeLer85Nd9nEHYWgLt1hiBYkBQpPpB78o7qufMk=;
-	b=NbqH0w69OlYvsVGVI+gTLwePpkNdBbcgWkHvfSue/3bmDux5az1gK1OxHxbe9vJ0opZM
-	 deM8n9w/6AluIVQi39cMMH7jsuhfjTGTIwUVlBy1iwM9G0aGUld5zaIk3ywBNZBuYocDo
-	 xQjR0GxCs+0q6Y6YOzim2k4leH8e1C1B5rrSGLReCNdPG1hXtcL/Hij1HUNjtmhxX9Lss
-	 CkpBgRX3p+Mhy4jYaQJ1GjbSRN7Hnsxh0N+p9P/Ti6FSoe7dbRrTCfT6GH2R2Bcxy2qgl
-	 wo68rIebPBf1RviqaT6vuyX/4tDYNfV+aWrEmpyNZtftxRKbclN8BsDuRk3dMHYMtag==
+	bh=r1YBU1+iu0l8tYan4eL+nnBIwd8k/sp8BHpQeT/rA0c=;
+	b=LgS9wa15/BCC0bQmN9I/e1M9xCfSnRlA0gkv+0Qb2PetuQ4p01bTk3dyGGMeLYbS5TFK
+	 abfKz5PjVSIrQjFa1Tq3XwFGLfCyC6ntd07GiKCu1/CWIfdwzxek36IuMEuPpdgWbvnik
+	 p/gTFw6EHztwTlqHV+vD0aYCpmI1Ra07fm/BnUqubrmqVI/5dGW/aOlABCPC8L4yArxGu
+	 YHPVOCg0m5nNC2s7xLojw5mJyiQq/YKbKMgtslCXdiEpOAKzJGCWPS8AXmvAZprzODhCZ
+	 YY0d5/n0nrFRPO0hKCvGh03F2/V7xSpaxm+oOE7Nv2tCZ1pYZjdB56h1G2RSnkA/AVg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i1Z4js+6;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gpgBxqxi;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B16B606A31E;
-	Wed, 25 Nov 2026 15:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81110606A330
+	for <linux-spi@vger.kernel.org>; Wed, 25 Nov 2026 15:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i1Z4js+6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A181F000D4;
-	Wed, 25 Nov 2026 15:23:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gpgBxqxi
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A331F000EE;
+	Wed, 25 Nov 2026 15:23:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795620203;
-	bh=L3C9eeLer85Nd9nEHYWgLt1hiBYkBQpPpB78o7qufMk=;
+	s=k20260515; t=1795620207;
+	bh=r1YBU1+iu0l8tYan4eL+nnBIwd8k/sp8BHpQeT/rA0c=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=i1Z4js+6p8IaZI1ECnrcldkEwz4Cs1MI1G84hNvwn+a9uBwWmwF/n/CNJ+8IYwpXg
-	 e60sfC7nHo0nJeC5siWJ51jRCPdctXXG+kmCgKkVoHrpowGNEaOVxaaks6GExDzqWA
-	 o9LxrDKTYMIxCjjZdAcbAfDms6XJ+UdZX+e/3VL/sYtzw+Pg9Rknr9NZ9Ry+ulXEbI
-	 G8ReTnTahWKOylFvT1Ix/SMPRz7M6LjnJGn/r0jkM/fNTQECHUnhdL2NPs72aBr+qV
-	 36g9EobDZvjZdn8Cg5Ds47b6LAIhcNpYsUslYWhjEBi03vGlp4dFU0YTRTN5n/ocbA
-	 DaybVUAjkXVeA==
+	b=gpgBxqxicrO5O90kzGS0aGhEdhJE5GFoa3+tkdFb2DDMQ+Q9kOgDqIBcPkTU/r7xw
+	 0nbU/MLN1ZUfVGNzkb1Gh7O2aeJKQVyAqXDtWH92H3f6WpNOIFQpQjOnGdwhFmg5ce
+	 qLJ22e4EbDvaMO5VLPsH4LN43qeR70OtZDt9tJ347YTlWm3ZLH1AXGRMwi06bb3tem
+	 AJbcWmlxq5bobjc9WFV9+sOTI34IymvaBJlNgjkhjOGy40o9QXlUzzNeuMPPv0MMco
+	 EmMGm03t03W9RgVC2cepLgKHmXzDfl8zgSoEAMzTCMuzSEgOdGQFsmumCHNToujNsp
+	 SMOExO1qHCZlA==
 From: Mark Brown <broonie@kernel.org>
-To: Srikanth Boyapally <srikanth.boyapally@amd.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- michal.simek@amd.com, git@amd.com, 
- Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>
-In-Reply-To: <20261120-ospi_stig-v1-1-54f4d5f9f7b9@amd.com>
-References: <20261120-ospi_stig-v1-1-54f4d5f9f7b9@amd.com>
-Subject: Re: [PATCH] spi: cadence-quadspi: Bypass STIG for Versal and
- Versal Gen 2 OSPI data
-Message-Id: <179554879342.947306.7979068047920510983.b4-ty@b4>
-Date: Tue, 24 Nov 2026 19:33:13 +0000
+To: Masahisa Kojima <kojima.masahisa@socionext.com>, 
+ Jassi Brar <jassisinghbrar@gmail.com>, Felix Gu <ustc.gu@gmail.com>
+Cc: linux-spi@vger.kernel.org
+In-Reply-To: <20261121-synquacer-v1-1-9e14702ce84b@gmail.com>
+References: <20261121-synquacer-v1-1-9e14702ce84b@gmail.com>
+Subject: Re: [PATCH] spi: synquacer: drop redundant IRQ zero checks
+Message-Id: <179554634841.947306.11844924678046939156.b4-ty@b4>
+Date: Tue, 24 Nov 2026 18:52:28 +0000
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -63,17 +61,17 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1162; i=broonie@kernel.org;
- h=from:subject:message-id; bh=SANk+j/6Nu2cjlqhijFVfcwE4gCH26A7WXTmeA6tao0=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLZ/mbM41qrfyPZ5t6nUkeW7hVMM3dJdVW/L/+TLrFzq
- ZXv/bxTHaUsDGJcDLJiiixxWdwv60ter+E7uLANZg4rE8gQBi5OAZgIUwYjwzORnsobQfwGLB1a
- j/a1JSxMP8fhoLHgw9Nosx3rMqdxmjIyzPI7n2/5ouvj5XrNO9O63i9+uZBhQ+xslfW+EktPfX2
- kyQYA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1102; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=i/2XsnwNM745NAjfzJjT3wN9xylVnevqiU7hKI5wr3o=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLZ/uaozHEofnsm1SFq+t/GPbm7N1icKpuX1sO0Kjx/6
+ /6TuneedJSyMIhxMciKKbLEZXG/rC95vYbv4MI2mDmsTCBDGLg4BWAi/d0Mf3imtMY8XZji7B0S
+ PInr/Mqao2LB82ovlG+d8VR+U6Zuhzkjw6lDdon56d1yvzk/+/578To8aWP5g+1q6yZZ+MsEfzg
+ mzwoA
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Fri, 20 Nov 2026 14:49:26 +0530, Srikanth Boyapally wrote:
-> spi: cadence-quadspi: Bypass STIG for Versal and Versal Gen 2 OSPI data
+On Sat, 21 Nov 2026 00:13:26 +0800, Felix Gu wrote:
+> spi: synquacer: drop redundant IRQ zero checks
 
 Applied to
 
@@ -81,8 +79,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: cadence-quadspi: Bypass STIG for Versal and Versal Gen 2 OSPI data
-      https://git.kernel.org/broonie/spi/c/a2883431180c
+[1/1] spi: synquacer: drop redundant IRQ zero checks
+      https://git.kernel.org/broonie/spi/c/c55a06351b84
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

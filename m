@@ -1,113 +1,113 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795522576;
-	b=1RJqXH6G1QrXZE7fUoYrYmXuCE2IGS0/6EUSoZkRLUnszkLKqvkl8M0M55kxjDHbGw+L
-	 G7TWQevvx567j/lW3PJuwCvm7kBxgZXzk+3RS2ZHHWWnpa25QGEm4jCA0ScJ1rxpXzZgG
-	 7lSTcO4PfNU1U7S7aEkQn4UARpOasQ0+PlzOWrYnciDH2sxcLTHi4TjH2LdGEyVSLTxmA
-	 4iyKXe5w2Fv5qnLsKtMYFtAqQhpasg/PvGzi1B35h8tvjnUCJslFJKvSQdOPdusF6evn4
-	 lx6rkG6tzUb71MxK7ekkQ0EBGJh1PW56mho+wgXPaVcxS+uWldhrBprF3RG8zjyFYmg==
+	t=1795522580;
+	b=21yETMD6xqbu/opOC/N+VLXSw4eILnNCCRiNZ1u68DOab2l6kbZLJG0PHBbbGTzo43xs
+	 5X7sV9WBXtqHqWvgT1Cb2SnX8pdskQV2udO4/BuzAxYWIRYlGQiAghMnwD6sdClfwDzgt
+	 nlX/STg+0vzE0H4WM73hrJqxC2OxVKM8h1cf52tjeODy15GJ/DJtjJgzuOXc9FamzVDXa
+	 Zb1Ya+2qGps5JTmHZvaaOLb/OcFHL3wPSjn1EjFZtxiCuSm+x5FzymYgqto6PQIyANhCB
+	 AeQSzfTr+IDHukpY8uXPnv5Y5dZEU5r7mbNlA7y+f1zn1BK3Ohy9Iuqfoe450ecif5w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795522576;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795522580;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
 	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
+	 X-Developer-Signature:X-Developer-Key:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-GUID:X-Authority-Analysis:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
 	 X-Proofpoint-Spam-Details;
-	bh=tThRIWAEqLynBb1Xo30awcNxYUHaidb6DGrYg3hopys=;
-	b=I8ac5jHSLiUGFELefjQzfZuKlb1i2dJHbAX8lddhYmTRsBdFToSZOytq1Vo/THLcLSDi
-	 egbnDrwcTOAneN1gpjnbuYwJNbX3MeThvCygjJnWDI34Odl5bObJGdiuxY16afB6rXLjm
-	 FZlDth9YfKCFzptdHC30zZQpSxql7JRzxbLHNOAGpfyMbLUceQo3Zw/lztrf5VJO9G2oz
-	 AX9pdP2M6lfsw2V0GQVs+sX2XxVq0cnscdIkPPW1hsOcKavDXlSrkvjyAjMeekHvfc6zm
-	 FDlnEBUyNJxL7tJP/Xtj894NsAd+ZeTWFaTKR4VTuXZ+wz+NmEMC3RXH5/cTlPemmOg==
+	bh=ZsGGYXWDuEAPZyeN8P880JLDy4GjUNE8fC94ZgoIpmM=;
+	b=lJPKQy4B+3bDvaLHUVr2Wbpu7p9fGwuIAL/Bn1lPVjHqFITTkAGOO/FFopMMdJdpBe6i
+	 DqdCOGWEjKggt3h3GtWMSNr9auutD9LRhOwU9M1YiRqti204HjDZ9NVFInd9Oli+1kS0E
+	 Cr2/JbVlK5WdIG6JZIZ6ebja0Qtoai7oIFdAJ7AaLknM+sCNxrBZe6JhBWXD6Wz/qclG6
+	 fY6FpxJfnvbeub0rHEMGZdYCazHUAsA3kpSLyghzEwhjzMhCz7x1cMFefHG6gkx83WlnW
+	 3Gvt17QzqH0i3ALWAKRxj5TQnDexUoKRdF9dIJzxNzHT6TRIHLuxmF/J9E+rMhd5leg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=oss.qualcomm.com;
 	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=cwDuy8t4;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=TKxgzPY3;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=DLywCx7V;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b="HTo/7HJA";
 	arc=none smtp.remote-ip=205.220.180.131
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC19C606A32A
-	for <linux-spi@vger.kernel.org>; Tue, 24 Nov 2026 12:16:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DC19C606A32A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60602606A326
+	for <linux-spi@vger.kernel.org>; Tue, 24 Nov 2026 12:16:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 60602606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=cwDuy8t4;
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=TKxgzPY3
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AOAuV601736763
-	for <linux-spi@vger.kernel.org>; Tue, 24 Nov 2026 12:16:15 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=DLywCx7V;
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=HTo/7HJA
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AOAuPas636820
+	for <linux-spi@vger.kernel.org>; Tue, 24 Nov 2026 12:16:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	tThRIWAEqLynBb1Xo30awcNxYUHaidb6DGrYg3hopys=; b=cwDuy8t4cXanxmpy
-	w/MDXgfxa+n+cFfUBXIGJpSOCuloYkd5L2hawTigjLsM+eCFm/RWdAcD6xb6vPuh
-	8v5LP0wraBefFY4EeJWyQaJW6E+hBco2aXyAC5TNqUpTZtykjy0GJwWszb/Fwf4b
-	fvsEPj0Uea1j2Ef3JhqZK+87LlFXj32IElxqV9xnS72IUWe1aMhZE7DrApWQ/TaR
-	hwIWHZqFHA990n0QEu1lZkyF6NZYBwiIAt0xw1EroAXwIjDjWh0QHymBgflvTc7V
-	SluTiFKLYEywCmHxJvV9qQHFgfAU6gdifdkN+fxlnsOyAPDvR940Fsh7VNXGq5mS
-	0j2B9A==
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4j4yvd2n1u-1
+	ZsGGYXWDuEAPZyeN8P880JLDy4GjUNE8fC94ZgoIpmM=; b=DLywCx7VIF2etErr
+	6/pg/2IJDYM2z4mJ0hQ4hcgCsPlCa3TtUijIegMrSptOT4gF1l0Yg+lTcfJ+DuXg
+	uQuADbfcHe3sbS6B32qwvvNNOpe1IuXxrYe796vilRKuGD1MAAZ8TDr3gP/grFIx
+	NnQp2Olb/saku5yjsaWCP3cWtAvbzStHGk/I/DZc1/RyGjbnVhoGqIM8KbN8YVg+
+	biDZSlGGtW4FTyXbNj/gG+GurOMyDS5lTYQeOL/PhLxJERv5fACAzOBs1RW/iH68
+	Vh61/I1CQ+VdiDRYSMFhd6TXk/ei5DyDYpOFAbTWUBsW4WIp/s0R12+AIxtGG9Vc
+	HeL4Ug==
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4j54rphm9u-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Tue, 24 Nov 2026 12:16:14 +0000 (GMT)
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8a065d0e9deso3795245b3a.0
-        for <linux-spi@vger.kernel.org>; Tue, 24 Nov 2026 04:16:14 -0800 (PST)
+	for <linux-spi@vger.kernel.org>; Tue, 24 Nov 2026 12:16:19 +0000 (GMT)
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8b32efd7ec4so4678833b3a.3
+        for <linux-spi@vger.kernel.org>; Tue, 24 Nov 2026 04:16:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1795522574; x=1796127374; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1795522578; x=1796127378; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=tThRIWAEqLynBb1Xo30awcNxYUHaidb6DGrYg3hopys=;
-        b=TKxgzPY3g73LGdzlU3cFbl/GLulx24eJVPwSq7ZeGQo6QL2ABKolJz/J2lPOGXnrvi
-         tmWpX+hZMNfXePhr5TJiYYNpgnzTXLJY+ooV+kcPvUhwgbmgHqIroAeYi81t23Slxmhg
-         YRskyohPD9GnhURSPk0r2FGeCMjuFZy+4H51b2ub2wb67n6Dcq26Ti0JUpyqOEjwW1qv
-         WLR1PJEyIkbUX+rCWx4SMPQulws3M1uqZQJ164vVWqYJ/cHPCghNtuhzYHIhXaCIeXsH
-         YJxHYLMMQfnof8wgCJFHxyo7U4BizJEQtaQEwDFd/rwz/KPMR5XHcvrGJeNiKeF2FC7M
-         EeDQ==
+        bh=ZsGGYXWDuEAPZyeN8P880JLDy4GjUNE8fC94ZgoIpmM=;
+        b=HTo/7HJAEFaRVK5Wvgiol6t7ZENfcCUcfL3F+CIFFqe8/dHFqUqxwYOGMotOn5SL3K
+         /LS8eKx9Zz6P2O4oogUu5pGK7imz4XUc8F9J7wcghHUohuDysurE+uXUzP68kMiRlxJq
+         wu/ut8eiIXbbzNn9d+QO85S/vstmFZMGS0CvuPQkLhe2Q4z0TOhnQPQ3gM1vqDMqLULO
+         hq21wWptutn5NxBxZgRHe80xlEHhDmlMSC2jR+FyP15gs452n6XFWV7iA6fTYrVL9cB4
+         bf946A7QfzYgTva7jjAoYjQpQAa7fhfi5TWv55gZFVSHmNldDPz0jtIW2epoxE9wbwot
+         YDsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795522574; x=1796127374;
+        d=1e100.net; s=20260707; t=1795522578; x=1796127378;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=tThRIWAEqLynBb1Xo30awcNxYUHaidb6DGrYg3hopys=;
-        b=ebiSETEJ7/qhP4OUcuU/Q6h83yb1L6fTd2U7vpn09B45am9wYstdmaz8wfAj4SNbAN
-         kGzSFVXrxBtAmasRbP42nl67pPQPnoeil/1mssyNqnBJBbRTOSK3zsraVGzcVQlIanP6
-         +XNSl215iLtcS9a8d3VO6TvzIQt4hlLz2dsz+OqJ1V9RbAiwrJKBy4RnUE/+6txfbWL5
-         r9O2vPPET1hcKgXuyU1NZLPmDDyRe8m+HfNYRN3Uulnl7e63AdDsh0Wgi6kEMYs3eMrH
-         0Ww6HWILlgAyKF+BHislP/t3MERgDkiZbp6iBv3PCsrRK753sGf2exYb7UXP39Faieb8
-         41OA==
-X-Forwarded-Encrypted: i=1; AL+hErEXMVZNeDzKDkrBoNfKF8TFay6S7BI3eDzJSZV0DPa9OqScPznNq5tG7ikH0mNScQV5QQGcH3f0Igw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+D/F67x3eJZLXWMA4K1wwqqUxk67gUWqA8b0A761PDJ1JbTVly
-	VnGXOnQI4GbTUNJ3DJ4ldsZM8tgb8ukzqSrj7p0N/wakrYy0nxujTjHmFHS8AnRPQhZClWPmmGI
-	xB/rxqE44hOYYS3ppc7pCbhyVvfgVACsTxV+HiEMKCnlO04mewUc8MD8BFrxqIec=
-X-Gm-Gg: AZFdTZeGG6BQZN1ifQv2DSNrZqw7MtXZUZRN0GOK1/viYDjzHqu3n4BM4KgwFWlusgS
-	Fpze6zWUfIA5lpd3WrwNX/i0+m07HMuohAebSj9oAhfuneXeCWhpCzNhKctQTIa+BHuhCkIGt3z
-	WF/L+MBo/9M8SpCVJAonItNdNw0cIfTJLrABcMPkkx3/wBKKbdVU5x2rXIT6B7Jy68eUT5JPqxC
-	oMliAx6JHQ28z9XPz6hxyVEFOqYJqjT7zTb1/A1qqVcKguNc1aFhpdGvpXwyhDVijgbC6YRvZrN
-	5C4Txd1JNF3gWCsiIm90CNZyrxGCfvXdwj2aJBSsu/WrA3b7pm+fpFTZtIBgnCTEmRbd5+mvIM7
-	neIvTBP5Gdb7oww9nLFPnxg55kcdWrM82KKeH2kkIABHsbwp2BH92d2lX9OT2Dt6oYAj1QECPKt
-	30UUlFjHPo
-X-Received: by 2002:a05:6a00:414f:b0:89f:526f:d6cf with SMTP id d2e1a72fcca58-8c7de587969mr10210268b3a.42.1795522573624;
-        Tue, 24 Nov 2026 04:16:13 -0800 (PST)
-X-Received: by 2002:a05:6a00:414f:b0:89f:526f:d6cf with SMTP id d2e1a72fcca58-8c7de587969mr10210243b3a.42.1795522573019;
-        Tue, 24 Nov 2026 04:16:13 -0800 (PST)
+        bh=ZsGGYXWDuEAPZyeN8P880JLDy4GjUNE8fC94ZgoIpmM=;
+        b=KN3dv+p6FHGrddhXZ1zzGsXFVPyFt4WHlgdsGS3uPlFDmkc3pqYLtQ8BI+ugBrdNFr
+         MycptI4NUYrTOj3oFnHCZ9WMFiw4aJaOn8H21pwA+ktvwtedybhbMQ9ILhVoCQdCH2Qj
+         2trS1pXb3Qkd3cL3bFSHxa4te67a+N1TAAABnQG72i6sdSo4qFM/7eliVDOhZPTJeQ+O
+         jmML1UMe2jZqGRDOV1i+apt22BNmaskKdJtFwz2zdOrZ+BIj5whlZfTWNiomFhZ4yyOT
+         xrUh+5Ox2bK+QzJnJAVDPj6l8dkIONLoIH+r3SAkrjjksMfHollTyGXBwUrQMTwzOAOg
+         MiZg==
+X-Forwarded-Encrypted: i=1; AL+hErHNS6zjSpQH2lzilbyIvA1Gl+zO6aVR/Nqh0tN51bzTJLnrf1tySTRFq/6eU1vc5J228H0N8jPzHrE=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/hBbelG1eUMsO66CxoBWVRoTs+u8R0UgnmFS4kqKPojnjx0TTV
+	BB5MBVy4Mj/icSejYPKi6UEmaCCgmsrhth4IancoK5F/JVWTIjU98rRNYwJF/RYUaPs2jNwJHQ2
+	A7uNgBPj9Ssl4gYKUtvekt05U0ratpgo4vMEgBnzYZMOstFplY8D1DVmHhy6RH7A=
+X-Gm-Gg: AZFdTZfm4+/hL+NIsdrnT/8nfKjeMlLs5kdiyXi6m1VRd0zTfnOOW8/KbKWf2NRrGQJ
+	Ww6wzYLl1kHoR1zxwFbfP4jCn01Nr2cB3kdPmt6QVsAdgvTeodcpIwi/mMBbVvApzM9an1lk+zj
+	w+6UQKTKiglUd7l6KGbfRFDG1sA5fE+AhmNP7EgHBnaFi4XkL6c/SVef7uRvAQgdbrkdfUqmE96
+	aSp5fVc6a3sitJulahN2H0ngTCC3o3jRQgHZppIbY5UDvqRVkNYhVLPGOrWAK8Xf1P/VwN/I7q8
+	pNVcx7C5c3/U22i/ydkIuvT04vD67Fgqb5vS1Kjd/Im1Wnh+kstAOsRdPNflHG7fFXyRp5tWAKR
+	ukY702X3vWV8IfFzTJWJ+Z2WSd6dxWCM3hhN46V/dCwwuqUKQi+zNe6l2pjjofJYdeUeRVv5DjE
+	Ap57AIwpw2
+X-Received: by 2002:a05:6a00:44c7:b0:886:5938:cdd4 with SMTP id d2e1a72fcca58-8c87baccf21mr12944496b3a.19.1795522578376;
+        Tue, 24 Nov 2026 04:16:18 -0800 (PST)
+X-Received: by 2002:a05:6a00:44c7:b0:886:5938:cdd4 with SMTP id d2e1a72fcca58-8c87baccf21mr12944474b3a.19.1795522577871;
+        Tue, 24 Nov 2026 04:16:17 -0800 (PST)
 Received: from hu-jseerapu-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c8706844a0sm7245572b3a.1.2026.11.24.04.16.08
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c8706844a0sm7245572b3a.1.2026.11.24.04.16.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2026 04:16:12 -0800 (PST)
+        Tue, 24 Nov 2026 04:16:17 -0800 (PST)
 From: Jyothi Kumar Seerapu <jyothi.seerapu@oss.qualcomm.com>
-Date: Tue, 24 Nov 2026 17:45:22 +0530
-Subject: [PATCH v2 1/6] spi: spi-geni-qcom: Add transfer_one_message()
- support
+Date: Tue, 24 Nov 2026 17:45:23 +0530
+Subject: [PATCH v2 2/6] dt-bindings: dma: qcom-gpi: Add QSPI protocol
+ identifier
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -119,7 +119,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261124-qspi_qup_upstream-v2-1-cd69894107c8@oss.qualcomm.com>
+Message-Id: <20261124-qspi_qup_upstream-v2-2-cd69894107c8@oss.qualcomm.com>
 References: <20261124-qspi_qup_upstream-v2-0-cd69894107c8@oss.qualcomm.com>
 In-Reply-To: <20261124-qspi_qup_upstream-v2-0-cd69894107c8@oss.qualcomm.com>
 To: Mark Brown <broonie@kernel.org>, Vinod Koul <vkoul@kernel.org>,
@@ -133,419 +133,66 @@ Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
         dmaengine@vger.kernel.org, devicetree@vger.kernel.org,
         Jyothi Kumar Seerapu <jyothi.seerapu@oss.qualcomm.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795522563; l=12264;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795522563; l=1017;
  i=jyothi.seerapu@oss.qualcomm.com; h=from:subject:message-id;
- bh=j9fUAxjMXVj7YhZVIcrs7yrw2LQ9cIbCNpQaMrKd/WI=;
- b=FNMbBSAfTilW+zcIOGsGVagq5Up4sK6Pb5qFxnpyovzYaLFwKwb3GuFaw/51EJrJWReD+sZ8/
- 3xmtPG55Qs2A/P+lzQM83vU/iVhdmLjvMzpERsCnshXApgzy81zB3BO
+ bh=EEx2Qf9ht9RV2ShxIZ5R8hgTYqT6216fgvKWmMYEzDw=;
+ b=MgqTwicYRlvJgrM+Ti/uoSQignoLBWDzOxIHDD22f7YmBLV3491zS+retoQpIsYP5p+DKHrhf
+ mKE2Qd6sMgCCVjhNsFOTSJZT/LrZ8iIqqNAz5nUPLgwvYkHYqWm4gyL
 X-Developer-Key: i=jyothi.seerapu@oss.qualcomm.com; a=ed25519;
  pk=9vafyYsia0OnBKWSEwhmWe3hPVQfI2T1xOs5dPaFvEo=
-X-Authority-Analysis: v=2.4 cv=ZYeIpcVA c=1 sm=1 tr=0 ts=6b05800e cx=c_pps
- a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI0MDA0NyBTYWx0ZWRfX67j9NLmoGEz8
+ MiSJZV9GPtEG1hOHVLCtGVcmfbx6YrMpyeX6oJ5dQo92V6hobTAp3D1lQ0LcjdG1AlfTXfW1Yrs
+ f8bvwaDo90iqePJp80AIiUrRg6rlvasQT241wx6C3r7TVfAeQGst/tW9NiCW7slyXwhXEbhdYyL
+ D709X7+fvndE5FGHIcjzPW7LuRi+sPxy9VtymPaFCQS29pMdiEf+f0aZ2aGmEs5Zx24y7QS1TiR
+ JxN6UFGaqz9JmipCPkSa8KuhmHwv3Pm9DFw2Wh+PJxvsgZsVp3xni6c2ec4qHbyOx9CYH1VAE68
+ fxQG/5ychzMt4283C4UXExh6cJto/nuEnFdHLk6IXpZ/1G1iiXqDATCOoxRZ/HmnjJd97g2zB+1
+ CL9O7/Lc8YLAPVhRgRWSG9T9vuU4uOMUC/99J1kIGgiVYYmE8U3onDqXxYIgFSqIAQBbzzch1JL
+ boxs/cZF2+SJznyj15A==
+X-Proofpoint-GUID: BE6SPV-emNhtoPMwKobdTAkicFpO2LW1
+X-Authority-Analysis: v=2.4 cv=MvbHeGae c=1 sm=1 tr=0 ts=6b058013 cx=c_pps
+ a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
  a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
- a=EUspDBNiAAAA:8 a=1dw3zO4OUP3knhUqhv8A:9 a=QEXdDO2ut3YA:10 a=O8hF6Hzn-FEA:10
- a=zc0IvFSfCIW2DFIPzwfm:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI0MDA0NyBTYWx0ZWRfX8kcdDCu5aWji
- BtTKQsTxr5Ld/NNLSqTQo1wLJDF5yNkiAS88Zd6S5E0c8kY1XWhMTVIGrh4GtwXQSZMF4pcBtUs
- tI7/5tsTLbadcmFxyDg/M5vQJdLVURf2P4aVYUVW1L2UCEw2ma90l97FH9xy3SnJYtQveBTzHFD
- cW0enqbAI3pgejRWywmJ9PhADOge2ONgSLiRA8cn7ZMM8lmO24bJ7S7pUbEwv39q5XKRPexmPwj
- pNyHajlwmW66ppoVX2f+yceMOUKNkdiq+Fz5hNNhvlxdpTBzRk9vq1m1NOlV20EilE9c67VPBJw
- UXf7Zw/06EhAF8zvpTVFWNEQmV3p/JRZq36fLoEzz/136Pzvj8WgSUtgWb4TFS1g4HfrOpL6KVG
- qRr4YYYIfw9ilF1srLDhWFWdJvMRg8Cu9KrJ9M/kUcDhc6z8aCjAVTba9S/0iyWdXVUmWjSLJbh
- vy5TGqPWTLZqgRn5XGQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI0MDA0NyBTYWx0ZWRfX0YNs1iuEA+HQ
- adygl6fMlSfDqLWJMvJCi+rUlHFxMLY4+9xesvY4BTRnh9UolaNKeLr6c0RKJbNTBiaX688uw+i
- FqxM5YRP8HRNOtY1HchlUrkXaVd8bJA=
-X-Proofpoint-ORIG-GUID: VkJ6Qyf09c2bgc_fs8RUxFoILPPrY8e1
-X-Proofpoint-GUID: VkJ6Qyf09c2bgc_fs8RUxFoILPPrY8e1
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=EUspDBNiAAAA:8 a=XDCUMzA_0XyrBmuHy_cA:9 a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10
+ a=2VI0MkxyNR6bbpdq8BZq:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI0MDA0NyBTYWx0ZWRfX2lwNdAGb7JKe
+ 6CKMl+X+QjtP5yf2U4NeX9F7N9SbjDDdgap04/8WDkwpGFuQ/tl2UxTdV8f6ME6Zpyct27DgZUb
+ 6bSCNpGTSuiNzb5U8lzzNLPftxygkXA=
+X-Proofpoint-ORIG-GUID: BE6SPV-emNhtoPMwKobdTAkicFpO2LW1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-24_02,2026-11-23_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0 suspectscore=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 bulkscore=0 impostorscore=0 phishscore=0 spamscore=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 bulkscore=0 adultscore=0
+ clxscore=1015 impostorscore=0 suspectscore=0 malwarescore=0 spamscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611240047
 
-The GENI SPI driver currently relies on the SPI core's default
-transfer_one_message() implementation. Adding Quad SPI (QSPI) support
-requires driver-managed message sequencing. In particular, GENI QSPI
-reads require combining a command/address TX phase and an RX data
-phase into a single hardware command.
+Qualcomm GPI DMA supports transfers for peripherals using serial
+protocols such as SPI and I2C. The third argument of each DMA specifier
+identifies the client protocol so the GPI driver can configure the
+channel and generate the appropriate transfer descriptors.
 
-Add a driver-specific transfer_one_message() implementation, retaining
-spi_geni_transfer_one() as an internal helper for programming individual
-transfers. Handle completion, transfer delays, errors and DMA buffer
-synchronization at the message level.
-
-The custom message handler must also provide the GPIO chip-select
-sequencing and delays previously handled by the SPI core. Track the
-selected GPIO and its timing and polarity for device switching.
-Invalidate the cached selection during setup and preserve the software
-inactive delay for native chip-selects.
+Add QCOM_GPI_QSPI with value 6 to identify QSPI TX and RX channels in
+the dmas property. This is a DT client identifier, independent of the
+hardware protocol encoding used by the GPI driver.
 
 Signed-off-by: Jyothi Kumar Seerapu <jyothi.seerapu@oss.qualcomm.com>
 ---
- drivers/spi/spi-geni-qcom.c | 245 ++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 224 insertions(+), 21 deletions(-)
+ include/dt-bindings/dma/qcom-gpi.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index e239c4333055..0a15e75051d8 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -6,6 +6,7 @@
- #define CREATE_TRACE_POINTS
- #include <trace/events/qcom_geni_spi.h>
+diff --git a/include/dt-bindings/dma/qcom-gpi.h b/include/dt-bindings/dma/qcom-gpi.h
+index ebda2a37f52a..50fdfc5fd9a5 100644
+--- a/include/dt-bindings/dma/qcom-gpi.h
++++ b/include/dt-bindings/dma/qcom-gpi.h
+@@ -7,5 +7,6 @@
+ #define QCOM_GPI_SPI		1
+ #define QCOM_GPI_UART		2
+ #define QCOM_GPI_I2C		3
++#define QCOM_GPI_QSPI		6
  
-+#include <linux/acpi.h>
- #include <linux/clk.h>
- #include <linux/dmaengine.h>
- #include <linux/dma-mapping.h>
-@@ -15,6 +16,7 @@
- #include <linux/io.h>
- #include <linux/iopoll.h>
- #include <linux/log2.h>
-+#include <linux/math64.h>
- #include <linux/module.h>
- #include <linux/panic_notifier.h>
- #include <linux/platform_device.h>
-@@ -109,10 +111,14 @@ struct spi_geni_master {
- 	struct completion abort_done;
- 	struct completion tx_reset_done;
- 	struct completion rx_reset_done;
-+	struct completion xfer_done;
- 	unsigned int oversampling;
- 	spinlock_t lock;
- 	int irq;
--	bool cs_flag;
-+	struct gpio_desc *cs_gpiod;
-+	struct spi_delay cs_hold;
-+	struct spi_delay cs_inactive;
-+	bool cs_inactive_level;
- 	bool abort_failed;
- 	struct dma_chan *tx;
- 	struct dma_chan *rx;
-@@ -406,23 +412,23 @@ spi_gsi_callback_result(void *cb, const struct dmaengine_result *result)
- 	struct spi_controller *spi = cb;
- 	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
- 
--	spi->cur_msg->status = -EIO;
-+	/*
-+	 * Record only failures. msg->status is finalized when the
-+	 * entire SPI message completes.
-+	 */
- 	if (result->result != DMA_TRANS_NOERROR) {
- 		dev_err(&spi->dev, "DMA txn failed: %d\n", result->result);
- 		trace_geni_se_regs(&mas->se);
--		spi_finalize_current_transfer(spi);
--		return;
--	}
--
--	if (!result->residue) {
--		spi->cur_msg->status = 0;
-+		spi->cur_msg->status = -EIO;
-+	} else if (!result->residue) {
- 		dev_dbg(&spi->dev, "DMA txn completed\n");
- 	} else {
- 		dev_err(&spi->dev, "DMA xfer has pending: %d\n", result->residue);
- 		trace_geni_se_regs(&mas->se);
-+		spi->cur_msg->status = -EIO;
- 	}
- 
--	spi_finalize_current_transfer(spi);
-+	complete(&mas->xfer_done);
- }
- 
- static int setup_gsi_xfer(struct spi_transfer *xfer, struct spi_geni_master *mas,
-@@ -516,7 +522,7 @@ static int setup_gsi_xfer(struct spi_transfer *xfer, struct spi_geni_master *mas
- 		dma_async_issue_pending(mas->rx);
- 
- 	dma_async_issue_pending(mas->tx);
--	return 1;
-+	return 0;
- }
- 
- static u32 get_xfer_len_in_words(struct spi_transfer *xfer,
-@@ -939,18 +945,209 @@ static int spi_geni_transfer_one(struct spi_controller *spi,
- 
- 	if (mas->cur_xfer_mode == GENI_SE_FIFO || mas->cur_xfer_mode == GENI_SE_DMA) {
- 		ret = setup_se_xfer(xfer, mas, slv->mode, spi);
--		/* SPI framework expects +ve ret code to wait for transfer complete */
--		if (!ret) {
--			if (spi->target)
--				gpiod_set_value(mas->ready_gpio, 1);
--			ret = 1;
--		}
-+		if (!ret && spi->target)
-+			gpiod_set_value(mas->ready_gpio, 1);
- 
- 		return ret;
- 	}
-+
- 	return setup_gsi_xfer(xfer, mas, slv, spi);
- }
- 
-+static int spi_geni_setup(struct spi_device *slv)
-+{
-+	struct spi_geni_master *mas = spi_controller_get_devdata(slv->controller);
-+
-+	/* The core deasserts CS after setup, possibly with a new polarity. */
-+	if (!(slv->mode & SPI_NO_CS) && mas->cs_gpiod == spi_get_csgpiod(slv, 0))
-+		mas->cs_gpiod = NULL;
-+
-+	return 0;
-+}
-+
-+static void spi_geni_set_cs(struct spi_device *spi_slv, bool enable)
-+{
-+	struct gpio_desc *cs_gpiod = spi_get_csgpiod(spi_slv, 0);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi_slv->controller);
-+	bool level = true;
-+
-+	if (spi_slv->mode & SPI_NO_CS)
-+		cs_gpiod = NULL;
-+
-+	/* Release a previously selected GPIO before switching devices. */
-+	if (mas->cs_gpiod && (!enable || mas->cs_gpiod != cs_gpiod)) {
-+		spi_delay_exec(&mas->cs_hold, NULL);
-+		gpiod_set_value_cansleep(mas->cs_gpiod, mas->cs_inactive_level);
-+		spi_delay_exec(&mas->cs_inactive, NULL);
-+		mas->cs_gpiod = NULL;
-+	}
-+
-+	/* Preserve the software inactive delay for hardware-controlled CS. */
-+	if (!cs_gpiod && !enable && !(spi_slv->mode & SPI_NO_CS))
-+		spi_delay_exec(&spi_slv->cs_inactive, NULL);
-+
-+	if (!enable || !cs_gpiod || mas->cs_gpiod == cs_gpiod)
-+		return;
-+
-+	/* DT polarity is handled by gpiolib; ACPI uses SPI_CS_HIGH. */
-+	if (is_acpi_device_node(dev_fwnode(&spi_slv->dev)) &&
-+	    !(spi_slv->mode & SPI_CS_HIGH))
-+		level = false;
-+
-+	gpiod_set_value_cansleep(cs_gpiod, level);
-+	spi_delay_exec(&spi_slv->cs_setup, NULL);
-+
-+	/* GPIOs belong to the controller; do not retain a spi_device pointer. */
-+	mas->cs_gpiod = cs_gpiod;
-+	mas->cs_hold = spi_slv->cs_hold;
-+	mas->cs_inactive = spi_slv->cs_inactive;
-+	mas->cs_inactive_level = !level;
-+}
-+
-+static void spi_geni_dma_sync(struct spi_controller *spi,
-+			      struct spi_transfer *xfer, bool for_device)
-+{
-+	/* The core maps buffers with DMA_ATTR_SKIP_CPU_SYNC. */
-+	if (for_device) {
-+		if (xfer->tx_sg_mapped)
-+			dma_sync_sgtable_for_device(spi->cur_tx_dma_dev,
-+						    &xfer->tx_sg, DMA_TO_DEVICE);
-+		if (xfer->rx_sg_mapped)
-+			dma_sync_sgtable_for_device(spi->cur_rx_dma_dev,
-+						    &xfer->rx_sg, DMA_FROM_DEVICE);
-+	} else {
-+		if (xfer->rx_sg_mapped)
-+			dma_sync_sgtable_for_cpu(spi->cur_rx_dma_dev,
-+						 &xfer->rx_sg, DMA_FROM_DEVICE);
-+		if (xfer->tx_sg_mapped)
-+			dma_sync_sgtable_for_cpu(spi->cur_tx_dma_dev,
-+						 &xfer->tx_sg, DMA_TO_DEVICE);
-+	}
-+}
-+
-+static int spi_geni_wait_for_xfer(struct spi_controller *spi,
-+				  const struct spi_transfer *xfer)
-+{
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
-+	u64 bits, ms;
-+
-+	if (spi_controller_is_target(spi)) {
-+		/* A target cannot predict when its peer will supply clocks. */
-+		if (wait_for_completion_interruptible(&mas->xfer_done)) {
-+			dev_dbg(mas->dev, "SPI transfer interrupted\n");
-+			return -EINTR;
-+		}
-+		return 0;
-+	}
-+
-+	bits = (u64)xfer->len * BITS_PER_BYTE;
-+	ms = div_u64(bits * MSEC_PER_SEC, xfer->speed_hz ?: 100000);
-+	ms = min_t(u64, ms * 2 + 200, UINT_MAX);
-+
-+	if (!wait_for_completion_timeout(&mas->xfer_done, msecs_to_jiffies(ms))) {
-+		dev_err(mas->dev, "Transfer timed out\n");
-+		return -ETIMEDOUT;
-+	}
-+
-+	return 0;
-+}
-+
-+static int spi_geni_transfer_one_message(struct spi_controller *spi,
-+					 struct spi_message *msg)
-+{
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
-+	struct spi_device *spi_slv = msg->spi;
-+	struct spi_transfer *xfer, *next_xfer;
-+	bool keep_cs = false;
-+	bool dma_synced = false;
-+	bool started = false;
-+	int ret = 0;
-+
-+	xfer = list_first_entry(&msg->transfers, struct spi_transfer, transfer_list);
-+	spi_geni_set_cs(spi_slv, !xfer->cs_off);
-+
-+	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-+		if ((xfer->tx_buf || xfer->rx_buf) && xfer->len) {
-+			reinit_completion(&mas->xfer_done);
-+
-+			/* Synchronize buffers only for DMA; the SE FIFO path uses CPU access. */
-+			dma_synced = mas->cur_xfer_mode == GENI_GPI_DMA ||
-+				     ((xfer->tx_sg.nents || xfer->rx_sg.nents) &&
-+				      xfer->tx_sg.nents <= 1 && xfer->rx_sg.nents <= 1);
-+			if (dma_synced)
-+				spi_geni_dma_sync(spi, xfer, true);
-+
-+			ret = spi_geni_transfer_one(spi, spi_slv, xfer);
-+			if (ret < 0) {
-+				dev_err(mas->dev, "Transfer failed: %d\n", ret);
-+				goto out_err;
-+			}
-+			started = true;
-+
-+			ret = spi_geni_wait_for_xfer(spi, xfer);
-+			if (ret)
-+				goto out_err;
-+
-+			/* DMA errors and target aborts are reported through msg->status. */
-+			if (msg->status != -EINPROGRESS) {
-+				ret = msg->status;
-+				goto out_err;
-+			}
-+			if (dma_synced) {
-+				spi_geni_dma_sync(spi, xfer, false);
-+				dma_synced = false;
-+			}
-+		} else if (xfer->len) {
-+			dev_err(&spi_slv->dev,
-+				"Bufferless transfer has length %u\n", xfer->len);
-+			ret = -EINVAL;
-+			goto out_err;
-+		}
-+
-+		msg->actual_length += xfer->len;
-+		ret = spi_transfer_delay_exec(xfer);
-+		if (ret)
-+			goto out_err;
-+
-+		next_xfer = list_is_last(&xfer->transfer_list, &msg->transfers) ?
-+			    NULL : list_next_entry(xfer, transfer_list);
-+		if (!next_xfer) {
-+			keep_cs = xfer->cs_change;
-+		} else if (xfer->cs_change) {
-+			if (!xfer->cs_off)
-+				spi_geni_set_cs(spi_slv, false);
-+
-+			spi_transfer_cs_change_delay_exec(msg, xfer);
-+
-+			if (!next_xfer->cs_off)
-+				spi_geni_set_cs(spi_slv, true);
-+		} else if (xfer->cs_off != next_xfer->cs_off) {
-+			spi_geni_set_cs(spi_slv, xfer->cs_off);
-+		}
-+	}
-+
-+out_err:
-+	if (!ret && msg->status != -EINPROGRESS)
-+		ret = msg->status;
-+
-+	if (ret && started)
-+		spi_geni_handle_err(spi, msg);
-+
-+	/* Return buffer ownership only after DMA has completed or been stopped. */
-+	if (dma_synced)
-+		spi_geni_dma_sync(spi, xfer, false);
-+
-+	if (ret || !keep_cs)
-+		spi_geni_set_cs(spi_slv, false);
-+
-+	if (msg->status == -EINPROGRESS)
-+		msg->status = ret;
-+
-+	spi_finalize_current_message(spi);
-+
-+	return ret;
-+}
-+
- static irqreturn_t geni_spi_isr(int irq, void *data)
- {
- 	struct spi_controller *spi = data;
-@@ -985,8 +1182,6 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
- 
- 		if (m_irq & M_CMD_DONE_EN) {
- 			if (mas->cur_xfer) {
--				spi_finalize_current_transfer(spi);
--				mas->cur_xfer = NULL;
- 				/*
- 				 * If this happens, then a CMD_DONE came before all the
- 				 * Tx buffer bytes were sent out. This is unusual, log
-@@ -1011,6 +1206,9 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
- 						mas->rx_rem_bytes, mas->cur_bits_per_word);
- 					trace_geni_se_regs(se);
- 				}
-+
-+				complete(&mas->xfer_done);
-+				mas->cur_xfer = NULL;
- 			} else {
- 				complete(&mas->cs_done);
- 			}
-@@ -1033,7 +1231,7 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
- 		if (!mas->tx_rem_bytes && !mas->rx_rem_bytes && xfer) {
- 			if (spi->target)
- 				gpiod_set_value(mas->ready_gpio, 0);
--			spi_finalize_current_transfer(spi);
-+			complete(&mas->xfer_done);
- 			mas->cur_xfer = NULL;
- 		}
- 	}
-@@ -1065,11 +1263,14 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
- 
- static int spi_geni_target_abort(struct spi_controller *spi)
- {
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
-+
- 	if (!spi->cur_msg)
- 		return 0;
- 
-+	spi->cur_msg->status = -ECANCELED;
- 	handle_se_timeout(spi);
--	spi_finalize_current_transfer(spi);
-+	complete(&mas->xfer_done);
- 
- 	return 0;
- }
-@@ -1187,8 +1388,9 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	spi->num_chipselect = 4;
- 	spi->max_speed_hz = 50000000;
- 	spi->max_dma_len = 0xffff0; /* 24 bits for tx/rx dma length */
-+	spi->setup = spi_geni_setup;
- 	spi->prepare_message = spi_geni_prepare_message;
--	spi->transfer_one = spi_geni_transfer_one;
-+	spi->transfer_one_message = spi_geni_transfer_one_message;
- 	spi->can_dma = geni_can_dma;
- 	spi->dma_map_dev = dev->parent;
- 	spi->auto_runtime_pm = true;
-@@ -1200,6 +1402,7 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	init_completion(&mas->abort_done);
- 	init_completion(&mas->tx_reset_done);
- 	init_completion(&mas->rx_reset_done);
-+	init_completion(&mas->xfer_done);
- 	spin_lock_init(&mas->lock);
- 
- 	if (spi->target) {
+ #endif /* __DT_BINDINGS_DMA_QCOM_GPI_H__ */
 
 -- 
 2.34.1

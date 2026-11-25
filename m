@@ -1,62 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795620297;
-	b=Iwko7wZgATYLanYcBr2VUzz+EAWNePGAFELUC93cPjixmSLu5LMXgM1ux1PwwkYrV0eB
-	 PMR9yzI72DNBInZqE6FEnfHNtsDaZidgZQw2o0SF+SKJOxxiR6utuCrGR8LlB/CsFTAO2
-	 b2ZU9miuKYAxm7EQB8E91T+wbbBFEbpBy/JYdrY5uXBjKHxX6vwhh15bBMwEoBuOsmnWr
-	 DKx14jhPkOo6Pp/pVmuLKMJC9Hc2+ZDhFqK0ggaqhPQB+YneYWRb/nJ0Ya7t6GyEXXE5Y
-	 1sfIO9UoQmdkYdiLq7syJQGji41jG2n/c/8Z2Eqk2sTEznArWWUnSUGP6S9LFW8D2Qg==
+	t=1795620611;
+	b=bxbTTv6SSyMMfs4xvoY31Y6pzeRRsyx2mTJpntjzfilNSFzAQTrv7o64sFaIrRzSmnH1
+	 kRtOkuOZ6sbqxG9tBIl+RK6d1uR64rN+Ial9Ge5ZFFy6XLTNtNINRgmgUglrzg7w6lJUI
+	 1wKpaa0YEavPT26MOmV1nk2bd9LnK3HLEM1wYBsi3CBQu9agsBfcEvf2EbeUxXEtP+j9g
+	 Jo+SQliGlbF2GsSjsr+vmxPk9wp0cmzJ9FDqM8qZSAFpuoKxYs4HwR0SjYredrCMdO/+s
+	 2IHgEEja0SxsYk0h+gIrzvDAIoi9zZSWBrQ2htObA0A5mU+zLk4S4BqoYCFS3frjj0A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795620297;
-	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
-	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=khCQZr+lZ5ps02/NBTrpcyjkpLu9gA2+Gk1GsRmHCXA=;
-	b=KVa3JzAkvrbikL3iv5LqV9mOoxM9vbuU8AXKC62y88wtBmEcCGJGiWsjBfg8y5Sge4LL
-	 GpdkVZ/i7dl8YwEpgWBm3zdKDYsroOuMX36dc/UlmK0GCXv+tE3UXcCQKUCIjJ6O3AEk0
-	 vwulUhup3oPu3awBl34lfkLzjdNzupkTENjgH5xzO3SNSAedqOAoEZt4ynB5iVP5p8RQm
-	 tACgu9H2W0lvmxzTB87aoN81PsGwsG/MWL1c5nhdfip9h3W/gE2Y4dsCJjpaZ4W51kpYZ
-	 ih7vN8SM1uS6FGAT6AgVYCiVdhM+Vh3zaKn8lXEw5lOfnJMph4R0+nyPwBYzD7Phcig==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795620611;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:To;
+	bh=CHKeGPUaRDwepfg9X5UsuzvW/dz90ugXevptJJ1o4Jk=;
+	b=G1uEyHJl7gtW1SB3wa/yEuTzOKfxr6ItbGwoVrwgBvbUiv4eoKuYu29Dzn3ca8XXPVXW
+	 Q2n2k04xBmCOphu4mEnf+ZZJqvWTFCGZWp3Pju/pEeaMu4ATmSgiXb3+Ac3At0Sy7VBP4
+	 LQc2roFV9Moc3SliQgo31wsY9tkcn4avpDhxee/fjh8m+aBYVvdK8aKiIOkZV9YcUVLRL
+	 3QCJu4LnKvUzsWqN04kSp/gRSJUWZ6AmLWknj9BHAEty0bb1I5kngwKE36BTFxdna35Bg
+	 KwpOMSdmXD8XW9Pe1dE9cdLEJTvGOz9rk2zZC3Hnx+IDmCTmFMi4hqIpzfekKTQ4uKw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mQm7XMoj;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cw6iuiTm;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4802E606A31E;
-	Wed, 25 Nov 2026 15:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDE1606A32D
+	for <linux-spi@vger.kernel.org>; Wed, 25 Nov 2026 15:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mQm7XMoj
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF131F000D0;
-	Wed, 25 Nov 2026 15:24:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cw6iuiTm
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13FCA1F000C6;
+	Wed, 25 Nov 2026 15:30:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795620296;
-	bh=khCQZr+lZ5ps02/NBTrpcyjkpLu9gA2+Gk1GsRmHCXA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=mQm7XMojXDRKOjTVodJNFQw5rj41uOgx2Mnln3HRo0PzjmMed2JfzKJ4FSUkvsVXt
-	 bBbPcQULhAUyAqs1aDbNPwhYKrDNl4sDrwjT46YKkJTUwxXKHUO8qYHc3qAWBwIu4T
-	 j7Mq8hB6jzxwbHseQbdKWyEJ3+6TGzHPhxmGD+4xuTo3Y6L1ReOZMV0yMp/hL7wNOa
-	 30pwxz6cQIqbfRO4vQA14NsZOYRAV4Dv4wZJXVkw5B8kBbR+PtOHb6FGjXA5lmGDuI
-	 Ql6bd44lZXfV9SttRxiD/OvxMbZzVHwp11N5Ftssz6QLaFAvnZHoqxDK8We/qXLwZ8
-	 hE2iY0G2Q3ggg==
-From: Mark Brown <broonie@kernel.org>
-To: Richard Weinberger <richard@nod.at>, 
- Vignesh Raghavendra <vigneshr@ti.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, 
- Michael Walle <mwalle@kernel.org>, 
- Takahiro Kuwano <takahiro.kuwano@infineon.com>, 
- Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, praneeth@ti.com, 
- u-kumar1@ti.com, p-mantena@ti.com, a-dutta@ti.com, s-k6@ti.com, 
- linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-mtd@lists.infradead.org, devicetree@vger.kernel.org
-In-Reply-To: <20261124-winbond-nand-next-phy-tuning-v5-0-261e0e712857@bootlin.com>
-References: <20261124-winbond-nand-next-phy-tuning-v5-0-261e0e712857@bootlin.com>
-Subject: Re: [PATCH v5 0/6] mtd/spi-mem: Enable DQS control
-Message-Id: <179554764437.947306.7383226666322227871.b4-ty@b4>
-Date: Tue, 24 Nov 2026 19:14:04 +0000
+	s=k20260515; t=1795620611;
+	bh=CHKeGPUaRDwepfg9X5UsuzvW/dz90ugXevptJJ1o4Jk=;
+	h=Subject:From:Date:To;
+	b=cw6iuiTmZ8r202QsW4SglEeM6f8tmocZsYBB1+mXSOFxOFPTUXCVo4sXMV89YYbPH
+	 e/lV63SRS4zcUIguOjSWRmAICUO9e8GreIcj8DEpeAEE1lhuTaBdYIYE4UUufCs5zf
+	 T5bushNCl4ZHJKfJd2LUJ5VizMBmuSG4wTH3kiQDQoHl5uVm/kXsfZB75KnLekAvEc
+	 qIMCN5OrxQmLQbhYFGp+B3K9BXYisFAG4vNq/B/W4tdjGCykI5scm0llRDzVoh9ciE
+	 B1Mb86PfmlSPanYiIZqQ6fqC1KKLthzL8ERkrRrNAHrF7axXFdEt3wGw53M65p6o44
+	 37DA1RcrYtcag==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id DF2BD3808209;
+	Wed, 25 Nov 2026 15:30:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -66,63 +52,60 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1947; i=broonie@kernel.org;
- h=from:subject:message-id; bh=hiFMYrNelLS4EF+eSytAriGzVrBmGJlkNeuhF2BICI0=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLZ/h7W4P6zcq1usKFgc8PuvLOp75/Ofv7cfm22YoHnX
- XWLl6xXO0pZGMS4GGTFFFnisrhf1pe8XsN3cGEbzBxWJpAhDFycAjCRPCtGhk+ilrcqyliK9VSu
- nj3Pn5zY8uH3uSePaq33zhZm+bCXdxMjwxT9jPZHookW34u2rPTiUGTfvehhur5Tnclq2c2zHVS
- E2AE=
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <179562060973.619539.17798101309933466930.git-patchwork-summary@kernel.org>
+Date: Wed, 25 Nov 2026 15:30:09 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Tue, 24 Nov 2026 15:43:01 +0100, Miquel Raynal wrote:
-> mtd/spi-mem: Enable DQS control
-> 
-> For his PHY tuning series on the Cadence QSPI controller embedded in TI
-> SoCs, Santhosh initially needed to access the availability of the DQS
-> (data strobe) signal. This is a chip dependent capability, which may
-> sometimes be enabled.
-> 
-> [...]
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.5
+Series: spi: Implement a atomic transfer as a last resort
+  Submitter: Heiko Stübner <heiko@sntech.de>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/series/1216224/
+  Lore link: https://lore.kernel.org/r/20261119135808.2377849-1-heiko@sntech.de
+    Patches: [v4,1/6] spi: Allow spi_toggle_csgpiod() to get called from atomic contexts
+             [v4,2/6] spi: Allow spi_delay_exec() to be used from atomic contexts
+             [v4,3/6] spi: Export spi_set_cs() function
+             [v4,4/6] spi: Add infrastructure for atomic sync transfers
+             [v4,5/6] spi: rockchip: Fix runtime resume error handling
+             [v4,6/6] spi: rockchip: Add an atomic transfer function
 
-Thanks!
+Series: mtd/spi-mem: Enable DQS control
+  Submitter: Miquel Raynal <miquel.raynal@bootlin.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/series/1220970/
+  Lore link: https://lore.kernel.org/r/20261124-winbond-nand-next-phy-tuning-v5-0-261e0e712857@bootlin.com
+    Patches: [v5,1/6] spi: spi-mem: Rename the DQS setter and pin field
+             [v5,2/6] spi: spi-mem: Clarify the conditions upon which DQS is usable
+             [v5,3/6] dt-bindings: spi: Document the spi-dqs-not-wired property
+             [v5,4/6] spi: spi-mem: Take the DQS wiring into account
+             [v5,5/6] spi: spi-mem: Take the controller DQS support into account
+             [v5,6/6] spi: cadence-quadspi: Advertise DQS support
 
-[1/6] spi: spi-mem: Rename the DQS setter and pin field
-      https://git.kernel.org/broonie/spi/c/fab01b136dfe
-[2/6] spi: spi-mem: Clarify the conditions upon which DQS is usable
-      https://git.kernel.org/broonie/spi/c/5520745c6e30
-[3/6] dt-bindings: spi: Document the spi-dqs-not-wired property
-      https://git.kernel.org/broonie/spi/c/2bc362dc8074
-[4/6] spi: spi-mem: Take the DQS wiring into account
-      https://git.kernel.org/broonie/spi/c/4c9572bc7052
-[5/6] spi: spi-mem: Take the controller DQS support into account
-      https://git.kernel.org/broonie/spi/c/828d25f820a5
-[6/6] spi: cadence-quadspi: Advertise DQS support
-      https://git.kernel.org/broonie/spi/c/dd1f49bd2c44
+Patch: spi: synquacer: drop redundant IRQ zero checks
+  Submitter: Felix Gu <ustc.gu@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/series/1217543/
+  Lore link: https://lore.kernel.org/r/20261121-synquacer-v1-1-9e14702ce84b@gmail.com
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Patch: spi: cadence-quadspi: Bypass STIG for Versal and Versal Gen 2 OSPI data
+  Submitter: Srikanth Boyapally <srikanth.boyapally@amd.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/series/1217112/
+  Lore link: https://lore.kernel.org/r/20261120-ospi_stig-v1-1-54f4d5f9f7b9@amd.com
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Total patches: 14
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Thanks,
-Mark
 

@@ -1,59 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795629132;
-	b=e9eoUAPg8Stvic5ZDdDWedyjS2xVEnBMQjTOqJL6zvE08eMKt/cnOT4O1JOjWozD/HQ8
-	 6ExuxLXPLJ7GrDwF5A3IZEp1WZsfDVaHh+lLxqpqEmx6q8kl8eux6ol32aVihS9sCoCH3
-	 hXljnxJtuWGhEKDrTtVwy4YF9OkeBWH61g3BhqDBc1kf7s8MlMPEdYx7bNbDiH3EeM5Wg
-	 cVBseMEpYXm50eyahY4KoSfLzajtE++kjCpWal7VPgPc+uOrjXIPvIJTFXighkvCvkhjX
-	 SYfZ6eXCihEnYQfKC8AMqk9P6WdrIIjerJHQsQvnziN+25ajyJ35UGtAQvcOwwGI89A==
+	t=1795629136;
+	b=bd0TgvN7QkH1ZBD3KzqdO/Rq7BX+D62D2GO4etPTfHGx/sYTrcfc03QwZlba5PYb4mtF
+	 rradIuedqmqD+5YH3GT9zxlfZhTa5aZx1DZFTVD+IkvElOF4257ImjpWbt0azUMKmnFeZ
+	 iiTWw9DiIluB4fMwZAAO1wIHG7KdxiswdbWHCkTCGlc9uhIwIHv9bCOCG1Gwhc68DGl5z
+	 TvYFBGWqYbh6tIBINcSiix3144kZeL1FYlpIKiTXVQtaCn0cJ+Czs3ukDVWSI9g4ZSnMz
+	 OVL70y7FlHhsHf3ctclQMznKbSg3v94/LJJoEpKjxxoFJ2o1szr5pidtxrNFAM4ma0Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795629132;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795629136;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=GRvEh7W8Gjjan8aSW0NgE3dBDol3XNo3W6oSUBUObAg=;
-	b=gNdqZFIOVlGXT2VakNRTrIxKCgRyBZ1LnFD+L+UAtZDSoi3d6/USXs6WDkW5/V7zbOFl
-	 Ojm8xAfSxYO7FZ3dxiRO58ww7ErniZUGrZeSJfVkE1Vjn80CS///H9AGKgHDdoDY3XxU8
-	 R5c6ky1ST8ovUCPWz5vWHSKWq9REWxGv8naPmTLIL5jPrVGjVT2Xo2tzTJGt8D5OlOS0o
-	 6+ccX8M5hBKUcfEnnMolCMky4KJzLyTrbFUCTDJfyEvW4FhW71+oD9BqGGdUqtwCNoM2+
-	 PvbrxKmyAc0gwYDKVwFa1zFgydUnyBCGY4xf1+vd1Al/MOMi5Zl+i9QMtq9IHDu6BKQ==
+	bh=0jHuOkcW+tUuXEgN+rjlY+VwX3B9wkvVTb2a5wTh6Hw=;
+	b=aWuT0eMzGW7uBSCrjLo1Diea9u9rCCwwv/hM7Qc2u7y50pY7wvzg68lQv3Wiwel38GA8
+	 /bNlmhp8y9vVP41GNl1/A9N6GE14oXJC3hIznf4tPJ2fFtz+JE8oNFLmZ1NU0+OLk7aTK
+	 w8rKjcz93mbaeD83w5jkKw+noH8y0EdlEvxaBns/HW6OeL7a3q0lj7tNPSwLz22H6vfwL
+	 soN7q2rF6TWZr0pMeQEDXmJ077v7DzFIV2Upn47J7JdPybOs90rFpJIILMQ+ZlpO+JhAw
+	 2ZkmttplaMSXizYKFDPtM20zvoqaHhDKdhKX9LArqzTXXZd/T6pTWEUNbb9y3uSLrVg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=DvQ+ecRI;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=wmBirQqP;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2326606A334
-	for <linux-spi@vger.kernel.org>; Wed, 25 Nov 2026 17:52:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B2326606A334
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B919606A339
+	for <linux-spi@vger.kernel.org>; Wed, 25 Nov 2026 17:52:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4B919606A339
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=DvQ+ecRI
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=wmBirQqP
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 64CC94E41789;
-	Wed, 25 Nov 2026 17:52:10 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id E3F3FC2B9C1;
+	Wed, 25 Nov 2026 17:52:22 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 29E2760480;
-	Wed, 25 Nov 2026 17:52:10 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B4DA311E6B0AE;
-	Wed, 25 Nov 2026 18:52:02 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id EBD1760480;
+	Wed, 25 Nov 2026 17:52:14 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9E9BB11E6B0CA;
+	Wed, 25 Nov 2026 18:52:08 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795629128; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1795629132; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=GRvEh7W8Gjjan8aSW0NgE3dBDol3XNo3W6oSUBUObAg=;
-	b=DvQ+ecRIp4ZWXBft+KDUn2D+H2bk1RLiRV5zLdDy2/B/IgMyTrffM1a08oJUWzk9B1IARq
-	lJN01h6ms0R4PsKeOvFsXvjLSye+io6+SylDwxPDvcS91SPCCKsV/qo7s4fnFBaxUyHS8b
-	jAMPrASVj0ZUglQN4E98MjSof9UB+0hEgGBkDmQjDwE8w3mFDnv2SQi2nsRGL8KYREyGah
-	ZF+E5cDzbBMV3QBC1gmR/Tfs0wdIjoKwGQ8VL5FB7xkVZKqIGHucZDgvzQPlPP9NFHEm6A
-	iFfZH09zSNv0zVBLRx6vkrXulUS/HjTucHLi2Mw8IXeqiL42O+UpgaBl9IKjDg==
+	bh=0jHuOkcW+tUuXEgN+rjlY+VwX3B9wkvVTb2a5wTh6Hw=;
+	b=wmBirQqPwYrB8cMXgwKVXCQ+dRgEdqiLvomU2P2fI5aIOAtcy3iU7XbOUAhwM3IizD201/
+	C3XFza9eM2aD+WwEWX+dWOUkceFb5V6jKXGVvahBq7f/MipyZOPNQ8bTKCkB3nBcYHkmMS
+	dAatQ6aOTwgKEQdqhjbyNPD8TxLt9uECyAQj8nIKQ9y2z1S72bQhmIJBS4tnOhr5JNUB7f
+	dgdQYHYT7jWrKIymy4D4Y2E9hE7q8cOQz6vcPX2tR8nnVYtLPMlreafxGz/9GfgQw+1e/b
+	coqZKJH9p4b5z0I4Cn31ov6B67gWCgfbZxiL8cpWv9ZcFNXHu25n0On5CX480Q==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Wed, 25 Nov 2026 18:51:19 +0100
-Subject: [PATCH RFC 05/16] spi: amlogic-spifc-a1: Fix a typo in a macro
+Date: Wed, 25 Nov 2026 18:51:20 +0100
+Subject: [PATCH RFC 06/16] spi: amlogic: spifc-a4: Consume dummy cycles
+ directly
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -65,7 +66,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-macronix-upstreaming-spi-mem-cycles-v1-5-fd036402fd37@bootlin.com>
+Message-Id: <20261125-macronix-upstreaming-spi-mem-cycles-v1-6-fd036402fd37@bootlin.com>
 References: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
 In-Reply-To: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Liang Yang <liang.yang@amlogic.com>, 
@@ -91,44 +92,54 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-Correct the macro name: sycles -> cycles.
+The spi-mem layer is now capable of providing the dummy phase in cycle
+units rather than bytes, provided that drivers advertize the dummy_cycle
+capability. Since this controller is consuming cycles and currently
+converts bytes into cycles, flag it capable to consume cycles directly
+and drop the extra conversions.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/spi/spi-amlogic-spifc-a1.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-amlogic-spifc-a4.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-amlogic-spifc-a1.c b/drivers/spi/spi-amlogic-spifc-a1.c
-index 282647cd6b56..d99c72c7a965 100644
---- a/drivers/spi/spi-amlogic-spifc-a1.c
-+++ b/drivers/spi/spi-amlogic-spifc-a1.c
-@@ -43,7 +43,7 @@
- #define SPIFC_A1_USER_CTRL2_REG		0x208
- #define SPIFC_A1_USER_DUMMY_ENABLE	BIT(31)
- #define SPIFC_A1_USER_DUMMY_MODE	GENMASK(30, 29)
--#define SPIFC_A1_USER_DUMMY_CLK_SYCLES	GENMASK(28, 23)
-+#define SPIFC_A1_USER_DUMMY_CLK_CYCLES	GENMASK(28, 23)
+diff --git a/drivers/spi/spi-amlogic-spifc-a4.c b/drivers/spi/spi-amlogic-spifc-a4.c
+index 16346f50c7d9..ac06ea735133 100644
+--- a/drivers/spi/spi-amlogic-spifc-a4.c
++++ b/drivers/spi/spi-amlogic-spifc-a4.c
+@@ -361,13 +361,8 @@ static int aml_sfc_send_cmd_addr_dummy(struct aml_sfc *sfc, const struct spi_mem
+ 	if (ret)
+ 		return ret;
  
- #define SPIFC_A1_USER_CTRL3_REG		0x20c
- #define SPIFC_A1_USER_DIN_ENABLE	BIT(31)
-@@ -90,7 +90,7 @@
- #define SPIFC_A1_USER_DUMMY(op) ( \
- 	SPIFC_A1_USER_DUMMY_ENABLE | \
- 	FIELD_PREP(SPIFC_A1_USER_DUMMY_MODE, ilog2((op)->dummy.buswidth)) | \
--	FIELD_PREP(SPIFC_A1_USER_DUMMY_CLK_SYCLES, (op)->dummy.ncycles))
-+	FIELD_PREP(SPIFC_A1_USER_DUMMY_CLK_CYCLES, (op)->dummy.ncycles))
+-	if (op->dummy.nbytes) {
+-		/*  Dummy buswidth configuration is not supported */
+-		if (aml_sfc_is_xio_op(op))
+-			dummy_cycle = op->dummy.nbytes * 8 / op->data.buswidth;
+-		else
+-			dummy_cycle = op->dummy.nbytes * 8;
+-		cmd = CMD_DUMMY(sfc->cs_sel, dummy_cycle - 1);
++	if (op->dummy.ncycles) {
++		cmd = CMD_DUMMY(sfc->cs_sel, op->dummy.ncycles - 1);
+ 		return regmap_write(sfc->regmap_base, SFC_CMD, cmd);
+ 	}
  
- #define SPIFC_A1_TSLCH_VAL	FIELD_PREP(SPIFC_A1_TSLCH, 1)
- #define SPIFC_A1_TCLSH_VAL	FIELD_PREP(SPIFC_A1_TCLSH, 1)
-@@ -195,7 +195,7 @@ static void amlogic_spifc_a1_set_dummy(struct amlogic_spifc_a1 *spifc,
- {
- 	u32 val = readl(spifc->base + SPIFC_A1_USER_CTRL2_REG);
+@@ -803,7 +798,7 @@ static int aml_sfc_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
  
--	val &= ~(SPIFC_A1_USER_DUMMY_MODE | SPIFC_A1_USER_DUMMY_CLK_SYCLES);
-+	val &= ~(SPIFC_A1_USER_DUMMY_MODE | SPIFC_A1_USER_DUMMY_CLK_CYCLES);
- 	val |= dummy_cfg;
- 	writel(val, spifc->base + SPIFC_A1_USER_CTRL2_REG);
- }
+ 	dev_dbg(sfc->dev, "cmd:0x%02x - addr:%08llX@%d:%u - dummy:%d:%u - data:%d:%u",
+ 		op->cmd.opcode, op->addr.val, op->addr.buswidth, op->addr.nbytes,
+-		op->dummy.buswidth, op->dummy.nbytes, op->data.buswidth, op->data.nbytes);
++		op->dummy.buswidth, op->dummy.ncycles, op->data.buswidth, op->data.nbytes);
+ 
+ 	ret = aml_sfc_pre_transfer(sfc, DEFAULT_PULLUP_CYCLE, CS_SETUP_CYCLE);
+ 	if (ret)
+@@ -1057,6 +1052,7 @@ static int aml_sfc_ecc_finish_io_req(struct nand_device *nand,
+ 
+ static const struct spi_controller_mem_caps aml_sfc_mem_caps = {
+ 	.ecc = true,
++	.dummy_cycles = true,
+ };
+ 
+ static const struct nand_ecc_engine_ops aml_sfc_ecc_engine_ops = {
 
 -- 
 2.56.0

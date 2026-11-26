@@ -1,48 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795720805;
-	b=HKwgf07H0Z5+vtq5pgrdWq/u0XVki0zH/R+c9p+hNzPBlO3cdRRZYAFkX9ov9BhcjbHf
-	 G2pxvSlwmvLn/vkYZ63TwESimTpeFZHBLFk6c1hnllU1HhwUHPAS22iwUhIYYf1YlzCrI
-	 0SSBKtydtqGqYMYwdgI2GH/euQtDe7gTjPuIGAPRn10RqpktuSookJadzDJ3PDQUDJHsO
-	 gc1UwbIQuKhZ3ez3WwbTPSrDt0XOIAYW7ONPHMwAt4z0uNoDqgxw4qQ4RmcvMcVu4UmJz
-	 XQUbYrxbtjkAOE32pBmWD/Iz6DYWweGy5xB48qy1BEhNxLyQke6/TP+lQDrmOG+Ts3g==
+	t=1795723085;
+	b=MsUGIe490UInM4scayom/iJPwFMXAxfRQrx6C8Gkz58K9VWZdGAxng1UR4fWIkOXj+SI
+	 +t484SZL3fEsfSgc++vLFJHA52sbTjB5dyHJArVgx1WCuAbH1W+gTkpKT92z0YbAVtMns
+	 KbXezADaErf4b8ycBRWwEbz35R/KNvEPCt3FPy0lOB+Mf6m01xEx2ufONIQZjn/AEIsqW
+	 qDPQT0AIH+t3Tor/7WqFd31EmMNg0l+rriBpi/deRpz4Ap18TX21pZPFOEz2Ro9DDVN7J
+	 7BQlPujQLz6/A9Jo1mNkpCwtAuxYOSaNmCq1EbNobZQ4oABGK7TrSVSx/SkJMOiI9ng==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795720805;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:To;
-	bh=7aoTYIHr2s5er61tO4HepkVCXR3LpGHzGhmZxPN2kaI=;
-	b=PsnAdUBOaiVZI9xXhQuascuDErQTIVKTzhZQ5aMbht7wRRtG8Sc93pri97PG06dnJM0x
-	 EITDq4VzTxj98GrV+O0WNzVoyGv/2p4lMIR475HdjPt/oj4dtDNABzGK1ro8d/ybukwsH
-	 nwGnQJQVB2SHh3ydvZe+Hjg65NQa5wHsCwlD5PwcTEPIShT/TSVI1PvByo54pb+6Mla4l
-	 0Bk9XaTcyjgT6qcsyiU369R85b33X8HfVTaiMPWz4Ndu7xJw1QBdxo4ttK2Pjh9YIHIMQ
-	 B4by1r4jfNTrSeha9qF28My992E1Sre68gm2D4v9VhV9zkrFQ4i88b4dOxpeHrgCoow==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795723085;
+	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
+	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=XfmQtKu5Trt3TmyRt9+W4Depfu0cIn9OSpKxY/sot9M=;
+	b=T1xCOCutfP49MvweAjOfcYgHY2tUEJSwEVtZFgedZqLxKuS9T7f5d7wJBnZgCBJgI0LV
+	 ucnR73Jl+SLmUX0BoYjS2TbhSUirUgsmwbLt2bwhKDoVfzue2U26h4dXCaL+PZIAiFJBO
+	 CNiL//OLupTifdE1UUnabJfVniP66GRm8VfT0kavd3kAsmjPADxsGx4XW70kYSYXOc7Ju
+	 4DGM6xmBpu0HzDJ5fgvGlEZaxmkWm83p0JCTAnY20yncVw3KYZYjr9uEF4iJLpkg13kBW
+	 2ejmMjfli8tfm4VNjN7RGLKFM9W7SjXkYQyddVTr3oJnR6Jg5Go8csP/HHmHVv885XQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hoHA+RAa;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bXTpm38z;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A872606A31C
-	for <linux-spi@vger.kernel.org>; Thu, 26 Nov 2026 19:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3648606A31C;
+	Thu, 26 Nov 2026 19:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hoHA+RAa
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB131F000CF;
-	Thu, 26 Nov 2026 19:20:05 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bXTpm38z
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E751F000C4;
+	Thu, 26 Nov 2026 19:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795720805;
-	bh=7aoTYIHr2s5er61tO4HepkVCXR3LpGHzGhmZxPN2kaI=;
-	h=Subject:From:Date:To;
-	b=hoHA+RAaE5WFRv5HEkJtrPCaguFaUKW9moqrwsWp7duU9BAweB6ksrsR4N8+GIDPr
-	 JTLD7sD8R5m1iUp6onInqF+uOE81/lH9XdUsFFcwul4FVI/tdC8ygVZ30/jUopLLoJ
-	 KpSte1Itn4nFyO5KpaFzSLLRHxKfUDtrtAscDcTYBr+hEvcquig0LSI3XtDiftx+k+
-	 kjIP12HFppQei8ycu+SNI5ez+W1ZGAzyBpP9OJdPfTm8HXCdzK4M/1/BiP6bPFvIdD
-	 7TAewph7u0blWmpxZncUyL62KkjHlQ1aPB+vkFbbFuqL2WhpP7hhHWiiLzn8lkkWi6
-	 nCPFYCG8wOQiw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EE01B3805CD3;
-	Thu, 26 Nov 2026 19:20:04 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1795723084;
+	bh=XfmQtKu5Trt3TmyRt9+W4Depfu0cIn9OSpKxY/sot9M=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=bXTpm38zvFaMTw0kqMesspI1CYH6ZH8k7HHsO05DX4fEU95hcnlIJQhatoTSDj7OM
+	 C0p1LbvNzgMbUd/gz6Wlrk9fa70aFpn1bo1xfoKO9kw2pE2m3avpkpcWL63E5qR7Lt
+	 KrI2Mysw5nwJaSROnfUmdo7MIBoDkFv3yRePrvcMe+YZ4VBBcM7fc+vrVb2OHC/uRY
+	 +y+42WZXKYGi0WoKWWfZ4mKnYLSuZDImV2+VT65ihz/iUGJEr1/OSGKE5u+aT/wZMZ
+	 U2qK2416SImvhTBYb1y8L9DP1TPI5bufkN98x5e/mk3aSx6rl3PAgiIpqEYKgnrxdA
+	 +RyFx0NHMySkA==
+From: Mark Brown <broonie@kernel.org>
+To: Markus Klotzbuecher <mk@mkio.de>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-omap@vger.kernel.org, Sahaj Chaudhari <sahaj123.sc@gmail.com>, 
+ stable@vger.kernel.org
+In-Reply-To: <20261125161340.1218564-1-mk@mkio.de>
+References: <20261125161340.1218564-1-mk@mkio.de>
+Subject: Re: [PATCH] spi: omap2-mcspi: lock the DMA request bit updates
+Message-Id: <179571459583.142532.8153361107156627337.b4-ty@b4>
+Date: Thu, 26 Nov 2026 17:36:35 +0000
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -52,39 +59,46 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <179572080348.574449.10741878756352768496.git-patchwork-summary@kernel.org>
-Date: Thu, 26 Nov 2026 19:20:03 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1121; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=bRLqeyBKZI5LgkzqGH1B6e/M2DxPB/1CdZK68tYCWTU=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLI5+j2Djz0UO8PJdlHl5Ff2GJ729bMD7jv9eRzS/PwYj
+ /jmzpi8jlIWBjEuBlkxRZa4LO6X9SWv1/AdXNgGM4eVCWQIAxenAEzk/Q+G/0HbdqV8fngjdxvn
+ 7Wcr9Nqi7vZFTa/0MTLKSX0SYVPcPoOR4VXE34YjopxL7nsFqT60YvTd51Xvd6VuZ2Dksz5vs3P
+ KzAA=
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Hello:
+On Wed, 25 Nov 2026 17:13:40 +0100, Markus Klotzbuecher wrote:
+> spi: omap2-mcspi: lock the DMA request bit updates
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Applied to
 
-Series: spi: spi-ti-qspi: finalize message on transfer error
-  Submitter: Joseph CT Chan <jctchan@gmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1216552/
-  Lore link: https://lore.kernel.org/r/20261119191001.878454-1-jctchan@gmail.com
-    Patches: [v3,1/2] spi: spi-ti-qspi: finalize message on transfer error
-             [v3,2/2] spi: spi-ti-qspi: add a KUnit test for transfer error finalization
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
 
-Series: spi: spi-mux, core, ti-qspi: error handling, delay fixes, KUnit tests, and lock context annotations
-  Submitter: Joseph CT Chan <jctchan@gmail.com>
-  Patchwork: https://patchwork.kernel.org/series/1199263/
-  Lore link: https://lore.kernel.org/r/20261102163023.2574632-1-jctchan@gmail.com
-    Patches: [01/14] spi: unoptimize message when queuing it fails
-             [05/14] spi: spi-ti-qspi: finalize message on transfer error
+Thanks!
 
+[1/1] spi: omap2-mcspi: lock the DMA request bit updates
+      https://git.kernel.org/broonie/spi/c/a8e3a6453f2a
 
-Total patches: 4
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

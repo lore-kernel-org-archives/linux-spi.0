@@ -1,60 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=79.135.106.28
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.17
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795679225;
-	b=kxXI+KxHxOpJhrXPUcve2rLbXnB3kJWIibNIAXT82/GD4KAKhuQgiFCUa2VnuXmNLN97
-	 Ruu98LnKGCcSgGpESb1yj2ixM9lfxzqfhPJ1cA0p3HNDEzy47vC9jEJ1IBIAIrbgBix/K
-	 zU0q86qY6boiyczMyhFGAdum1rfvbUK5iueXkHnidsKbhanvUsPItGoQdPQbvY0qMouBM
-	 CYE726NUckMPJ2L4RhT+Iki6qfbszL2ikWmICUt8kGdJIMR5DjzLfI1C/fbpCJbr6EjhF
-	 O7rnBdJmBtzENVLW7G/fy0wd7u42I2TfvcfVWU0Da3E7nOXx2j2doP8f5iFsiE0v4rw==
+	t=1795680677;
+	b=ip+WitHlVvPIxRJP1SgZzVaoh7JIwstrXgEp+nw5ejD2+59shXN5xbf0ReIiCRGWiN2X
+	 t8PmrCwcpoReHb08KXAXuKGpaJd+J1Yj2mdGAkPguEmb+fCyyxisnMnV55u4Nct25OdTA
+	 B+FgQMvqjHDALOpO6ASd/MN4DQTXRWvm84BmhjyD6f1G2w87t0Uwd8Wbnj6qJ9Ro/uIiK
+	 W7xgdxrrtrnQ0CMJI5yP3XzmUFOhd3dR/go5CG+ncGtb+GGd2nvlSrY1WACX9uwJUFtfR
+	 ZjEVmcca/0iWbZpz57OkP9CZzmu/Vx42OaEylg0WDbnm2fRSopNDkXGzEGO09Ach3cw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795679225;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795680677;
 	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
 	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=UJo02l1mQ0uehbgfZzOdVT+lGxEStk6m8nYn67wZ5PI=;
-	b=kzpcX9icTKD/kcl+MhGVAFrS1GxOkb2JXsTy5lB9+/gYJefw5Wr3IVXUTLQ2a3RNvQvu
-	 DM4Q/y9ElBfChnPwuIlm+x7no6PC+1Kib/+P0m5CBGouHMLpY4VdUP4i5XOzW567ItYfY
-	 UmX6KsnVZ9HlsmRYy6aj18oStVmg8K2Fmvw/C6mwzx3YJWH4vjk1QXs9/VfEmWuQ7CIWz
-	 JjyxVCVoZwaYURZDjZxGiwmYGuTJRTUmn1wy+tZEi8j4xrmhLttgO315960B8TFn5X69g
-	 SOX5khs1reEOhnKhM4vxrki4Xpt3ejc9Wu4/fw0KOnqRfaISwry1k4qtbhqVCn0BcnA==
+	bh=kx8h+Ar+4Gc1qWaoobGzkg9ZynxpfsO5B9MeCPzrIdw=;
+	b=QfXIP4Mv0xxgqDbzDjtn5wUJTo5arTD8wOnX/1l7lVWFUsTmxDv+2drGcrYNJq9aoI1s
+	 zGbjvqiOtBOGe+X4Ckl4iSC9HNjsRx5bbjZRnnm/Ha1+VaiF6Q7LsYMEms5ZARUOGAMIX
+	 vPnbJsKsvNIzCBTofDu8CRgmlT+5dcTDEPjSqF97ELDeTX+3TLQtbpFvjOS3Jg/GcfUUt
+	 RtVoym+WkTcaV/wnWK70dF0IP4MG4CAYHMLJAtHc02vimN/FzdhnLiWKHRUNBnY+GiGhv
+	 bi+6iewdVvAs81iGPU/Q3ZiXgs+8Lb7HOirn3vQUrIv/fOzNjh5QYndIVewAJ7c7ADA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=protonmail.com;
 	spf=pass smtp.mailfrom=protonmail.com;
-	dkim=pass header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256 header.s=protonmail3 header.b=KbUuDHab;
-	arc=none smtp.remote-ip=79.135.106.28
-Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
+	dkim=pass header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256 header.s=protonmail3 header.b=Zdh3mf8Y;
+	arc=none smtp.remote-ip=109.224.244.17
+Received: from mail-24417.protonmail.ch (mail-24417.protonmail.ch [109.224.244.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDCC9606A31C
-	for <linux-spi@vger.kernel.org>; Thu, 26 Nov 2026 07:47:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BDCC9606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67B5606A31E;
+	Thu, 26 Nov 2026 08:11:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C67B5606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256 header.s=protonmail3 header.b=KbUuDHab
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256 header.s=protonmail3 header.b=Zdh3mf8Y
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1795679222; x=1795938422;
-	bh=UJo02l1mQ0uehbgfZzOdVT+lGxEStk6m8nYn67wZ5PI=;
+	s=protonmail3; t=1795680673; x=1795939873;
+	bh=kx8h+Ar+4Gc1qWaoobGzkg9ZynxpfsO5B9MeCPzrIdw=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=KbUuDHab3QGZ6vcSkm6e4V7lrGNVU+qERwBBTgOUU9CruBFEClSm0lb4SWSabiHrU
-	 iYzSkSL1s9h0jBhB7IySZGsWbSI3hQpaZ+mlu2hC7oH4cKg1tnYKj/aMrseLlN2/ny
-	 2u8SRd38peIAqFs2MbeiqOqnIa37LBrD91XkT3QcudO4et1zg3ktHizYRaB/FE1353
-	 TuBeSfK55r4ZKJBikuAVpeFvgYo9tofUWNRhKIH4CLGixdiyzYu/AWIVw2sGCj0/UW
-	 Kn04B8G3Tj7lzSd0hhqIzoz/yxFJGOQutGwuae/KDIBI+Y1edscITQdhUKuQjrKjEU
-	 x24MZonFJPWZw==
-Date: Thu, 26 Nov 2026 07:47:00 +0000
+	b=Zdh3mf8Ysd87iU3bY8C49poOuhDda4EevLwzGVf9g1ZyfEwOU/tAd1jpnLWIGqcYv
+	 7VHZM+bpTx4hUBBYmlw82aoCdxIdEStqu6SbH1LE6hjlD3Ckdm8ILyCNZxI/u13EHL
+	 Y2EZCWKrBn1ou6wtKYPr6rGxUbE1MjSNatlEN9uJamdJ++999OPHQ/OXq7mC/+PDjw
+	 exd7/5Au2mTVTuHHqYeM+Sx0Sc9eeT4qZyFbj3KdcFdWG1Dt1WZVL8EVwDzUHMRYAL
+	 hZesa1h+hDGUfar5TTU+la7ad9GpbLweV7sNw75+YV2d8KKb00d6ngJILCeCZjLxsE
+	 d0XNoLJwl/HEw==
+Date: Thu, 26 Nov 2026 08:11:07 +0000
 To: iasnezhkov@gmail.com
 From: Roman Vivchar <rva333@protonmail.com>
-Cc: broonie@kernel.org, matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, linux-spi@vger.kernel.org, linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: mt65xx: avoid division by zero when speed_hz is zero
-Message-ID: <UsigaM3gd0dy3bL2g5S_b22RuZ_wwX5dQycDFYjkyLdeI1wdx_2divHB0qOXJaSQF54AZXolxH84aoupe8F27HQomLvpAuoMWhehxOFk7aM=@protonmail.com>
-In-Reply-To: <20261126003314.49090-1-iasnezhkov@gmail.com>
-References: <20261126003314.49090-1-iasnezhkov@gmail.com>
+Cc: matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, broonie@kernel.org, flora.fu@mediatek.com, amergnat@baylibre.com, leilk.liu@mediatek.com, me@adomerle.pw, devicetree@vger.kernel.org, linux-spi@vger.kernel.org, linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/4] soc/spi: mediatek: Add MT6789 PMIC wrapper and SPI support
+Message-ID: <0Af_vuU3D7JCxCsHmjyJZCQhptiOPd3Y325yrg4ufwjT3C5cz6cgJxU4CHY4qfES7Hhzcb-sxm0o7dj-diOzMJPCcw5bSyrYi5CWUNsXQus=@protonmail.com>
+In-Reply-To: <20261126031001.27288-1-iasnezhkov@gmail.com>
+References: <20261126031001.27288-1-iasnezhkov@gmail.com>
 Feedback-ID: 173184497:user:proton
-X-Pm-Message-ID: bd172fa2e85f944e93f3e460554ef986a0a027ca
+X-Pm-Message-ID: f5e5584ad9f8c9446847ecc24663ff6184cab23b
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -67,58 +67,62 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thursday, November 26th, 2026 at 2:33 AM, Ilia Snezhkov via B4 Relay <de=
+On Thursday, November 26th, 2026 at 5:10 AM, Ilia Snezhkov via B4 Relay <de=
 vnull+iasnezhkov.gmail.com@kernel.org> wrote:
 
-> From: Ilia Snezhkov <iasnezhkov@gmail.com>
->=20
-> spi-mt65xx does not set host->max_speed_hz, so if a slave device omits
-> spi-max-frequency in DT and a transfer leaves speed_hz unset,
+> This series continues the stalled July 2025 MediaTek MT6789 (Helio G99)
+> initial bring-up patches originally posted by Arseniy Velikanov (on CC):
+> - pwrap v1: https://lore.kernel.org/linux-mediatek/20250715225746.1321-1-=
+me@adomerle.pw/
+> - spi v1:   https://lore.kernel.org/linux-mediatek/20250715231921.4527-1-=
+me@adomerle.pw/
+>
+> Original authorship and Signed-off-by are preserved on patches 1, 3,
+> and 4.
 
-It's better to set host->max_speed_hz instead. There's another division
-by zero in the mtk_spi_transfer_wait() for max_speed_hz.
+Why this series has both spi and pwrap? There's no dependency between
+them.
 
-> __spi_validate() passes speed_hz =3D=3D 0 to mtk_spi_prepare_transfer().
->=20
-> Because 0 < mdata->spi_clk_hz / 2 is true, DIV_ROUND_UP(mdata->spi_clk_hz=
-,
-> speed_hz) divides by zero (undefined behavior; on arm64 udiv returns 0,
-> which then underflows sck_time - 1 to 0xffff).
->=20
-> Guard the division on speed_hz !=3D 0 so zero speed falls back to div =3D=
- 1.
->=20
-> Found and drafted with an AI coding assistant.
+>
+> Changes since v2:
+> - Patch 2 (new): guard PWRAP_WDT_SRC_EN, PWRAP_WDT_SRC_EN_1, and cold
+>   pwrap_init() with !HAS_CAP(wrp->master->caps, PWRAP_CAP_ARB) so
+>   arbiter SoCs (MT6873, MT8195, MT6789) do not write wdt_src to offset
+>   0x0 (PWRAP_INIT_DONE2) during probe.
+> - Patch 3 (was 2/3): add [PWRAP_INT_FLG] =3D 0x458 and
+>   [PWRAP_INT_CLR] =3D 0x45C to mt6789_regs[] matching PMIF-SPI bank 3
+>   (INT_EN at 0x450, int_en_all =3D 0x180000) so pwrap_interrupt() does
+>   not clobber offset 0x0 and leave a level-high IRQ asserted.
+> - Patch 4 (was 3/3): renumbered to 4/4, unchanged.
+>
 
-This note should go below ---
+All notes about addressing review in your patches should go below ---,
+otherwise they will be included in the git history. Alternatively,
+you can put them right here.
 
 Best regards,
 Roman
 
-> Fixes: a568231f4632 ("spi: mediatek: Add spi bus for Mediatek MT8173")
-> Signed-off-by: Ilia Snezhkov <iasnezhkov@gmail.com>
-> ---
->  drivers/spi/spi-mt65xx.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-> index 8b4deef..2baea0c 100644
-> --- a/drivers/spi/spi-mt65xx.c
-> +++ b/drivers/spi/spi-mt65xx.c
-> @@ -509,7 +509,7 @@ static void mtk_spi_prepare_transfer(struct spi_contr=
-oller *host,
->  =09u32 div, sck_time, reg_val;
->  =09struct mtk_spi *mdata =3D spi_controller_get_devdata(host);
->=20
-> -=09if (speed_hz < mdata->spi_clk_hz / 2)
-> +=09if (speed_hz && speed_hz < mdata->spi_clk_hz / 2)
->  =09=09div =3D DIV_ROUND_UP(mdata->spi_clk_hz, speed_hz);
->  =09else
->  =09=09div =3D 1;
+> The v3 rebase and fixes were prepared with an AI coding assistant.
+>
+> Base: torvalds/linux master 4dce97c6c265.
+>
+> Arseniy Velikanov (3):
+>   dt-bindings: soc: mediatek: pwrap: Add compatible for MT6789
+>   soc: mediatek: mtk-pmic-pwrap: Add MT6789 support
+>   dt-bindings: spi: mediatek,spi-mt65xx: Add compatible for MT6789
+>
+> Ilia Snezhkov (1):
+>   soc: mediatek: mtk-pmic-pwrap: Skip WDT source and init on arbiter SoCs
+>
+>  .../bindings/soc/mediatek/mediatek,pwrap.yaml |  1 +
+>  .../bindings/spi/mediatek,spi-mt65xx.yaml     |  4 +++
+>  drivers/soc/mediatek/mtk-pmic-wrap.c          | 44 ++++++++++++++++---
+>  3 files changed, 43 insertions(+), 6 deletions(-)
+>
 > --
 > 2.54.0 (Apple Git-157)
->=20
->=20
->=20
->=20
+>
+>
+>
 >

@@ -1,74 +1,74 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795662610;
-	b=H8dg4S8mirW4D949UcHDSevg7M8a6G5OMZ5DDPmZ7RUG2X6DMQpTxEt1ihCO/InjOoqr
-	 CWkMrhxuVBg66NTdcH/itzB8fanHJRVn7Mihyyp08Nvp3lfcRCZLdNgugx/hr0GztZGqW
-	 NAoF95XqvN8tesnF4z0+55nvir83NZX3+mmERtFZyPbsNfGi65qn97NdfBff2A2FWkRbG
-	 N5q5a2jNYbWJgnVmwq41fM7PS8ucHtJOUe5nqpsVvovx17ITzwzNmWflgtNDnVFxroyZR
-	 y8GSqTWKClNFmp52wVUsI2EkLJvjvx7PuJEn/xs9u2bJ6g/p6wQrbFI69+mQuG+QzMQ==
+	t=1795662607;
+	b=a1WYpYnK/XK1WBHuiL3x64Wz8k+LbX1Tk3kggs7innCwp5STuhrYNILpbKvRlBZitB6Y
+	 Lse+1Cx4KfKqVVDhP8Gq2oE0LzPHKKN3HegM6fr/ROSARyP0hvbWTuhwNuLU5I7JzGSiO
+	 L6PGPyRn796pKABKOc/CoeUtafXu5YAVAgG0DIk0vDU5p5iM/dkzGMTlJlIku7Ekkrzmm
+	 NiK4ouId1CKlOTuwDlJWgK9IosETgAn4IU8eTBm5wUxGnTflp9ola/aXp3iBbxUDuAWsj
+	 RbGcAmG/s5rwPABnHA88/aDcRgfVkeodc341ItV466x51JMxc6r8ZeR50ijpADmYbuw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795662610;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795662607;
 	h=Received:DKIM-Signature:Received:From:To:Cc:Subject:Date:Message-Id:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key:X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=7bvCI+57wri+mzNR0HTW5gRIi4+VJmG0S1QXuuUNuew=;
-	b=L3ZY3OmF//m8z2wK9nQV10Jo1Z9G7V6S8ks6NGhMsY6GyPIHorj50TEiLFiaoa84MPxt
-	 XGLZHoRFITAKyzW1hmApztfWPOeaKYQXlWaFTVMdEU8U61bX6/uzFV6eVf39MYS3xeFum
-	 57eVf69jVN/SqNQDc2zd9wUWF1MKPS1gBKCeOOgcCLkWXgFRsmXVuNdckUlDSg/NbaSxn
-	 HlFX5OSvSYzEdlVbqhCz7NSchX0za61TDfYc016w3hQTVCYmbqAG7tRmW16zYzyRPwVKW
-	 Y/IKDjWhMgwSPoM3dyrHtcdiRGAxgRnVl6gVZ/dpbHkDKw0rRdc7rCD229YZ6Ui0Lng==
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=uHOK7KrGkaPUSjstehlKPZRXCrxWsl59afQRh8DG1TE=;
+	b=ThYV/SGeVGF9XdkJ2fzGVVno15HqK2o6qxLlACC8P2Qf+intj4Z6joKSGsyQ0Km8w9QL
+	 St3trs0NePjVroPfDzfhO4FhVtmFeQIARsn8m6CIVsnpZ+KwWbxt5vPVbE1hfcysF+2RV
+	 3DBAKNuuU/IiLMBFwJaQCDuMvASEiokXuAySL4c9M7/FtECjKxra0BgApVRBQQeym26+p
+	 VZwTtUzpANo22gx/mgJqlupXozw5aRP4TPvqnwA3rcbAFhgHPklMDETzn75OeWB6RBGyA
+	 iP5pqYbmeHFn5n3fBh6VT6GTfvOKXUOPw5zx1+Wiw7mavR0An84jlrMrjdn/9WgoFjw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eIFdvnsq;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NqF3Z4eS;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00832606A321;
-	Thu, 26 Nov 2026 03:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BCC1606A31E;
+	Thu, 26 Nov 2026 03:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eIFdvnsq
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NqF3Z4eS
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795662609;
-	b=0qbwzi95CvTMPDKyT5JscuLjQ50M4F04q3u7sFn0sE+6r5l0HliAjQCc7HKpGjpRlw0o
-	 Cev/KgUOp0voDDQqTK4uETO+WlJf7zq7PUkQ11ceSzewbla+lcmXf/QBkJoFseBbUPf3Q
-	 gOYozWmrsrg0BotOSz7u5jbwqe0pmD2hvxg/HDavYmO6I2lclmzHybacG80NbK9bgJqxX
-	 TQ6wVkHkYnVxZmpbXBGBiKuqFa8o7qUhRWLg8nTf7ETgk+JJrw//8ImupuhP9rxSSxD1L
-	 fgIb87Zhh+LPVbtv/8aXlpwvJc3oiIhVh+228E5sgKCEuGpsdMOXgpdv7Iu/3cZsKKA==
+	t=1795662607;
+	b=tQ88yuCnMKrRjJ3QuD2J2j/7d2OpChzcduaFsWuZ2mtNXjn7mASOhv5B01T8Q92MMDyR
+	 0QAhobUldUZ9b3QfEZJewav7cuyeTS8NVfUKkx3EA66IYPyo8kJwyX6UCYaZ+/ARDHbXj
+	 6TVe63XtCJQx7U1Ybm04ZoYjQe+Cwcjyq8hz37Ty2G/JsBX7iKLglx8sdVJrrdqmtbw+O
+	 y5XNW7whOLMhmICijmudST+WL0zOz/KUD3Dfcs9aJuxHr46D7YjQV89AuOCntAlhPijJZ
+	 6YuDSPzEnipT00PtnXyXwmdkL2ghDgY5Ty0D9NQlY57/AkG6lbMTRYdwhr9wIPWrFVw==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795662609;
+	c=relaxed/relaxed; t=1795662607;
 	h=DKIM-Signature:Received:From:To:Cc:Subject:Date:Message-Id:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key:X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=7bvCI+57wri+mzNR0HTW5gRIi4+VJmG0S1QXuuUNuew=;
-	b=wuA4VHQTKYoBsmQqz7qN1lqKmISGfMTR5bFXuL6+2IoWMRLOQTHat44os9kOj1oZNM5c
-	 EJLQfzi6SaW7i2utrlhnOamd2Nus15ppXXnWOegBGCnILeYBmgslWz7xiMdQP/BNbT9+p
-	 ykhPQVa80ZEv3pZslXzSrHJoK3+Zi+3xNWLDZ26jCf0rtRazRIYCmTF5dvhI9BbypC+bk
-	 immFHnyP1w+qN6G0BbVZDqBJDrgHkJhxoGuSZxpbQhWTUOi46B8MDjLBffY9pMGk0EIbM
-	 J8Ze+xh+juUglVyWucW7zmq99o2JWJxJ1dzo15W2l6Jkc3wt6aJ0Xzg4lva3/FrXLfA==
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=uHOK7KrGkaPUSjstehlKPZRXCrxWsl59afQRh8DG1TE=;
+	b=Dhk2Jp1JZmluu44YEwRkfeVeplIVONjV8spuqBvr99xGIFkmglvzkwBAF4Kd6pJCY1nG
+	 jB4HzsOykY6QSr6ccYumrx2DA+Z+BnVT3ZU/dlVE6TetP7lI0MNDYjj99EDhvuArkLkXf
+	 KI7464EAHT/e61i6GQs1uxFECwmExSsx6ZqDLHIrndDpvlX5/X1SR/krjBz1gSWLEPZqc
+	 q1E57e/TBQrBIhGyESn53/WmmnZV1hKTznAgTZaZG/bzJ6J/rPykTliJ5GcoeHtlk9cXy
+	 ubqGRM0BLf/ix0BWQ00fGolopXg5kKK3l5mf5molMq7OtHW4Cj2lytJoWhF4Hof0oOg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 4D8361F000C4;
+	by smtp.kernel.org (Postfix) with ESMTPS id 3D3B71F000C0;
 	Thu, 26 Nov 2026 03:10:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795662609;
-	bh=7bvCI+57wri+mzNR0HTW5gRIi4+VJmG0S1QXuuUNuew=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:Reply-To;
-	b=eIFdvnsqGw99Ft6VFpT3/ZVo66mugf32b1A3GYyEy0IJ7Uuyg0nBYpUsfezVQwd7d
-	 qsDoCDFq7k0xsFkzzE10FOBh2wh/CPAxCc2Vy1q2foG16zxw0RiK6abSsRJxqMzSJx
-	 Jg/kah+voTi/U3yqIUIojPK9NnJfB9NgWsdNvVLqIdtXITxgdwARyr7eLY4FpGKoiU
-	 4C3JZV/2pe2i18eic95MUae5LKxrqO6mlUpCrke0aq3Tbu3IRhA2a0Hn0V2x0REDDY
-	 T+VDb03eDXvL5NHB+emFs12QnHlPyIQYJ5rLbyk4BrV8Ch2n+ke6BiVWdPGJP8lJO4
-	 P5V7YPS9jywDA==
+	s=k20260515; t=1795662607;
+	bh=uHOK7KrGkaPUSjstehlKPZRXCrxWsl59afQRh8DG1TE=;
+	h=From:To:Cc:Subject:Date:Reply-To;
+	b=NqF3Z4eSMg4cbcNV3n90ddbF5nojdjAS/bGFj9+y2HJEnzuRLcFC1vnu63PAhg5JO
+	 xdCAQqGGte98ElXBp4dAZT/bTSfMOZyXR6N7LwznUk0BgBo36H19okR713JggxbGke
+	 5K09kDG7yuSflZ5zWiLZcvL0YyiHfDr9fl20WjGsVwvL6YXxLKsGIKoXu8sixiRpjh
+	 pJtNXWVZ1GPgrmkN4uwcq1adfbiqzXWSSe4ATDBmFKaxkEtB94cID9AeW5iw40AlZ8
+	 sLXd3yUlfSc/WHRwzG/AknNgOOqzcV3zfhqRkBcmA2OxVj6z/SUir4kH7hCQ0CZzzx
+	 Thw34N1tddtQQ==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id CF5BB4D1C1;
+	by lkml.kernel.org (Postfix) with ESMTP id AF89A4D1D9;
 	Thu, 26 Nov 2026 03:10:03 +0000 (UTC)
 From: Ilia Snezhkov via B4 Relay <devnull+iasnezhkov.gmail.com@kernel.org>
 To: matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, 
@@ -78,12 +78,10 @@ Cc: flora.fu@mediatek.com, amergnat@baylibre.com, leilk.liu@mediatek.com,
  me@adomerle.pw, devicetree@vger.kernel.org, linux-spi@vger.kernel.org, 
  linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
  linux-kernel@vger.kernel.org
-Subject: [PATCH v3 1/4] dt-bindings: soc: mediatek: pwrap: Add compatible
- for MT6789
-Date: Thu, 26 Nov 2026 03:10:02 +0000
-Message-Id: <20261126031001.27288-2-iasnezhkov@gmail.com>
-In-Reply-To: <20261126031001.27288-1-iasnezhkov@gmail.com>
-References: <20261126031001.27288-1-iasnezhkov@gmail.com>
+Subject: [PATCH v3 0/4] soc/spi: mediatek: Add MT6789 PMIC wrapper and SPI
+ support
+Date: Thu, 26 Nov 2026 03:10:01 +0000
+Message-Id: <20261126031001.27288-1-iasnezhkov@gmail.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -96,11 +94,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795662602; l=1071;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795662602; l=1679;
  i=iasnezhkov@gmail.com; s=mindone2026; h=from:subject:message-id;
- bh=LfmVvg7Aql2KLn2xC/sbkpfApa1X1JdB+MH4gLa495I=;
- b=d2eSehcrzHtooK0YqCNF5v8FmPES28TCUhN9VCRfVX/jwI8Ky6U7QVg5ZRxh8x9k58jwMrT4Z
- MT0yF/Oy9dcD1DZW5KJJSeSs01nu5Rk5nNbb3GOB6qM3qjxriCLglBx
+ bh=SSX2MYOf3hgS1EqmIn9zqqUiKL7h1Rp1ieInLyB7OCU=;
+ b=kZ4V4FHt5o6RJ84Bp3g3s0xjpvWPzQOsDjGML3O1B52VHOCFPMhhOum+G1PN6q3ETTWrCUKcU
+ ZUq2vfVPek7BUFMMOgYFhTO4q6ONCAGHkmYUEs1mxts+L7MRvCsmp34
 X-Developer-Key: i=iasnezhkov@gmail.com; a=ed25519;
  pk=hQgXfiWi4ukk2jh4BHu1vRVhg9BUivo//AFp50AKMag=
 X-Endpoint-Received: by B4 Relay for iasnezhkov@gmail.com/mindone2026 with
@@ -108,33 +106,43 @@ X-Endpoint-Received: by B4 Relay for iasnezhkov@gmail.com/mindone2026 with
 X-Original-From: Ilia Snezhkov <iasnezhkov@gmail.com>
 Reply-To: iasnezhkov@gmail.com
 
-From: Arseniy Velikanov <me@adomerle.pw>
+This series continues the stalled July 2025 MediaTek MT6789 (Helio G99)
+initial bring-up patches originally posted by Arseniy Velikanov (on CC):
+- pwrap v1: https://lore.kernel.org/linux-mediatek/20250715225746.1321-1-me@adomerle.pw/
+- spi v1:   https://lore.kernel.org/linux-mediatek/20250715231921.4527-1-me@adomerle.pw/
 
-Add a compatible for the PMIC Wrapper found on the MT6789 SoC.
+Original authorship and Signed-off-by are preserved on patches 1, 3,
+and 4.
 
-Signed-off-by: Arseniy Velikanov <me@adomerle.pw>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Ilia Snezhkov <iasnezhkov@gmail.com>
----
-Rebased onto v7.4-rc4 with Rob Herring's Acked-by from v1 preserved.
+Changes since v2:
+- Patch 2 (new): guard PWRAP_WDT_SRC_EN, PWRAP_WDT_SRC_EN_1, and cold
+  pwrap_init() with !HAS_CAP(wrp->master->caps, PWRAP_CAP_ARB) so
+  arbiter SoCs (MT6873, MT8195, MT6789) do not write wdt_src to offset
+  0x0 (PWRAP_INIT_DONE2) during probe.
+- Patch 3 (was 2/3): add [PWRAP_INT_FLG] = 0x458 and
+  [PWRAP_INT_CLR] = 0x45C to mt6789_regs[] matching PMIF-SPI bank 3
+  (INT_EN at 0x450, int_en_all = 0x180000) so pwrap_interrupt() does
+  not clobber offset 0x0 and leave a level-high IRQ asserted.
+- Patch 4 (was 3/3): renumbered to 4/4, unchanged.
 
- .../devicetree/bindings/soc/mediatek/mediatek,pwrap.yaml         | 1 +
- 1 file changed, 1 insertion(+)
+The v3 rebase and fixes were prepared with an AI coding assistant.
 
-diff --git a/Documentation/devicetree/bindings/soc/mediatek/mediatek,pwrap.yaml b/Documentation/devicetree/bindings/soc/mediatek/mediatek,pwrap.yaml
-index 79b7558..0c5ebf6 100644
---- a/Documentation/devicetree/bindings/soc/mediatek/mediatek,pwrap.yaml
-+++ b/Documentation/devicetree/bindings/soc/mediatek/mediatek,pwrap.yaml
-@@ -33,6 +33,7 @@ properties:
-               - mediatek,mt2701-pwrap
-               - mediatek,mt6765-pwrap
-               - mediatek,mt6779-pwrap
-+              - mediatek,mt6789-pwrap
-               - mediatek,mt6795-pwrap
-               - mediatek,mt6797-pwrap
-               - mediatek,mt6873-pwrap
+Base: torvalds/linux master 4dce97c6c265.
+
+Arseniy Velikanov (3):
+  dt-bindings: soc: mediatek: pwrap: Add compatible for MT6789
+  soc: mediatek: mtk-pmic-pwrap: Add MT6789 support
+  dt-bindings: spi: mediatek,spi-mt65xx: Add compatible for MT6789
+
+Ilia Snezhkov (1):
+  soc: mediatek: mtk-pmic-pwrap: Skip WDT source and init on arbiter SoCs
+
+ .../bindings/soc/mediatek/mediatek,pwrap.yaml |  1 +
+ .../bindings/spi/mediatek,spi-mt65xx.yaml     |  4 +++
+ drivers/soc/mediatek/mtk-pmic-wrap.c          | 44 ++++++++++++++++---
+ 3 files changed, 43 insertions(+), 6 deletions(-)
+
 -- 
 2.54.0 (Apple Git-157)
-
 
 

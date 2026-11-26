@@ -1,55 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795723089;
-	b=SmU/1XcNNdkrVgAhz5TZC8j2k48ige2hTOy4j9VunWmYu/c+XOxXYhAToC0wGdvaxNpE
-	 bwXSREjXiv9m2rzHFZbaguR9DTZq1EjHtIw+3IRsQoloBHQ8VD+MbGpqh6k21Z4lqYqnr
-	 aCA0gW+JKWxoc4h0fAocnMVnpFa1M0BhxQEhIcDXLszVW+yqoIL+vgdqd0FIw6WO1bweJ
-	 Hn30eHPSLptJdQ6sjrkoXwvyb0i30+TEftWAfRm+H0MuoSHiAWgYAMa5OW/X3eTLdAgta
-	 Zfw1aIchPfhGBB2wMMROGRNMl5Yd1TlK5Q2/bmTf+aKEMu2PeltVEzRBgGNYu+ev0SA==
+	t=1795723166;
+	b=NrJVA4pmSLNzDPv04t3R+E3HXvpBz1LMquK2ib5CRxnh+PJvIvj9q1UpSlVx8mEnixKF
+	 okhcsVK6d8DZDHnc/+nhWY8iz0oSjGGG8Ug/IMnuxfxC6BGO+2TI9/aREuWJu1zYryNL+
+	 QYd7xPcvKEDgOgyIHwmuUjLqCgyALFq+NsPlzVNyN0+JG99DTm30XBhtXe03JP5TpB4tB
+	 OjFrKnLHLrIJfuReHBKbg05dtsykTr37YxBDldWyc/BxSrYqOMnh706XK/e/WoGXiUJgS
+	 sbDL72w++ujaxovULh1XbzA66QGUjOqlldCeO/KA3mzpCA+CYNvmBfjW5uv8rOCRlHA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795723089;
-	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
-	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=o40ZMp6L9GWuLZgBO++kzbO4ADAkEmeck3FmFKYHjlQ=;
-	b=jMOIXviK0aOwBzcRrFAfAe4UDYGZcM6gWosXXKHkPeyPauK1jcMCae2O3Ezjg+beO/A6
-	 M6RaYOEsM1zPPtYb9cwA0a8BiAyUynYHHL+vDSYni5XcQVgw1pAk2YMfJqjmuQGiivTSq
-	 3TKHKkY7t2HiGCReajqBqEYeoAzMqEwwFyLoD8TmZVVnl519AecZXWcqW7WXOy8vPhe5c
-	 cVTJbJYGHKFL0FTY90YO5iFF7oYnJt1xHibUgmYe9nm3J5JQMA7OodgOtUPGixTV/6uCE
-	 Up5bdr5f5vTEToKY6Jbc49dg8vqxSjdpCItVuUYGJ0S23fm5cUGnHt+I1wU8am+G1lg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795723166;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
+	 X-Cookie;
+	bh=g7MSQ3YQKbEWyNo+t2pC7DSANAK7/eErvsEIaJ7+yZg=;
+	b=spT/dhsg8cPPXim/kMqaRmFiaabcT4FNChLQtbKnIBYr+MDb1UqWzANCtatYy0JRUnws
+	 Ch0wpZSGloTA00NLdWObA2gyrxQwpNGFrs2e9FvHqK6rl0j093oIXm7TyIPGDzVyxucis
+	 fbYT4MB6X5P8j1LHbMoSwhol8QTaRWqKRYb+xYaFqQgOcWVp/Bl6gdnBC2j2c+e7jJn4+
+	 gh2S+jU+2wzMLQOs6E2puYwajKvm3I6vptA23chuvFNZAj+vB44lXX6N38GyPtU999KY2
+	 +4tm5WYWEbk5Pf+BE1+HowvGS3GhaJ3VVcTBqnGaUKaV8yYYy7R2xcVdXA8wHHdK9GA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lHwQz4KV;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kJq+ydBA;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C1B606A31C
-	for <linux-spi@vger.kernel.org>; Thu, 26 Nov 2026 19:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB17D606A31C;
+	Thu, 26 Nov 2026 19:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lHwQz4KV
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C5971F000C0;
-	Thu, 26 Nov 2026 19:58:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kJq+ydBA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0818D1F000C0;
+	Thu, 26 Nov 2026 19:59:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795723088;
-	bh=o40ZMp6L9GWuLZgBO++kzbO4ADAkEmeck3FmFKYHjlQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=lHwQz4KVbOL8Dtx98oGZeCbNN0lwsbJqj9/lxN5GETrtkTyK49uSb2QdCn4fegZKC
-	 1qtlLDM7xbSuSsMfgq5WdDuxtgsAUjb7Ir+ji5QreBSRMGl/DfDrWQZI4xpZvuCUfM
-	 qke2Fi7ssSTFiFEJynXOmtR8NYCKZkHSqu2REyLbTuagwM+8cGfOLr4Ys7eaIyBnxK
-	 gbDfR1entLB5ahyg8upPQ6JFoAC1feA7WovkVsShDvBXZXvel38pab/WqDv8G6eJ3Z
-	 q51wRGHlx+nrB40+whykWahtiPP5YJKYDrnJn0AII26psRjFhQvyjk9pOK/w3qOZPn
-	 4D2rQFmzMFBFw==
+	s=k20260515; t=1795723166;
+	bh=g7MSQ3YQKbEWyNo+t2pC7DSANAK7/eErvsEIaJ7+yZg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kJq+ydBA6aCKTwUrlnP50MKiHfXYMFpUiJ4qIpmNhzNO/hm9UlXfTLbn5MaZabr+H
+	 En0XB6vqy4Oyjf3PJDff2IkFVDD+6tbYBuA6YtiAzpFO4YA6781zaRiJJ4dvl5r3Ie
+	 JUM3q+OZ/dzMSJ6HcXPg2k3IMYjXWj1NHxo4nTYVVrHmPKlHiCdWTHC6/JKS3vOl8U
+	 LYoNjJFmKuv0A+7ODmtnrkxd16/aQB3ZGhnPVA5NShmtN1aWGkgr8IGS8GTyCYzMm4
+	 ZEqPevMUldA4GSM3AffpxUhdeTDJOYUAxvHoblkD4pH6QnUzXatkqzlJKLew0R9xKO
+	 2gDzqBQejCwXw==
+Date: Thu, 26 Nov 2026 19:59:22 +0000
 From: Mark Brown <broonie@kernel.org>
-To: Srikanth Boyapally <srikanth.boyapally@amd.com>
-Cc: srikanthboyapally2026@gmail.com, linux-arm-kernel@lists.infradead.org, 
- michal.simek@amd.com, linux-spi@vger.kernel.org, git@amd.com
-In-Reply-To: <20261125-zynqmp_padding-v1-1-bc0f925fb898@amd.com>
-References: <20261125-zynqmp_padding-v1-1-bc0f925fb898@amd.com>
-Subject: Re: [PATCH] spi: spi-zynqmp-gqspi: Initialize padding in partial
- TX FIFO words
-Message-Id: <179571178855.142532.14702744978738116513.b4-ty@b4>
-Date: Thu, 26 Nov 2026 16:49:48 +0000
+To: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-spi@vger.kernel.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+Subject: Re: [RFC PATCH 0/2] spi: panic atomic transfers and fsl_lpspi support
+Message-ID: <4d07263e-348b-49df-9bda-f026b343b8ea@sirena.org.uk>
+References: <20261116094916.4039108-1-chunyuzhiqiang@yinhe.ht>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -59,46 +58,38 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1152; i=broonie@kernel.org;
- h=from:subject:message-id; bh=IIalJbyE8LsWWpe1urHO5EkM+LIwpwhzuPkHVsTPR40=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLI5+n0jN2q+35Zzt+q5riHrdI6YGsXS9ayLBLZNnvyg9
- BqTrO7LjlIWBjEuBlkxRZa4LO6X9SWv1/AdXNgGM4eVCWQIAxenAExESoSRocnllMnCbfd++jYa
- LJryVu6AcPiLWR2H4sSO1t2peHw2Yx8jw9Vtcvyt2nwCZ8rCw8I9d3qK7GuN+Zr9YLHq1XuZtR1
- XGQE=
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="LeEWDUlyL5ewRgyB"
+Content-Disposition: inline
+In-Reply-To: <20261116094916.4039108-1-chunyuzhiqiang@yinhe.ht>
+X-Cookie: Sank heaven for leetle curls.
 
-On Wed, 25 Nov 2026 23:12:50 +0530, Srikanth Boyapally wrote:
-> spi: spi-zynqmp-gqspi: Initialize padding in partial TX FIFO words
 
-Applied to
+--LeEWDUlyL5ewRgyB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
+On Mon, Nov 16, 2026 at 05:49:13PM +0800, ChunYuZhiQiang wrote:
+> This is a follow-up to Heiko Stuebner's "spi: Implement a atomic transfer
+> as a last resort" series.  These patches are based on that series; they
+> are not standalone.
 
-Thanks!
+This doesn't apply against current code (which has the above), please
+check and resend.
 
-[1/1] spi: spi-zynqmp-gqspi: Initialize padding in partial TX FIFO words
-      https://git.kernel.org/broonie/spi/c/f1fcf7e295c6
+--LeEWDUlyL5ewRgyB
+Content-Type: application/pgp-signature; name="signature.asc"
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+-----BEGIN PGP SIGNATURE-----
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmsIj5kACgkQJNaLcl1U
+h9CdzAf/cpv63PbfRocwOuxOnrKVr2PyKFKsv70Or0QWMmHVm0Tsm/pSNos2pSE4
+MO0WWLaRKuVF1rZwwkGv2mPZ33KBAk/mpmcW2OXak9tEJjQLX+5o7WhyUuOTjOT4
+J9IQDMRiKmlup1b3ggJVpvnTBzbXACqCrvFXCmbzfjtLoVkrsHzfJtEP8xoNDgpW
+u/8sjyDMdDjESOkygZKCE0SxhgFI9+JNpg0xmkEkPOLj4L4S5O9vA6DZFZtr7B2n
+OZ9T+2T6+PeG7yWSEZt2TWjamZqQq9WP1AkEMoniBZPYiMhg1Z/tcoouaWc4vIw2
+ChxZkbyCtDYyeWAqvRHydprg5ZXOFA==
+=FsxV
+-----END PGP SIGNATURE-----
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+--LeEWDUlyL5ewRgyB--

@@ -1,83 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795691362;
-	b=uE8CZsG4+cXjprzF0RLe33v0Gw20/yjBjEL5Eb+kUAgnyigmDjA3Sk0FWkYkXX9+p4WD
-	 cQUUYivx78PaT/0C1FNg291Kniyz4nNEZXBBljavEnND+E9wZYRFpOn3SMx+r2W14qveo
-	 dgQGjO4kZvQ2wAjPMLxPt/BTGE8DYMfIGzKS6hRmvSdrasVtE6DcOVz7sEhdEuVIH5Lwc
-	 Nf81FR3pvAjTj5itl6NrKUUc14taaiaM6sqZt1TICBKFEqRmHuOldo6QwXvzpZRMqimMm
-	 fduyRMGeHU8mi8STYH/TiWd1j0d7rJzfnZVKYNxhhTuduglia/nhL3fbdm/taHPe/3g==
+	t=1795693463;
+	b=AslB5gi4qTexrtnG88vyLAdagKgjjoz2tyc0c+9XysXuA3PwmDmgk1caVnVBLJbIq85x
+	 Hr2rbXSaoYejBhbGnmpBm3Y9heNs6FtiWJvyIc8yBWys0R0Rf/lkQrIiNGihnnNWO4jRu
+	 AYBMxvCnKBTAWU+VEdAxzaN6BqVgaJof13lwaW5IqNqzULWg8HNEPQrT977AbDEJgz1EF
+	 iaTO/3Uu8S0BECIAOdMbRzIUefNHoUS+9eUS0aokkjuJnCXPuMDDF4qk+QBQ/CbxnulvW
+	 sSIV8MI0QN4mpYFlpW/SphyAImD/wvZJ/DQ44UyYFeDM6uO6HNroMOyjk53eAtbwaKg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795691362;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
-	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=y1/wD7Wi9STowuQTsl3HDTiGkdek0lFr2Qc9ETyKkHc=;
-	b=NtqU1x6FBnt2q1Gb548hMKEIlIimhphGWexLr3b+XWCN0QtCEjVk07pVY3509Okqqei8
-	 B3FNQPD610pcVDl3ez6s2+LTgP0084/0E7EGDXZt/HV8RAYVdoXzS5gHe8JE4S5T8sQ5p
-	 peUQi230ME3W40SJ9kyLT1cKiyf5wwrDtRSvv9Mfi2UMfB39TS4JTus1bP4Cmca39QG7c
-	 6R84+Bc7/366NqeW801wdD5YmnTtOwieYdEThRR1Lq3E8L/hQNndFvaNrcc2a2oUyHtrv
-	 1Hk3M2jeMwKYudQ2G4IDA99Nshb4/blqMFuo2TTD/vROUYLeBZc8DklSf3Rzs4SpM0g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795693463;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
+	 X-Cookie;
+	bh=GPBJLsJh7gQ+qJXgr4h2BZwP0qjmmcfqj8Qsq6esC70=;
+	b=roAxDNJCbBTt8clH9u/TQrjtsxjI2vnLOUgRFB513CJa7b3E99ZSlA0xU4Vz/tSFPap4
+	 1W/NymA1slCMVpvG9u1lUKSayuV9gzEg8SHtT3ZtwZ/S17W7jaJCWsaTjVuM2y8z17Bok
+	 Ja+PKiV3Ccoxyan4LlKka7+T23VD84fMyg1ZKclN5rkCj8wMYcmE/x2v6Isx2LmODyt76
+	 ejn+aE7xHQBSYM7cx24ZNavG8UA8KCW7RmzHblJNhtkD3zKu78Nz0C0AC9dtAJmreRul7
+	 PZbbJSA7Z29bTYAh5ksI/17UpfLnttBQ0Erg+SUMzXPdrNG0G5b+U/0up+nPWGckTlA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=CT0q90WV;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I5KR91DZ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F27606A31C
-	for <linux-spi@vger.kernel.org>; Thu, 26 Nov 2026 11:09:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 70F27606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FB5606A31C;
+	Thu, 26 Nov 2026 11:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=CT0q90WV
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id AEB021A17E3;
-	Thu, 26 Nov 2026 11:09:19 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7CAF460237;
-	Thu, 26 Nov 2026 11:09:19 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A61D211E6B368;
-	Thu, 26 Nov 2026 12:09:06 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795691353; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=y1/wD7Wi9STowuQTsl3HDTiGkdek0lFr2Qc9ETyKkHc=;
-	b=CT0q90WVIJc4zyZoQOxtFRwovUp/lD1tvYC8y28IdlSTZHylCR+SJOmgbdnavDoSIkKJZ7
-	UQHzhfp1dRSy6+1mQ58pLkQKWb6rDLC50feZHn9Pd5znOcWpj7D5Q9l8chtedbMZd2oDLJ
-	ZmLDRvMzlrHQxZPH5Eic6XzwoJQMgIXhdfgkIsLG7EiBT8CbTTjEdoIHRCvVjU+Te4B3r8
-	AQFb4tWn9rZC2cYUS3f3KjYpHTHLUb6guHhBk2tbVLMW1Bfs4Eaee4bo7sjgUwuMgJ4yos
-	1IXLZNk6X6lqfWFueUY4owHyk7QJ2sJAxW6L5yGfOuj+wpDnU0wIA23rihiUPw==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Liang Yang <liang.yang@amlogic.com>,  Feng Chen <feng.chen@amlogic.com>,
-  Xianwei Zhao <xianwei.zhao@amlogic.com>,  Han Xu <han.xu@nxp.com>,  Conor
- Dooley <conor.dooley@microchip.com>,  Valentina Fernandez
- <valentina.fernandezalanis@microchip.com>,  Daire McNamara
- <daire.mcnamara@microchip.com>,  Haibo Chen <haibo.chen@nxp.com>,  Jyan
- Chou <jyanchou@realtek.com>,  Yu-Chun Lin <eleanor.lin@realtek.com>,
-  Maxime Coquelin <mcoquelin.stm32@gmail.com>,  Alexandre Torgue
- <alexandre.torgue@foss.st.com>,  Pratyush Yadav <pratyush@kernel.org>,
-  Michael Walle <mwalle@kernel.org>,  Takahiro Kuwano
- <takahiro.kuwano@infineon.com>,  Richard Weinberger <richard@nod.at>,
-  Vignesh Raghavendra <vigneshr@ti.com>,  Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>,  Alvin Zhou <alvinzhou@mxic.com.tw>,
-  Cheng Ming Lin <chengminglin@mxic.com.tw>,  linux-spi@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  linux-amlogic@lists.infradead.org,
-  imx@lists.linux.dev,  linux-riscv@lists.infradead.org,
-  linux-stm32@st-md-mailman.stormreply.com,
-  linux-arm-kernel@lists.infradead.org,  linux-mtd@lists.infradead.org
-Subject: Re: [PATCH RFC 00/16] spi: spi-mem: Express the dummy phase using
- cycles when relevant
-In-Reply-To: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
-	(Miquel Raynal's message of "Wed, 25 Nov 2026 18:51:14 +0100")
-References: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Thu, 26 Nov 2026 12:09:05 +0100
-Message-ID: <87wlpzx31q.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I5KR91DZ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60BF1F000C6;
+	Thu, 26 Nov 2026 11:44:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795693462;
+	bh=GPBJLsJh7gQ+qJXgr4h2BZwP0qjmmcfqj8Qsq6esC70=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=I5KR91DZ584LXSWHTtNd251Xc4KwiWYJ4AJRKVkJ1r0D3SY+CrS6hjK0ZdPxO5jcv
+	 zAp9f0i9i1SS6WnX2UkCWgy5XqFkqWskW3j87+iGXSBDb+wi+llCR1rYKEjuIWV4PP
+	 z61qtaLQefh0EyX7acLiYvq74cDIP+qycIP1IJMsHBh4Y30MYrHlmuxMbIE5UsJhN7
+	 OKeGpvBVZBngzFO5O5QA4O3UjAq0DhLMCG0Dy21gA0PbqV7gMwsjkZX9jBijwXU1XI
+	 +PkoElwyIKWl6JtcrzS0G6ZQ9OjM5Ylpoji0CCYNHI1Fi389eDBo8gi7PDPAxQdqDf
+	 wbFqknnn+UOSw==
+Date: Thu, 26 Nov 2026 11:44:17 +0000
+From: Mark Brown <broonie@kernel.org>
+To: iasnezhkov@gmail.com
+Cc: matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	flora.fu@mediatek.com, amergnat@baylibre.com,
+	leilk.liu@mediatek.com, me@adomerle.pw, devicetree@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] dt-bindings: spi: mediatek,spi-mt65xx: Add
+ compatible for MT6789
+Message-ID: <f42a3782-35d4-4bb1-8c72-0dc56b8e0642@sirena.org.uk>
+References: <20261126000711.16163-1-iasnezhkov@gmail.com>
+ <20261126000711.16163-4-iasnezhkov@gmail.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -87,27 +63,45 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="C66k9UD0zapb3tpO"
+Content-Disposition: inline
+In-Reply-To: <20261126000711.16163-4-iasnezhkov@gmail.com>
+X-Cookie: Sank heaven for leetle curls.
+
+
+--C66k9UD0zapb3tpO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
 
+On Thu, Nov 26, 2026 at 12:07:14AM +0000, Ilia Snezhkov via B4 Relay wrote:
+> From: Arseniy Velikanov <me@adomerle.pw>
+>=20
+> Add the SPI controller compatible for the MediaTek MT6789 SoC with
+> mediatek,mt6893-spi as its fallback compatible, addressing v1 review
+> feedback that MT6789 SPI is programming-model compatible with MT6893
+> without requiring a driver change.
 
-> Convert spi-mem, all the trivial spi-mem controller drivers and then
-> SPI NOR to use dummy cycles instead of dummy bytes. SPI NAND may come
-> later.
->
-> This is only build tested for the moment and sent as an RFC because this
-> topic has raised a lot of questions, there may be things I have
-> forgotten about, so I would like all parties to agree on the direction
-> before I commit into something cleaner. I bet Sashiko will also have
-> interesting feedback to make...
+Please submit patches using subject lines reflecting the style for the
+subsystem, this makes it easier for people to identify relevant patches.
+Look at what existing commits in the area you're changing are doing and
+make sure your subject lines visually resemble what they're doing.
+There's no need to resubmit to fix this alone.
 
-I made several trivial issues in the controller's conversions which
-triggered a lot of Sashiko answers expressing the feeling that the
-patchset was not ready. The important part clearly are the spi-mem
-changes, the modifications on top are almost independent follow-ups
-showing why this may be useful. Nevertheless, I'm gonna address all
-those issues and send a v2 with hopefully less obvious issues.
+--C66k9UD0zapb3tpO
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thanks,
-Miqu=C3=A8l
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmsIG5AACgkQJNaLcl1U
+h9DVLgf9ESvlliyKURSSkiS05SjNzqq0K0AUAZ+Lw1hNyfPT1cQbMLU6KGxATUFk
+aRW2i5ZdLBxZ/ZI75fPxOZpHGGX6yvY45i7bo8L66kHm5zk32j3zZGOJm6XT+O+H
+k0sxzD0y3YOiSmF0ba7Nb0WTwNX9lS70ws5v4f6/CmrESq3U51r/vpEQfv3e25gb
+sj4XZo7W9B2Bf2Bh48BLMfMZoWvHbw1k81oEw2pv7JY17v+s8zklfaL5ot4N3nwH
+7XIuIpNiVMRb0gdHLWBCYavSy2+pM/KPRkgtzgcNXhHx8TUxTvzhyLevA9HY3Lky
+LRlR90pFAqH7HtnmRnaTkE42bnRqRg==
+=FF7l
+-----END PGP SIGNATURE-----
+
+--C66k9UD0zapb3tpO--

@@ -1,92 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=79.135.106.28
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795674456;
-	b=l5+pAb5pFdU6vqtmT9XewjlGviE3OtYzP3YT/KWtVzu91WxsK+QYcUX2CPvjUJsF+X4R
-	 /VJl9EB4Rc+VUxqg4a7h0ERdeXw93J/Z7qdDa5ekM6J0Cmf1tX0b/D13K+xDInwtBJcE6
-	 TfiKKUA0Eq3YwzXyp4TzuTRvuoBAWkLAax79W49fZzcv6yXKpg9sS1qjhjKRTleIPB+Qw
-	 sx5C3A/5Y/nfOJhonEHfjw2FXwnx9QV3J363/c7c/mKnIBuIxeCUkQS4ot/be3H+ov5B4
-	 zIyIal8RBBSSn1KJWUKfm72BfG+kVb+SHrddYDA6HONKeK0SiMm8NJZPVJ4U2b6VtPQ==
+	t=1795679225;
+	b=kxXI+KxHxOpJhrXPUcve2rLbXnB3kJWIibNIAXT82/GD4KAKhuQgiFCUa2VnuXmNLN97
+	 Ruu98LnKGCcSgGpESb1yj2ixM9lfxzqfhPJ1cA0p3HNDEzy47vC9jEJ1IBIAIrbgBix/K
+	 zU0q86qY6boiyczMyhFGAdum1rfvbUK5iueXkHnidsKbhanvUsPItGoQdPQbvY0qMouBM
+	 CYE726NUckMPJ2L4RhT+Iki6qfbszL2ikWmICUt8kGdJIMR5DjzLfI1C/fbpCJbr6EjhF
+	 O7rnBdJmBtzENVLW7G/fy0wd7u42I2TfvcfVWU0Da3E7nOXx2j2doP8f5iFsiE0v4rw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795674456;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=RsKnYZ2E8rNUTMuCEjickezj/V8M/hHJIbnY/NMWVcQ=;
-	b=JEEAG05csxqIYxafXaZb6hZl09Uc6Xgwba9BNrV2jI4rPz0pMsIZp5+pP6zOkxuhRiE0
-	 FifwQnj43QWZfE+fEYL4F9RjNYNNtx1dvbE/9aMgW57dKBiS/02IfbwV9AsO+99c6phT5
-	 vL0roJyCAMCy/URdiza+Qo1KuGb+sz2XMpW4xwzQUN7ziHAW0+gmxkuYrwXaeIiOjuJP4
-	 giB+91LQZwS1Dj0ErT/0YMLDUGDUqDQwDK06DNBD3HFwKONJ0fb4lnnc2oJc3EBZE+fY0
-	 MxZFwNAhGbjutxE6W4CttiNgMckiB/E9pfhbBSv38skyyiJcT6vQwE/nEhKTaEY+4lw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795679225;
+	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
+	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=UJo02l1mQ0uehbgfZzOdVT+lGxEStk6m8nYn67wZ5PI=;
+	b=kzpcX9icTKD/kcl+MhGVAFrS1GxOkb2JXsTy5lB9+/gYJefw5Wr3IVXUTLQ2a3RNvQvu
+	 DM4Q/y9ElBfChnPwuIlm+x7no6PC+1Kib/+P0m5CBGouHMLpY4VdUP4i5XOzW567ItYfY
+	 UmX6KsnVZ9HlsmRYy6aj18oStVmg8K2Fmvw/C6mwzx3YJWH4vjk1QXs9/VfEmWuQ7CIWz
+	 JjyxVCVoZwaYURZDjZxGiwmYGuTJRTUmn1wy+tZEi8j4xrmhLttgO315960B8TFn5X69g
+	 SOX5khs1reEOhnKhM4vxrki4Xpt3ejc9Wu4/fw0KOnqRfaISwry1k4qtbhqVCn0BcnA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0XOwnmCz;
-	arc=none smtp.remote-ip=209.85.216.53
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=protonmail.com;
+	spf=pass smtp.mailfrom=protonmail.com;
+	dkim=pass header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256 header.s=protonmail3 header.b=KbUuDHab;
+	arc=none smtp.remote-ip=79.135.106.28
+Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDD0606A31E
-	for <linux-spi@vger.kernel.org>; Thu, 26 Nov 2026 06:27:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3BDD0606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDCC9606A31C
+	for <linux-spi@vger.kernel.org>; Thu, 26 Nov 2026 07:47:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BDCC9606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0XOwnmCz
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3ac78f4c10bso3184276a91.1
-        for <linux-spi@vger.kernel.org>; Wed, 25 Nov 2026 22:27:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795674454; x=1796279254; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RsKnYZ2E8rNUTMuCEjickezj/V8M/hHJIbnY/NMWVcQ=;
-        b=0XOwnmCzTDGf0x9VRmaVoGzWAWioDzfvw2VWEQkPAUNR/EJ/0ZlL+63pXnpiFWeSGl
-         Q+5rFbQBZdVduicnpEUpyFwMPLn3fo72RFmD5O1ofYFicJp1GuHDj2M4XStk8hO5S1No
-         Ne/mcRkiOwxEPsTwwIrFF9bRCId0EtiKb9+d/twj2c0fpNrF2MZDeog7IqeJxvd5VJLf
-         C+zKKE4seyjziIS6DYVPBSLpQ8zSwn665Wx8Qn1zNHdPgGXqcK7igekTOv9nz47J4m6P
-         VuyKZkPUBtiSMd0gV+Hi+/34bzN1KUtV3radSm/f3AdjY+13+Fdt6YOSZxTaZCzzU8SV
-         sCJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795674454; x=1796279254;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RsKnYZ2E8rNUTMuCEjickezj/V8M/hHJIbnY/NMWVcQ=;
-        b=OaqKRkSk7oPRUONrjBteSySG2VPD8p0AoPkJ0kZ9D/HiazDeQUAp83ImvcPE2FqJrM
-         PAYxe6ERJ+5UM5wwQwGjwFMVDp/UP5Dccl8q2g75NMkLQmmon4YU9TtP280clWMNn77x
-         AEnD9KUdeKFCOeKK8+X3MYqMfvzSdyBLAFBtJyo3TJpTlIk83TBFOpo6TZ2VF0EbR/T4
-         reaI7CxaUmmoYbJd0BxyWx1wIkr3CaVxqZwoem9yrqrU0yyi/CapFwVev1NTw0oKwMaU
-         GzV0vuOUVdB8JTi0zDrpBh3FGrWhB3b4GM40dpeAh6SSnmuSpbsnlJp8VFbarKD2DCtz
-         SKqg==
-X-Forwarded-Encrypted: i=1; AL+hErE7zLc3WqespTIQv2e47QxLbDuwrzPC6q3TkgHRw6cDVG4Vs8UP2Ib6OOOfMfKv9XQ/0EawN+uucFY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/HmtRBpeih2CDzZ/tgI0QshBvFM79rW/K8W074iR+3xb3M31Y4
-	BpNr5z9r9rqKtOqd8X2gUZ0OecVi/uJkrjoIpl16Q34Df9EidNpYTMtx
-X-Gm-Gg: AZFdTZcSaqy12LdI2UHsDUfK2vUWKfktetmaWWEZGtpsh18ak3jU3gkl3tMJB2QuxXD
-	SSNL1yj1fKxmiNBjb3tpOz87mj6+IZmZypAVv5P1Y+dIE26p7kAkO1EZh+SXGPe4PsGWWnirrGg
-	UKDY7fSZDA2EftLlk4kdboL35Dx45xI8f43kVXZbg/8voiCI0gLqGahVaaSObggqflXoQnrsu9N
-	/jwXen/a8sLLSfw5DyHAoc7WmTymkd/bHSBBIqfMiJwuw9m7lO20EJvxekU6zxF0+fkwtOuKzcH
-	jxFU6e3MnK1eFvIZugk8a+Yv4rc4cE4qzM0GXfEKkYK3MMlNKyfCP37RHbgMNkp883ADNKP+c15
-	ESG5gaEGhYehw0NnPY5SPG/c0xOp1OWN+w1zD7Wge+aqoBe52yJn3Air1y3quv+rabqya81qExV
-	YdeWk/XN3vAc7g+RranW3WVgbNnq5DRYepdt3RiFnwXnJJZfd2DmEdqvPcTQ6u+pk2CFMrEWirm
-	Qp9ooD1A975RElt8czarnY7fn/q5dyWEYZeOnajI28ajRVVnLg26PL9+mu80tvork9qWOTemBfa
-	v9+AaYKDcsWFfqf5zStvZ0uDipyjhX2J5itin2xlCRmrtDghuvoy98jVbEtEeUWdx6n0pBbZQMc
-	rlqhCfWfjvA/m10XJgN8e
-X-Received: by 2002:a17:90b:5287:b0:3ab:9c73:12e with SMTP id 98e67ed59e1d1-3b41c7c22c0mr19868266a91.6.1795674454345;
-        Wed, 25 Nov 2026 22:27:34 -0800 (PST)
-Received: from LDYT9Q2G2M.pvgl.sap.corp ([2a09:bac5:cad0:1caa::2db:4c])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b405d639fdsm34221015a91.10.2026.11.25.22.27.32
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 25 Nov 2026 22:27:33 -0800 (PST)
-From: Zhiqi Zhang <zhiqizhangg@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Zhiqi Zhang <zhiqizhangg@gmail.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] spi: dln2: validate frame sizes reported by device
-Date: Thu, 26 Nov 2026 14:27:28 +0800
-Message-ID: <20261126062728.82734-1-zhiqizhangg@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256 header.s=protonmail3 header.b=KbUuDHab
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1795679222; x=1795938422;
+	bh=UJo02l1mQ0uehbgfZzOdVT+lGxEStk6m8nYn67wZ5PI=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=KbUuDHab3QGZ6vcSkm6e4V7lrGNVU+qERwBBTgOUU9CruBFEClSm0lb4SWSabiHrU
+	 iYzSkSL1s9h0jBhB7IySZGsWbSI3hQpaZ+mlu2hC7oH4cKg1tnYKj/aMrseLlN2/ny
+	 2u8SRd38peIAqFs2MbeiqOqnIa37LBrD91XkT3QcudO4et1zg3ktHizYRaB/FE1353
+	 TuBeSfK55r4ZKJBikuAVpeFvgYo9tofUWNRhKIH4CLGixdiyzYu/AWIVw2sGCj0/UW
+	 Kn04B8G3Tj7lzSd0hhqIzoz/yxFJGOQutGwuae/KDIBI+Y1edscITQdhUKuQjrKjEU
+	 x24MZonFJPWZw==
+Date: Thu, 26 Nov 2026 07:47:00 +0000
+To: iasnezhkov@gmail.com
+From: Roman Vivchar <rva333@protonmail.com>
+Cc: broonie@kernel.org, matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, linux-spi@vger.kernel.org, linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] spi: mt65xx: avoid division by zero when speed_hz is zero
+Message-ID: <UsigaM3gd0dy3bL2g5S_b22RuZ_wwX5dQycDFYjkyLdeI1wdx_2divHB0qOXJaSQF54AZXolxH84aoupe8F27HQomLvpAuoMWhehxOFk7aM=@protonmail.com>
+In-Reply-To: <20261126003314.49090-1-iasnezhkov@gmail.com>
+References: <20261126003314.49090-1-iasnezhkov@gmail.com>
+Feedback-ID: 173184497:user:proton
+X-Pm-Message-ID: bd172fa2e85f944e93f3e460554ef986a0a027ca
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -96,73 +64,61 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-dln2_spi_get_supported_frame_sizes() builds the SPI bits_per_word_mask
-directly from the frame sizes reported by the DLN2 device. The response
-length is checked and the count is bounded, but an empty list and each
-advertised frame size are not validated.
+On Thursday, November 26th, 2026 at 2:33 AM, Ilia Snezhkov via B4 Relay <de=
+vnull+iasnezhkov.gmail.com@kernel.org> wrote:
 
-A zero count leaves bits_per_word_mask empty, which makes the SPI core
-fall back to treating the controller as if it had no explicit mask. A
-frame size of 0 makes BIT(rx->frame_sizes[i] - 1) evaluate a negative
-shift count. Values greater than 32 are outside the u32
-bits_per_word_mask representation used by the SPI core and can also
-trigger an out-of-bounds shift.
+> From: Ilia Snezhkov <iasnezhkov@gmail.com>
+>=20
+> spi-mt65xx does not set host->max_speed_hz, so if a slave device omits
+> spi-max-frequency in DT and a transfer leaves speed_hz unset,
 
-Reject an empty frame-size list and frame sizes outside 1..32 with
--EPROTO before adding them to the mask, and use SPI_BPW_MASK() to make
-the mask construction match the SPI core convention.
+It's better to set host->max_speed_hz instead. There's another division
+by zero in the mtk_spi_transfer_wait() for max_speed_hz.
 
-I found this while reviewing DLN2 capability parsing. Codex modified the
-code, and I reviewed the change.
+> __spi_validate() passes speed_hz =3D=3D 0 to mtk_spi_prepare_transfer().
+>=20
+> Because 0 < mdata->spi_clk_hz / 2 is true, DIV_ROUND_UP(mdata->spi_clk_hz=
+,
+> speed_hz) divides by zero (undefined behavior; on arm64 udiv returns 0,
+> which then underflows sck_time - 1 to 0xffff).
+>=20
+> Guard the division on speed_hz !=3D 0 so zero speed falls back to div =3D=
+ 1.
+>=20
+> Found and drafted with an AI coding assistant.
 
-Fixes: 3d8c0d749da3 ("spi: add support for DLN-2 USB-SPI adapter")
-Signed-off-by: Zhiqi Zhang <zhiqizhangg@gmail.com>
----
-Tested with ARCH=arm64 W=1 drivers/spi/spi-dln2.o and CONFIG_SPI_DLN2=m
-in a Docker gcc:16 environment.
+This note should go below ---
 
-I do not have DLN2 hardware for runtime testing.
+Best regards,
+Roman
 
- drivers/spi/spi-dln2.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/spi/spi-dln2.c b/drivers/spi/spi-dln2.c
-index 60085ed04a..ec673c650f 100644
---- a/drivers/spi/spi-dln2.c
-+++ b/drivers/spi/spi-dln2.c
-@@ -71,6 +71,7 @@
- #define DLN2_SPI_GET_MAX_DELAY_BETWEEN_FRAMES	DLN2_SPI_CMD(0x4C)
- 
- #define DLN2_SPI_MAX_XFER_SIZE			256
-+#define DLN2_SPI_MAX_FRAME_SIZE			32
- #define DLN2_SPI_BUF_SIZE			(DLN2_SPI_MAX_XFER_SIZE + 16)
- #define DLN2_SPI_ATTR_LEAVE_SS_LOW		BIT(0)
- #define DLN2_TRANSFERS_WAIT_COMPLETE		1
-@@ -336,12 +337,17 @@ static int dln2_spi_get_supported_frame_sizes(struct dln2_spi *dln2,
- 		return ret;
- 	if (rx_len < sizeof(*rx))
- 		return -EPROTO;
--	if (rx->count > ARRAY_SIZE(rx->frame_sizes))
-+	if (!rx->count || rx->count > ARRAY_SIZE(rx->frame_sizes))
- 		return -EPROTO;
- 
- 	*bpw_mask = 0;
--	for (i = 0; i < rx->count; i++)
--		*bpw_mask |= BIT(rx->frame_sizes[i] - 1);
-+	for (i = 0; i < rx->count; i++) {
-+		if (!rx->frame_sizes[i] ||
-+		    rx->frame_sizes[i] > DLN2_SPI_MAX_FRAME_SIZE)
-+			return -EPROTO;
-+
-+		*bpw_mask |= SPI_BPW_MASK(rx->frame_sizes[i]);
-+	}
- 
- 	dev_dbg(&dln2->pdev->dev, "bpw_mask = 0x%X\n", *bpw_mask);
- 
-
-base-commit: 7ccb044c27720d48175577080b851f047ddcfd1c
--- 
-2.54.0 (Apple Git-157)
-
+> Fixes: a568231f4632 ("spi: mediatek: Add spi bus for Mediatek MT8173")
+> Signed-off-by: Ilia Snezhkov <iasnezhkov@gmail.com>
+> ---
+>  drivers/spi/spi-mt65xx.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+> index 8b4deef..2baea0c 100644
+> --- a/drivers/spi/spi-mt65xx.c
+> +++ b/drivers/spi/spi-mt65xx.c
+> @@ -509,7 +509,7 @@ static void mtk_spi_prepare_transfer(struct spi_contr=
+oller *host,
+>  =09u32 div, sck_time, reg_val;
+>  =09struct mtk_spi *mdata =3D spi_controller_get_devdata(host);
+>=20
+> -=09if (speed_hz < mdata->spi_clk_hz / 2)
+> +=09if (speed_hz && speed_hz < mdata->spi_clk_hz / 2)
+>  =09=09div =3D DIV_ROUND_UP(mdata->spi_clk_hz, speed_hz);
+>  =09else
+>  =09=09div =3D 1;
+> --
+> 2.54.0 (Apple Git-157)
+>=20
+>=20
+>=20
+>=20
+>

@@ -1,89 +1,83 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795651649;
-	b=BuscN+DtXInxzbAn86MOOCIgmSZIgtc5HfSiy6Qr9YO04MpJmuZHnaWinX+gVlOli0UC
-	 eLW7wfl/Z4VThvYRLEFM/Q3C+hfR117IFoEi8r93j4NR27EyZqghX70/jwyt39pileDHU
-	 mC4TmBusFAzj88F7e1QjC0BfSB8xOaMFi6fRIlQ9R4ddpL0SZGj1UNPzmh1CkYtmtXC00
-	 7MA2nE5lEPn06tRV8CiAGTSilpSM5SCxZF7DNtoMqeBhtmOPKliMwrT5TpZ1R56jqMHrn
-	 XfJL/hUoNSx0zHV3V7NNwLv+QAEo7tmMhEduvCH94SZiJCMBkodPcmOeIej5Kl7z7cg==
+	t=1795653202;
+	b=KKtmTj1qxIzQhfoh/++EmJ2fS+F+Dr3BUOn1NEASTUiZwns77BTPFxcbgi8iUbmNadaE
+	 0xAyRmri/3avEc1Q/V/1ayiZ/pY0RjsCzJdWSPOBUBlE1UzeaWX+/aAaAP9CRqw7rIflT
+	 4/nTcD41AMIprYw1tmkoF9aD+QGyaFMYLTEhEv0VTH3IgEpgAn6Rh2yq5EtnGwbsgdEfT
+	 zTrLHsVr2nPir1o3z+3UE0b7OyF/0cfu0B1gMtSnFujfk9TKM9TyT8mK11DIIDH4nTQd2
+	 5yzql4CBrquorxrIX1YcfedIqUSrfiOpJi8xIDGSkHiwENd65YslcZaYWR1K6+0OTsA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795651649;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795653202;
 	h=Received:DKIM-Signature:Received:From:To:Cc:Subject:Date:Message-Id:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key:X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=ObL7qkms1Lrjmbt5Lzf0B1k2VOPxe5HsW6sjzBjmexA=;
-	b=xS4NW8AixbrtJW5EUWBV/qZ3evPVex3Jn0x/6W0bLZG2xy3eY490caUWyPY1gIJwaIYw
-	 cl2xKB3GQccSXmeZd1qrjEuUUlig96L308G0kmY6ZisSJGjiQSUXN/k214G1/Tv78yVvh
-	 ogsAIFhygBXn0EQioAE27+qtnq03P7OWkTYkApULnI/n3YQOIXsUI3g9dMLcaE12K2s9V
-	 qBcVqRWagAq0gTa92KpMA5CRZA6VVsxDTdNHF4AiSbi29WO0Klmt0oTK1IJVcTNZT+Wh5
-	 YAlzbs7Ak09ByEkyxUqc4eYtQRGiGIeGS7CCN9hsw/IMq0jPZm5SwNymJIYvXuT9Wwg==
+	 MIME-Version:Content-Type:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key:X-Endpoint-Received:X-Original-From:Reply-To:
+	 Content-Transfer-Encoding;
+	bh=QvMJOhFakPcL4F+qx6uzaaYRnxvtYK5E3EhTI8tmZKM=;
+	b=N2540JkBz4BTfwdsOHcpc5ylWvsgVn2fAqsCdJByNQHUbuwQT8AePBJI+C7pk3FsfPXM
+	 8+w/N0T7XJh2b6IeX9cH/0/+u6Yr9CfC0Ye3P4H8LSdaYkJ9Srzo7Qnz06GU+N1+c7hMh
+	 vmS2ndo6ARUTZG3Kn2ZiMeUC8u3LuMmk4x0UHxwu8Qy0d9hlBCutkTuzbPawtV0BZ6J75
+	 WeLVlYNDTzcIBWuzrh9nY6mGDqE1q+VO2mJWGwp7CSNl4mlZN4P8OnBLyJKEY46Y0By+u
+	 GTZ9E+42sc5wL/BV2/80tfynBjPJSCzGxO2CqvcSCbU9CyixKqaR8vId+UeLAVuguEA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HdbvsjmF;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kF996sml;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56986606A681;
-	Thu, 26 Nov 2026 00:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8AFA606A680;
+	Thu, 26 Nov 2026 00:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HdbvsjmF
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kF996sml
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795651649;
-	b=OLBFJqnyiAq4VZP7MzWQXFOnE7QN3V7nqHRe+RSx7/I1V28vRCPQ5tAPBXdRzq2Jv8qd
-	 dpSoTuM8axa77fbjVK4sNdrhLL/nLl2D5oMGt4jRhFI3acNrOcXB4iBOjce3v2OJxdceE
-	 MqU7fiIOKBXMwz9k78AwdfogVOLHbDMhfmQFyXmDpyQxQXvK1V8WoyNeQnSWyn2w7Kd8m
-	 HPt/C7U1HZX+IEVZNcwmpeA9V9MbMLzBImroqbF2hpq7D2qConBwEyDdYikeQcF5CUS7c
-	 xgkpUg5LzCbClXkkFakRCElnz9sjvH0U8RPj1gG7XOf6JNW1TC6y8RtKi6PFSGtnZiw==
+	t=1795653202;
+	b=Lnro5f6OwnHz42H1dXVcEwT2EDEUphyxP26ZCTxJUa6k1ULHc3Z13bEGZ7yWUyNXpGUH
+	 S9CNIPwqvgwYHOjvnnV6Sz2lWyhCPiVpwDWn5c8d/1Qzz/6uHdd+rB8eH4qGK0ZsjSZdF
+	 7ry2nO8gdfQ+ZZodpK7A0OSzA16W7XXrJLEGIRbm6ytigGH4jF6DLkMExwEY+beLwEYWS
+	 SbLjUVFnaJBVbBGWfpWgfhpI70gZnltqej123TNW5rVqdDYF8C/HQ4XNdjgiIOohx/qTB
+	 Z5bHDWS8QLqJgt0HMdSWuIJb4Sr4HTwV4WvOLACxU3HfBJ5sUWpRK1OB5ZQCfGaqcng==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795651649;
+	c=relaxed/relaxed; t=1795653202;
 	h=DKIM-Signature:Received:From:To:Cc:Subject:Date:Message-Id:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key:X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=ObL7qkms1Lrjmbt5Lzf0B1k2VOPxe5HsW6sjzBjmexA=;
-	b=vQU6J6kHBhnFvUYwKLYhojMFcPSgLIldnlesDmuY5iXwqGwoOuX+xEtOV5+i/mTjDBuy
-	 T9J5+Rv3xclEfxjdYJY1zVazk1aCztZYZdqVNYXhBBuE+uMiPvylCdYKLq3v3eGrdK+2f
-	 6937/8a1gWjd3eQCQDLBJAna4qXM8D4WbXC2JjFTTO2+/F4hzXM62V0Gk59SAUKuwg/Ea
-	 SUiiEAiXRRxkq5myGTkAuYBjl6QCG+2ubW0bSyrSxbNQSSFsRio2x25aRSSRfpA2RtSRl
-	 k8k1KLwOUUKMcXQazEe/2Ze8KL5RDmwnDV6ZhGutSkoq7nZXwpoSwyz7DhRRXfO1F8A==
+	 MIME-Version:Content-Type:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key:X-Endpoint-Received:X-Original-From:Reply-To:
+	 Content-Transfer-Encoding;
+	bh=QvMJOhFakPcL4F+qx6uzaaYRnxvtYK5E3EhTI8tmZKM=;
+	b=F+XTi5CBM6mkqza1uZMHiJLcDvohoFnnT9xGzVWNftP7R568ZOXow0bgtY+j/DhCX0ZP
+	 C9svfNlqmMikDItvhfwk0/gX6hue7i+5yeXi6ty0mWh/RQnW9m5+5OpBgs47zrovu7Ibf
+	 Hllj6hg4ntkxGA3oIRFEUWTTJuAgAteXZjecwWWFqqwsx//w/U6CYTt+nIT88yBzjPpr4
+	 PihjmxVENmoCV5p4wZ4m4hBYybMtoYutT2GCVjHJiWV/JGRxdvQkfTJRuX1t0bK7XVuKz
+	 qJqm+RKrVP+aLyi4cNdF95T7Cb6HdBDrnvfW+btfWlo3AkgdDwbjdN66hVZA6EWi0Fw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id AE21F1F000CA;
-	Thu, 26 Nov 2026 00:07:14 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id E163B1F000C0;
+	Thu, 26 Nov 2026 00:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795651649;
-	bh=ObL7qkms1Lrjmbt5Lzf0B1k2VOPxe5HsW6sjzBjmexA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:Reply-To;
-	b=HdbvsjmFLf2ieillUX2Gq8I6S3IrI0jfvuEX3uciFwnDvK0xNhq/IOTOSOJb2eCug
-	 fzc+sE5O2UtVipTuPCTlqXiiocvq14H/T6dC96c1wJ/QGu3p3ilx/KlUEWSKi2Kl/p
-	 Vv7ayBkbcY4MgcXbzKBcxK5GUofboi7iEnTG8TWrprTGwMQrBNuHgyprwkS3RdDIyL
-	 Qo2F61x1Mm1zxJyaEJ1NgCZW8Au2xN08TcCOBJFaGYWsjaxmkQ8IwcSFkYc82aWuno
-	 0TiQYJT3tLJFLbjfQZCc+lqofBL1i+Miluy5hyCqtlBWMbIeR0ET4bBA6wMsO522aS
-	 ZpsHnuY850ebw==
+	s=k20260515; t=1795653202;
+	bh=QvMJOhFakPcL4F+qx6uzaaYRnxvtYK5E3EhTI8tmZKM=;
+	h=From:To:Cc:Subject:Date:Reply-To;
+	b=kF996sml7XULg/eXZv6SVRtoUqqIxbny8RXxFadJWQvCuUwQsR77bvosbqNFR+fUc
+	 yWZJMiN217dJt2/ymO7uQHr8RCe2Y6IRDdyd5OXywS/g/QqMrS/+mCAPd6IdybR+bF
+	 f5azS/4iFFZTcURYX0nAqODTa0IXn0efN2Ilf+UbUiJQRplmBrOf6YriZVN5WhpQds
+	 t5jvoDdR48NiUSWOpyLlw3NivcB5+5ge8zMWtCZ4/ZZ9AYMRO5yrcEs9NcXzEBWzmm
+	 wrK3/RL9v0SiFRYGiYXTEI/tQ/oKS+QqbOejXxpxWBnOrZYuNeGFuARZFTB+tOoBkT
+	 0sCdqXyNgRGhg==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 7F2DA4D0F6;
-	Thu, 26 Nov 2026 00:07:12 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 78EF64D108;
+	Thu, 26 Nov 2026 00:33:15 +0000 (UTC)
 From: Ilia Snezhkov via B4 Relay <devnull+iasnezhkov.gmail.com@kernel.org>
-To: matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, 
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
- broonie@kernel.org
-Cc: flora.fu@mediatek.com, amergnat@baylibre.com, leilk.liu@mediatek.com, 
- me@adomerle.pw, devicetree@vger.kernel.org, linux-spi@vger.kernel.org, 
- linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/3] dt-bindings: spi: mediatek,spi-mt65xx: Add
- compatible for MT6789
-Date: Thu, 26 Nov 2026 00:07:14 +0000
-Message-Id: <20261126000711.16163-4-iasnezhkov@gmail.com>
-In-Reply-To: <20261126000711.16163-1-iasnezhkov@gmail.com>
-References: <20261126000711.16163-1-iasnezhkov@gmail.com>
+To: broonie@kernel.org
+Cc: matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, 
+ linux-spi@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] spi: mt65xx: avoid division by zero when speed_hz is zero
+Date: Thu, 26 Nov 2026 00:33:14 +0000
+Message-Id: <20261126003314.49090-1-iasnezhkov@gmail.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -94,48 +88,53 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795651631; l=1154;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795653194; l=1286;
  i=iasnezhkov@gmail.com; s=mindone2026; h=from:subject:message-id;
- bh=V05m+8yF0Wxx4QXUx+4PM5IgqsffZt/x6aXxrp5Z1ew=;
- b=FlKE24zOWLr4KgLWaciPdna+6VFGJLGSaPgHPx8jDrL2p+sV1qICbgSAYGSd/ewv0RmWAriEH
- w16ZRglq/4sDeewna2FSUy3uzxmclhf8kcOoHvt8aPELZY6jzHOJ99p
+ bh=EATIDf77MiZZ99Ojdza/GsLWfdou7DzHCfNg7tDlYcg=;
+ b=m7g3ptY0Ru5dhWfJGTBqNbiQNerQr4f2yzwodq/jQ8gf+QSArAGoVHVqHF7s32M3MRClM0Hf2
+ hIs6EkndoZdCrsClfyjPaDDv6MQjUW3jvMI+SPbRtejjwvQytiEty2X
 X-Developer-Key: i=iasnezhkov@gmail.com; a=ed25519;
  pk=hQgXfiWi4ukk2jh4BHu1vRVhg9BUivo//AFp50AKMag=
 X-Endpoint-Received: by B4 Relay for iasnezhkov@gmail.com/mindone2026 with
  auth_id=1643
 X-Original-From: Ilia Snezhkov <iasnezhkov@gmail.com>
 Reply-To: iasnezhkov@gmail.com
+Content-Transfer-Encoding: 7bit
 
-From: Arseniy Velikanov <me@adomerle.pw>
+From: Ilia Snezhkov <iasnezhkov@gmail.com>
 
-Add the SPI controller compatible for the MediaTek MT6789 SoC with
-mediatek,mt6893-spi as its fallback compatible, addressing v1 review
-feedback that MT6789 SPI is programming-model compatible with MT6893
-without requiring a driver change.
+spi-mt65xx does not set host->max_speed_hz, so if a slave device omits
+spi-max-frequency in DT and a transfer leaves speed_hz unset,
+__spi_validate() passes speed_hz == 0 to mtk_spi_prepare_transfer().
 
-Signed-off-by: Arseniy Velikanov <me@adomerle.pw>
+Because 0 < mdata->spi_clk_hz / 2 is true, DIV_ROUND_UP(mdata->spi_clk_hz,
+speed_hz) divides by zero (undefined behavior; on arm64 udiv returns 0,
+which then underflows sck_time - 1 to 0xffff).
+
+Guard the division on speed_hz != 0 so zero speed falls back to div = 1.
+
+Found and drafted with an AI coding assistant.
+
+Fixes: a568231f4632 ("spi: mediatek: Add spi bus for Mediatek MT8173")
 Signed-off-by: Ilia Snezhkov <iasnezhkov@gmail.com>
 ---
- .../devicetree/bindings/spi/mediatek,spi-mt65xx.yaml          | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi-mt65xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml b/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
-index 3bf3eb1..7d82369 100644
---- a/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
-+++ b/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
-@@ -39,6 +39,10 @@ properties:
-               - mediatek,mt7988-spi-single
-               - mediatek,mt8188-spi-ipm
-           - const: mediatek,spi-ipm
-+      - items:
-+          - enum:
-+              - mediatek,mt6789-spi
-+          - const: mediatek,mt6893-spi
-       - items:
-           - enum:
-               - mediatek,mt8196-spi
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 8b4deef..2baea0c 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -509,7 +509,7 @@ static void mtk_spi_prepare_transfer(struct spi_controller *host,
+ 	u32 div, sck_time, reg_val;
+ 	struct mtk_spi *mdata = spi_controller_get_devdata(host);
+ 
+-	if (speed_hz < mdata->spi_clk_hz / 2)
++	if (speed_hz && speed_hz < mdata->spi_clk_hz / 2)
+ 		div = DIV_ROUND_UP(mdata->spi_clk_hz, speed_hz);
+ 	else
+ 		div = 1;
 -- 
 2.54.0 (Apple Git-157)
 

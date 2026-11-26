@@ -1,59 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795693463;
-	b=AslB5gi4qTexrtnG88vyLAdagKgjjoz2tyc0c+9XysXuA3PwmDmgk1caVnVBLJbIq85x
-	 Hr2rbXSaoYejBhbGnmpBm3Y9heNs6FtiWJvyIc8yBWys0R0Rf/lkQrIiNGihnnNWO4jRu
-	 AYBMxvCnKBTAWU+VEdAxzaN6BqVgaJof13lwaW5IqNqzULWg8HNEPQrT977AbDEJgz1EF
-	 iaTO/3Uu8S0BECIAOdMbRzIUefNHoUS+9eUS0aokkjuJnCXPuMDDF4qk+QBQ/CbxnulvW
-	 sSIV8MI0QN4mpYFlpW/SphyAImD/wvZJ/DQ44UyYFeDM6uO6HNroMOyjk53eAtbwaKg==
+	t=1795708623;
+	b=lvJRJjLma5hLuc8kQ1CfQF0DPIXQhZkAUONqR6+f0oFKdO+hBaIM61SQ5CnsuJ7DPIoF
+	 2ugmRy1gWeQ4IxJHkw7sVVDEpGZfiwVUOB28VTF315PooOS3bF1a0Dig+XKr4QDvrT3GU
+	 RNYiCTm5KFHJgcKk2WGN8kxYp+ZdiaUKWkk0g7T8JK08mFXI2USwe0OadV6dgWjmjFfqe
+	 Y5XhZ82+P9DvsSicGihKRkt5gb+3694lNuRmyDYBrc5fvPBJ5ZoBCJ3miK42A+nxAE5oK
+	 QNti8AjDr3Yjf6LVPc8tQwOXKVQKYHOWwYV21/sY3YWY05oadLC65ejmD5RzefzS8Eg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795693463;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-Cookie;
-	bh=GPBJLsJh7gQ+qJXgr4h2BZwP0qjmmcfqj8Qsq6esC70=;
-	b=roAxDNJCbBTt8clH9u/TQrjtsxjI2vnLOUgRFB513CJa7b3E99ZSlA0xU4Vz/tSFPap4
-	 1W/NymA1slCMVpvG9u1lUKSayuV9gzEg8SHtT3ZtwZ/S17W7jaJCWsaTjVuM2y8z17Bok
-	 Ja+PKiV3Ccoxyan4LlKka7+T23VD84fMyg1ZKclN5rkCj8wMYcmE/x2v6Isx2LmODyt76
-	 ejn+aE7xHQBSYM7cx24ZNavG8UA8KCW7RmzHblJNhtkD3zKu78Nz0C0AC9dtAJmreRul7
-	 PZbbJSA7Z29bTYAh5ksI/17UpfLnttBQ0Erg+SUMzXPdrNG0G5b+U/0up+nPWGckTlA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795708623;
+	h=Received:DKIM-Signature:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
+	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=gUF18AwME3azUVhVd8I4pOcDJhpPq1HSS0ogGBT3ngE=;
+	b=eMFyVupCw9vpQbiyrPbl9YIgRB2dDcs2NvRiOqS0WK5fS/vek8Idb91YrFot8WBrsZC/
+	 hhysWcJ9ei7ftYwRojJ+Yrf/ItAnZatotsK3garXSiDTHmPKfadpMAfLjhUcbiILzXkiP
+	 Wobj45vxTUZ6jRxDGFHDipxzpGpUJD+fPpnaQ4wA50R99PE+i+6PnDeOMY/YztKyy7aV/
+	 CJgGySsZSqyBxVJxelT3NmZLKdWbpF4jxCPhJlCW3XktcCSfWAgn0tasbhxXfM9km/wlF
+	 wJAEE6xURHX2qCJoOKV5QSeGifojA+0xXE/VHjFcTJQJrHC9xfmtrPvDQx44crsgvNQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I5KR91DZ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Kc0z8L6p;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FB5606A31C;
-	Thu, 26 Nov 2026 11:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D88606A31C
+	for <linux-spi@vger.kernel.org>; Thu, 26 Nov 2026 15:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I5KR91DZ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60BF1F000C6;
-	Thu, 26 Nov 2026 11:44:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Kc0z8L6p
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B569D1F000C4;
+	Thu, 26 Nov 2026 15:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795693462;
-	bh=GPBJLsJh7gQ+qJXgr4h2BZwP0qjmmcfqj8Qsq6esC70=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=I5KR91DZ584LXSWHTtNd251Xc4KwiWYJ4AJRKVkJ1r0D3SY+CrS6hjK0ZdPxO5jcv
-	 zAp9f0i9i1SS6WnX2UkCWgy5XqFkqWskW3j87+iGXSBDb+wi+llCR1rYKEjuIWV4PP
-	 z61qtaLQefh0EyX7acLiYvq74cDIP+qycIP1IJMsHBh4Y30MYrHlmuxMbIE5UsJhN7
-	 OKeGpvBVZBngzFO5O5QA4O3UjAq0DhLMCG0Dy21gA0PbqV7gMwsjkZX9jBijwXU1XI
-	 +PkoElwyIKWl6JtcrzS0G6ZQ9OjM5Ylpoji0CCYNHI1Fi389eDBo8gi7PDPAxQdqDf
-	 wbFqknnn+UOSw==
-Date: Thu, 26 Nov 2026 11:44:17 +0000
-From: Mark Brown <broonie@kernel.org>
-To: iasnezhkov@gmail.com
-Cc: matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	flora.fu@mediatek.com, amergnat@baylibre.com,
-	leilk.liu@mediatek.com, me@adomerle.pw, devicetree@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] dt-bindings: spi: mediatek,spi-mt65xx: Add
- compatible for MT6789
-Message-ID: <f42a3782-35d4-4bb1-8c72-0dc56b8e0642@sirena.org.uk>
-References: <20261126000711.16163-1-iasnezhkov@gmail.com>
- <20261126000711.16163-4-iasnezhkov@gmail.com>
+	s=k20260515; t=1795708622;
+	bh=gUF18AwME3azUVhVd8I4pOcDJhpPq1HSS0ogGBT3ngE=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=Kc0z8L6pIKfWCRq2AZVL00BjOMT551JPyql/1qKfsquM/jp+xTO+MnBorAkr4m+F3
+	 3BYYj6oeupW1J8gs3m+3oE9tRlW5nwhylD4AOdXRVxPY8BwpnoaJOa6fLpDne6TGtz
+	 SWt/mg5n7aBnDS4KIeQ5L6MxRb0QWdcR6ilzRBstIiiotMZrU18iGJcBr5tlyHpVHJ
+	 hSfnlngk/gnm4BGTCud0yMnzmu/UNqG1flKD8UKoAh+JMbSCl11vJ8o34K8vo+iqWh
+	 9rsP+M1mlbnmYDxlGjASe82lBy4tCHs2i2xxexod7k1VIyN9yRSr71QZuAEkIwaV6R
+	 fcq2yt/7Xm4GQ==
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -63,45 +49,64 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="C66k9UD0zapb3tpO"
-Content-Disposition: inline
-In-Reply-To: <20261126000711.16163-4-iasnezhkov@gmail.com>
-X-Cookie: Sank heaven for leetle curls.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] spi: cadence-quadspi: Stop controller on shutdown
+From: Mark Brown <broonie@kernel.org>
+To: Srikanth Boyapally <srikanth.boyapally@amd.com>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org, 
+ michal.simek@amd.com, git@amd.com, 
+ Mohammad Zeeshan <zeeshan.mohammad2@amd.com>
+In-Reply-To: <20261126-ospi_shutdown_v1-v1-1-5aa6e65d76d7@amd.com>
+References: <20261126-ospi_shutdown_v1-v1-1-5aa6e65d76d7@amd.com>
+Date: Thu, 26 Nov 2026 15:56:58 +0000
+Message-Id: <179570861879.142532.8629241586962212713.b4-review@b4>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1498; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=qmoFrJ56+KRGEpf6c6KsM2IHJBOdpVWxzoSnhWSiPjE=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLI5ws70pH/++vWMw4QvzUunJYVdX3Vd3Wb5/58fzjltO
+ mXq61mj21HKwiDGxSArpsgSl8X9sr7k9Rq+gwvbYOawMoEMYeDiFICJ8H1lZLhyQScjbVvx+jdh
+ OlbfFZd+1p76SOKB/n/7F+rC72+v+n2N4ReT8f62gFv68U13ZP9+3d11bJpSUpMye/tidv3vFnd
+ mdfACAA==
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
+> Stop the Cadence QSPI controller during an orderly reboot or kexec so
+> the next boot stage can take over the hardware.
 
---C66k9UD0zapb3tpO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Reject new SPI memory operations and suspend the SPI controller to
+> drain operations already holding the bus lock. If runtime PM has
+> already stopped the hardware, skip the register accesses.
 
-On Thu, Nov 26, 2026 at 12:07:14AM +0000, Ilia Snezhkov via B4 Relay wrote:
-> From: Arseniy Velikanov <me@adomerle.pw>
->=20
-> Add the SPI controller compatible for the MediaTek MT6789 SoC with
-> mediatek,mt6893-spi as its fallback compatible, addressing v1 review
-> feedback that MT6789 SPI is programming-model compatible with MT6893
-> without requiring a driver change.
+> Wait for the controller to go idle, mask interrupts, and disable the
+> IRQ line before clearing pending status and turning off the clocks.
+> Disabling the IRQ line waits for any running handler, which accesses
+> controller registers.
 
-Please submit patches using subject lines reflecting the style for the
-subsystem, this makes it easier for people to identify relevant patches.
-Look at what existing commits in the area you're changing are doing and
-make sure your subject lines visually resemble what they're doing.
-There's no need to resubmit to fix this alone.
+> +static void cqspi_shutdown(struct platform_device *pdev)
+> +{
+> +	struct cqspi_st *cqspi = platform_get_drvdata(pdev);
+> +	struct device *dev = &pdev->dev;
+> +	int ret;
+> +
+> +	/* Block new SPI memory operations and drain any active operation. */
+> +	refcount_set(&cqspi->refcount, 0);
 
---C66k9UD0zapb3tpO
-Content-Type: application/pgp-signature; name="signature.asc"
+It would be nicer to take the bus lock instead so we let the currently
+active message complete, ensuring a complete transaction will reduce the
+risk that we'll confuse devices we're actively working with when we shut
+down.
 
------BEGIN PGP SIGNATURE-----
+> +	writel(0, cqspi->iobase + CQSPI_REG_IRQMASK);
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmsIG5AACgkQJNaLcl1U
-h9DVLgf9ESvlliyKURSSkiS05SjNzqq0K0AUAZ+Lw1hNyfPT1cQbMLU6KGxATUFk
-aRW2i5ZdLBxZ/ZI75fPxOZpHGGX6yvY45i7bo8L66kHm5zk32j3zZGOJm6XT+O+H
-k0sxzD0y3YOiSmF0ba7Nb0WTwNX9lS70ws5v4f6/CmrESq3U51r/vpEQfv3e25gb
-sj4XZo7W9B2Bf2Bh48BLMfMZoWvHbw1k81oEw2pv7JY17v+s8zklfaL5ot4N3nwH
-7XIuIpNiVMRb0gdHLWBCYavSy2+pM/KPRkgtzgcNXhHx8TUxTvzhyLevA9HY3Lky
-LRlR90pFAqH7HtnmRnaTkE42bnRqRg==
-=FF7l
------END PGP SIGNATURE-----
+cqspi_versal_indirect_read_dma() suggests there's a separate DMA
+interrupt on that device that also needs masking.
 
---C66k9UD0zapb3tpO--
+> +	cqspi_runtime_suspend(dev);
+
+See 30dbc1c8d50f (spi: cadence-qspi: defer runtime support on socfpga if
+reset bit is enabled) - this needs some quirking for SoCFPGA systems I
+think.
+
+-- 
+Mark Brown <broonie@kernel.org>

@@ -1,59 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795720301;
-	b=EtvQrRYSh5pYNnu8nZya//wxS4NQSvtiSvfYc3Xcxz30csv6t5P7WDDtgACC1TgLFQ8r
-	 RWx5WDk88PhInFzDDE3b+a3NEy+u6d64TSUBUtL07QuU6LsVI7w8cyuPIJWno/6JAEG24
-	 EKLDJaNztpwiNLx2j1A7htzkZRUWX/tKT4PmDi5S8JNGzPmV6LpuX/vw3wGPgtEy/McWZ
-	 zsT+DLyR2EUAMQXb1CV4Ns9yGyQHrOsh07sV8Z62Zymmz5bZJuFG3Jh0NDsyLWq5kugae
-	 NOYSKUnCEP5mh89iRgZfB0PmJHMio8mTBF4ohN6zGX7zvoDRoQAqfOHaw7NdD6oOMCw==
+	t=1795720304;
+	b=VH+5toCVP7mxeWKgKZppWfY13pMLpv6rvTPhk6PGZV4S9wPx4JUiiUlACKvU/34LFkds
+	 uqvITebfsE7vxMo+WkVJlF4rjyDJ3JBg6IFxx3nsXlHbKsGMBYQf6cOwa1o61Ecgk/BwP
+	 YHvGUwpVw7scTj0/6hSUcgmiVoj39yq9JVZ0z1GYZc8hfkxTaUpEgqdFBZmXxgPWq3s5d
+	 M7RJQZ+m2BcsxbJbyI4jln/Ht3tz5Wx4S8B6i5ZtpUHbHnQX5yQXSdyaHx3fHalS4F2IK
+	 7fUdp7TXjTwjj/JvAANfJlxqfjmFwq492wXO9WsRFrEfYGiAla7ekIrMTB1Xi9o10/Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795720301;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795720304;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=lbbDUAZ42bjaI/Zz1oo3546qmyA1evX9LxfwdDvdb8c=;
-	b=yzb3hsCVFtdDCqg7lKaOq2ALHw9kxDvu7LTs00A/HxnQcqxdW8kytFGleN/mw4yvwHFo
-	 1XIYR6ixj/9uX/nmDdnpFF9wsMZNnZgAQ0CSd9+AJJH969Lvv5C2cGatrajZnjhgPT2bI
-	 6alRSKzY3ls2As8qrzPERKfz2CFeLUkt1UNKE+A+qLbl7INmppkrDDLoD4ti4uw6FWaH+
-	 k195xXl9eutZ6UdIBofoWskw0BGqWDwSATJSxr+5dOao9HQYbVxWxwpWvKG4xaOQZ8biu
-	 T3n/seH0a2nKVrCyGWU29qifmaeHdFaGkD5OTaV0TsuGSC4rtuAgIbK5fpaStNbzTqg==
+	bh=8RwOkiBgdob7aGlWh1hftNQ45yEu/EtBNJWgoVSYZUE=;
+	b=w7wAbGm1aOpK1RLET13ySH8Y1eZblFBEd/wcSHqY5qfkWR0XgsK8ObNRuVHEdUnuQE4H
+	 TjLaq0BZhXvMDxju8TP19mPODFoBFAu1eplCb/gU3poIcpQAj2MXBWbxQCDK2FAYXy3Sh
+	 3+cEgn6CxRFS2wJgll21JR/d3iaGCqC7UZ510ysZzqUOG6lQbQ9Q7ujZwTov3V55HL5BR
+	 F7pNouC0RMraMFyqeMPSucWAvpMkgNftca8Tl/BlEUWQF3musLQJxp66Q67KU0mETPiHK
+	 oMPSzKW4XULb1X+ifMDSaxjnPPrX6uIoWb9nVRExeUUdfNj8dP8QE0xjRvMxyRgiH8A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=PuLVR2do;
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=FsgSmLkq;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4789606A31C
-	for <linux-spi@vger.kernel.org>; Thu, 26 Nov 2026 19:11:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4789606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215A4606A330
+	for <linux-spi@vger.kernel.org>; Thu, 26 Nov 2026 19:11:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 215A4606A330
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=PuLVR2do
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=FsgSmLkq
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id E29ABC2B9E2;
-	Thu, 26 Nov 2026 19:11:47 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id C860A1A181F;
+	Thu, 26 Nov 2026 19:11:42 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7B7B660558;
-	Thu, 26 Nov 2026 19:11:39 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C4FE511E691C1;
-	Thu, 26 Nov 2026 20:11:34 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9DA3160558;
+	Thu, 26 Nov 2026 19:11:42 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9FC0711E691C3;
+	Thu, 26 Nov 2026 20:11:38 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795720298; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1795720300; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=lbbDUAZ42bjaI/Zz1oo3546qmyA1evX9LxfwdDvdb8c=;
-	b=PuLVR2dojQC8Tq1JLBpLi7shyMSTTwy7V22OSKh2rrJy8a6p8JGau53CW5xapcL+Y45SLa
-	bzRk6nIFSaYnHtXUUpfbozomnKODW7SnDWsLM+EIZVpILyRxUn6gDy5a0aKj2VRJ4BtxTu
-	mPa/nee7hIJN5vJ3XMSXxcm5rlCaMGwwjpN9ts2qavWOL7e5w2LmBGGFyLZGNIizCqYFss
-	HuC9Mo9CGOsispB0hM+a9f4uNrNP7WCh1PwAVhGMNHvQe1iHfR7Rizp/tkr2Fo9uZecyel
-	jdvbfltEv45ZDYtxKWKeBg0oQMVu/s6BSo3qEwBB3GACic8Ok0iHIy8gqU9Rjg==
+	bh=8RwOkiBgdob7aGlWh1hftNQ45yEu/EtBNJWgoVSYZUE=;
+	b=FsgSmLkqIh1A+50cmPoHi/cW3fRJtzziB9KEtJx5k+Xw4NEYZXvjfjXzzKkKuRrcq8eJig
+	4N7fFZNMTa4/ejSp9TCuLiEhlmaT3M8zsfaQO+3FE2PfKIQ/AsScFBgPeIFsG4629PTxAU
+	riWH84mIxb8b55jqIYCmSiXvOBk9SfwDk/LcTQ4f66IQjE8I2qj04zEYQ/H4CZcvQRYess
+	tlEYk5t3wIp/lUnXxmDGyr40x2BmLD5sDrznJ29BaKoBR+7NLTYG9brhK5h5kiA/XXuqpl
+	H4J2LdHnpDbaPqd/dc8eGIozll5Ulo8wlJIWynr6uLzrXN1jzO96NI7ittgU7g==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Thu, 26 Nov 2026 20:10:30 +0100
-Subject: [PATCH 11/12] spi: ti-qspi: Validate the dummy buswidth
+Date: Thu, 26 Nov 2026 20:10:31 +0100
+Subject: [PATCH 12/12] spi: zynq-qspi: Validate the dummy buswidth
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -65,7 +65,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261126-macronix-upstreaming-spi-driver-fixes-v1-11-ca8e924cca1b@bootlin.com>
+Message-Id: <20261126-macronix-upstreaming-spi-driver-fixes-v1-12-ca8e924cca1b@bootlin.com>
 References: <20261126-macronix-upstreaming-spi-driver-fixes-v1-0-ca8e924cca1b@bootlin.com>
 In-Reply-To: <20261126-macronix-upstreaming-spi-driver-fixes-v1-0-ca8e924cca1b@bootlin.com>
 To: Raju Rangoju <Raju.Rangoju@amd.com>, 
@@ -88,40 +88,29 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-The driver has no separate dummy buswidth; the dummy phase is clocked
-with the data buswidth. Reject operations asking for a different dummy
-buswidth.
+The driver sends the dummy phase as a regular transfer on the data bus.
+Reject operations asking for a different dummy buswidth.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/spi/spi-ti-qspi.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/spi/spi-zynq-qspi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index 091a8b8842f5..5aa6176a3123 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -651,7 +651,20 @@ static int ti_qspi_exec_mem_op(struct spi_mem *mem,
- 	return ret;
- }
- 
-+static bool ti_qspi_supports_op(struct spi_mem *mem,
-+				const struct spi_mem_op *op)
-+{
-+	if (!spi_mem_default_supports_op(mem, op))
-+		return false;
+diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
+index bfcbcfe85b91..6a845a73e74b 100644
+--- a/drivers/spi/spi-zynq-qspi.c
++++ b/drivers/spi/spi-zynq-qspi.c
+@@ -233,6 +233,10 @@ static bool zynq_qspi_supports_op(struct spi_mem *mem,
+ 	 */
+ 	if (op->addr.nbytes > 4)
+ 		return false;
 +
 +	if (op->dummy.nbytes && op->dummy.buswidth != op->data.buswidth)
 +		return false;
 +
-+	return true;
-+}
-+
- static const struct spi_controller_mem_ops ti_qspi_mem_ops = {
-+	.supports_op = ti_qspi_supports_op,
- 	.exec_op = ti_qspi_exec_mem_op,
- 	.adjust_op_size = ti_qspi_adjust_op_size,
- };
+ 	return true;
+ }
+ 
 
 -- 
 2.56.0

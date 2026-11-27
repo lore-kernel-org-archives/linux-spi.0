@@ -1,58 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.218
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795788492;
-	b=bgT7jlv/LUofeUk8+Pb/vl4cMwWQbayysDS//BBILF5WaaqiCKCCBO3MorSV3ITheMMx
-	 pfxkS6zo9+h5Sm7sy9NptW4jRWp8HKiZiw8b5vzi/xmQk0PMFgOnp9oji5r5dPCDr5aTk
-	 jW9P7xhV8JYxG6RYf+4gEse1SippSqnO/xsG92r6PRMUDlxn/snb+fUrm8UMgx5FtvFMN
-	 JC/YFtlbeKewetATzZHRuBI+jk4Uk+iPNvfk3Q1aeBeT0FtQBdJfXU19ETmbxURf2z4np
-	 THvKtBX6aov18rv+gjTdnFlqznON6X9Lez3AeCwREhcgGec442MlXIM+LPsvGJcpeIg==
+	t=1795789397;
+	b=3pOgctnIFVvMfDvDhDpobiXqP5DVX8/JJWfPOKMnhyy9Lz8MVx4mSFPQZaGEPURssGHL
+	 bj4IglUkaGWIzjwmYKqIuDax9/X/lzBX30ZEwj7q+BObfy6iG70LPhOfdznLCpPiOhrP0
+	 AaFFNT2ny1hle2gRlZjRsjr+97GastCn/S8Ak3XM7kpYM78/wA06bcV/ibxh3kMk2eyWN
+	 NaunL77wKOxVa+fD7PnRM0nff+RIiGETcmBLdZn2foMlTGKhkIM5z5geJmSUTAAOoYiZ9
+	 hdzqOmE1dAw8f85cu+p2Rzm/NTC1waWdQFgCS4wtvLOidNPGdrUN5RT9nafBcwvRPbA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795788492;
-	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=bUjGbbi+Bqho3+8A4sV06cTTG0i8q5FzTjD92qrqscI=;
-	b=B8s1LCIwUm/XvOw7B4YDqQHRtbaJRXTaFJNuNgCO5V5KNmQstfERmA92++OVXdaa4fSZ
-	 rEu9lOFn/crbVQ+rNuoohPefhmYl+4fdoj+wvFw9Mqcxp62moIzaFkoPzXDxe4V+fL3Gk
-	 PUEfqyzm7d2BrAiAZ/0h5UrPzYCngtSLxEuxVvGriToBjwaPNq6OOcCUIa39kRt8I0ojd
-	 VaMzzUXDnKy0kkUeMP36QFp2pV9Q5F61G7B9zsztJVH/1MQaaipWOibFZrrGVvj8RDN4j
-	 DyuCRvK1teh39uaeGMN6hxcInesyyMgNaW2R0kmxiSIdlPewFtW23+svJlA6WNDnQ6A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795789397;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Subject:
+	 Date:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
+	bh=nWNmoo5X8Cbiui7JsHWvBd0DmI9ElE6Coz8fMgnKz3Y=;
+	b=ddE8VUmwk+gIFkkVA/sFvFXFCT0iUroSq/Fq/DXyW3kzXO79nHXstZ6oCkMoi6Wdzct2
+	 Rzwz7BM/mtejy/+GbLiUrj6DgTm325JR8u84gmiJnDsfqs0IeDG8dRMLWXvOzWt7QNef5
+	 Eejlea3deZRUsE064iSd0JmPYLBAKDv1+aydmvjwMW9CMELFVwGKR9krkeH5+THMomlRo
+	 pzZ8PNFVDhbLYoSXuRIoq3XRbgFonKoCXgEG8h5n4wU4eFk9JiBdBLmDwb15FCXJjuhkv
+	 kgERZcH488IUPaR2bPw2/7nPbvkR03xDcU8Y23btrJK7N1lFHIZhVUSvZtcrqyFgwzQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=yinhe.ht;
-	spf=pass smtp.mailfrom=yinhe.ht;
-	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=B2ndbX1j;
-	arc=none smtp.remote-ip=115.124.28.218
-Received: from out28-218.mail.aliyun.com (out28-218.mail.aliyun.com [115.124.28.218])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=eYvkNVD9;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96907606A327;
-	Fri, 27 Nov 2026 14:08:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 96907606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8888E606A31E;
+	Fri, 27 Nov 2026 14:23:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8888E606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=B2ndbX1j
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=yinhe.ht; s=default;
-	t=1795788480; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=bUjGbbi+Bqho3+8A4sV06cTTG0i8q5FzTjD92qrqscI=;
-	b=B2ndbX1jRwRywQ9LQSU51mkREEfOTnKi0qUnNpCF8R+jb3qCUax+kctKq5Cy0U1fUfBuML34Gck0/egV5ZHFK0sEOcn15rH3DZtyjQJuaGN865GKfPZ8SlocrWIdUYlXWTHSBadP9MiPvg3wGlxkOlR2SA9PMG2FcTzQ+WfdMYelepsO/gFnbP/b1XXozfsJPgEa86u/pjm2CnH9Rdr/Z8oYaKpUAu8JQLNatH7Y0bRvbtxRPD8bpcc9jUG/83iKTqmYOv5X2IQ2LLQeCqWLKdeqmlcJrzYLk0nN2pv5kc6QMke2l7RJkHo45jFGSj7WXcMqqpxUJntncMjIXB2leQ==
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436259|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00708847-0.0123632-0.980548;FP=11966960765120302294|9|2|10|0|-1|-1|-1;HT=maildocker-contentspam033037034184;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DS;RN=6;RT=6;SR=0;TI=SMTPD_---.kBVByRl_1795788479;
-Received: from galx..(mailfrom:chunyuzhiqiang@yinhe.ht fp:SMTPD_---.kBVByRl_1795788479 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Fri, 27 Nov 2026 22:08:00 +0800
-From: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-To: Mark Brown <broonie@kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	linux-spi@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>
-Subject: [RFC PATCH v4] spi: fsl-lpspi: add atomic transfer support
-Date: Fri, 27 Nov 2026 22:02:28 +0800
-Message-ID: <20261127140228.48851-1-chunyuzhiqiang@yinhe.ht>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=eYvkNVD9
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 2589CC2AC4C;
+	Fri, 27 Nov 2026 14:23:22 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4A1126049C;
+	Fri, 27 Nov 2026 14:23:13 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B385411E68FDF;
+	Fri, 27 Nov 2026 15:22:47 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1795789386; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=nWNmoo5X8Cbiui7JsHWvBd0DmI9ElE6Coz8fMgnKz3Y=;
+	b=eYvkNVD9ibOwzR3jSz45y1QP0jTLhR/g35hR35UKGohQvsmRXUquMb8JxFNh2gUAOzSyG7
+	fA6ZjGOlmj0vG0gFf1t/WLCCKnqz61bAAKNgrGmbTJCuyCJ2f6Xd4+GsQFhDkcSEVnMkY2
+	z1Oih0WZUxa29fMByWmvF6WIT/IIiDpXsfJM3y6TwbFcoUZUnX7PqXJjRUowhOGE3rGmRh
+	QGf8WLOlK+B41nAQB8rmHgIAfxTaJvtqqEHpLwonKQy02n2+VGSWIxvLEWxAdvtMaBL6Dg
+	8pBNU4784T9zEUg3OzZCiPL+WggC3DR8jJuPu6VNOBdQnx2WUdJrSSyXI74l/Q==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH RFC v2 00/35] spi: spi-mem: Express the dummy phase using
+ cycles when relevant
+Date: Fri, 27 Nov 2026 15:22:22 +0100
+Message-Id: <20261127-macronix-upstreaming-spi-mem-cycles-v2-0-5c93f5e5d630@bootlin.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -62,373 +63,182 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/5WQwWrDMAyGXyX4PBXbyZIulDEY7AF2HT04jtIKa
+ juT3dBS8u7zvB522WHHT4L/+6WbiMiEUfTVTTAuFCn4DPqhEvZo/AGBxsxCS90qpR/BGcvB0wX
+ Oc0yMxpE/QJwJHDqwV3vCCErWums6uZ3Qipw0M050KZYP8f72KvY/Q8bPczam+8ZhjKYY+2p3F
+ 7Z/C0emBRlKMiwKJFizxSfdWGvU8DKEkE7kNza45+8Sg4kIGRylvlq6TQNs69LkSDEFvpYfLKp
+ U+de5xT2Nsm4bqaex7n67xX5d1y8Uyea3ZwEAAA==
+X-Change-ID: 20261125-macronix-upstreaming-spi-mem-cycles-103274708fec
+To: Mark Brown <broonie@kernel.org>, Liang Yang <liang.yang@amlogic.com>, 
+ Feng Chen <feng.chen@amlogic.com>, Xianwei Zhao <xianwei.zhao@amlogic.com>, 
+ Han Xu <han.xu@nxp.com>, Conor Dooley <conor.dooley@microchip.com>, 
+ Valentina Fernandez <valentina.fernandezalanis@microchip.com>, 
+ Daire McNamara <daire.mcnamara@microchip.com>, 
+ Haibo Chen <haibo.chen@nxp.com>, Jyan Chou <jyanchou@realtek.com>, 
+ Yu-Chun Lin <eleanor.lin@realtek.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
+ Takahiro Kuwano <takahiro.kuwano@infineon.com>, 
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Yogesh Gaur <yogeshgaur.83@gmail.com>, 
+ Chris Packham <chris.packham@alliedtelesis.co.nz>, 
+ =?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
+ Michal Simek <michal.simek@amd.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Alvin Zhou <alvinzhou@mxic.com.tw>, 
+ Cheng Ming Lin <chengminglin@mxic.com.tw>, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org, 
+ imx@lists.linux.dev, linux-riscv@lists.infradead.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org, 
+ linux-trace-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+ openbmc@lists.ozlabs.org, Miquel Raynal <miquel.raynal@bootlin.com>
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
-Implement transfer_atomic() for the i.MX LPSPI controller, following the
-atomic transfer API added by Heiko Stuebner.  The callback uses PIO
-polling with interrupts and DMA disabled, handles chip select through
-spi_set_cs(), and runs the message synchronously without completions.
-The controller is reset before the message so state left by a crashed
-transfer does not leak into the atomic path.
+SPI NOR SFDP data gives dummy cycles. SPI NAND devices express the dummy
+phase using cycles as well. Those numbers are converted to bytes, then
+passed to the spi and spi-mem controller drivers. A non-negligible
+amount of those controller drivers convert bytes into cycles before
+programming the registers.
 
-The atomic path cannot call clk_get_rate(), because it takes the clock
-prepare lock.  Cache the per-clock rate at probe and refresh it in the
-normal transfer path; the atomic path only uses the cached value.  A
-zero rate is rejected instead of programming a bogus divisor.
+When the conversions are lossless, it is not a big deal, just time
+spent. However these silent conversions sometimes hide bugs and
+sometimes also prevent using certain chips/configurations, as recently
+reported on Macronix 1-1-8 chips requiring 20 cycles. Not all
+controllers can do that, but the ones that can, would anyway reject
+those chips.
 
-Program clock polarity and phase before the core asserts the GPIO chip
-select, matching fsl_lpspi_prepare_message().  Terminate continuous mode
-after the last data word, matching fsl_lpspi_write_tx_fifo(), and wait
-for the frame-complete flag after each transfer.  The FIFO reset between
-transfers leaves TCR_CONT set, so the next command can continue with
-CONTC as in the normal transfer path.  Poll the receive FIFO empty flag
-rather than the FIFO watermark so multi-word transfers do not time out,
-use spi_bpw_to_bytes() for the length check so 17..24-bit transfers with
-a 4-byte stride are accepted, and populate effective_speed_hz and
-actual_length for the atomic path.
+Convert spi-mem, the trivial spi-mem controller drivers and then SPI NOR
+to use dummy cycles instead of dummy bytes. SPI NAND may come later. As
+part of those conversions, I also instated new de-facto sanity
+checks. Those core checks allow us to drop many redundant checks from
+the drivers after the conversion into using the cycles.
 
-Only host mode registers the callback.  Poweroff and restart prepare
-handlers runtime-resume the controller so the atomic path can be used
-from the shutdown notifiers, matching the Rockchip implementation.
+This second RFC adds the remaining controller conversions (nxp-fspi,
+zynqmp-gqspi, atmel-quadspi and rpc-if), the range checks for the
+controllers with limited dummy cycle fields, and the controller-specific
+dummy buswidth fixes that depend on the cycles conversion. The dummy
+buswidth fixes that do not depend on it have been (mostly) sent as a
+separate series.
 
-The driver is compile-tested on x86 with COMPILE_TEST and on arm64;
-hardware validation on i.MX8QXP is pending.
+The series is build tested, but not run on hardware yet. I plan do
+perform testing on the various controllers I have access to. This
+version is not meant to be applied in the spi tree yet. Applying it for
+your own review or testing requires the previous patch series cleaning
+up the drivers (I split the two because of the size of the number of
+patches...).
 
-This patch was developed with AI assistance.
-
-Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
-Changes in v4:
-- queue the TCR_CONTC-clear command after the last data word, matching
-  fsl_lpspi_write_tx_fifo(), instead of before it; TCR and TDR share the
-  same FIFO, so the old order ended a frame early;
-- document that the inter-transfer FIFO reset leaves TCR_CONT set, so
-  the next command can continue with CONTC as in the normal path.
+Changes in v2:
+- Better sanitize the operations in the core.
+- Drop more redundant checks from the controller drivers.
+- Add a Fixes tag and fix the DTR sanitizing corner case.
+- Fix the dummy conversion ordering, the spi_sync() fallback, the
+  poll_status() path and the dirmap fallback.
+- Fix the trace event to report the dummy phase for both representations.
+- Fix the listed controller driver bugs (unused code, missing capability,
+  pointer typos, range checks) and the s25fs256t dummy count.
+- Convert nxp-fspi, zynqmp-gqspi, atmel-quadspi and rpc-if to dummy
+  cycles.
+- Add range checks for the controllers with limited dummy cycle fields.
+- Link to v1: https://lore.kernel.org/r/20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com
 
- drivers/spi/spi-fsl-lpspi.c | 205 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 197 insertions(+), 8 deletions(-)
+---
+Miquel Raynal (35):
+      spi: spi-mem: Stop checking the dummy buswidth against board wiring
+      spi: spi-mem: Fix the odd byte count error message
+      spi: spi-mem: Handle a corner case while sanitizing ops
+      spi: spi-mem: Sanitize mixed DTR modes
+      spi: spi-mem: Sanitize mixed buswidth
+      spi: spi-mem: Add support for dummy cycles
+      spi: amlogic-spifc-a1: Consume dummy cycles directly
+      spi: amlogic-spifc-a1: Reject excessive dummy cycle counts
+      spi: amlogic-spifc-a4: Consume dummy cycles directly
+      spi: atmel-quadspi: Consume dummy cycles directly
+      spi: atmel-quadspi: Reject excessive dummy cycle counts
+      spi: cadence-qspi: Consume dummy cycles directly
+      spi: cadence-qspi: Drop redundant checks
+      spi: cadence-qspi: Drop now useless checks
+      spi: fsl-qspi: Consume dummy cycles directly
+      spi: microchip-core-qspi: Consume dummy cycles directly
+      spi: mtk-snfi: Drop redundant check
+      spi: nxp-fspi: Consume dummy cycles directly
+      spi: nxp-fspi: Reject mixed DTR modes
+      spi: nxp-xspi: Consume dummy cycles directly
+      spi: nxp-xspi: Fix a comment
+      spi: nxp-xspi: Reject mixed DTR modes
+      spi: realtek-rtl-snand: Drop redundant check
+      spi: rpc-if: Consume dummy cycles directly
+      spi: rtk-nor: Consume dummy cycles directly
+      spi: rtk-nor: Drop redundant checks
+      spi: sn-f-ospi: Consume dummy cycles directly
+      spi: spi-qpic-snand: Drop redundant check
+      spi: stm32-ospi: Consume dummy cycles directly
+      spi: stm32-ospi: Reject excessive dummy cycle counts
+      spi: stm32-qspi: Consume dummy cycles directly
+      spi: stm32-qspi: Reject excessive dummy cycle counts
+      spi: wpcm-fiu: Drop redundant checks
+      spi: zynqmp-gqspi: Consume dummy cycles directly
+      mtd: spi-nor: Express the dummy phase in cycles
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index ed395f822dab1..bc76a564137b9 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -14,6 +14,7 @@
- #include <linux/err.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- #include <linux/irq.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-@@ -22,6 +23,7 @@
- #include <linux/platform_device.h>
- #include <linux/dma/imx-dma.h>
- #include <linux/pm_runtime.h>
-+#include <linux/reboot.h>
- #include <linux/slab.h>
- #include <linux/spi/spi.h>
- #include <linux/spi/spi_bitbang.h>
-@@ -112,6 +114,7 @@ struct fsl_lpspi_data {
- 	unsigned long base_phys;
- 	struct clk *clk_ipg;
- 	struct clk *clk_per;
-+	u32 perclk_rate;
- 	bool is_target;
- 	bool is_only_cs1;
- 	bool is_first_byte;
-@@ -335,7 +338,8 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_data *fsl_lpspi)
- 	dev_dbg(fsl_lpspi->dev, "FCR=0x%08x\n", temp);
- }
- 
--static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
-+static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi,
-+				 bool atomic)
- {
- 	struct lpspi_config config = fsl_lpspi->config;
- 	unsigned int perclk_rate, div;
-@@ -343,7 +347,14 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- 	u8 prescale;
- 	int scldiv;
- 
--	perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
-+	if (atomic) {
-+		perclk_rate = fsl_lpspi->perclk_rate;
-+	} else {
-+		perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
-+		fsl_lpspi->perclk_rate = perclk_rate;
-+	}
-+	if (!perclk_rate)
-+		return -EINVAL;
- 	prescale_max = fsl_lpspi->devtype_data->prescale_max ?: 7;
- 
- 	if (!config.speed_hz) {
-@@ -427,13 +438,13 @@ static int fsl_lpspi_dma_configure(struct spi_controller *controller)
- 	return 0;
- }
- 
--static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
-+static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi, bool atomic)
- {
- 	u32 temp;
- 	int ret;
- 
- 	if (!fsl_lpspi->is_target) {
--		ret = fsl_lpspi_set_bitrate(fsl_lpspi);
-+		ret = fsl_lpspi_set_bitrate(fsl_lpspi, atomic);
- 		if (ret)
- 			return ret;
- 	}
-@@ -464,7 +475,7 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
- 
- static int fsl_lpspi_setup_transfer(struct spi_controller *controller,
- 				     struct spi_device *spi,
--				     struct spi_transfer *t)
-+				     struct spi_transfer *t, bool atomic)
- {
- 	struct fsl_lpspi_data *fsl_lpspi =
- 				spi_controller_get_devdata(spi->controller);
-@@ -496,7 +507,7 @@ static int fsl_lpspi_setup_transfer(struct spi_controller *controller,
- 
- 	fsl_lpspi->watermark = min(fsl_lpspi->txfifosize, t->len);
- 
--	return fsl_lpspi_config(fsl_lpspi);
-+	return fsl_lpspi_config(fsl_lpspi, atomic);
- }
- 
- static int fsl_lpspi_prepare_message(struct spi_controller *controller,
-@@ -515,7 +526,7 @@ static int fsl_lpspi_prepare_message(struct spi_controller *controller,
- 
- 	fsl_lpspi->is_first_byte = true;
- 	fsl_lpspi->usedma = false;
--	ret = fsl_lpspi_setup_transfer(controller, spi, t);
-+	ret = fsl_lpspi_setup_transfer(controller, spi, t, false);
- 
- 	fsl_lpspi->usedma = fsl_lpspi_can_dma(controller, spi, t);
- 
-@@ -774,6 +785,148 @@ static int fsl_lpspi_pio_transfer(struct fsl_lpspi_data *fsl_lpspi,
- 	return ret;
- }
- 
-+static int fsl_lpspi_pio_xfer_atomic(struct fsl_lpspi_data *fsl_lpspi,
-+				     struct spi_transfer *t)
-+{
-+	u32 sr, temp, timeout_us;
-+	unsigned int bytes_per_word;
-+	int ret;
-+
-+	/* One frame plus margin, at least 1ms. */
-+	timeout_us = DIV_ROUND_UP(fsl_lpspi->config.bpw * USEC_PER_SEC,
-+				  fsl_lpspi->config.speed_hz);
-+	timeout_us = max(timeout_us * 2, 1000U);
-+
-+	bytes_per_word = spi_bpw_to_bytes(fsl_lpspi->config.bpw);
-+	fsl_lpspi->tx_buf = t->tx_buf;
-+	fsl_lpspi->rx_buf = t->rx_buf;
-+	fsl_lpspi->remain = t->len;
-+
-+	while (fsl_lpspi->remain) {
-+		ret = readl_poll_timeout_atomic(fsl_lpspi->base + IMX7ULP_SR,
-+						sr, sr & SR_TDF, 0, timeout_us);
-+		if (ret)
-+			return ret;
-+
-+		/* Terminate continuous mode before the last frame. */
-+		if (fsl_lpspi->remain == bytes_per_word) {
-+			temp = readl(fsl_lpspi->base + IMX7ULP_TCR);
-+			temp &= ~TCR_CONTC;
-+			writel(temp, fsl_lpspi->base + IMX7ULP_TCR);
-+		}
-+
-+		fsl_lpspi->tx(fsl_lpspi);
-+
-+		ret = readl_poll_timeout_atomic(fsl_lpspi->base + IMX7ULP_RSR,
-+						sr, !(sr & RSR_RXEMPTY), 0,
-+						timeout_us);
-+		if (ret)
-+			return ret;
-+		fsl_lpspi->rx(fsl_lpspi);
-+	}
-+
-+	ret = readl_poll_timeout_atomic(fsl_lpspi->base + IMX7ULP_SR, sr,
-+					sr & SR_FCF, 0, timeout_us);
-+	if (ret)
-+		return ret;
-+
-+	writel(SR_FCF, fsl_lpspi->base + IMX7ULP_SR);
-+	return 0;
-+}
-+
-+static int fsl_lpspi_transfer_atomic(struct spi_device *spi,
-+				     struct spi_message *msg)
-+{
-+	struct spi_controller *controller = spi->controller;
-+	struct fsl_lpspi_data *fsl_lpspi =
-+				spi_controller_get_devdata(controller);
-+	struct spi_transfer *t, *first, *next;
-+	bool keep_cs = false;
-+	bool first_xfer = true;
-+	int ret = 0;
-+
-+	if (!pm_runtime_active(fsl_lpspi->dev))
-+		return -ESHUTDOWN;
-+
-+	msg->actual_length = 0;
-+	fsl_lpspi->usedma = false;
-+	fsl_lpspi_reset(fsl_lpspi);
-+	writel(0, fsl_lpspi->base + IMX7ULP_DER);
-+
-+	first = list_first_entry(&msg->transfers, struct spi_transfer,
-+				 transfer_list);
-+
-+	/*
-+	 * Match fsl_lpspi_prepare_message(): program CPOL/CPHA and the
-+	 * first command before the core asserts GPIO chip select.
-+	 */
-+	fsl_lpspi->is_first_byte = true;
-+	ret = fsl_lpspi_setup_transfer(controller, spi, first, true);
-+	if (ret)
-+		goto out;
-+
-+	fsl_lpspi_set_cmd(fsl_lpspi);
-+	writel(0, fsl_lpspi->base + IMX7ULP_IER);
-+	writel(CR_RRF | CR_RTF, fsl_lpspi->base + IMX7ULP_CR);
-+	writel(SR_CLEAR_MASK, fsl_lpspi->base + IMX7ULP_SR);
-+
-+	spi_set_cs(spi, !first->cs_off, false);
-+
-+	list_for_each_entry(t, &msg->transfers, transfer_list) {
-+		if (t->len) {
-+			fsl_lpspi->is_first_byte = first_xfer;
-+			ret = fsl_lpspi_setup_transfer(controller, spi, t, true);
-+			if (ret)
-+				break;
-+
-+			t->effective_speed_hz = fsl_lpspi->config.effective_speed_hz;
-+
-+			if (t->len %
-+			    spi_bpw_to_bytes(fsl_lpspi->config.bpw)) {
-+				ret = -EINVAL;
-+				break;
-+			}
-+
-+			fsl_lpspi_set_cmd(fsl_lpspi);
-+			fsl_lpspi->is_first_byte = false;
-+
-+			ret = fsl_lpspi_pio_xfer_atomic(fsl_lpspi, t);
-+			if (ret)
-+				break;
-+
-+			msg->actual_length += t->len;
-+			fsl_lpspi_reset(fsl_lpspi);
-+			first_xfer = false;
-+		}
-+
-+		spi_transfer_delay_exec(t);
-+
-+		if (t->cs_change) {
-+			if (list_is_last(&t->transfer_list, &msg->transfers)) {
-+				keep_cs = true;
-+			} else {
-+				if (!t->cs_off)
-+					spi_set_cs(spi, false, false);
-+				spi_transfer_cs_change_delay_exec(msg, t);
-+				next = list_next_entry(t, transfer_list);
-+				if (!next->cs_off)
-+					spi_set_cs(spi, true, false);
-+			}
-+		} else if (!list_is_last(&t->transfer_list, &msg->transfers)) {
-+			next = list_next_entry(t, transfer_list);
-+			if (t->cs_off != next->cs_off)
-+				spi_set_cs(spi, !next->cs_off, false);
-+		}
-+	}
-+
-+out:
-+	if (ret || !keep_cs)
-+		spi_set_cs(spi, false, false);
-+	fsl_lpspi_reset(fsl_lpspi);
-+	msg->status = ret;
-+	return ret;
-+}
-+
- static int fsl_lpspi_transfer_one(struct spi_controller *controller,
- 				  struct spi_device *spi,
- 				  struct spi_transfer *t)
-@@ -784,7 +937,7 @@ static int fsl_lpspi_transfer_one(struct spi_controller *controller,
- 
- 	fsl_lpspi->usedma = fsl_lpspi_can_dma(controller, spi, t);
- 
--	ret = fsl_lpspi_setup_transfer(controller, spi, t);
-+	ret = fsl_lpspi_setup_transfer(controller, spi, t, false);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -878,6 +1031,19 @@ static int fsl_lpspi_init_rpm(struct fsl_lpspi_data *fsl_lpspi)
- 	return 0;
- }
- 
-+static int fsl_lpspi_power_off(struct sys_off_data *data)
-+{
-+	struct fsl_lpspi_data *fsl_lpspi = data->cb_data;
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(fsl_lpspi->dev);
-+	if (ret)
-+		dev_warn(fsl_lpspi->dev,
-+			 "failed to resume controller for poweroff: %d\n", ret);
-+
-+	return 0;
-+}
-+
- static int fsl_lpspi_probe(struct platform_device *pdev)
- {
- 	const struct fsl_lpspi_devtype_data *devtype_data;
-@@ -958,6 +1124,9 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 		goto out_pm_get;
- 	}
- 
-+	/* The atomic transfer path cannot call clk_get_rate(). */
-+	fsl_lpspi->perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
-+
- 	temp = readl(fsl_lpspi->base + IMX7ULP_PARAM);
- 	fsl_lpspi->txfifosize = 1 << (temp & 0x0f);
- 	fsl_lpspi->rxfifosize = 1 << ((temp >> 8) & 0x0f);
-@@ -972,6 +1141,8 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	controller->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
- 	controller->prepare_message = fsl_lpspi_prepare_message;
- 	controller->transfer_one = fsl_lpspi_transfer_one;
-+	if (!fsl_lpspi->is_target)
-+		controller->transfer_atomic = fsl_lpspi_transfer_atomic;
- 	controller->prepare_transfer_hardware = lpspi_prepare_xfer_hardware;
- 	controller->unprepare_transfer_hardware = lpspi_unprepare_xfer_hardware;
- 	controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-@@ -982,6 +1153,24 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	if (!fsl_lpspi->is_target)
- 		controller->use_gpio_descriptors = true;
- 
-+	if (!fsl_lpspi->is_target) {
-+		ret = devm_register_sys_off_handler(&pdev->dev,
-+						    SYS_OFF_MODE_POWER_OFF_PREPARE,
-+						    SYS_OFF_PRIO_DEFAULT,
-+						    fsl_lpspi_power_off,
-+						    fsl_lpspi);
-+		if (ret)
-+			goto out_pm_get;
-+
-+		ret = devm_register_sys_off_handler(&pdev->dev,
-+						    SYS_OFF_MODE_RESTART_PREPARE,
-+						    SYS_OFF_PRIO_DEFAULT,
-+						    fsl_lpspi_power_off,
-+						    fsl_lpspi);
-+		if (ret)
-+			goto out_pm_get;
-+	}
-+
- 	ret = fsl_lpspi_dma_init(&pdev->dev, fsl_lpspi, controller);
- 	if (ret == -EPROBE_DEFER)
- 		goto out_pm_get;
-base-commit: 63083539d2bf955ccf84042d4b044d1133752bed
+ drivers/mtd/spi-nor/core.c            |  36 ++---
+ drivers/mtd/spi-nor/core.h            |   8 +-
+ drivers/mtd/spi-nor/micron-st.c       |   2 +-
+ drivers/mtd/spi-nor/spansion.c        |   8 +-
+ drivers/spi/atmel-quadspi.c           |  27 ++--
+ drivers/spi/spi-amlogic-spifc-a1.c    |  15 +-
+ drivers/spi/spi-amlogic-spifc-a4.c    |  29 +---
+ drivers/spi/spi-cadence-quadspi.c     |  50 ++----
+ drivers/spi/spi-fsl-qspi.c            |  13 +-
+ drivers/spi/spi-mem.c                 | 287 ++++++++++++++++++++++++++++++----
+ drivers/spi/spi-microchip-core-qspi.c |  12 +-
+ drivers/spi/spi-mtk-snfi.c            |   2 +-
+ drivers/spi/spi-nxp-fspi.c            |  24 ++-
+ drivers/spi/spi-nxp-xspi.c            |  24 ++-
+ drivers/spi/spi-qpic-snand.c          |   2 +-
+ drivers/spi/spi-realtek-rtl-snand.c   |   2 +-
+ drivers/spi/spi-rpc-if.c              |  10 +-
+ drivers/spi/spi-rtk-nor.c             |  31 ++--
+ drivers/spi/spi-sn-f-ospi.c           |  15 +-
+ drivers/spi/spi-stm32-ospi.c          |  28 ++--
+ drivers/spi/spi-stm32-qspi.c          |  26 ++-
+ drivers/spi/spi-wpcm-fiu.c            |   3 -
+ drivers/spi/spi-zynqmp-gqspi.c        |  29 +++-
+ include/linux/spi/spi-mem.h           |  39 ++++-
+ include/trace/events/spi-mem.h        |   5 +-
+ 25 files changed, 482 insertions(+), 245 deletions(-)
+---
+base-commit: 19d1b4de6d37bccecc3ad9144d279f1baa405eb1
+change-id: 20261125-macronix-upstreaming-spi-mem-cycles-103274708fec
+prerequisite-message-id: <20261126-macronix-upstreaming-spi-driver-fixes-v1-0-ca8e924cca1b@bootlin.com>
+prerequisite-patch-id: 2f68de4139876dfa8e57afb65b429a69628214ab
+prerequisite-patch-id: 7182a6b4808193323664f79c226ae2a57104b473
+prerequisite-patch-id: 34a99e8e6644d1db0978b5aa6ca90342a42561f8
+prerequisite-patch-id: cc060f58179f09af4593df6909b958a29bf11cb2
+prerequisite-patch-id: c5a7a78ef01696c25c10b6d2968c0b65ab0f4ec6
+prerequisite-patch-id: 340ee3d69095259d6141c017ea59c0c137d353b5
+prerequisite-patch-id: 1629dd27a1f0b1d6622199cc7603dad4b17d29b6
+prerequisite-patch-id: 29bc9e59b1d732a00cd65ba1d73270e051898fd7
+prerequisite-patch-id: 7a028831f1df214099241bfac0dc290e2f799276
+prerequisite-patch-id: c28c78ff316ce2ac8c1b6151367662ca8039acd3
+prerequisite-patch-id: eea3b5adeb19b753a14bf03c5114eb407566c248
+prerequisite-patch-id: 87bd95813776fe216ac157f9fad23586c71db87b
 
+Best regards,
 -- 
-2.47.3
+Miquel Raynal <miquel.raynal@bootlin.com>
 

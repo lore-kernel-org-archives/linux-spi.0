@@ -1,78 +1,87 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795748144;
-	b=MEwF8vDlN/ta//tOp4dXLhNt5gcq5ASKgvxGDbZ9NYDAgvdOhqRGkknxXsOx90LK9uU4
-	 XhIPMdKJomOdbj550dk7MEcErx3NynJ/L357QPLgwBe2QBFjFr5CZ8TcqjQLRu1xStEFm
-	 oZnpADHCOGJp+CNU6Fsea6tR+dpI+50GBBZUzHrcd8g9JsogEsxl34p9fDdcpteXCK0HE
-	 lpCc5irLF+bukooP+ltEtjHyrIyuv6hqi+HkjOGG/hXMO/XpUwq/88pTcEjFxoPB3cExw
-	 TVdvBt6mxVcmU3IHDOe4JxV1vNOQTAGlv/tow2a9EO+kwFe05ZD5Q9NTnHdMoxh9+mQ==
+	t=1795748746;
+	b=zu/4WG14Gzb0gSu+ayBEDM2aZsOoxwNgkNei255v0kZWNm403JdjnNzUgdw9zb54X7k0
+	 d120UU6DLE8jFQ6DvtKdPS3MfXBLZ9OVeepxQE/vof7P/wC3NIw0+HQgBN2/t/OpdbkYR
+	 3MCByRDRhbIYNG5gMhuXjv4U1N6HCLFpUG9ReBdPDP+iD+MKxxa6JiavbdLM59jCFAMrx
+	 2Rxq+TJHAR9JSpbZ+qYYY7WLRxe78JSHJnOg2GUahAyCJKoqefnCTty+0MjFG6jSBKYFH
+	 0O2AIeYJOsMKXZ2LcyUO3eo30VSPOkSk9bCNYszh7XrYnGt5ByPkhHH8XP11EC6gkTg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795748144;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:To:Cc:X-Mailer:
+	a=rsa-sha256; c=relaxed/relaxed; t=1795748746;
+	h=Received:DKIM-Signature:Received:From:To:Cc:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=dn6Ire02f1+vVi/qeWD2sYadl/ZWdpVhAw3V5v5WUkc=;
-	b=vJ1+1uS48Q8SURNnCKQDcMfO9dUaWZW+AghObI2do54wsqGhMmWYAECXVMzbdUFZjmWq
-	 jl0n4uwlI5MmvzaiH9kYN18QjJgZkovaO252/Q9MEphoGykpWs7IT4EGarwjfsQ9MIzPK
-	 dv1655vvef5B9HgkP44E18FN2H23LKmIsMQRjnf8lS1Mk/wZW4dHnV3tQ4d+rVEmIf+DO
-	 YSf11hM3yzSI5jP86pvvwtE54fnHd+h7Pe12P2LBXMcApluH0E8Trjqo8abM3DibnwN3b
-	 hFo4FgNmjxhQ2070UnI7amfOw7QJTADut3Sd3wzNUT5onMijmY+36+zW6/uxPhcN04Q==
+	 X-Original-From:Reply-To;
+	bh=ZYSpWaydzi/HLoHbkGjLDcru//1qD664DYcG/RjHYVY=;
+	b=fNpBfp/TnhE0ixZb4Oc+V2Ymdgvx6Vz15pW64VqTn+yog65H4SsfoflCXKvw/P7wArZE
+	 Utlz580BNPqlHyNTvU3rO5NGunO66OKo1yULNoywEVMaohIo6gfYEeldM/ZUma0sFu5DL
+	 WSTz8aBOruUGHbcE0j3fSveQhatV+HdAqr8eCidiCWI1b37c6nwS7221DCtvaAmB4Tczc
+	 IdGc8xctUmGWoAMg1I28ja1UTEdfizeHNKdjzWHUuWeib8pMRZJXjsp2WUzhPlzgKXbBl
+	 lwLoKxNGq1Srt8ElfMamEp3Xt3IvW655uFRm48WBZo+n03NNclnVXH9YyCVNgLtbrGg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j0Pvvnu9;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="eq6jpS0/";
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE84E606A321
-	for <linux-spi@vger.kernel.org>; Fri, 27 Nov 2026 02:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164F4606A324;
+	Fri, 27 Nov 2026 03:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j0Pvvnu9
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eq6jpS0/
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795748144;
-	b=nE4X1rop9qv2JxPWWxeIPiZM/r2uiaFUfaU8QoHy3TJtewby3+NeB8BGL2piPCMyYqjo
-	 JTXfjAFpGfqsvrrdS9QhKkR0q6NgHkNlEJONNKjKf9W+eYgkALA19vNEr1C09uG3vo9Ow
-	 Sw8QHqPTAXgpqr7nbSo1VmkaF4ubEzukTD59v5xtJqWReKwkE3l2LNAWI7OpSPxqp1Sln
-	 Ny6NTDRg6Sg/ptS/0PWQEraxZG2beO98+XuvRPnwUTP0gcf7ac9E5sQXrzlerksYx9Klk
-	 jZ3TdmwyBXp86MK+q3jt5IDeINVpTVOs2o6L3A8ch0QZT9UN8CRqzyIQeegar5FCxrw==
+	t=1795748745;
+	b=l9QC1lSpILgi022u5FAIXRNTIscTWzvR+262C0YALSspXQdkkAbK/JtZy5kw43dr67FC
+	 z9Gu282EjEQ316B7C+kLJ040obDm5wi9xOIzQ/iXwpSvekBeNuYg3qCUKVPIjUyD3PhQM
+	 DJODhw3km01GPxdNh06hlFhClc9m7vjrvn6XkKDPO/OwJd2WC0wsmqzHXQIfv5y9FZedo
+	 p47q5gFiEBmTKRAX53S5Hg4WyKAtiz7gCZ6vDV9CtHm8OQQ1YxYLuR5ozSjdBimr2yLYm
+	 jvftXMHXKXSOcpDDT7X2Z2oxKLrn6IfqMPUUhxh8f7qTrfE2vgprWJGGapTAgmwx6BA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795748144;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:To:Cc:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key:X-Endpoint-Received:X-Original-From:Reply-To:
-	 Content-Transfer-Encoding;
-	bh=dn6Ire02f1+vVi/qeWD2sYadl/ZWdpVhAw3V5v5WUkc=;
-	b=UUxRPah1aXvJ1GvTGtZNCQtTEDfGP3nYCfQz5hv9nsQyU7O6kX7/jUofM0A+8ku67bJK
-	 gzqbpe+SnbhGjrXYgIwXtj/4zFb7/lqFjShgdyblSj3o6JgtLGWop1kVt7XenkTlHWkgk
-	 WccFcHPeBuy9ZZnglk16KSkct6MePJ5VWI8ZaEN+/wYHaJJmQXJzAqT5V6iDAAGkp0p6o
-	 RTX5h9bbU70oyQNvfWvkxrXIo143+3phBaujRrDBKwXINhVpDWPpPYhmR2isW99dhJEBO
-	 hFxcbSfb3ydamOdcmsO0rj2zYEoa8LaZL6Za/NCMx3pfcXUXhVSCKU74tHx+5UCP1iA==
+	c=relaxed/relaxed; t=1795748745;
+	h=DKIM-Signature:Received:From:To:Cc:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=ZYSpWaydzi/HLoHbkGjLDcru//1qD664DYcG/RjHYVY=;
+	b=SfmdIoEIHlqQmM0MnFk/JzRBbORM5KK3rWlGJbU/pfYxvCy677UhMz6lYo5YeQpdNFK5
+	 JJD582IpFyHf4bKja0FxD5U/KKN5OE2s4sG+k+fSdfe4I9oaCRCLzetHZ4qxZv8smy+ep
+	 cnoc6tQwFKS81F2F1Bl2YGkv2ktjrmeK0OiyxMm5H/84akoLy6bkea5E4fXGB7Hj/BO4u
+	 Hn5pkL9Ks46wKKely6A6mvNMthBtnKA/ZWUg56JsDUB8U9I153VuaGlSuV9tXGNfLK+Rp
+	 semWs/uEWIvEfwRPnxhrMFz/ILaPeCp5yJKDrnoAvfUdIwHSqUNWU4f6qb0v1eK7yDA==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 58BF41F000C1;
-	Fri, 27 Nov 2026 02:55:41 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 7512D1F000C1;
+	Fri, 27 Nov 2026 03:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795748144;
-	bh=dn6Ire02f1+vVi/qeWD2sYadl/ZWdpVhAw3V5v5WUkc=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=j0Pvvnu9rT1KhGGUv/fgvGFV5bVfeOFvV0d2SRzPKncqrFg7RyLfe8+Y1cuQUaT+n
-	 yW0uf4kRunldFtmbugZWODGrLvBRQnOMzqXhFoPD/O1L9VUPPFv18bmw1VYi6TyeyY
-	 VKC33CypQW4C/+eXaPmWd1bSwZiVI65gwDIqsAnZuH6to10n2DZJtBHVu/jBhzyloO
-	 t5I4yc34PSJS9NhP3Rr0c1eltDjNLLIHudNWrWMdCpOIH/xq33Q5R3tm/G4XKgWzTN
-	 9uZ2LdjGByHa+UlS++cMFbso0x4gRUmI0zktdp/VoEL5tc8olalvJwKeqYuuuN/X0w
-	 g1g8rKOqSH4eQ==
+	s=k20260515; t=1795748745;
+	bh=ZYSpWaydzi/HLoHbkGjLDcru//1qD664DYcG/RjHYVY=;
+	h=From:To:Cc:Subject:Date:Reply-To;
+	b=eq6jpS0/kyquKPPhnRS6PUnvyvttlOX5AzWJCYyl6NAMRpev2N5u9dFI7Ij+Z5hx9
+	 8KRj1nD6JLDPyn/L6kce+HB39rmn44c6tMKFuuxOYoknI83E3mlVvX0fpZ0KA3jpiA
+	 jDQ8GjSXbQzvKO8KHqccA4yUh5ECYmYBPZ2sWcMWq7Z4Ck4CxNLvtmb9qLTokkqWTu
+	 qz0wcL8S2EiEK0zGWEgvdf5g7nTUA5DEj+y5rDr5M/4DHntaP4HYtSb0JyZJmcIGDg
+	 ycJqGzKlcfgKDZcvO0eVw5gjz/z5xdVp6fHN+02MqppxefikEULjbHfCPILMALX5Pz
+	 pvCH59F1cf4SQ==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id E06ED4B50B;
-	Fri, 27 Nov 2026 02:55:40 +0000 (UTC)
-From: Igor Velkov via B4 Relay <devnull+iav.iav.lv@kernel.org>
-Date: Fri, 27 Nov 2026 04:55:38 +0200
-Subject: [PATCH] spi: meson-spifc: round the clock divider up
+	by lkml.kernel.org (Postfix) with ESMTP id EAC424B513;
+	Fri, 27 Nov 2026 03:05:42 +0000 (UTC)
+From: Ilia Snezhkov via B4 Relay <devnull+iasnezhkov.gmail.com@kernel.org>
+To: broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+ conor+dt@kernel.org
+Cc: matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, 
+ leilk.liu@mediatek.com, me@adomerle.pw, 
+ Roman Vivchar <rva333@protonmail.com>, devicetree@vger.kernel.org, 
+ linux-spi@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v4] spi: dt-bindings: mediatek,spi-mt65xx: Add compatible
+ for MT6789
+Date: Fri, 27 Nov 2026 03:05:42 +0000
+Message-Id: <20261127030542.11696-1-iasnezhkov@gmail.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -83,85 +92,60 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261127-b4-meson-spifc-div-round-up-v1-1-e927ca0d0c8a@iav.lv>
-X-B4-Tracking: v=1; b=H4sIACnxCGsC/x3MQQqAIBAAwK/EnltIicS+Eh1Mt9pDKi5FEP096
- TiXeUCoMAmMzQOFLhZOsUK1DfjdxY2QQzXoTg9KaYNLjwdJiiiZV4+BLyzpjAHPjC4s1nhlh84
- R1CEXWvn+92l+3w8UV6PabQAAAA==
-To: Mark Brown <broonie@kernel.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-amlogic@lists.infradead.org, Igor Velkov <iav@iav.lv>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2042; i=iav@iav.lv;
- h=from:subject:message-id;
- bh=Rt0Bq6tvIo11qsWLzpWdcysvdzpavIURklDKm0ZG7KU=;
- b=owGbwMvMwCVmNH1q96v4SmbG02pJDNkcH7Vn5T2fc+jIndtfvNcseRUx354tb1oeZ5dpHstfM
- cvUvyv+dZSyMIhxMciKKbJMOKRxK2PJ1b/+HuYPYOawMoEMYeDiFICJ3K5kZNg+NfdMdEWT65lc
- ZiaJbFbjb/21h177BqY8Fr0zp7CQ8yrD/9Czqnc+pD//5+elwOx9LngOq7jkBfPFr1LKNeK2/E/
- 8xQgA
-X-Developer-Key: i=iav@iav.lv; a=openpgp;
- fpr=90C228DA68A4D5FD4F4837E03297958BEA5F7903
-X-Endpoint-Received: by B4 Relay for iav@iav.lv/default with auth_id=1060
-X-Original-From: Igor Velkov <iav@iav.lv>
-Reply-To: iav@iav.lv
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795748742; l=1611;
+ i=iasnezhkov@gmail.com; s=mindone2026; h=from:subject:message-id;
+ bh=sl67F/NTDPcA/UZxNAmRnJaGzbkAwbuNN2+Fz3m685o=;
+ b=Hy2FnvqAyjz44CTPE4b1DcOaO/n2DUIuTQY/BcngfHKgXNEVNbvB0xCQPBkIfYHpR827nRR2h
+ aUl2X33T4xcAXuxt7RPmgmphV2WGxgaMxUVCZc1yb9VSOSqmb5NeLy6
+X-Developer-Key: i=iasnezhkov@gmail.com; a=ed25519;
+ pk=hQgXfiWi4ukk2jh4BHu1vRVhg9BUivo//AFp50AKMag=
+X-Endpoint-Received: by B4 Relay for iasnezhkov@gmail.com/mindone2026 with
+ auth_id=1643
+X-Original-From: Ilia Snezhkov <iasnezhkov@gmail.com>
+Reply-To: iasnezhkov@gmail.com
 
-From: Igor Velkov <iav@iav.lv>
+From: Arseniy Velikanov <me@adomerle.pw>
 
-meson_spifc_setup_speed() computes the divider as parent / speed - 1,
-which rounds the divisor down and makes SCLK faster than requested.
-On ODROID-N2+ (clk81 222.2 MHz) a 104 MHz spi-max-frequency gives
-n = 1 and SCLK = 111.1 MHz.
+Add the SPI controller compatible for the MediaTek MT6789 SoC using
+mediatek,mt6893-spi as its fallback compatible, as MT6789 SPI is
+programming-model compatible with MT6893 and needs no driver change.
 
-Round the divisor up so SCLK does not exceed the requested rate, and
-round min_speed_hz and max_speed_hz up to match: with an odd parent
-rate, rate >> 1 would need n = 2 instead of 1, and rate >> 6 would
-need n = 64, which does not fit the 6-bit divider field.
-
-Fixes: c3e4bc5434d2 ("spi: meson: Add support for Amlogic Meson SPIFC")
-Signed-off-by: Igor Velkov <iav@iav.lv>
+Signed-off-by: Arseniy Velikanov <me@adomerle.pw>
+Signed-off-by: Ilia Snezhkov <iasnezhkov@gmail.com>
 ---
-Tested on ODROID-N2+ with the patch on 7.3.6: for 104 MHz REG_CLOCK
-goes from 0x1001 to 0x2002 (SCLK 111 -> 74 MHz). The board's
-MX25U6435F read with READ (03h) misread 36 of 50 4 KiB blocks before,
-0 of 200 after.
----
- drivers/spi/spi-meson-spifc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Changes in v4:
+- Split out from the MT6789 pwrap series into its own standalone patch
+  (suggested by Roman Vivchar).
+- Use spi: dt-bindings: subject prefix (Mark Brown).
+- Remove review-history wording from commit message body.
+- Add sender Signed-off-by.
+- Link to v1: https://lore.kernel.org/linux-mediatek/20250715231921.4527-1-me@adomerle.pw/
+- Link to v3: https://lore.kernel.org/r/20261126031001.27288-1-iasnezhkov@gmail.com
 
-diff --git a/drivers/spi/spi-meson-spifc.c b/drivers/spi/spi-meson-spifc.c
-index 1580797f4a84..865440793a8b 100644
---- a/drivers/spi/spi-meson-spifc.c
-+++ b/drivers/spi/spi-meson-spifc.c
-@@ -168,7 +168,7 @@ static void meson_spifc_setup_speed(struct meson_spifc *spifc, u32 speed)
- 	int n;
- 
- 	parent = clk_get_rate(spifc->clk);
--	n = max_t(int, parent / speed - 1, 1);
-+	n = max_t(int, DIV_ROUND_UP(parent, speed) - 1, 1);
- 
- 	dev_dbg(spifc->dev, "parent %lu, speed %u, n %d\n", parent,
- 		speed, n);
-@@ -320,8 +320,8 @@ static int meson_spifc_probe(struct platform_device *pdev)
- 	host->bits_per_word_mask = SPI_BPW_MASK(8);
- 	host->auto_runtime_pm = true;
- 	host->transfer_one = meson_spifc_transfer_one;
--	host->min_speed_hz = rate >> 6;
--	host->max_speed_hz = rate >> 1;
-+	host->min_speed_hz = DIV_ROUND_UP(rate, 64);
-+	host->max_speed_hz = DIV_ROUND_UP(rate, 2);
- 
- 	meson_spifc_hw_init(spifc);
- 
+Rebased onto mainline with an AI coding assistant.
 
----
-base-commit: 63083539d2bf955ccf84042d4b044d1133752bed
-change-id: 20261127-b4-meson-spifc-div-round-up-adb97c1960ae
+ .../devicetree/bindings/spi/mediatek,spi-mt65xx.yaml          | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Best regards,
+diff --git a/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml b/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
+index 3bf3eb1..7d82369 100644
+--- a/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
++++ b/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
+@@ -39,6 +39,10 @@ properties:
+               - mediatek,mt7988-spi-single
+               - mediatek,mt8188-spi-ipm
+           - const: mediatek,spi-ipm
++      - items:
++          - enum:
++              - mediatek,mt6789-spi
++          - const: mediatek,mt6893-spi
+       - items:
+           - enum:
+               - mediatek,mt8196-spi
 -- 
-Igor Velkov <iav@iav.lv>
+2.54.0 (Apple Git-157)
+
 
 

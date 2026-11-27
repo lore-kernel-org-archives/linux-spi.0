@@ -1,48 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.77
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795749606;
-	b=thnBqXtGctNTxEHY57ip5bLCVl6aBTy2QOneZ/UxrasCuxTyJ/95sVKHoFLej92gNqgW
-	 P4HkWac6ikNON46r2wgG7NHGNySM09v4pEfE0dnxIoh+p88P6/N+ajgx+Vt4OdfQpmkCW
-	 RMmHEnJqJR2ZyVbqdcMaZWAOs2uIEzY/AqNkjL+HBePctZJGRmydV4pJQBfrOHmInLA4+
-	 Q8UUWD+w0/Syh1yRvAimkXGnCEGE48/s80+1LLw6bvDPOXA2J8/n5lMC5x3jWQ5Wg3vQ0
-	 w2NydE4iYdPz36T3Jcl/LT4SgovrhJuI3cBsiwK1M12ppWmQhBAvA2QYG6eDAKlsNWQ==
+	t=1795765240;
+	b=m2nx4+6nWIxBfTRoBSjZMQ4QfN6gGsNQjKODRcl8oG7qI9hBKrO9cpbTnL//wmgHhTKu
+	 A1MyAfyMfe4Y5pfifGo3pvGFTpZzzn1FCB4rwE+nL7P1ODfYT8cY7MjpsZMH4B4HcY/R2
+	 4RhgR8PSh61cXqs+Bs9iBnRYB/LieEmduaN6EDChM3J6YKDHtomtmB3+cPrz1dK1sQ7g6
+	 ukBJe+Qku6vxPler4tTQzkUubD8qm+rLLduWyd+cqxxvYfZ5q7Rkf1WqlubWOmzi/klvP
+	 5hzxv1fdJAF5EqCf19Pmg2K7jcmzuzs5u68Pz/om8qy5QiYWyvKg1SPWA46eT0QAQeA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795749606;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:To;
-	bh=EoqfWBWJiZgQBeYKcgK24puyUcIoei1tWKvxOWyBfM4=;
-	b=c5Y3VnnWL4ZX7wJGQMmkpb42P5jy2jKvF4Fi5RuJsOTzPQLtgUvIqDa4gCdOl/L2OAdA
-	 BTFMMcMVtTTw270pCHtLIDLMADTxX46fo72zqUqHCIQEXHlMRpiUd10kCZbn6ley1xnx+
-	 uI8VlckKNDfcOqn3KkxLOkq+riAUJlRfjdorgVcNCC8oMhgUbaI76HMCn1n4K9t2h4CRc
-	 pENYdIWwKEG/A4F4X5A9uZ3Pkz6AMud9ipkTqVrSJouYUMNBMsXRFvuw9c1/wPg1Jj6wg
-	 sI0X4PkFGw316ggCF/zWmTA0GyqpaTTX29v441oS7CRI7NfiHbPHlEWYnDmoG0UGbnA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795765240;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=oenDQMvJtH5OqPTegmH1kUWnZC5MSKR44tXNrTurGmg=;
+	b=OvaOAasL9TojRTjdvj0eNc/B59mnouzL2ozYUc3Hb/B0nAl+MXaFk9wY0NtgKhFhhE3Z
+	 mODNJ+g23FQH5llFXXeiTrUNK4yrfO/y3drkkkJcJn251Hw2uOZdfAANRhAUkfIXBRX0R
+	 +t9swE16fvtyySdtWqCiTPtiYYgbsGjpq8TJGab57G5hVzgWmQBUM2nWXtaKTCn0vxBx+
+	 lgBCHc5dOLJM/YoZd+Qv3/n+K5t0EeDSQCmgwJ9Lfk/udqtNaWgZgRdPELRVKqqcPLPsv
+	 36RGNAe1xp8qBxL0/bJOUU3HAk+lGYz7ojE1MKMzp49rApF80Gid8bx+oIcx+DStPkQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W6l6bEdf;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=yinhe.ht;
+	spf=pass smtp.mailfrom=yinhe.ht;
+	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=NgJPiXe7;
+	arc=none smtp.remote-ip=115.124.28.77
+Received: from out28-77.mail.aliyun.com (out28-77.mail.aliyun.com [115.124.28.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D8A606A31E
-	for <linux-spi@vger.kernel.org>; Fri, 27 Nov 2026 03:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD443606A31E;
+	Fri, 27 Nov 2026 07:40:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CD443606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W6l6bEdf
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 590AE1F00893;
-	Fri, 27 Nov 2026 03:20:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795749606;
-	bh=EoqfWBWJiZgQBeYKcgK24puyUcIoei1tWKvxOWyBfM4=;
-	h=Subject:From:Date:To;
-	b=W6l6bEdf2pgbCDtjE9NK68pmMVxt6Bq0TPcx5i0ZGHq1GyJTo5YQ3yaZpnT0hNwq8
-	 kWxYZtjgzY29DA0EfT0+q///8f2IQY9nU2m5195eilwPtDjJs2r7K5GcH7IorjNYCn
-	 f3MtPii/30jH7CE2j1+iW3Ud6qO59Ck1ILLSZoLSjNhiLAu3XfgwtAB6elbNS+lUxZ
-	 IpL1Jz0ZsQE5wYUD+NVsmTcCbRTz/Aekvl9Hwr1yN7iMzLGK1Zu9rilGLZuef8+AT+
-	 pAc9AmLF0g7C6ujts2VJhQ4rE5Tvos181ABDiW3pA8sIOPXm/Q/PoHs3Zc3cc/uuUZ
-	 k4UzoDiSVeBKw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 36DE93803223;
-	Fri, 27 Nov 2026 03:20:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=NgJPiXe7
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=yinhe.ht; s=default;
+	t=1795765229; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=oenDQMvJtH5OqPTegmH1kUWnZC5MSKR44tXNrTurGmg=;
+	b=NgJPiXe7ZafG28COehdLdvfEl5PnvZSYFVt00MbejVLsfekPjiEOr1IHpPUGCUSM8uCDTIBNnWKTt+eKuciDCdS+kQePFWhyh9orCY7eMLZ97u/nID/87zpoGkxDZ7llwGBy3Y1/ws7jJPD3n+IlXp/Qp+1QLNRlSosxydm/qJdSJKS+3YJ3KTN9bjd9oczUEJKvA/q/I9mC93sE7kEGvEKHuzkCKEHlQGuAtG0YGsrioZGu7ek4OI6dPef0WLdW8a1Loi6xTte5CQSGH07X1QJgBsPF0vqZ25sk+tjeZ5S5MPJ0jYKCxAzVOIz4v/dK1cFFOa1LZp1RiooXXQR27g==
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.09006236|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.134249-0.0353024-0.830449;FP=2663912962208220567|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037028158;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DS;RN=6;RT=6;SR=0;TI=SMTPD_---.kBFougz_1795765228;
+Received: from galx..(mailfrom:chunyuzhiqiang@yinhe.ht fp:SMTPD_---.kBFougz_1795765228 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Fri, 27 Nov 2026 15:40:29 +0800
+From: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+To: Mark Brown <broonie@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>,
+	linux-spi@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>
+Subject: [RFC PATCH v2 0/1] spi: fsl-lpspi: add atomic transfer support
+Date: Fri, 27 Nov 2026 15:34:53 +0800
+Message-ID: <20261127073454.351296-1-chunyuzhiqiang@yinhe.ht>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -53,49 +63,49 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <179574960478.725149.10061020814357924059.git-patchwork-summary@kernel.org>
-Date: Fri, 27 Nov 2026 03:20:04 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-Hello:
+This is a resend of the fsl_lpspi follow-up to Heiko Stuebner's "spi:
+Implement a atomic transfer as a last resort" series.  v1 was based on an
+earlier revision of that series and no longer applied; this version is
+based on current broonie/spi for-next, where Heiko's v4 is applied
+(for-next 63083539d2bf).
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+The panic entry point and its pstore/NVMEM user are split into a
+follow-up series, so this one only adds a second transfer_atomic()
+implementation next to Rockchip's.
 
-Series: spi: Add support for panic mem writes
-  Submitter: Paul Cercueil <paul.cercueil@bootlin.com>
-  Patchwork: https://patchwork.kernel.org/series/1187224/
-  Lore link: https://lore.kernel.org/r/20261016102917.171095-1-paul.cercueil@bootlin.com
-    Patches: [v4,1/7] spi: spi-mem: Add support for panic mem writes
-             [v4,4/7] spi: cadence-xspi: Clear "SDMA ready" IRQ flag after polling
+The callback uses PIO polling with DMA and interrupts disabled, resets the
+controller before the message, handles chip select and delays through the
+core helpers, and caches the per-clock rate because clk_get_rate() takes
+the clock prepare lock.  Poweroff and restart prepare handlers
+runtime-resume the controller before shutdown, matching Rockchip.
 
-Series: spi: cadence-xspi: Fixes and ACPI changes
-  Submitter: Paul Cercueil <paul.cercueil@bootlin.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1217298/
-  Lore link: https://lore.kernel.org/r/20261120115925.173568-1-paul.cercueil@bootlin.com
-    Patches: [v5,1/7] spi: cadence-xspi: Properly handle errors in .transfer_one_message
-             [v5,2/7] spi: cadence-xspi: Reconfigure to STIG mode before SPI message
-             [v5,3/7] spi: cadence-xspi: Inform SPI core about size transferred
-             [v5,4/7] spi: cadence-xspi: Clear "SDMA ready" IRQ flag after polling
-             [v5,5/7] spi: cadence-xspi: Drop useless cdns_xspi->cur_cs
-             [v5,7/7] spi: cadence-xspi: Add workaround for old Marvell firmwares
+Only host mode registers the callback.
 
-Series: spi: cadence-xspi: Fixes and misc. changes
-  Submitter: Paul Cercueil <paul.cercueil@bootlin.com>
-  Patchwork: https://patchwork.kernel.org/series/1201595/
-  Lore link: https://lore.kernel.org/r/20261104100643.162694-1-paul.cercueil@bootlin.com
-    Patches: [1/5] spi: cadence-xspi: Reconfigure to STIG mode before SPI message
-             [2/5] spi: cadence-xspi: Inform SPI core about size transferred
+Changes in v2:
+- rebased onto current for-next with Heiko's v4 applied;
+- split spi_sync_atomic() and the pstore/NVMEM user into a separate
+  series to keep this controller-only.
 
+Testing: compile-tested on x86 with COMPILE_TEST and on arm64, including
+against the for-next version of the driver.  Hardware validation on
+i.MX8QXP is still pending.
 
-Total patches: 10
+This cover letter and the patch were prepared with AI assistance; the
+submitter must review them before submission.
 
+Thanks,
+ChunYuZhiQiang
+
+Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+
+ChunYuZhiQiang (1):
+  spi: fsl-lpspi: add atomic transfer support
+
+ drivers/spi/spi-fsl-lpspi.c | 171 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 163 insertions(+), 8 deletions(-)
+
+base-commit: 63083539d2bf955ccf84042d4b044d1133752bed
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.47.3
 

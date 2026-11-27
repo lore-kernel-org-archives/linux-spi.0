@@ -1,59 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795789523;
-	b=rxhW+Gpg97UVsBF4qWUQA+BbKp17/v7xG6zusAwNb/ZDZSgCrTl2RMQSRTFaOmTeacxq
-	 ERoJZQW/6JYqk4F3HNeKUmt3aSUBeukRKUS9SL/7oww9116zTc5wwNome2XZ/sRZ4td83
-	 zrOSZbvIA3Q/yupq0+LthJh45s5m0oeHAVYQ0PkdPNSbedh0QKkMmQ/S+zH9gLonTcmyq
-	 /lG2S6RIjD0hos15jYyMDbigeS3wWwrnKdrWtlfqfMHhKdOUIa0pISIqjjCeELAKFLZ//
-	 fFvsih0m/fc2b3LunfbHzv43V+tJxWc+BoQtANUKQ1bqZ9penWzxLVRm5wk1CeSYLJQ==
+	t=1795789536;
+	b=oOGiuNZedcy9z8N85km5Zid2jNsvHD+ShosYQFGqi0hRv6ef6Zb9u1k/mQZHOBB/yVdv
+	 EGpl5GjH2/RMiTLywNhX7q/90Ramp/5/lx0nO9mowbBpr5AOShUqQi5q7JLctXXIiEpOJ
+	 ZIYtkt9ccHfZeVzsmZs41qWf+iNMUTo8uRJBjZCQRACQ+mmw8OxPdVnG3e22e6DLoRwBl
+	 V1YYjXefSoovDMZO8HJy0biSzk+yPg20VVzmAPHxwIt6LftOpA+VzHID84HKqaOxWgPtd
+	 JlkdE6rHnOXGb/Yu8ga87VWPBa6H+W/yxKyQPJNBtvXmJyd4DljZQr9+jf1Zm8wBo5Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795789523;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795789536;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=e/WJNef7cTCW2VuT1UlZP1gTjHoI+mrBxgO+0P5fY00=;
-	b=pDVMdvyK3CVTMORNnzGf7furc7mmsQIeGr8s53CCCVhJA2ZDVWuACvxf9yu9D/YD0Cl1
-	 DEubJAan0ENWbhol4KA7VL73a0M2Mcf/t/5+egmlKw1v3SXvLENNacNZP0Wb62nj0+9Yw
-	 GSqwSo3Q9sHgZo4r9SXz3twnuBOdyvPwVfWQzFFfNqlxlznf2nlLWSU++nDVpCF0gdq2U
-	 rw6y99egGvNHA2yrUZKl9q47Hn00Sv7ASi6qB3shG2DffyNGDW5qsNpLrr11FRvJXykhU
-	 taFAm+AqBZk8Alj8HuGKXFdQaUJLh6FJaxTCBuR/bxc59rZLcHHMa28A2ibd1X66aQw==
+	bh=oIP6YsVJ0tzemJtkR4/F0RGkjUMxie6otevjRQEs/Zw=;
+	b=KlEYj7Lxlr+sZXdr1p0kl/q8ig//YlhN3ryc1lsoJt9sE6M1OI9eyJisohAep3lRRXud
+	 5Unx6IiEBWrgbhrTOyURqVxQTqUxsRxSDVu3AIFEHbmj2iFu/oCotGIbVKf1W/BaE668F
+	 y31yPXdxfW9wTtbNcorAtUepiOPbI+dK7U1TX8RN2DbCAsKzBL+TlpSe3U0yN26hcgcNm
+	 WFdNxzYuTrDTLO854VYomqKuKCj/KMsQeWN4Hw5qKGHdvJG2PeYy6ws2k83GmxtvCwz4K
+	 XIppimAZONifUsEt2avRnuTxKnP9ST1LIwmsb5ob/fSmda/wMHZg7+wFCmdpiymIIOg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=oaUPKRi6;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Nbd+2k2z;
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445EA606B1BA;
-	Fri, 27 Nov 2026 14:25:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 445EA606B1BA
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACA6606C2F9
+	for <linux-spi@vger.kernel.org>; Fri, 27 Nov 2026 14:25:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0ACA6606C2F9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=oaUPKRi6
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Nbd+2k2z
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id F31A21A0440;
-	Fri, 27 Nov 2026 14:25:21 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id AAEF94E417C8;
+	Fri, 27 Nov 2026 14:25:34 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id BC3266049C;
-	Fri, 27 Nov 2026 14:25:21 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 75D6911E68FD9;
-	Fri, 27 Nov 2026 15:25:12 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 73B116049C;
+	Fri, 27 Nov 2026 14:25:34 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 026A611E68FF4;
+	Fri, 27 Nov 2026 15:25:20 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795789518; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1795789528; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=e/WJNef7cTCW2VuT1UlZP1gTjHoI+mrBxgO+0P5fY00=;
-	b=oaUPKRi6F8AkPi9tmgVcanDSS72d0wZ1FkqpPbsnvOwBFv1S0M0okn1+HgL+eiijMb6aLF
-	enQF+QF+klQsMr4LBW2KLXWCabg2Jdn4V8DopqJgNXOldLYBY2aolFatCnegthWL5Li9e9
-	sQRX2sznQtYYrcMwdnDxd71aZOHVdZjwaysB71ddBP5Y/6MKcAXw2R0/p5OEov9GqRFfzs
-	P1PFHz6x6e4Qsz3yo2ZSitMiESH1qe6f5aDyiuBn8FTr1Bwhinoa0qDwnFhR/IiUIN4UDM
-	ldEKAfTQcQkRRdV0i/sxtkyMo1LlGapjD4SDfnps+m2nWX5t5ppsvsYlDGLiqg==
+	bh=oIP6YsVJ0tzemJtkR4/F0RGkjUMxie6otevjRQEs/Zw=;
+	b=Nbd+2k2zRxfdX4N7PZuOesTe7y9uTS4XxFCrwjSo3LlykwttKnd2QBPXS7PTjAeHu+DGsh
+	ub3eIakOiP6Hwf4eE4KcQ6YASWe65YaVejiDLnN5qvyijvuYpqqX5380WkqD+LdzgSxTeG
+	hHVt7tbvP1wXmxEl3y3Xj1L7/yArHiTLqkQjyFNFVzowU47sJHCqDoz7MDVHrXwR9Q6Ng6
+	cFg4OluANdGXIR+2n8CHr79haJq9g91aU7IpYD0AKFqSBfvfRvX+SutHyxGkqrS9FR19y+
+	EaljxuCCa79rQSzyVe7u74NkZpnNJezBU/S5NAko5jt+NEUgcla3e/xg4+kB9w==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Fri, 27 Nov 2026 15:22:37 +0100
-Subject: [PATCH RFC v2 15/35] spi: fsl-qspi: Consume dummy cycles directly
+Date: Fri, 27 Nov 2026 15:22:38 +0100
+Subject: [PATCH RFC v2 16/35] spi: microchip-core-qspi: Consume dummy
+ cycles directly
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -65,7 +66,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261127-macronix-upstreaming-spi-mem-cycles-v2-15-5c93f5e5d630@bootlin.com>
+Message-Id: <20261127-macronix-upstreaming-spi-mem-cycles-v2-16-5c93f5e5d630@bootlin.com>
 References: <20261127-macronix-upstreaming-spi-mem-cycles-v2-0-5c93f5e5d630@bootlin.com>
 In-Reply-To: <20261127-macronix-upstreaming-spi-mem-cycles-v2-0-5c93f5e5d630@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Liang Yang <liang.yang@amlogic.com>, 
@@ -111,60 +112,60 @@ dummy_cycles capability and use op->dummy.ncycles directly.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/spi/spi-fsl-qspi.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/spi/spi-microchip-core-qspi.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
-index d2c2090442f8..383915b3ed41 100644
---- a/drivers/spi/spi-fsl-qspi.c
-+++ b/drivers/spi/spi-fsl-qspi.c
-@@ -399,7 +399,7 @@ static bool fsl_qspi_supports_op(struct spi_mem *mem,
- 	if (op->addr.nbytes)
- 		ret |= fsl_qspi_check_buswidth(q, op->addr.buswidth);
+diff --git a/drivers/spi/spi-microchip-core-qspi.c b/drivers/spi/spi-microchip-core-qspi.c
+index c0ea65014d2e..80481011b83e 100644
+--- a/drivers/spi/spi-microchip-core-qspi.c
++++ b/drivers/spi/spi-microchip-core-qspi.c
+@@ -8,6 +8,7 @@
+  *
+  */
  
--	if (op->dummy.nbytes)
-+	if (op->dummy.ncycles)
- 		ret |= fsl_qspi_check_buswidth(q, op->dummy.buswidth);
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ #include <linux/init.h>
+@@ -420,7 +421,6 @@ static int mchp_coreqspi_setup_clock(struct mchp_coreqspi *qspi, struct spi_devi
  
- 	if (op->data.nbytes)
-@@ -413,13 +413,12 @@ static bool fsl_qspi_supports_op(struct spi_mem *mem,
- 	 * to fit into a single LUT entry.
- 	 */
- 	if (op->addr.nbytes +
--	   (op->dummy.nbytes ? 1:0) +
-+	   (op->dummy.ncycles ? 1:0) +
- 	   (op->data.nbytes ? 1:0) > 6)
+ static void mchp_coreqspi_config_op(struct mchp_coreqspi *qspi, const struct spi_mem_op *op)
+ {
+-	u32 idle_cycles = 0;
+ 	int total_bytes, cmd_bytes, frames, ctrl;
+ 
+ 	cmd_bytes = op->cmd.nbytes + op->addr.nbytes;
+@@ -459,11 +459,7 @@ static void mchp_coreqspi_config_op(struct mchp_coreqspi *qspi, const struct spi
+ 	writel_relaxed(frames, qspi->regs + REG_FRAMESUP);
+ 	frames = total_bytes & BYTESLOWER_MASK;
+ 	frames |= cmd_bytes << FRAMES_CMDBYTES_SHIFT;
+-
+-	if (op->dummy.buswidth)
+-		idle_cycles = op->dummy.nbytes * 8 / op->dummy.buswidth;
+-
+-	frames |= idle_cycles << FRAMES_IDLE_SHIFT;
++	frames |= op->dummy.ncycles << FRAMES_IDLE_SHIFT;
+ 	ctrl = readl_relaxed(qspi->regs + REG_CONTROL);
+ 
+ 	if (ctrl & CONTROL_MODE12_MASK)
+@@ -561,6 +557,9 @@ static bool mchp_coreqspi_supports_op(struct spi_mem *mem, const struct spi_mem_
+ 	if (!spi_mem_default_supports_op(mem, op))
  		return false;
  
- 	/* Max 64 dummy clock cycles supported */
--	if (op->dummy.nbytes &&
--	    (op->dummy.nbytes * 8 / op->dummy.buswidth > 64))
-+	if (op->dummy.ncycles > 64)
- 		return false;
++	if (op->dummy.ncycles > FIELD_MAX(FRAMES_IDLE_MASK))
++		return false;
++
+ 	if ((op->data.buswidth == 4 || op->data.buswidth == 2) &&
+ 	    (op->cmd.buswidth == 1 && (op->addr.buswidth == 1 || op->addr.buswidth == 0))) {
+ 		/*
+@@ -601,6 +600,7 @@ static const struct spi_controller_mem_ops mchp_coreqspi_mem_ops = {
  
- 	/* Max data length, check controller limits and alignment */
-@@ -460,11 +459,10 @@ static void fsl_qspi_prepare_lut(struct fsl_qspi *q,
- 		lutidx++;
- 	}
- 
--	if (op->dummy.nbytes) {
-+	if (op->dummy.ncycles) {
- 		lutval[lutidx / 2] |= LUT_DEF(lutidx, LUT_DUMMY,
- 					      LUT_PAD(op->dummy.buswidth),
--					      op->dummy.nbytes * 8 /
--					      op->dummy.buswidth);
-+					      op->dummy.ncycles);
- 		lutidx++;
- 	}
- 
-@@ -872,6 +870,7 @@ static const struct spi_controller_mem_ops fsl_qspi_mem_ops = {
- 
- static const struct spi_controller_mem_caps fsl_qspi_mem_caps = {
+ static const struct spi_controller_mem_caps mchp_coreqspi_mem_caps = {
  	.per_op_freq = true,
 +	.dummy_cycles = true,
  };
  
- static void fsl_qspi_disable(void *data)
+ static int mchp_coreqspi_unprepare_message(struct spi_controller *ctlr, struct spi_message *m)
 
 -- 
 2.56.0

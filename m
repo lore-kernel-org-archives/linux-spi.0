@@ -1,60 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795789426;
-	b=dHwAoJ5CwK37/SFBWCmvA8AgokXSLpHJHpI19IcOmToUzw9qI2R1oHJ1DtHEaGBRGW0H
-	 FREyogbbOTHi7gpb2/l7lXku8+LJv0YzSY2IL1f2GxnMbPupDJonVSl1hIJj2dHsC9RwU
-	 9IlggV67qisr5cEK0+YtYKlR2w0/IEj9qjF/QUGJvESM6i5CKB02b1PZxgtBSbiiAMB8V
-	 MWQ7/Fkh7S7Fg2Ymh1kfyRDhSY6WBcq5A7MgXUUB5tnJ5AJpfylaTT37EgDctzavtKstF
-	 eohCkRFZLsR2d0wJqjh73MvdJkVrPVw5DkmEPnUuhT5fbThxS18AUWyxoHHjYwHFVfA==
+	t=1795789434;
+	b=HKUOItKI2X/GGaN8X3uhoXu8INpU4JLQZd/qA2KIgfVIMTcrBw+PL7NgK2oCC8ja1k44
+	 adskGF44YKy8VVhiXggFCyf/FwQnVilsWsOKdJkK/QYg+GBwDHFJCFSheaIeEm35lHS86
+	 r7288q1zAYo4ed/Dx3ZRZquqb72b5PwYKYP1ggANWob4sr+AOJu/Df8mdgWYIAI+tVZlJ
+	 YbpIbWNCUgMy/YPjSI9Mf2xy2OpY6dvlKEs+Dfj/gRUTBTS1ygQUGS/5J5VJVwaWfHHWy
+	 2ggkZIjwV3Jrmktp6IWcspcIVIy5EU1ZDUEhekkAx7+py/Ke6n09t0nAFn08h9OE4vQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795789426;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795789434;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=HXhroBPZRcgrGIbcVc0pbxOO3IgNrBXDGvDEJWoY0CY=;
-	b=J86/uXSJct8sJNxIf64j4DMymHKDL2hS1JTYi/sRokJg/RRUkbqvflITP7g1oU19QEV+
-	 gyva5IHBpr/uK3abgVAdonxwUSM9ZYTi/IydqI5zWMLl3jCBmlhLtz4ma42KliNybfJTF
-	 2SdbgYgHcpVhV1QfFi7GdM9LLKhjkUkduMD2TDeb7QW9ucV7O2lzN22wIkdnCKn/nBpNa
-	 +/y8Gnhsj+VWuZtvSVoF1xWXje3jy3jp6YNswA00ym4wSXdNyNbLVm360wHRK4OSKy72b
-	 fQWkBQXaFX7dN3JQ8dUb7YP7wH3UpnRGBl/WIwSHrIYXaJbc7TG7/HCJY45VFIO8Rig==
+	bh=rLV3AiVfesH7+JN4SghWwMFjSPsBHJqy3yngjEbzPMg=;
+	b=F6SphNk7idmYhXE+btYZ5Buy3BAcWMmU4JaCVARCXe7HBpb+rmjss31pDZWISmRr0uFa
+	 57XgHOAeAohPvc2P6lI9Diy3GXETHWTXpbAE60gnZ/SX8WZhNopL+xq/K2JPX1beH+5B4
+	 vUveqBl2oMP8WLynir8BiHLwuAERG8ItelC9h9l96e3YvaFCIy0P4cJ0PLMU+/ckusidL
+	 a/gCtaAFELn5lJUWzXvL4nnZGcY3JmGHBfpW3L68OfrsvVlSBlYaCe2zGaPOdrqPfOL1m
+	 Bv64KV5ZzjMIf6OVnTNMIP6u8QbvWg4BxzSSZgV5mwGy802Io1BGjLTXwKHIp/K/mQw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=rnfWUyNN;
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=VUC9H8n3;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914DF606A32D
-	for <linux-spi@vger.kernel.org>; Fri, 27 Nov 2026 14:23:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 914DF606A32D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD03C606A31C
+	for <linux-spi@vger.kernel.org>; Fri, 27 Nov 2026 14:23:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BD03C606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=rnfWUyNN
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=VUC9H8n3
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id C1AAEC2AC4E;
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 83E491A1836;
 	Fri, 27 Nov 2026 14:23:52 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0352B6049C;
-	Fri, 27 Nov 2026 14:23:44 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E836E11E68FD9;
-	Fri, 27 Nov 2026 15:23:32 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 547B16049C;
+	Fri, 27 Nov 2026 14:23:52 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6422611E68FDF;
+	Fri, 27 Nov 2026 15:23:41 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795789420; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1795789429; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=HXhroBPZRcgrGIbcVc0pbxOO3IgNrBXDGvDEJWoY0CY=;
-	b=rnfWUyNNVeOK0yIxaUGUvuInfYVJ+8b8lpDJm7yQa263eaQy52ZcaPnICSJQiAeL1v5PW1
-	BnxVGnjOPlC8YUqXIxXhDIQUW/RW3ZRbLzF5WsQCZz0yDnP5ZL71LBUa587cvfv2OJ9sv/
-	UcAi5Mj64c6CUQXYFtv835NnxDv3LiUbKzxbXYI8NMWmsBtskn3W3+HIPWoWNYL5qwTQEZ
-	vIJ5IR5fSoZzIQ7kOiVGXDybE81wHr76CUoskIRh15IokIpWwGocq6mcYlvefx27LCEEdx
-	Fx8MHL/xhrCG9qjTqN8pmNrGBupdr2M7X6UB1sRWSTFWLhMjXM/RydF0YQeuVw==
+	bh=rLV3AiVfesH7+JN4SghWwMFjSPsBHJqy3yngjEbzPMg=;
+	b=VUC9H8n3pAarXQo2g6qN067XkCpnQwpm/9E/2Hk/I/tB2/1XjdWLGM9P4hBoCk9E1JFxvl
+	7J73tquQz2tKFGE2WS1IAUZmedaT+KEy8IOWHjtt+NZ5NVCKpzAogmzQQ432xXmK788h7I
+	OPnifGiuXyvdQgpKjfmZW/6R/gmGUXYAqZN5x8erH8kLD7UZmo88dREo0edxaZo7/VHVOB
+	O8HcV8efoiegMzRWc5KP4Jp+8apQaRGkS6nhprcWVDoH/FjQQxuOI06RFltCq+Kqlauzdv
+	16TuJt77aMuawELzzNmaPR/mVBrmDeGr+G1nP3Q9031kHufg6haf+aH0byuP1A==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Fri, 27 Nov 2026 15:22:25 +0100
-Subject: [PATCH RFC v2 03/35] spi: spi-mem: Handle a corner case while
- sanitizing ops
+Date: Fri, 27 Nov 2026 15:22:26 +0100
+Subject: [PATCH RFC v2 04/35] spi: spi-mem: Sanitize mixed DTR modes
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -66,7 +65,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261127-macronix-upstreaming-spi-mem-cycles-v2-3-5c93f5e5d630@bootlin.com>
+Message-Id: <20261127-macronix-upstreaming-spi-mem-cycles-v2-4-5c93f5e5d630@bootlin.com>
 References: <20261127-macronix-upstreaming-spi-mem-cycles-v2-0-5c93f5e5d630@bootlin.com>
 In-Reply-To: <20261127-macronix-upstreaming-spi-mem-cycles-v2-0-5c93f5e5d630@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Liang Yang <liang.yang@amlogic.com>, 
@@ -106,74 +105,54 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-Mixed DTR operations (eg. 1S-xD-yD) set op_is_dtr but do not enter the
-ODTR checks, so their command size is never validated.
+The following operations are supported:
+- S-S-D
+- S-D-D
+- D-D-D
+But the following are not:
+- S-D-S
+- D-D-S
+- D-S-S
 
-Always check the command size: one byte, or two bytes in ODTR mode.
-Require an even byte count only on 8-bit DTR phases, which carry two
-bytes per clock cycle. Narrower DTR phases may use odd counts.
+Make sure these cases are refused by the core.
 
-Regarding the dummy phase, either the controller is only supporting
-"bytes", in which case the check must be performed, or (soon) they might
-advertize the dummy_cycles capability for which sending an even number
-of dummy bytes is irrelevant. The check can remain though, since in this
-case dummy.nbytes will be 0 (those values are mutually exclusive, the
-core will check that).
-
-Fixes: 8618271887ca ("spi: spi-mem: Limit octal DTR constraints to octal DTR situations")
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/spi/spi-mem.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ drivers/spi/spi-mem.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
 diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index f4d71f740163..3989017dd86f 100644
+index 3989017dd86f..25f795d5e9ba 100644
 --- a/drivers/spi/spi-mem.c
 +++ b/drivers/spi/spi-mem.c
-@@ -171,6 +171,7 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
- 	struct spi_controller *ctlr = mem->spi->controller;
- 	bool op_is_dtr =
- 		op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr;
-+	bool op_is_odtr = op->cmd.dtr && op->cmd.buswidth == 8;
- 
- 	if (op_is_dtr) {
- 		if (!spi_mem_controller_is_capable(ctlr, dtr) && !ctlr->dtr_caps)
-@@ -178,23 +179,20 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
- 
- 		if (op->data.swap16 && !spi_mem_controller_is_capable(ctlr, swap16))
- 			return false;
-+	}
- 
--		/* Extra 8D-8D-8D limitations */
--		if (op->cmd.dtr && op->cmd.buswidth == 8) {
--			if (op->cmd.nbytes != 2)
--				return false;
-+	/* Command phase is single byte, except in ODTR mode where it is two */
-+	if ((!op_is_odtr && op->cmd.nbytes != 1) ||
-+	    (op_is_odtr && op->cmd.nbytes != 2))
-+		return false;
- 
--			if ((op->addr.nbytes % 2) ||
--			    (op->dummy.nbytes % 2) ||
--			    (op->data.nbytes % 2)) {
--				dev_err(&ctlr->dev,
--					"Odd byte numbers not allowed in octal DTR operations\n");
--				return false;
--			}
--		}
--	} else {
--		if (op->cmd.nbytes != 1)
--			return false;
-+	/* ODTR phases shall carry even byte numbers */
-+	if ((op->addr.dtr && op->addr.buswidth == 8 && op->addr.nbytes % 2) ||
-+	    (op->dummy.dtr && op->dummy.buswidth == 8 && op->dummy.nbytes % 2) ||
-+	    (op->data.dtr && op->data.buswidth == 8 && op->data.nbytes % 2)) {
-+		dev_err(&ctlr->dev,
-+			"Odd byte numbers not allowed in octal DTR phases\n");
-+		return false;
+@@ -195,6 +195,27 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
+ 		return false;
  	}
  
++	/* xD-xS-xS is not allowed */
++	if (op->cmd.dtr) {
++		if ((op->addr.nbytes && !op->addr.dtr) ||
++		    (op->dummy.nbytes && !op->dummy.dtr) ||
++		    (op->data.nbytes && !op->data.dtr))
++			return false;
++	}
++
++	/* xS-xD-xS is not allowed */
++	if (op->addr.nbytes && op->addr.dtr) {
++		if ((op->dummy.nbytes && !op->dummy.dtr) ||
++		    (op->data.nbytes && !op->data.dtr))
++			return false;
++	}
++
++	/* xS-xS-xD-xS is not allowed */
++	if (op->dummy.nbytes && op->dummy.dtr) {
++		if (op->data.nbytes && !op->data.dtr)
++			return false;
++	}
++
  	if (op->data.ecc) {
+ 		if (!spi_mem_controller_is_capable(ctlr, ecc))
+ 			return false;
 
 -- 
 2.56.0

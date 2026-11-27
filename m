@@ -1,79 +1,80 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795792938;
-	b=CnII0RH6NgLSfTyoMy1loRUyvO6bXfhwL0r3aMRtvTB3cDoySLowyEJkH+HE6J0vNWyR
-	 IYCG63CixMmcGa8ekrMCsCEZQJs1Qjm0AXdk4nAjToie2fTRWmmW1v79b6x47YJtOc9aw
-	 1fK0yUZC56NDTREcWlBUVqMSXbAmZ6i0UGMGrCK0sy7P9WaT62IyR2KO5xGlNxLviLmn2
-	 DCM1EEnaU/YPpzAt3ru8hvQH+eOouyjmaLu05GfUNK8j1gbRSpXFdsnAQ/KoygImhxu6l
-	 3MPV1QutpfewhGNL3gzX+l6inF0W4cRhyqt4mNTgN9TGD3WkmPL86fdFs0CNk2pFGPg==
+	t=1795792934;
+	b=zEyEjizbczMZD5r95tl9ACl3zCWcv/KOKXdGiFSkjFyji4TSKi1PJzzNFqW/UydCsM6z
+	 SxBxWkDweRFpNuK8jV+PEgMZupPxfUHisjOsaK3EJTkQ67s8K0t8I/V+m0Wcmgs28lXXK
+	 bPCcTFRTDtQ8BJSS35SUorb+IcCYhXIQkeMHZfE+T4qP2xY7+EJGbjU9zfvmtFtx8uMeV
+	 RwxGp7srtPGiBEYzn5mUEpnElivXeqXTTPeYkJG78srpXMB3tzgxhV1r98l2SFZWEra6u
+	 55odAiVpmlaPBPePavd5zP+kuknVeZI6L5BVCfnrB6mBoIQSAzHTR7QMc65FRSoE02Q==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795792938;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=NoVu7Qr7mpzCqXJ/0i2lPIF/ZqVSTtvTa2MvTuyMJDE=;
-	b=hP2P7a1kLlCJqcqke7r0+bv42xjp6BIjl6pXXIfK6TwGm1MJ9WFK+WdxG8AjNMQNRNoz
-	 QyoR2/h+Lon88ss5PrhV6vltspgLJrvMjavlhylyFzBzjZoGgXHuqb9VMCyLT4alQDwtf
-	 +6BJwWn30qICDYq/17SLdt7Z/M1xgvS8baIjgjqbqEcGR3L0vtNC3BL73EhZNbVVb35pS
-	 rCeKHbmcOUcXHpd8w8cLXs2t/XCujZiiecojMC76gs1fPmiJg5b+pdXCwYrccNJCk5G32
-	 8uoLwaYsbv8b0vtUxY1Ujfr0S4Yk3t05Sg5Cv8leYOj8P9FgDkZ/y+fEyWUNM4a83kA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795792934;
+	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=CRSjpxH4TNIa5AzUVjH2D42lzo+c5Yov82Bh6OCdY64=;
+	b=uupLgss/xPGaKvLXWtsK/OfsOduJrxPYuIxXfxydMSwsskkvqXrvl5+AuaFRd+unH5KL
+	 JhhymMsLiofhthe+ksM2i9xVl2/EJzhl5Mc7jTsHQZlbjeN2xJhzTdpFrMUpbeITrp7lP
+	 n4i3mS8SQ+lrzPiIeNXPYrn0ntf8yHv7PihbSevw6LnVPBvnnTBOjfsWBXkYNO/jkWfWQ
+	 k/9boGJjYAntd7TyEeUU5Fz5SPPTC4C24+zi4PgAXG5WCAVAuz0MNtNKy5qtATJVmTa1T
+	 xqXeBOB6tUl3zUGCggoCDST3wVsKJULj8vaA9KyMH2K9MlnVPvkdzb6BLHY6pzuTokg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SqYhe9QF;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AMla+Kwn;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76021606A33C;
-	Fri, 27 Nov 2026 15:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE6B606A338;
+	Fri, 27 Nov 2026 15:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SqYhe9QF
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AMla+Kwn
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795792937;
-	b=ODodhJijAeFfkfnZO4CyjLmxRuUEHmLg9BrECuGDXB0iy5ACF74TnF7U/tQCH+0Efdhq
-	 psBZHsBFcdYgVQdKrl6wpV+loOl1FLXr0HsdbJ2jhWAwx5k0LcSNoinCfUVQaMnagcR4C
-	 5tkYkH99e0IhVVv5ZJGgjrenTXkPq5QUH++oiKfTgq0FU3fOy9Pfus8LCWQIF4bdtxuoB
-	 Z26+lrPQei0o06Xx4UTvvVmXSqanfGjXpEtbJ4dkvheOorwvw9l/r93wVMFpQgmBnd+Pq
-	 V/q8bMsZpaX96894bKLktu3idRXSiX3rHBqsqLPXowl+VhlAK3FnphBX+iSEBTXz2pQ==
+	t=1795792933;
+	b=Wf2upP5rkCuGJ4ImXieZt4dsoKV0CLcI68pNQCoXPJAbFo6CpbHJhtu7Kvh2g0QAd85+
+	 jVQeX6qluVC+x4zWVugN+cFU9KYp8DON2PkgpA/QJ7xJIhC3gCoDAE2hXg+npD/gZdthf
+	 CUhFKAzD5R+n6ao32kqPtitijge7skjcoo8hR89qXyISUOV3zb3qGi5dt9q+l29fdI/9X
+	 SMM/2Ju/jw2OZYAvmfV0qm4nvo05wA6Qx+ArLGxWlSnUVb0LzuXR9ls3SQjxhRnhMhAk5
+	 HISakIpUZL1wUOqKlveUcVjQepB4ySs7c03RqLOAIhEkY3idDGdDNl//0tidJj3GwwA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795792937;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=NoVu7Qr7mpzCqXJ/0i2lPIF/ZqVSTtvTa2MvTuyMJDE=;
-	b=jBy1Tmd2nVlNvex6aw4tVYS3yjMemzT4Z94N1UlSrwbcUkEf/s8h+xbj2soe1BMiG7bG
-	 QrSc4sjG1ur35sfy4S8OeEGYIHbTTFGYIahTXv3e+rSwts5GfdR2sEgHUzbno1dsC8vh5
-	 F+qpKidj0SO3q0/GmLyJKQzUJw+uIG1wTWrkfSToosH4JEYOBvCTvZEprJev2Yyb4Rdew
-	 PHQxJ3UUCUTcSdgr35cg9ZRZh9O+sNiuEsyoa+8TEiGUiwf/3UsOkrgATEf96CuNiO3+b
-	 Q1gPEaUg3v6wZY16XWAsI3nqy0NOFRHv3nZYXZowX9leiZMNgDpSpGXWAiQ+uye9LcA==
+	c=relaxed/relaxed; t=1795792933;
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=CRSjpxH4TNIa5AzUVjH2D42lzo+c5Yov82Bh6OCdY64=;
+	b=Z3GPZOv7Xgq/rR+IG8lKS5TrnBcILh49r4H6XUNXvRG7lVX4BKOKEzjsFM/uCnMXOyXg
+	 g+j16quOk4Z1apWtp5WrNsU/bq1D1c6Qcr/2/lP+/XIbGBZc4NZutnK407vzMroqWFSHM
+	 yMlAo9Y3fuIZzR8NLOWCfhNjRHYxo5u8f1uN9uH00qqCnignNNI0XJJXy0G6Y2Sb+5W84
+	 RlKThZEN8cHwOBX92NnY6EC4qUmRKV3RoMTvV0uks/Z+rW+LjqqkokQeY1fIeiNkVodcv
+	 duutTdP4DCkgdlCRthiv0bhmUfv+ltWBuaO8NRQQcLPBqyIXnWh1pCEzy6FGh3lkiQA==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 9EBE81F0089C;
+	by smtp.kernel.org (Postfix) with ESMTPS id 726A41F0089A;
 	Fri, 27 Nov 2026 15:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795792937;
-	bh=NoVu7Qr7mpzCqXJ/0i2lPIF/ZqVSTtvTa2MvTuyMJDE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=SqYhe9QFHV32lgdHyh48a5j7EFuLWkFx65xfiKMnUX9geBpHRhz3LfB+8eO8qp35g
-	 D7+hpfSMQBX7N2TrEwFGmhu3sEKqTyouBUnKppsTFpAIygFWd9nSauDFWmElSfTRD9
-	 2FuVfvVjlIh1A0rbw3/j97tEwTGlehukwL5ccGA02YKghTqDGrh89hf0STuRX0/9cI
-	 QzzIB4IRtzc7waYqNPbZP5/TObk/oKmrE+hoKc4YzQTctJaPZ/MC8ISuJnijfqzOPH
-	 msFk0Fr7EPq6KGIvAwYqDRam6VKkPG/bAEYOr0C4A6EeEV4bL3AUQQs7p5duzDdhDp
-	 kdXyq91CnLnNg==
+	s=k20260515; t=1795792933;
+	bh=CRSjpxH4TNIa5AzUVjH2D42lzo+c5Yov82Bh6OCdY64=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=AMla+Kwn0sTqr9TuRDdjh2/3xazvTVUbJh4/AEJ+aB+GgUXnT5phWy+T7/YSrwFZ/
+	 +1aIeQIevdwM2BhcCDWFs8P5IMKeH3m0JigHeRfPVakv6Rrupk0EeN77qxyvMoXVO5
+	 yshjxLp9W+Yx5jo1fudPjvxzZkLCLLQO7slJQNIhmw37IgCyqcTmJYdsfbfMFk0eMO
+	 NAKVvi0eTd3mpW30V/3r7MSuMRo5gOsH75XXea8Jmtu2CNP0FanZ1gdgW4OxFiOb45
+	 BBVnjXa/NA/hA+9BHO7jkoumfBrntHtyK/c+UXI8nNMToMTuunR0SnzeC9nQxbrCVR
+	 o9NNrCw3RIxGA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 2FBEF4B85E;
+	by lkml.kernel.org (Postfix) with ESMTP id 014774BA74;
 	Fri, 27 Nov 2026 15:22:09 +0000 (UTC)
 From: =?utf-8?q?Kry=C5=A1tof_=C4=8Cern=C3=BD_via_B4_Relay?= <devnull+cleverline1mc.gmail.com@kernel.org>
-Date: Fri, 27 Nov 2026 16:21:06 +0100
-Subject: [PATCH 1/4] spi: dt-bindings: brcm,bcm2835-spi: Add dmas and
- dma-names
+Subject: [PATCH 0/4] spi: dt-bindings: bcm2835-spi, ARM: dts: bcm2711: Add
+ DMA to spi0, i2s and sdhost
+Date: Fri, 27 Nov 2026 16:21:05 +0100
+Message-Id: <20261127-bcm2835-spi-dma-v1-0-8b134991ba2e@gmail.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -84,9 +85,11 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261127-bcm2835-spi-dma-v1-1-8b134991ba2e@gmail.com>
-References: <20261127-bcm2835-spi-dma-v1-0-8b134991ba2e@gmail.com>
-In-Reply-To: <20261127-bcm2835-spi-dma-v1-0-8b134991ba2e@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAOGfCWsC/yXMywqDQAxA0V+RrBuYTOuD/kpxMY+oKWhlokUQ/
+ 91pXZ7FvTsoJ2GFZ7FD4q+ofKYMuhUQBjf1jBKzwRpbEVlCH0bb3EvUWTCODr03DcfKUP1wkKs
+ 5cSfb//hqL+vq3xyW3waO4wTZQaGdcwAAAA==
+X-Change-ID: 20261121-bcm2835-spi-dma-bb08ed60174a
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, 
@@ -102,70 +105,65 @@ Cc: Conor Dooley <conor.dooley@microchip.com>, linux-spi@vger.kernel.org,
  =?utf-8?q?Matou=C5=A1_H=C3=BDbl?= <hyblmatous@gmail.com>, 
  =?utf-8?q?Kry=C5=A1tof_=C4=8Cern=C3=BD?= <cleverline1mc@gmail.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795792928; l=1665;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795792928; l=2083;
  i=cleverline1mc@gmail.com; s=20261121; h=from:subject:message-id;
- bh=qVwzj9YtYL53uYDnPyCdzi1pxK78x9hB7h8+EBasjyc=;
- b=W5YThTyWtWNBznWDQ5RjgWHC76GiJzR/P/5D9VGh5DK5IchJJ57bcKp0bmIjCOj6VEYZ+0oVo
- hyr9v1AtyrsC9+0Ean6h/ASIx469R27KQ8kzrpg80JfyYatwJVM7W8e
+ bh=GPAK2NN455l9SD+f8GSczRZqWij+l+kvBXDhsd9fwxQ=;
+ b=vvKn9I4Hb52gOfCftXc+IgXPHf5l8Ol8880tjxh574m4hCmWVSNxE/N128JXpFPkR51lsl46i
+ Ed3jpXibhG9AvJZYKcBQiX0J5oo2iiWk6ToQs2s3uqTswf36tBR6bMm
 X-Developer-Key: i=cleverline1mc@gmail.com; a=ed25519;
  pk=2UEUVmQyfsiFZkNS7dkgFg0rUmhbcMIytM6NYhxFt/Y=
 X-Endpoint-Received: by B4 Relay for cleverline1mc@gmail.com/20261121 with
  auth_id=1594
 X-Original-From: =?utf-8?q?Kry=C5=A1tof_=C4=8Cern=C3=BD?= <cleverline1mc@gmail.com>
 Reply-To: cleverline1mc@gmail.com
-Content-Transfer-Encoding: 8bit
 
-From: Kryštof Černý <cleverline1mc@gmail.com>
+I'm moving Unipi devices from the Raspberry Pi downstream kernel
+to the CIP kernel and plan to upstream the gaps I find along the way.
+This is the first of them.
 
-The driver requests optional "tx" and "rx" DMA channels, and
-bcm2835-common.dtsi has set them on the SPI node since commit
-cbbe88333062 ("ARM: bcm283x: Enable DMA support for SPI controller"),
-but the schema from the conversion to dtschema does not allow them.
-dtbs_check is silent only because no in-tree board enables the node;
-with spi0 enabled on a BCM2837 board it reports:
+On BCM2711 (Raspberry Pi 4, CM4), spi0, i2s and sdhost have no DMA
+channels in the device tree, although the same controllers get them on
+BCM2835/6/7 from bcm2835-common.dtsi. spi0 then runs in PIO mode, and
+i2s, which has no PIO fallback, doesn't work.
 
-  spi@7e204000 (brcm,bcm2835-spi): Unevaluated properties are not allowed ('dma-names', 'dmas' were unexpected)
+Patch 1 documents dmas and dma-names in the bcm2835-spi binding. The
+driver already requests them and bcm2835-common.dtsi already sets them;
+dtbs_check doesn't flag that only because no in-tree board enables
+spi0. The i2s and sdhost bindings already describe their channels.
 
-Document both properties.
+Patches 2-4 add the dmas to bcm2711.dtsi, one controller per patch, so
+each can be applied or reverted on its own. spi0 and i2s were tested on
+a Raspberry Pi 4 B; sdhost only for probe and DMA binding, because
+nothing on that board is wired to its pins.
 
-Fixes: 85ce0dc28ffd ("spi: dt-bindings: brcm,bcm2835-spi: convert to dtschema")
-Signed-off-by: Kryštof Černý <cleverline1mc@gmail.com>
+Patch 1 is for the SPI tree, patches 2-4 for the Broadcom SoC tree.
+There is no build dependency: without patch 1, patch 2 only adds a
+dtbs_check warning for boards that enable spi0.
+
+Checked with dt_binding_check for brcm,bcm2835-spi.yaml and with
+dtbs_check on arm and arm64 (bcm2711-rpi-4-b, bcm2711-rpi-400,
+bcm2711-rpi-cm4-io, and on arm also bcm2837-rpi-3-b and bcm2835-rpi-b):
+no warnings.
+
+An AI assistant (Claude) helped write the commit messages and this
+cover letter.
+
 ---
+Kryštof Černý (4):
+      spi: dt-bindings: brcm,bcm2835-spi: Add dmas and dma-names
+      ARM: dts: broadcom: bcm2711: Add DMA to spi0
+      ARM: dts: broadcom: bcm2711: Add DMA to i2s
+      ARM: dts: broadcom: bcm2711: Add DMA to sdhost
+
  Documentation/devicetree/bindings/spi/brcm,bcm2835-spi.yaml | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/arm/boot/dts/broadcom/bcm2711.dtsi                     |  9 +++++++++
+ 2 files changed, 21 insertions(+)
+---
+base-commit: 909ef7a9a30fa139e69e555e3606680f5cca7726
+change-id: 20261121-bcm2835-spi-dma-bb08ed60174a
 
-diff --git a/Documentation/devicetree/bindings/spi/brcm,bcm2835-spi.yaml b/Documentation/devicetree/bindings/spi/brcm,bcm2835-spi.yaml
-index 94da68792194..8d2919ce6096 100644
---- a/Documentation/devicetree/bindings/spi/brcm,bcm2835-spi.yaml
-+++ b/Documentation/devicetree/bindings/spi/brcm,bcm2835-spi.yaml
-@@ -30,6 +30,16 @@ properties:
-   clocks:
-     maxItems: 1
- 
-+  dmas:
-+    items:
-+      - description: TX DMA channel
-+      - description: RX DMA channel
-+
-+  dma-names:
-+    items:
-+      - const: tx
-+      - const: rx
-+
- required:
-   - compatible
-   - reg
-@@ -45,6 +55,8 @@ examples:
-         reg = <0x7e204000 0x1000>;
-         interrupts = <2 22>;
-         clocks = <&clk_spi>;
-+        dmas = <&dma 6>, <&dma 7>;
-+        dma-names = "tx", "rx";
-         #address-cells = <1>;
-         #size-cells = <0>;
-     };
-
--- 
-2.47.3
+Best regards,
+--  
+Kryštof Černý <cleverline1mc@gmail.com>
 
 

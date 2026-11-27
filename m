@@ -1,47 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.194
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.125
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1795765494;
-	b=SssZxUKhdL7WCvoW9oB0aCuvrHEH9+jq75I2bEl6BzNv8QgnEi1yD6IVFie7uKxQtYGV
-	 mwYW8nEkToCmyJ4oxLf3v6oSQgElscI2g11jSLkaFDCt1dYPLvHga5GbObn1uLmLDUGV7
-	 H0FiYQGdlngEipvpXin4YcIm4/IqFVJRCz7rXJoUxG6u42l42w9XHHniZK2NACjm46tYA
-	 l0QTnnXdiv23QvizKNA2R10o2h7GCBnoLpj0o9lhllpzBpBqCKt9fgBrUWsG/JWZuBHGj
-	 fIgRXDSJm9WLtKiaeg16f019wbWU/8s2g7hLh/ko8DU/jACRSTo0GmUS/cjO60F4Nww==
+	b=b+g1fRP8s4bHMoRB0atwR6hQZ1ttUJNZD5XrtfpYbnntv7bnkB2mAOryrrX5ySx47d7a
+	 F9gEqMKvL0NBCtwLPOBVwqkkmu8z/mh7ObyOy8qxQWredpHea5M+jLJ69phJNV6lMtwFa
+	 zewcdmN92ZfdtS9rfIT+5r9UkvCeZ8aNMjb49PtG80nLam07jdBQAvDWLCPeJyd30Gv7G
+	 vYVaHXZzaR5mvlV6dcJMgYtxwe8O/P3QE3HUVAnWfgBIFO4hMziM3mpIVhLWAZLuqq8hd
+	 E9IvY+3SFm1cf7JFuWTj1VmaBV1w1qI2bit0Ci+ADx+J/wwDzhG6vi7IuqZNt6nNPkw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795765494;
 	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
 	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=AkPj4oI+ltkrZRHSxgCmt4zkHipFyLYUmu0JR09yQLY=;
-	b=k2G4IzxLr42O18/QFMJh9aJhSPGxch9mXDVYASAAAwmTnULve6VRKrV/57fOQCDo6R5C
-	 LnTZ6Wd2Yaq0A4oEa6TYVhpeFqOEWc/d2bF3dGKbhLKymmbIXKWgUnqiaIolwv/BXUUkk
-	 RhhNaALpvugsZFOrdMkN8HxZmCo3CF4WzFV0Q4aeyvoK3sh+JlmesJUJFYvKj2ADZ/sOn
-	 gaOm5+j+TCss40ucn+nkZscEVGtiQkECxaQIbf5dPbyk3BCUNzphKfPNEqRWM1QpDSONV
-	 Oy2CDfvIrk3UFC4nXO66Lm0XDhiAh4v8T/8Id9/8pWlXtBn6n0/CsuTeU/r46znRBtw==
+	bh=0p6hMGE+//poeEx8hRkp6hB6G3QJQeHYF5xU78jVTnQ=;
+	b=SNIsTpfNAnVMZq2PKzpZ+1mO9zQHlC2l+okEwoPiZbEQbqTu1XHprSwEfvGPZmFqbgUs
+	 dxe6nljBTJg9OioKghVtLlf2mn6FnSyCw1vuqT1BiG3EkeFxZt98HEK3ruU4lPw6kOvfT
+	 qBgFmKs0BM4eXo70QnJsvUWIhp7Pjlbh6i2/c0Ag4ytlmtu6jYu84S5WyvW/sOiV6IDEG
+	 JuONMzJvpRub0YQitWDer8xe/AXlQ0x+3slCf4Ktyht+kL3vwP/b9IkMuBZJEw8rHvMav
+	 XPjHU+88jW/MaAIHYjEpPOxVmKqHypcDKy7f5kD/isFwsKjfbEScQBgo8bLB5VXZ5YQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=yinhe.ht;
 	spf=pass smtp.mailfrom=yinhe.ht;
-	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=lN6ua0BT;
-	arc=none smtp.remote-ip=115.124.28.194
-Received: from out28-194.mail.aliyun.com (out28-194.mail.aliyun.com [115.124.28.194])
+	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=Nw3w+57p;
+	arc=none smtp.remote-ip=115.124.28.125
+Received: from out28-125.mail.aliyun.com (out28-125.mail.aliyun.com [115.124.28.125])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15232606A327;
-	Fri, 27 Nov 2026 07:44:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 15232606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD88606A321;
+	Fri, 27 Nov 2026 07:44:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5FD88606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=lN6ua0BT
+	dkim=pass (2048-bit key) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=Nw3w+57p
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=yinhe.ht; s=default;
 	t=1795765484; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=AkPj4oI+ltkrZRHSxgCmt4zkHipFyLYUmu0JR09yQLY=;
-	b=lN6ua0BT7YBA/EmcQ4SuNBv5JMFIfzTl3g67KX3GiQIACIvd83woqu9oKVCakVmCqb3wHF7R81IVumziZ+Pmxs+pNvlmFOtU6D0xpHpue+SYXhDW9q6i3NVuyjuW9wx0kIuaeZIRRjUtOoAQcFCQ18Yinv4HSyD1FTMg0C/aYEvE1r8oPQZTyt2Aa92QcPzt55RLlkuGoZOkf6nkxDJxRhnz7p8FdGRSvu+dvOJ5Qcb6tT6+zFrSCxk57A775+4v3szJ7l00bKLEawcolWK3B+J/Y8xvrPez7oHNLBTCTMGW+a5k9WvvntvVUGGLAsBqThm3ihWU4Epn2vZdnU+hcA==
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07439788|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00398301-0.000560933-0.995456;FP=7816901128200203774|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037032112;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.kBFoym2_1795765483;
-Received: from galx..(mailfrom:chunyuzhiqiang@yinhe.ht fp:SMTPD_---.kBFoym2_1795765483 cluster:ay29)
+	bh=0p6hMGE+//poeEx8hRkp6hB6G3QJQeHYF5xU78jVTnQ=;
+	b=Nw3w+57pg1NNimK6JJlsNHl8po6hRR+yEFtUAhdz+ZaK0Fba4IYjr8Y18ltBu2T1CiKUQia2e0B5z83mhmFhBt1LUEYcNFe3gon4jP0nA96nkeFByToVVf9C36O8he7rqLW/14on7G1i6+FKAjXtLtaNZPrQmzAHSZD89v3O7Ywf9BHPoxTtL4snEb5HRRhoHkxYfC9EZe/+tAEvR/TiPzWBw5nZYUuWr21dUXpXCikZ7meE803JGBIysi4hB0IAsCtOdlFwA5VLen/EO4H0E8jIayOEospbZJ2vJItBcvhUNsSHDnsOXRyaFbJablbPQRKlq9szRfzkezj1Ip+DvQ==
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436259|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.309506-0.00180094-0.688693;FP=4518566215731003898|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033040092104;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.kBFoylV_1795765483;
+Received: from galx..(mailfrom:chunyuzhiqiang@yinhe.ht fp:SMTPD_---.kBFoylV_1795765483 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Fri, 27 Nov 2026 15:44:44 +0800
+          Fri, 27 Nov 2026 15:44:43 +0800
 From: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
 To: Kees Cook <kees@kernel.org>,
 	Srinivas Kandagatla <srini@kernel.org>
@@ -51,9 +51,9 @@ Cc: Tony Luck <tony.luck@intel.com>,
 	linux-spi@vger.kernel.org,
 	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v2 2/4] nvmem: add panic write support
-Date: Fri, 27 Nov 2026 15:39:11 +0800
-Message-ID: <20261127073913.353407-3-chunyuzhiqiang@yinhe.ht>
+Subject: [RFC PATCH v2 1/4] spi: add spi_sync_atomic() for panic and oops
+Date: Fri, 27 Nov 2026 15:39:10 +0800
+Message-ID: <20261127073913.353407-2-chunyuzhiqiang@yinhe.ht>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261127073913.353407-1-chunyuzhiqiang@yinhe.ht>
 References: <20261127073913.353407-1-chunyuzhiqiang@yinhe.ht>
@@ -68,148 +68,156 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a reg_write_panic callback to nvmem_config and a matching
-nvmem_device_write_panic() consumer API.  The callback is used after the
-system has panicked, when the write must not sleep, take locks, allocate
-memory or touch a GPIO that may sleep.
+Add an explicit atomic transfer entry point for crash logging.  The
+shutdown path is gated on system_state being past SYSTEM_RUNNING, but
+panic and oops run while the system is still running, so they cannot use
+it.
 
-Providers that can write from panic context implement the callback;
-others leave it NULL and the API returns -EOPNOTSUPP.  The regular
-nvmem_device_write() path is unchanged.
+spi_sync_atomic() reuses the controller's transfer_atomic() callback.  It
+only accepts callers that are in panic or oops context with interrupts or
+preemption disabled, takes the bus locks with trylock so a normal transfer
+in progress on another CPU returns -EBUSY instead of deadlocking, and
+validates the message without allocating or optimizing it.
+
+The first user is pstore over an SPI FRAM, which needs to persist the
+crash log before the next reset.  The controller must already be powered
+and clocked; this path does not resume it.  fsl_lpspi implements the
+callback in the previous series.
 
 This patch was prepared with AI assistance; the submitter must review it
 before submission.
 
 Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
 ---
- drivers/nvmem/core.c           | 44 ++++++++++++++++++++++++++++++++++
- drivers/nvmem/internals.h      |  1 +
- include/linux/nvmem-consumer.h |  9 +++++++
- include/linux/nvmem-provider.h |  3 +++
- 4 files changed, 57 insertions(+)
+ drivers/spi/spi.c       | 69 ++++++++++++++++++++++++++++++++++++++---
+ include/linux/spi/spi.h |  1 +
+ 2 files changed, 66 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-index d976c0d6603ba..0db0c16dee427 100644
---- a/drivers/nvmem/core.c
-+++ b/drivers/nvmem/core.c
-@@ -959,6 +959,7 @@ struct nvmem_device *nvmem_register(const struct nvmem_config *config)
- 
- 	ops->reg_read = config->reg_read;
- 	ops->reg_write = config->reg_write;
-+	ops->reg_write_panic = config->reg_write_panic;
- 
- 	nvmem->owner = config->owner;
- 	if (!nvmem->owner && config->dev->driver)
-@@ -2110,6 +2111,49 @@ int nvmem_device_write(struct nvmem_device *nvmem,
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 0569f30785e9f..857080d7f0b60 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -23,6 +23,7 @@
+ #include <linux/mutex.h>
+ #include <linux/of_device.h>
+ #include <linux/of_irq.h>
++#include <linux/panic.h>
+ #include <linux/percpu.h>
+ #include <linux/platform_data/x86/apple.h>
+ #include <linux/pm_domain.h>
+@@ -5083,7 +5084,21 @@ static inline bool spi_in_atomic_sync_mode(void)
+ 	return system_state > SYSTEM_RUNNING && spi_in_atomic();
  }
- EXPORT_SYMBOL_GPL(nvmem_device_write);
+ 
+-static int __spi_sync_atomic(struct spi_device *spi, struct spi_message *message)
++/*
++ * Panic and oops run while the system is still running, so the shutdown
++ * check above does not catch them.  This is only for crash logging and
++ * must not be used for general atomic transfers.
++ */
++static inline bool spi_in_panic_mode(void)
++{
++	if (!panic_in_progress() && !oops_in_progress)
++		return false;
++
++	return spi_in_atomic();
++}
++
++static int __spi_sync_atomic(struct spi_device *spi, struct spi_message *message,
++			     bool trylock)
+ {
+ 	struct spi_controller *ctlr = spi->controller;
+ 	unsigned long flags;
+@@ -5104,7 +5119,12 @@ static int __spi_sync_atomic(struct spi_device *spi, struct spi_message *message
+ 	if (status)
+ 		return status;
+ 
+-	spin_lock_irqsave(&ctlr->bus_lock_spinlock, flags);
++	if (trylock) {
++		if (!spin_trylock_irqsave(&ctlr->bus_lock_spinlock, flags))
++			return -EBUSY;
++	} else {
++		spin_lock_irqsave(&ctlr->bus_lock_spinlock, flags);
++	}
+ 	status = ctlr->transfer_atomic(spi, message);
+ 	spin_unlock_irqrestore(&ctlr->bus_lock_spinlock, flags);
+ 
+@@ -5146,7 +5166,7 @@ int spi_sync(struct spi_device *spi, struct spi_message *message)
+ 
+ 	/* Keep old behaviour for clients that tolerate the warnings */
+ 	if (spi_in_atomic_sync_mode() && ctlr->transfer_atomic) {
+-		ret = __spi_sync_atomic(spi, message);
++		ret = __spi_sync_atomic(spi, message, false);
+ 	} else {
+ 		mutex_lock(&spi->controller->bus_lock_mutex);
+ 		ret = __spi_sync(spi, message);
+@@ -5182,12 +5202,53 @@ int spi_sync_locked(struct spi_device *spi, struct spi_message *message)
+ 	struct spi_controller *ctlr = spi->controller;
+ 
+ 	if (spi_in_atomic_sync_mode() && ctlr->transfer_atomic)
+-		return __spi_sync_atomic(spi, message);
++		return __spi_sync_atomic(spi, message, false);
+ 	else
+ 		return __spi_sync(spi, message);
+ }
+ EXPORT_SYMBOL_GPL(spi_sync_locked);
  
 +/**
-+ * nvmem_device_write_panic() - Write to a given nvmem device during panic
++ * spi_sync_atomic - transfer a message during panic or oops
++ * @spi: device with which data will be exchanged
++ * @message: describes the data transfers
 + *
-+ * @nvmem: nvmem device to be written to.
-+ * @offset: offset in nvmem device.
-+ * @bytes: number of bytes to write.
-+ * @buf: buffer to be written.
++ * Context: panic or oops, with interrupts or preemption disabled.
 + *
-+ * This is the panic-time counterpart of nvmem_device_write().  It must not
-+ * sleep, take mutexes, allocate memory or touch a GPIO that may sleep.  The
-+ * provider's reg_write_panic() callback is responsible for using a
-+ * non-sleeping bus path.
++ * This is the panic-time counterpart of spi_sync().  It is only for crash
++ * logging and other very late communication; it must not be used from
++ * ordinary interrupt context.  The controller's transfer_atomic() callback
++ * must perform the whole message without sleeping, allocating, using DMA or
++ * waiting for interrupts or completions.
 + *
-+ * Return: length of bytes written or negative error code on failure.
++ * The bus locks are taken with trylock(): if a normal transfer is still in
++ * progress on another CPU, this function returns -EBUSY instead of
++ * deadlocking.  The controller must already be powered and clocked; this
++ * function does not resume it.
++ *
++ * Return: zero on success, -EOPNOTSUPP if the controller does not support
++ * atomic transfers, -EPERM if not called from panic/oops context, -EBUSY if
++ * the bus is busy, -ESHUTDOWN if the controller is suspended, or another
++ * negative error from the controller.
 + */
-+int nvmem_device_write_panic(struct nvmem_device *nvmem,
-+			     unsigned int offset,
-+			     size_t bytes, void *buf)
++int spi_sync_atomic(struct spi_device *spi, struct spi_message *message)
 +{
-+	struct nvmem_operations *ops;
-+	int rc;
++	struct spi_controller *ctlr = spi->controller;
++	int ret;
 +
-+	if (!nvmem)
-+		return -EINVAL;
-+
-+	if (nvmem->read_only)
++	if (!spi_in_panic_mode())
 +		return -EPERM;
 +
-+	if (offset > nvmem->size || bytes > nvmem->size - offset)
-+		return -EINVAL;
++	if (!mutex_trylock(&ctlr->bus_lock_mutex))
++		return -EBUSY;
 +
-+	ops = rcu_dereference_raw(nvmem->ops);
-+	if (!ops || !ops->reg_write_panic)
-+		return -EOPNOTSUPP;
++	ret = __spi_sync_atomic(spi, message, true);
++	mutex_unlock(&ctlr->bus_lock_mutex);
 +
-+	rc = ops->reg_write_panic(nvmem->priv, offset, buf, bytes);
-+	if (rc)
-+		return rc;
-+
-+	return bytes;
++	return ret;
 +}
-+EXPORT_SYMBOL_GPL(nvmem_device_write_panic);
++EXPORT_SYMBOL_GPL(spi_sync_atomic);
 +
  /**
-  * nvmem_add_cell_lookups() - register a list of cell lookup entries
-  *
-diff --git a/drivers/nvmem/internals.h b/drivers/nvmem/internals.h
-index bc7a99f5aefbf..1c32947abe705 100644
---- a/drivers/nvmem/internals.h
-+++ b/drivers/nvmem/internals.h
-@@ -12,6 +12,7 @@
- struct nvmem_operations {
- 	nvmem_reg_read_t	reg_read;
- 	nvmem_reg_write_t	reg_write;
-+	nvmem_reg_write_t	reg_write_panic;
- };
+  * spi_bus_lock - obtain a lock for exclusive SPI bus usage
+  * @ctlr: SPI bus controller that should be locked for exclusive bus access
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index f62b21af5d752..b3fad85ecbbab 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -1512,6 +1512,7 @@ extern int spi_split_transfers_maxwords(struct spi_controller *ctlr,
  
- struct nvmem_device {
-diff --git a/include/linux/nvmem-consumer.h b/include/linux/nvmem-consumer.h
-index 34c0e58dfa266..2a23c24fa5210 100644
---- a/include/linux/nvmem-consumer.h
-+++ b/include/linux/nvmem-consumer.h
-@@ -75,6 +75,8 @@ int nvmem_device_read(struct nvmem_device *nvmem, unsigned int offset,
- 		      size_t bytes, void *buf);
- int nvmem_device_write(struct nvmem_device *nvmem, unsigned int offset,
- 		       size_t bytes, void *buf);
-+int nvmem_device_write_panic(struct nvmem_device *nvmem, unsigned int offset,
-+			     size_t bytes, void *buf);
- ssize_t nvmem_device_cell_read(struct nvmem_device *nvmem,
- 			   struct nvmem_cell_info *info, void *buf);
- int nvmem_device_cell_write(struct nvmem_device *nvmem,
-@@ -215,6 +217,13 @@ static inline int nvmem_device_write(struct nvmem_device *nvmem,
- 	return -EOPNOTSUPP;
- }
+ extern int spi_sync(struct spi_device *spi, struct spi_message *message);
+ extern int spi_sync_locked(struct spi_device *spi, struct spi_message *message);
++int spi_sync_atomic(struct spi_device *spi, struct spi_message *message);
+ extern int spi_bus_lock(struct spi_controller *ctlr);
+ extern int spi_bus_unlock(struct spi_controller *ctlr);
  
-+static inline int nvmem_device_write_panic(struct nvmem_device *nvmem,
-+					   unsigned int offset, size_t bytes,
-+					   void *buf)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- static inline const char *nvmem_dev_name(struct nvmem_device *nvmem)
- {
- 	return NULL;
-diff --git a/include/linux/nvmem-provider.h b/include/linux/nvmem-provider.h
-index 6063fe5b7784a..382ea91837e31 100644
---- a/include/linux/nvmem-provider.h
-+++ b/include/linux/nvmem-provider.h
-@@ -94,6 +94,8 @@ struct nvmem_cell_info {
-  * @of_node:	If given, this will be used instead of the parent's of_node.
-  * @reg_read:	Callback to read data; return zero if successful.
-  * @reg_write:	Callback to write data; return zero if successful.
-+ * @reg_write_panic: Callback to write data during panic; must not sleep,
-+ *		allocate, use DMA or wait for interrupts.
-  * @size:	Device size.
-  * @word_size:	Minimum read/write access granularity.
-  * @stride:	Minimum read/write access stride.
-@@ -128,6 +130,7 @@ struct nvmem_config {
- 	struct device_node	*of_node;
- 	nvmem_reg_read_t	reg_read;
- 	nvmem_reg_write_t	reg_write;
-+	nvmem_reg_write_t	reg_write_panic;
- 	int	size;
- 	int	word_size;
- 	int	stride;
 -- 
 2.47.3
 

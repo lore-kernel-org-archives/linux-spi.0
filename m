@@ -1,62 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.217
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=207.180.195.6
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795765496;
-	b=MXvj7dlYAP4l/5v1HoYWQJMW2qcZoqUGDDRS5p4wLeNMFzJLs5sCYuNru+FhE6gE5IjC
-	 eIEJ59Yd35uaJ+RlccFzNvHRDNqZCyrVVJeZ2mQ/D90jikWlAz3rq+0vaui1YWKXj3Q1L
-	 OdrrrSJuqXm+NpkTc8MAq6c0CNdE0mxrwNbGK69SCDm6FyOm6hmFeXVZZ6nMctQJC53is
-	 iW2eLsTBygPVdoeueXfGv630InCa6tJWP/FgK89aolL28IADgXv8WUTxQRMTgTaVkghWz
-	 Lk8tiwtfvP2/CGdfJJuhx3JXiBn4wqnimeNAa1fvqaVp7FRCBsooikL5fOf/bmfJkIg==
+	t=1795767000;
+	b=mIH63H9q8lvn2fgf1VDxW7tv8CXUhE/SuBg/G5xIM1b/Q6IQvlR0i8FgBuZexMfpIaet
+	 TNUb7+mmyOjl5h4PoHCd2XXy5qhjYW9z5yVWG4N2iiwdK1jm1uR6rImetxwI2waLWsHLp
+	 BVZ3+rSU3umCFvqMpRjeO4ga2oAiZ2p3MZTYu2KsLh4qhKM8aeWCzar9aVhHpwsmr2vTT
+	 +731fZDYVHqbDbi+8z5v32P8xSweVBulQxvfgejV+Ih7+Dt0i4XZiqfaPPE69iaTg2LT5
+	 V+ZyZp7ENncm++ejx9VlNn9z4mqYEml/padWMMu7WldKUyOlZfzAh5husxl7zmft6/A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795765496;
-	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=nh4W3J1vEbylWJ4dvPAK3a6q3FD3ThszKVAL+igRA2A=;
-	b=tmWPMVz2FeF2B5mtHtkd6DVKbscF+qDTrvgCOUB/9iE/XU1IqmbDhl/8Mt6fdTa3HbwY
-	 2FyAkOu8dMJvN8Zbgj916UIo1N/hJg1cYKl63XkSEmiApmvM5S9pjyKuzPYh3hoqaD5WZ
-	 hxWWyuKLdwGjWwy9Muo1hXk9e4eTJ4e4l//3QssWLuIwUX/1ocEJIEspB/uj1DWqTCsKv
-	 q8796fNChuPP/05N7GdAPM7eBwMtqSeMVf7QuPE+tbs2O28BPkWiKccYkcfgtX+DeNhIV
-	 y2xd6JeF/0PJyPd7YqAZp49YMM8NlDJ4A9y1gjarmn9rDEnJq/gWgwWVdZ9eFVdHlbQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795767000;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:
+	 X-AntiAbuse:X-AntiAbuse:X-Get-Message-Sender-Via:
+	 X-Authenticated-Sender:X-Source:X-Source-Args:X-Source-Dir;
+	bh=kGDZTSe8FBEiw1NeL5xE+4psEWcXfLroX1F8Vi2sKUY=;
+	b=P3TwT0XRTwq7q+ABbULwhENX3AWhAnazPwetXXDFT4lvErNOgG4ggUUR1Ja6HletQBci
+	 gnORWxPvv9E8cFVXJwlrHE/YcJXTt4YV7ZrIBWQnKTa0pfiuHnyUz2bQH4jwCE9BQMqdZ
+	 wgQsG5x2ME4fgGncw2X4bdYM8w9BlfvGgc0VZptpWA0dXcN39auEjfWhh5mPkDmYtlN+6
+	 5o8m0zeq7XuWvsxmEItIForQAiea6dVHLXJ51WY0yLQEBe1MhIU+cP7bExeCQBqjmfxC8
+	 2qgDhqPSlDY+od5MXLI26EKujJK0BzFv3dZto577v6pNOc9Us3LyfWb8oHIkSqbjA4w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=yinhe.ht;
-	spf=pass smtp.mailfrom=yinhe.ht;
-	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=SUiU+fq8;
-	arc=none smtp.remote-ip=115.124.28.217
-Received: from out28-217.mail.aliyun.com (out28-217.mail.aliyun.com [115.124.28.217])
+	dmarc=none header.from=mkio.de;
+	spf=pass smtp.mailfrom=mkio.de;
+	dkim=pass header.d=mkio.de header.i=@mkio.de header.a=rsa-sha256 header.s=default header.b=Ec47iRhK;
+	arc=none smtp.remote-ip=207.180.195.6
+Received: from mail-relay.contabo.net (mail-relay.contabo.net [207.180.195.6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D46606A32E;
-	Fri, 27 Nov 2026 07:44:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 56D46606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BAF606A327;
+	Fri, 27 Nov 2026 08:09:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 60BAF606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mkio.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mkio.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=SUiU+fq8
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=yinhe.ht; s=default;
-	t=1795765485; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=nh4W3J1vEbylWJ4dvPAK3a6q3FD3ThszKVAL+igRA2A=;
-	b=SUiU+fq8mevo3HWb+Ed42x547A/3eIfrj30tumoJep6/gOfhmqe1SpptU3+u9TU5hX+71SGLMenL7pmEhMJTEfcl8vP0FoACeUqtCUy3U/SDB412WcEy9IyJIg+focuHdQmGjENns00ro6yzGgZw+S9VIeFlApZBXlDqabe4bPRZyWcjII6lTdX1J3CAhz2UoVUfF1cRgbemmkvm7eYepniYKxmUrE/ii2ySVtELVft951mLm9PfPXlar0sFmuQ6/KM8/MyQItnmcSrGZswhDYmp/mCOJEfhlY4oqdY4BMlGvcbdAsP7f8s6bzrMFvhp59sXkI9HuyaKfX2CO7fYnw==
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436259|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0312696-0.000966831-0.967764;FP=18200556205844792507|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037034254;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.kBFoymn_1795765484;
-Received: from galx..(mailfrom:chunyuzhiqiang@yinhe.ht fp:SMTPD_---.kBFoymn_1795765484 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Fri, 27 Nov 2026 15:44:44 +0800
-From: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-To: Kees Cook <kees@kernel.org>,
-	Srinivas Kandagatla <srini@kernel.org>
-Cc: Tony Luck <tony.luck@intel.com>,
-	"Guilherme G . Piccoli" <gpiccoli@igalia.com>,
-	Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org,
-	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v2 4/4] pstore: add nvmem backend
-Date: Fri, 27 Nov 2026 15:39:13 +0800
-Message-ID: <20261127073913.353407-5-chunyuzhiqiang@yinhe.ht>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261127073913.353407-1-chunyuzhiqiang@yinhe.ht>
-References: <20261127073913.353407-1-chunyuzhiqiang@yinhe.ht>
+	dkim=pass (2048-bit key, unprotected) header.d=mkio.de header.i=@mkio.de header.a=rsa-sha256 header.s=default header.b=Ec47iRhK
+Received: from pxmg2.contabo.net (localhost.localdomain [127.0.0.1])
+	by mail-relay.contabo.net (Proxmox) with ESMTP id 878F07C169E;
+	Fri, 27 Nov 2026 09:09:52 +0100 (CET)
+Received: from m2731.contabo.net (m2731.contabo.net [193.34.145.203])
+	by mail-relay.contabo.net (Proxmox) with ESMTPS id 51B237C16FF;
+	Fri, 27 Nov 2026 09:09:52 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mkio.de;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=kGDZTSe8FBEiw1NeL5xE+4psEWcXfLroX1F8Vi2sKUY=; b=Ec47iRhKy7Ew1zCCTaV+YbYXoj
+	X+H7iIJJeLcmDfOkcGa2DEH9tBEZb+tTxl6lXTiuWgh/7pxEa/Tl7BZdUYMFg3/SXfXhwqXw14nMU
+	aW04O3DdWiRzXFDa7dkkknaMm/NKcKhshZ7CvLQVsGV901jcluBL7p3BQhnmXO/w2yic9VJSw4Rb0
+	K753xnTSWp2jEJf7jAWS2EsIqZHrg3S0ReQh/c0P7kwkYS1NIIM7UF9RKO6VSWfKsqHm2genOM/GP
+	onJaFfdyes7GR1RwWcb4/A9fEBTB+C0Ej8eRE7dxWSUPVStilcxl70ZBBwv6fabZL9sP9S/5kih7r
+	zcEa3yiA==;
+Received: from ip-078-042-120-089.um17.pools.vodafone-ip.de ([78.42.120.89]:61676 helo=p14s.int.kistler.com)
+	by m2731.contabo.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <mk@mkio.de>)
+	id 1xWr1i-00000005IPR-2biI;
+	Fri, 27 Nov 2026 09:09:52 +0100
+From: Markus Klotzbuecher <mk@mkio.de>
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	dmaengine@vger.kernel.org,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Frank Li <Frank.Li@kernel.org>
+Subject: [PATCH v2] spi: omap2-mcspi: skip the TX drain wait in duplex
+Date: Fri, 27 Nov 2026 09:09:49 +0100
+Message-ID: <20261127080949.1997223-1-mk@mkio.de>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -67,345 +83,175 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - m2731.contabo.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - mkio.de
+X-Get-Message-Sender-Via: m2731.contabo.net: authenticated_id: mk@mkio.de
+X-Authenticated-Sender: m2731.contabo.net: mk@mkio.de
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Add a pstore/zone backend that stores records on an NVMEM device.  The
-device is selected by name; normal reads and writes use the regular NVMEM
-API and panic writes use nvmem_device_write_panic().
+k3-udma completes a transfer towards a PDMA peer only once the peer has
+drained (udma_is_desc_really_done()). If it has not at the ring
+interrupt, k3-udma defers that check to a delayed work on the system
+workqueue. The McSPI depends on this: it prepares TX with
+DMA_PREP_INTERRUPT, and its TX callback clears the DMA write request,
+which has to stay set until the PDMA has passed on every byte. On
+PREEMPT_RT the kworker runs at normal priority, so each DMA transfer
+waits behind other tasks, for several ms under load.
 
-The zone sizes and the device offset are module parameters, with Kconfig
-defaults matching pstore/blk.  The NVMEM device must already be registered
-when the backend is initialized.
+Commit e8e2f92b1553 ("dmaengine: ti: k3-udma: Respond TX done if
+DMA_PREP_INTERRUPT is not requested") lets a consumer skip that check
+when it knows by other means that TX is done. Its first version was
+posted together with a McSPI change that waited for EOW instead [1],
+which was not applied.
 
-This patch was prepared with AI assistance; the submitter must review it
-before submission.
+In host mode full duplex with the FIFO enabled the RX completion proves
+that every TX word has been shifted out, so once omap2_mcspi_rx_dma()
+has returned the PDMA holds no TX data. That is what k3-udma requires
+of a consumer that does not set DMA_PREP_INTERRUPT. Prepare TX there
+with DMA_CTRL_ACK only and without a callback, clear the write request
+after RX, and do not wait for the TX completion. Without the FIFO the
+RX DMA stops one word short and omap2_mcspi_rx_dma() reads the last
+word by PIO, so these transfers keep the callback and the drain check,
+as do target mode and TX-only transfers. K3 limits a transfer to 4095
+bytes, so with 8-bit words its DMA transfers always use the FIFO.
 
-Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+On an AM625 with PREEMPT_RT, a device on McSPI2 at 50 MHz and four
+transfers every 2 ms, two of them, 344 and 367 bytes, via DMA: the
+cyclic thread missed its deadline 217 times in 10 minutes idle and 1864
+times in 30 minutes under load without this change, and 0 and 1 times
+with it. No data errors in about 893k checked loopback updates.
+
+Link: https://lore.kernel.org/r/20220822091531.27827-1-vaishnav.a@ti.com [1]
+Signed-off-by: Markus Klotzbuecher <mk@mkio.de>
 ---
- fs/pstore/Kconfig  |  64 +++++++++++++
- fs/pstore/Makefile |   3 +
- fs/pstore/nvmem.c  | 230 +++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 297 insertions(+)
- create mode 100644 fs/pstore/nvmem.c
+Changes in v2:
+- Use the new path only with the FIFO enabled. Without it,
+  omap2_mcspi_rx_dma() reads the last RX word by PIO and TX may still
+  be active when it returns (reported by Sashiko).
 
-diff --git a/fs/pstore/Kconfig b/fs/pstore/Kconfig
-index 3acc38600cd1a..7393236b777a5 100644
---- a/fs/pstore/Kconfig
-+++ b/fs/pstore/Kconfig
-@@ -189,3 +189,67 @@ config PSTORE_BLK_FTRACE_SIZE
+v1: https://lore.kernel.org/r/20261125162045.1222271-1-mk@mkio.de
+
+Notes:
+- Tested on 6.18.56 PREEMPT_RT with commit c126e07bde21 ("spi:
+  omap2-mcspi: handle DMA setup failures") backported and with commit
+  a8e3a6453f2a ("spi: omap2-mcspi: lock the DMA request bit updates"),
+  now in spi for-7.4. That commit also fixes the CHCONF
+  read-modify-write race Sashiko reported on v1. On spi for-next the
+  callback is set through dmaengine_desc_set_callback() (commit
+  29fcd5d436c4); compile-tested there. v2 not rerun: on the tested
+  setup every DMA transfer uses the FIFO, so it runs the code tested
+  with v1.
+- Independent of a8e3a6453f2a; applies to for-7.5 alone and on top of
+  it. The v2 change does not affect the tested setup (AM625, 8-bit
+  words), where DMA always uses the FIFO.
+- The 2022 thread asked about TX data left in the PDMA when the IP stops
+  transmitting (externally clocked bus, delays). In host full duplex the
+  RX completion means every word was shifted out, whatever the delay;
+  an externally clocked bus is target mode, which keeps the drain check.
+  RX EOW is not used as the signal because RX data may still be in
+  flight to memory then.
+- omap-dma and edma complete a slave_sg descriptor regardless of
+  DMA_PREP_INTERRUPT; there the only change is that the write request is
+  cleared after RX instead of from the TX callback. Not tested on those.
+- As far as I can tell this is the first user of the k3-udma opt-out
+  from e8e2f92b1553, whose message gives the McSPI as the example.
+- On AM625, PEER_BCNT wraps below zero after the early decrement and is
+  back at 0 once the PDMA has drained, so a following transfer starts
+  from clean counters.
+
+ drivers/spi/spi-omap2-mcspi.c | 38 +++++++++++++++++++++++++++++------
+ 1 file changed, 32 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 061d50c65dfd..3f543b3b410c 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -413,6 +413,22 @@ static void omap2_mcspi_tx_callback(void *data)
+ 	complete(&mcspi_dma->dma_tx_completion);
+ }
  
- 	  NOTE that, both Kconfig and module parameters can configure
- 	  pstore/blk, but module parameters have priority over Kconfig.
-+
-+config PSTORE_NVMEM
-+	tristate "Log panic/oops to an NVMEM device"
-+	depends on PSTORE
-+	depends on NVMEM
-+	select PSTORE_ZONE
-+	default n
-+	help
-+	  This enables panic and oops messages to be logged to an NVMEM
-+	  device such as a SPI FRAM.  The NVMEM device is selected with the
-+	  device_name module parameter or PSTORE_NVMEM_DEV.
-+
-+	  The device must be dedicated to pstore, or the offset and
-+	  total_size parameters must select a region that is not used by
-+	  anything else.
-+
-+	  If unsure, say N.
-+
-+config PSTORE_NVMEM_DEV
-+	string "NVMEM device name"
-+	depends on PSTORE_NVMEM
-+	default ""
-+	help
-+	  Name of the NVMEM device to use for pstore storage, for example
-+	  "spi1.0" for an at25 FRAM.
-+
-+config PSTORE_NVMEM_KMSG_SIZE
-+	int "Size in Kbytes of kmsg dump log to store"
-+	depends on PSTORE_NVMEM
-+	default 64
-+	help
-+	  Size of the kmsg dump zone in Kbytes.  It must be a multiple of 4.
-+
-+config PSTORE_NVMEM_MAX_REASON
-+	int "Maximum kmsg dump reason to store"
-+	depends on PSTORE_NVMEM
-+	default 2
-+	help
-+	  The maximum reason for kmsg dumps to store.  The default is 2
-+	  (KMSG_DUMP_OOPS).
-+
-+config PSTORE_NVMEM_PMSG_SIZE
-+	int "Size in Kbytes of pmsg to store"
-+	depends on PSTORE_NVMEM
-+	depends on PSTORE_PMSG
-+	default 64
-+	help
-+	  Size of the pmsg zone in Kbytes.  It must be a multiple of 4.
-+
-+config PSTORE_NVMEM_CONSOLE_SIZE
-+	int "Size in Kbytes of console log to store"
-+	depends on PSTORE_NVMEM
-+	depends on PSTORE_CONSOLE
-+	default 64
-+	help
-+	  Size of the console zone in Kbytes.  It must be a multiple of 4.
-+
-+config PSTORE_NVMEM_FTRACE_SIZE
-+	int "Size in Kbytes of ftrace log to store"
-+	depends on PSTORE_NVMEM
-+	depends on PSTORE_FTRACE
-+	default 64
-+	help
-+	  Size of the ftrace zone in Kbytes.  It must be a multiple of 4.
-diff --git a/fs/pstore/Makefile b/fs/pstore/Makefile
-index c270467aeecea..76f44410cab7f 100644
---- a/fs/pstore/Makefile
-+++ b/fs/pstore/Makefile
-@@ -18,3 +18,6 @@ obj-$(CONFIG_PSTORE_ZONE)	+= pstore_zone.o
- 
- pstore_blk-objs += blk.o
- obj-$(CONFIG_PSTORE_BLK)	+= pstore_blk.o
-+
-+pstore_nvmem-objs += nvmem.o
-+obj-$(CONFIG_PSTORE_NVMEM) += pstore_nvmem.o
-diff --git a/fs/pstore/nvmem.c b/fs/pstore/nvmem.c
-new file mode 100644
-index 0000000000000..95039baf58c13
---- /dev/null
-+++ b/fs/pstore/nvmem.c
-@@ -0,0 +1,230 @@
-+// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * pstore backend for NVMEM devices.
-+ *
-+ * The NVMEM device is selected by name.  Normal writes use the regular
-+ * NVMEM write path; panic writes use the non-sleeping write callback so a
-+ * SPI FRAM or another NVMEM provider can persist the crash log before the
-+ * next reset.
++ * In host full duplex with the FIFO enabled the RX completion proves that
++ * every TX word was shifted out, so TX needs neither a callback nor
++ * k3-udma's peer drain check, which it defers to a kworker. Without the
++ * FIFO the RX DMA stops one word short and omap2_mcspi_rx_dma() reads the
++ * last word by PIO, so keep the TX callback and its wait.
 + */
-+
-+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-+
-+#include <linux/device.h>
-+#include <linux/init.h>
-+#include <linux/kernel.h>
-+#include <linux/limits.h>
-+#include <linux/module.h>
-+#include <linux/nvmem-consumer.h>
-+#include <linux/pstore_zone.h>
-+#include <linux/string.h>
-+
-+static char pstore_nvmem_dev_name[80] = CONFIG_PSTORE_NVMEM_DEV;
-+module_param_string(device_name, pstore_nvmem_dev_name, 80, 0400);
-+MODULE_PARM_DESC(device_name, "NVMEM device name for pstore storage");
-+
-+static unsigned long offset;
-+module_param(offset, ulong, 0400);
-+MODULE_PARM_DESC(offset, "offset in the NVMEM device in bytes");
-+
-+static unsigned long total_size;
-+module_param(total_size, ulong, 0400);
-+MODULE_PARM_DESC(total_size, "pstore area size in bytes (0: rest of device)");
-+
-+static long kmsg_size = CONFIG_PSTORE_NVMEM_KMSG_SIZE;
-+module_param(kmsg_size, long, 0400);
-+MODULE_PARM_DESC(kmsg_size, "kmsg dump zone size in kbytes");
-+
-+static int max_reason = CONFIG_PSTORE_NVMEM_MAX_REASON;
-+module_param(max_reason, int, 0400);
-+MODULE_PARM_DESC(max_reason, "maximum reason for kmsg dump");
-+
-+#if IS_ENABLED(CONFIG_PSTORE_PMSG)
-+static long pmsg_size = CONFIG_PSTORE_NVMEM_PMSG_SIZE;
-+#else
-+static long pmsg_size = -1;
-+#endif
-+module_param(pmsg_size, long, 0400);
-+MODULE_PARM_DESC(pmsg_size, "pmsg zone size in kbytes");
-+
-+#if IS_ENABLED(CONFIG_PSTORE_CONSOLE)
-+static long console_size = CONFIG_PSTORE_NVMEM_CONSOLE_SIZE;
-+#else
-+static long console_size = -1;
-+#endif
-+module_param(console_size, long, 0400);
-+MODULE_PARM_DESC(console_size, "console zone size in kbytes");
-+
-+#if IS_ENABLED(CONFIG_PSTORE_FTRACE)
-+static long ftrace_size = CONFIG_PSTORE_NVMEM_FTRACE_SIZE;
-+#else
-+static long ftrace_size = -1;
-+#endif
-+module_param(ftrace_size, long, 0400);
-+MODULE_PARM_DESC(ftrace_size, "ftrace zone size in kbytes");
-+
-+static struct nvmem_device *pstore_nvmem;
-+static struct pstore_zone_info pstore_info;
-+
-+static int pstore_nvmem_match(struct device *dev, const void *data)
++static bool omap2_mcspi_tx_duplex(struct spi_device *spi,
++				  struct spi_transfer *xfer)
 +{
-+	return !strcmp(dev_name(dev), data);
++	struct omap2_mcspi *mcspi = spi_controller_get_devdata(spi->controller);
++
++	return mcspi->fifo_depth > 0 && xfer->tx_buf && xfer->rx_buf &&
++	       !spi_controller_is_target(spi->controller);
 +}
 +
-+static unsigned long size_kb_to_bytes(long kb)
-+{
-+	if (kb <= 0)
-+		return 0;
+ static int omap2_mcspi_tx_dma(struct spi_device *spi,
+ 			      struct spi_transfer *xfer,
+ 			      struct dma_slave_config cfg)
+@@ -421,6 +437,7 @@ static int omap2_mcspi_tx_dma(struct spi_device *spi,
+ 	struct omap2_mcspi	*mcspi;
+ 	struct omap2_mcspi_dma  *mcspi_dma;
+ 	struct dma_async_tx_descriptor *tx;
++	unsigned long flags = DMA_PREP_INTERRUPT | DMA_CTRL_ACK;
+ 
+ 	mcspi = spi_controller_get_devdata(spi->controller);
+ 	mcspi_dma = &mcspi->dma_channels[spi_get_chipselect(spi, 0)];
+@@ -429,14 +446,18 @@ static int omap2_mcspi_tx_dma(struct spi_device *spi,
+ 	if (ret)
+ 		return ret;
+ 
++	if (omap2_mcspi_tx_duplex(spi, xfer))
++		flags = DMA_CTRL_ACK;
 +
-+	return ALIGN((unsigned long)kb * 1024, 4096);
-+}
-+
-+static bool pstore_nvmem_range_ok(size_t size, loff_t off)
-+{
-+	if (off < 0 || off > UINT_MAX || size > UINT_MAX)
-+		return false;
-+	if (offset > UINT_MAX - off)
-+		return false;
-+
-+	return size <= UINT_MAX - (offset + off);
-+}
-+
-+static ssize_t pstore_nvmem_read(char *buf, size_t size, loff_t off)
-+{
-+	int ret;
-+
-+	if (!pstore_nvmem_range_ok(size, off))
-+		return -EINVAL;
-+
-+	ret = nvmem_device_read(pstore_nvmem, offset + off, size, buf);
-+	if (ret)
-+		return ret;
-+
-+	return size;
-+}
-+
-+static ssize_t pstore_nvmem_write(const char *buf, size_t size, loff_t off)
-+{
-+	int ret;
-+
-+	if (!pstore_nvmem_range_ok(size, off))
-+		return -EINVAL;
-+
-+	ret = nvmem_device_write(pstore_nvmem, offset + off, size, (void *)buf);
-+	if (ret)
-+		return ret;
-+
-+	return size;
-+}
-+
-+static ssize_t pstore_nvmem_panic_write(const char *buf, size_t size,
-+					loff_t off)
-+{
-+	int ret;
-+
-+	if (!pstore_nvmem_range_ok(size, off))
-+		return -EINVAL;
-+
-+	ret = nvmem_device_write_panic(pstore_nvmem, offset + off, size,
-+				       (void *)buf);
-+	if (ret)
-+		return ret;
-+
-+	return size;
-+}
-+
-+/* The NVMEM device must already be registered; load providers first. */
-+static int __init pstore_nvmem_init(void)
-+{
-+	unsigned long dev_size, area_size;
-+	unsigned long kmsg, pmsg, console, ftrace;
-+	int ret;
-+
-+	if (!pstore_nvmem_dev_name[0]) {
-+		pr_err("no NVMEM device name configured\n");
-+		return -EINVAL;
-+	}
-+
-+	pstore_nvmem = nvmem_device_find(pstore_nvmem_dev_name, pstore_nvmem_match);
-+	if (IS_ERR(pstore_nvmem)) {
-+		ret = PTR_ERR(pstore_nvmem);
-+		pr_err("failed to find NVMEM device %s: %d\n", pstore_nvmem_dev_name, ret);
-+		return ret;
-+	}
-+
-+	dev_size = nvmem_dev_size(pstore_nvmem);
-+	if (!dev_size || offset >= dev_size) {
-+		pr_err("invalid offset %lu for %lu-byte device\n",
-+		       offset, dev_size);
-+		ret = -EINVAL;
-+		goto err_put;
-+	}
-+
-+	area_size = dev_size - offset;
-+	if (total_size && total_size < area_size)
-+		area_size = total_size;
-+	area_size = ALIGN_DOWN(area_size, 4096);
-+	if (area_size < 4096) {
-+		pr_err("pstore area must be at least 4096 bytes\n");
-+		ret = -EINVAL;
-+		goto err_put;
-+	}
-+
-+	kmsg = size_kb_to_bytes(kmsg_size);
-+	pmsg = size_kb_to_bytes(pmsg_size);
-+	console = size_kb_to_bytes(console_size);
-+	ftrace = size_kb_to_bytes(ftrace_size);
-+	if (!kmsg && !pmsg && !console && !ftrace) {
-+		pr_err("at least one zone size must be non-zero\n");
-+		ret = -EINVAL;
-+		goto err_put;
-+	}
-+	if (kmsg + pmsg + console + ftrace > area_size) {
-+		pr_err("zone sizes exceed the %lu-byte pstore area\n",
-+		       area_size);
-+		ret = -EINVAL;
-+		goto err_put;
-+	}
-+
-+	pstore_info.owner = THIS_MODULE;
-+	pstore_info.name = KBUILD_MODNAME;
-+	pstore_info.total_size = area_size;
-+	pstore_info.kmsg_size = kmsg;
-+	pstore_info.pmsg_size = pmsg;
-+	pstore_info.console_size = console;
-+	pstore_info.ftrace_size = ftrace;
-+	pstore_info.max_reason = max_reason;
-+	pstore_info.read = pstore_nvmem_read;
-+	pstore_info.write = pstore_nvmem_write;
-+	pstore_info.panic_write = pstore_nvmem_panic_write;
-+
-+	ret = register_pstore_zone(&pstore_info);
-+	if (ret) {
-+		pr_err("failed to register pstore zone: %d\n", ret);
-+		goto err_put;
-+	}
-+
-+	pr_info("using NVMEM device %s, offset %lu, size %lu\n",
-+		pstore_nvmem_dev_name, offset, area_size);
-+	return 0;
-+
-+err_put:
-+	nvmem_device_put(pstore_nvmem);
-+	pstore_nvmem = NULL;
-+	return ret;
-+}
-+late_initcall(pstore_nvmem_init);
-+
-+static void __exit pstore_nvmem_exit(void)
-+{
-+	if (!pstore_nvmem)
-+		return;
-+
-+	unregister_pstore_zone(&pstore_info);
-+	nvmem_device_put(pstore_nvmem);
-+	pstore_nvmem = NULL;
-+}
-+module_exit(pstore_nvmem_exit);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("pstore backend for NVMEM devices");
+ 	tx = dmaengine_prep_slave_sg(mcspi_dma->dma_tx, xfer->tx_sg.sgl,
+ 				     xfer->tx_sg.nents,
+-				     DMA_MEM_TO_DEV,
+-				     DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
++				     DMA_MEM_TO_DEV, flags);
+ 	if (!tx)
+ 		return -EIO;
+ 
+-	dmaengine_desc_set_callback(tx, omap2_mcspi_tx_callback, NULL, spi);
++	if (flags & DMA_PREP_INTERRUPT)
++		dmaengine_desc_set_callback(tx, omap2_mcspi_tx_callback, NULL,
++					    spi);
+ 
+ 	return dma_submit_error(dmaengine_submit(tx));
+ }
+@@ -672,6 +693,8 @@ static int omap2_mcspi_txrx_dma(struct spi_device *spi,
+ 					 &rx_submitted, &dma_started);
+ 		if (ret)
+ 			goto out;
++		if (omap2_mcspi_tx_duplex(spi, xfer))
++			omap2_mcspi_set_dma_req(spi, 0, 0);
+ 	} else if (tx) {
+ 		if (mcspi->target_aborted) {
+ 			ret = -EINTR;
+@@ -686,9 +709,12 @@ static int omap2_mcspi_txrx_dma(struct spi_device *spi,
+ 	}
+ 
+ 	if (tx) {
+-		ret = mcspi_wait_for_completion(mcspi, &mcspi_dma->dma_tx_completion);
+-		if (ret || mcspi->target_aborted)
+-			goto out;
++		if (!omap2_mcspi_tx_duplex(spi, xfer)) {
++			ret = mcspi_wait_for_completion(mcspi,
++							&mcspi_dma->dma_tx_completion);
++			if (ret || mcspi->target_aborted)
++				goto out;
++		}
+ 
+ 		if (spi_controller_is_target(mcspi->ctlr)) {
+ 			ret = mcspi_wait_for_completion(mcspi, &mcspi->txdone);
+
+base-commit: 266ae6df1980a5a5c58735ae114ae62a2acad8db
 -- 
-2.47.3
+2.53.0
+
 

@@ -1,55 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.11.138.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795800174;
-	b=sX1YD8PHQEXr6UYRGQTNO80SVXCkeiXIylN08t647rDF7HTvoUG79kBabZiT5HK5f4zB
-	 BkcolFKBb7gRNcDhW91RBuwe/aLFeNrP3+adLLKIQzrN2xuVuMgHANtDfLkWH4U1DGath
-	 LFZVgHFKhDbgZ2KNRWi2shSIUugroDrK+TRHJglEOJTPyyYamY2A0OMMXCmizhgJPX6V5
-	 StECJ5cxV+bILdKc6CzbZpAORma0KyfhxXWl+v6PBj+IodxUlV2NVZTznlVv93aOJoATH
-	 YdbA60f4Rzq+ctW1dm9zYXC+xI9C3LY1bPl0+5dLh4WQNrSGUVtvEd8aJIuzK/ntfog==
+	t=1795812549;
+	b=CMKqAzAshX4EEAMk1cxtVVAL80G1x+lDwzemkdh5ePtpiN4f/fKRPhjAhgJQpXf5Kayw
+	 VZCpcSAo9wNn4ObYArkIqt377UnTlVwnK9hxBmltUH1UmyUnv2/ydOl1Cmz8FsK+cEaDe
+	 rejzJ0OJ7HzkBZOgZrTw4G91RhMsiwsJlpq7O7oheJrvRqlS/n7aO/EwuO18U/I63UVt7
+	 xqBwz/CZ72t7W67t8hnAM9GDh/H2uuf2Ki6ucpVCevL1wfXhR3sJGDptRBYSBtfYfcdS5
+	 OJrZbypNUmVrnT5Xp7N6/1itdFLipMEc0p19ZgpR7cxdanZFed9A8sTcODsf/Li4PjA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795800174;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Mime-Version:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:To:From:
-	 Subject:X-Mailer:References:In-Reply-To:X-Last-TLS-Session-Version;
-	bh=pubxOyQNxqJObSQRzP2EByZPCuSgU1IGzHB2bC+qN9U=;
-	b=bDO4Uk1Oyvxq5NWvjI4vpQZHtuZ4aPzS8qOzbvnJ7WldwLQ60uIQiJ3IX+/9pLxAEsdH
-	 SPeizHjJlicK5XbK5lBwmQcmHPycfrJFYE7WNPZUs6M71dk61PWiAsygj40obj6HrSynF
-	 MyZZd23Jt8npCL8ufwIbMxL/a8OJyo+G3Q8F9K6Btwik0FwIzoJgKMug34MX2zDGq1UlK
-	 6yjp4XFwZWcyvyIxf2CIvlnc2goMzm8OQXoeFPnYahuvJ0ThVQdJM58uGzPZnLnzt2Nos
-	 mH3Xk5+2IdHVCgb/ilqKRrlImpL/LKB5wwkSSRje8s/xOEQn2ps9vjCxgzgfKl2wcmw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795812549;
+	h=DMARC-Filter:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
+	 Content-Type;
+	bh=I/iQhvx5aQ2OlsCDsvekZbVpxx0QTZL6M0gfbQ11gYw=;
+	b=WMZbhVjdRrYH5aQQM46UfoAOhj1pgeFSUIm1w3H5/SRIdQJteh61P5hYYRBFM1U0nh+M
+	 7DWgmBx5au6HKT59DR5zVgIOrX1q26+r0D8P65nBDjgZoflQd62T1f4bc3kP4pJ0xqSPr
+	 tUZdh4ODI5Nmf5Cx1NVl3QSdRfQ1C+qlbYXSN4+ujrzFE5EiBfY0opxDBKICHG0eH3ljj
+	 hnN2l1dBaQi43wQYxazxoSNCUDMEvqqoc6dDDRR2IWqlffpg6/eaWFnR0ROxwVj7mQ6CO
+	 iANISkuQDOfAHQWsJ6bgJxUP/gWVCOq80AT4/pvxIwODoK9RpZWepZiPLf6x4wfbFgw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=lJmWrYsS;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dmarc=pass header.from=sntech.de;
+	spf=pass smtp.mailfrom=sntech.de;
+	dkim=pass header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=m0JEwn4L;
+	arc=none smtp.remote-ip=185.11.138.130
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A58606A31C;
-	Fri, 27 Nov 2026 17:22:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 24A58606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFD9606A31C;
+	Fri, 27 Nov 2026 20:49:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AEFD9606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=lJmWrYsS
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id A0F024E417C7;
-	Fri, 27 Nov 2026 17:22:52 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5E33D6049C;
-	Fri, 27 Nov 2026 17:22:52 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EC53911E90D65;
-	Fri, 27 Nov 2026 18:22:43 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795800167; h=from:subject:date:message-id:to:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=pubxOyQNxqJObSQRzP2EByZPCuSgU1IGzHB2bC+qN9U=;
-	b=lJmWrYsSeVaZ8lnbvl7iZRf/Xsw9YMSMz7FPFKmlGc9QkU+qrFNgOfwl/815v8sGHvemZG
-	jJ1/JDdD3F9T1QFViGRTlTb7cWyP1PCJa+oxyPceNJxBCgHWFaUO81tnqqphyfBFgxxBKx
-	H7aOXcub76BfTSftj2ii0rCdO0fbI8uaqd2I15yM6a86XoUeang9PglyA5zmhyEb0LAbq1
-	jMH4wSujc4aCGw8Iotuehl5ObBp4l5WlxmN7Jk3ao5nQ1uiIadiODOPV9IuYIT2j/jbMYo
-	y+EynpzqiDwpNjSFtdd+k8oLX/t/0mHb7Bk8D2XfPGKfqZLrpjv4HXlDPAed0Q==
+	dkim=pass (2048-bit key, unprotected) header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=m0JEwn4L
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
+	bh=I/iQhvx5aQ2OlsCDsvekZbVpxx0QTZL6M0gfbQ11gYw=; b=m0JEwn4L/M3iUnEEfvejx4e4uv
+	GIV+Egr5ar/2mNGt1Sx1i20zp5BuQKcSYeMK5gSdMoUFTAqrvf1pB62gYa3DdSSQPBek022Zs45Ub
+	M4OPsFWa52KC8gIaVdOAU6qe2n8m3iCrLN3V92aka61o5S9DwcTDKLD8TapjYegb5AcUbQGWdOXTq
+	ZNlCOvmlZw8XnQwfGm6acLsBHG6/wRn01Jqmn+90W+++BUZsG3hM+64FStI14cm67jnguR3dpL28N
+	Rz6Dcj7X4oQB2nR26fnBc1hVUrVeZ6Kh3lYRdKcURJNQsIk9PvVwfPWb7bTIZOvVuRcXOgNulCDd3
+	Ro+Jgahw==;
+From: Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>
+To: Mark Brown <broonie@kernel.org>, ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-spi@vger.kernel.org,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 1/1] spi: fsl-lpspi: add atomic transfer support
+Date: Fri, 27 Nov 2026 21:49:00 +0100
+Message-ID: <r1SUq7cwQAKEFTBObqhYYA@sntech.de>
+In-Reply-To: <20261127073454.351296-2-chunyuzhiqiang@yinhe.ht>
+References:
+ <20261127073454.351296-1-chunyuzhiqiang@yinhe.ht>
+ <20261127073454.351296-2-chunyuzhiqiang@yinhe.ht>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -58,62 +61,25 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
+MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 27 Nov 2026 18:22:43 +0100
-Message-Id: <DN6611WYQN57.39FY9Q6KK65TS@bootlin.com>
-To: "Lee Jones" <lee@kernel.org>, "Mark Brown" <broonie@kernel.org>, "Foon
- Tan" <lftan@altera.com>, "Graham Moore" <grmoore@opensource.altera.com>,
- "Murugan R" <vadivel.muruganx.ramuthevar@intel.com>, "Vignesh Raghavendra"
- <vigneshr@ti.com>, "Pratyush Yadav" <p.yadav@ti.com>, "Dhruva Gole"
- <d-gole@ti.com>, <linux-spi@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH v2 06/10] spi: cadence-quadspi: Validate num-cs against
- CQSPI_MAX_CHIPSELECT
-X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
-References: <20261127153158.2969573-1-lee@kernel.org>
- <20261127153158.2969573-7-lee@kernel.org>
-In-Reply-To: <20261127153158.2969573-7-lee@kernel.org>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
 
-Hello Lee,
+Am Freitag, 27. November 2026, 08:34:54 Mitteleurop=C3=A4ische Normalzeit s=
+chrieb ChunYuZhiQiang:
 
-On Fri Nov 27, 2026 at 4:31 PM CET, Lee Jones wrote:
-> cqspi_of_get_pdata() reads cqspi->num_chipselect from the "num-cs"
-> Device Tree property without checking that it fits within
-> CQSPI_MAX_CHIPSELECT.  cqspi_setup_flash() then validates each child
-> node's chip select only against cqspi->num_chipselect before indexing
-> cqspi->f_pdata[CQSPI_MAX_CHIPSELECT], allowing an out-of-bounds write
-> if a DT specifies more than CQSPI_MAX_CHIPSELECT chip selects.
->
-> Reject "num-cs" values exceeding CQSPI_MAX_CHIPSELECT in
-> cqspi_of_get_pdata(), and store cs as u32 in cqspi_setup_flash() to
-> match of_property_read_u32().
->
-> Fixes: 0d62c64a8e48 ("spi: cadence-qspi: assert each subnode flash CS is =
-valid")
-> Closes: https://sashiko.dev/#/bug/linux-cd463fc8-1b94-4bcf-8d06-fae21b888=
-94c
-> Signed-off-by: Lee Jones <lee@kernel.org>
-> ---
-> v1 =3D> v2:
->  - Reject num-cs values exceeding CQSPI_MAX_CHIPSELECT in
->    cqspi_of_get_pdata() and store cs as u32 in cqspi_setup_flash(),
->    per Theo Lebrun's review.
->  - Simplify the commit message and drop the stable tag, per Theo
->    Lebrun's review.
->
->  drivers/spi/spi-cadence-quadspi.c | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
+> This patch was prepared with AI assistance; the submitter must review it
+> before submission.
 
-Reviewed-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
+This sentence is very confusing.
 
-Thanks,
+So an LLM generated this. Did you actually review what was generated?
 
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Because this looks more as an instruction for you as the submitter, so
+I would assume this line not "surviving" the review step, if it happens.
+
+
+Heiko
+
+
 

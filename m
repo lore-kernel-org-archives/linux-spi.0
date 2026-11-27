@@ -1,55 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795793561;
-	b=KwTH2ei9+5u/cYjfbxuMDY+ruGkb04mbnUjX0z6DJgQTJcQAFBj/oG1ucg3JHUMaNnRS
-	 eelMECSq78RdPLI3Gqgvy87qEhXlOGycB8g9diyzl6aHhcxpKi7H2xcd0gQ2SGVTOOwf2
-	 rhinM91JgxkaMHAV1Blg/xFrwU/Z8ktGGdAp3QZhZ2xYwsd8LhRjkzIduh+HCfPgM/GN/
-	 1ICOJBmh7YlNyTn3RThrKAfNyhbYRVlAGJhd8L/Igj3tkiDyJQ78NQ3S8nfoPFmBNPSv1
-	 q/KtRlCwsLORu2ZcGGuSIm2Yt7kSsmaQPvDPq1BGwFN6h9Ea21xe65zM7ITkuW7lTSw==
+	t=1795793568;
+	b=0eOs4zWBIH3XY4xmRJQJVj2BejZA/H3787mbyZe6Yv3Mk/pkR327pYdiLuLWzzHmfKwJ
+	 cUMTiH2D2Q+s6ZcDzDvMnEQbf68iTZLq6hhzd9R8NmGHMZWrAKhef6jV9wG8V9HWMiBS3
+	 70ZNTzha1NJvJYBeiQrMn1n2J+pmoOW7XXXS7C6Pb4T3kqdKcNACIdAQyr/UC9caZFNRy
+	 vSIEjG1lg1Nc9CUF8RlOp5AsAqY9uX5iY0o7VkaMs4EyyZuOnRQIJ103HoPHA643NsLDz
+	 bsWPAh8hZSLgNGPK05hHZGk/VmhpcogcOFb8+r8bu1Dr471oGjUKs4i2En/VdyV89CQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795793561;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	a=rsa-sha256; c=relaxed/relaxed; t=1795793568;
+	h=Received:DKIM-Signature:From:To:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=0gIlXVQ87uO7kfJWQw74uLJzWa1rKvwJQf0oUC7TuyI=;
-	b=McoWckMIoTUIurihPCbZT2tKliCRWYQZx0oIZPridJ3UGpFFU7EIQv6h7ygmzpPZTyUF
-	 6uHSq16EtZhrHdtHgIWoi4fq4jI7tuoTcWyvVL9wQObrJiV1ZSUlMmTcPLmjKZFiVqwRp
-	 RHAdZn39zeqE6qab1dOkpWDFlMeMS79r0af57PowZaRm0cAl7JFhDklUU3y9ZeQFb4glv
-	 gHbnZUl3qdSYYW5MfduV2BmBd2n2TQN/JJAELGXdUxuZBj9pLOu4EtLUk0UfoYH9tSg6A
-	 qHirSEadgelfMkq4xSa61P/LfSmOvi0WQ9JOEn0mOS6sV1/e5jBo9izqc9IByYjwpBw==
+	bh=xBRn49p7x5P2JnsS/AwLAkeJTmgdq0ZToxo/maqobQo=;
+	b=taiW2XWcJiThHgf4GKLwlDaWMKCemEWLSM7BLYc16AHUjutX4zzpOcd93TpRWR1K3qqh
+	 NVy8jLxlEm5zy9eL7tW7E1TLkMr37BSOJf+1AQJZ+r0V0XCIJePxjVQqxwsVbzTrjv4HQ
+	 ES3d++T89Qq/JKSadmuGZADh6YGIxu0xwoqQ03wK/3ugqmKMKzaD4ZP8v8O2gILDX/M98
+	 alizqSOQZrEnsODovXAJRt5KN4PPKvcYwI8T4WzRTPZZWHRdkG2gjneKllM6p1zUwVLj8
+	 LqpKWVUUp/f1jtgfyK7G/3JBOliVI624f7ha1MCH+f0Rm3LBbovo4ryGSQB90w3thkA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C5Mo3Nwv;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JRxvAwbT;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D13606A31C;
-	Fri, 27 Nov 2026 15:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD05F606A32A;
+	Fri, 27 Nov 2026 15:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C5Mo3Nwv
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4FC51F000C1;
-	Fri, 27 Nov 2026 15:32:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JRxvAwbT
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 523231F00898;
+	Fri, 27 Nov 2026 15:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795793560;
-	bh=0gIlXVQ87uO7kfJWQw74uLJzWa1rKvwJQf0oUC7TuyI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=C5Mo3Nwv8cVoWh1uzGDbcfOGefJYapYzDVJTdSCtlTwbHtNBUrd4jBdSzP5hn/0IJ
-	 YBs4dScZXrux7mLAiabl2W8ayLr+tqL/eUAvOjFcn/PHeWr5gDNk2lvNpzzY4JVGlS
-	 hLdllNkZ+5txf4n52Mk2PTmDWRKWFYEIKVDKCe7VnK2Rhj9FSQ0WBMUWbUHvLyUNl5
-	 AMYdjrWTsRGCJmBYwWY1BFIyGveV8I+J8P56ANJlciLqce25e/RDE9+rUi7LHvAzrZ
-	 662y7mDRSgCZ4u4OhdCnGeVm3vI7zCG9T7+Ci4IVrrMQSAKs3jHTd6G9wBi9T71FUm
-	 3vCk1N9a8NRtQ==
+	s=k20260515; t=1795793568;
+	bh=xBRn49p7x5P2JnsS/AwLAkeJTmgdq0ZToxo/maqobQo=;
+	h=From:To:Subject:Date:In-Reply-To:References;
+	b=JRxvAwbTBrXanJgeTCDSzmeoZKc54ZekNd9XVrRJa40uqNCiAHRpumLZWOdqZ+xW/
+	 o9Ns3DiHx/N+em/r+5+83Dqzo8oPmcsac9MXTO2juy+ZCW+lULy3bU6q+yU2JVxmms
+	 +4EnJvAyFl8lqOGb1gQfXNDOxOzDjdRXio/w2UbZwPA8PCg6toZ3jjUFnUm41mstuz
+	 gJH8rPcnlgcHlYrcDm8ReDLxODe+DY1xtG5102Mty93RvkC5iWFlfTouwCwSnT/BSG
+	 z5VEflxTXjk8Ip7t2q5yfRPyZ4XxHs+jFs+rx3jO6fAGvn8snuLBnQ+D+Lt+khCVEh
+	 7XwR3ZxPXMpLQ==
 From: Lee Jones <lee@kernel.org>
 To: lee@kernel.org,
 	Mark Brown <broonie@kernel.org>,
-	Tomoya MORINAGA <tomoya.rohm@gmail.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
+	Foon Tan <lftan@altera.com>,
+	Graham Moore <grmoore@opensource.altera.com>,
+	Murugan R <vadivel.muruganx.ramuthevar@intel.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Pratyush Yadav <p.yadav@ti.com>,
+	Dhruva Gole <d-gole@ti.com>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH v2 05/10] spi: topcliff-pch: Advance tx_buf between DMA chunks
-Date: Fri, 27 Nov 2026 15:31:08 +0000
-Message-ID: <20261127153158.2969573-6-lee@kernel.org>
+Subject: [PATCH v2 06/10] spi: cadence-quadspi: Validate num-cs against CQSPI_MAX_CHIPSELECT
+Date: Fri, 27 Nov 2026 15:31:09 +0000
+Message-ID: <20261127153158.2969573-7-lee@kernel.org>
 X-Mailer: git-send-email 2.56.1.839.g22a8290db9-goog
 In-Reply-To: <20261127153158.2969573-1-lee@kernel.org>
 References: <20261127153158.2969573-1-lee@kernel.org>
@@ -64,76 +68,66 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In DMA mode, pch_spi_process_messages() splits transfers larger than
-PCH_BUF_SIZE into chunks and calls pch_spi_handle_dma() once per chunk.
-pch_spi_handle_dma() copies the TX data through a local pointer and
-never stores the advanced position back into the transfer, so every
-chunk after the first retransmits the data from the first chunk.
+cqspi_of_get_pdata() reads cqspi->num_chipselect from the "num-cs"
+Device Tree property without checking that it fits within
+CQSPI_MAX_CHIPSELECT.  cqspi_setup_flash() then validates each child
+node's chip select only against cqspi->num_chipselect before indexing
+cqspi->f_pdata[CQSPI_MAX_CHIPSELECT], allowing an out-of-bounds write
+if a DT specifies more than CQSPI_MAX_CHIPSELECT chip selects.
 
-The RX side already writes its advanced pointer back and restores the
-original rx_buf once the transfer is complete.
+Reject "num-cs" values exceeding CQSPI_MAX_CHIPSELECT in
+cqspi_of_get_pdata(), and store cs as u32 in cqspi_setup_flash() to
+match of_property_read_u32().
 
-Do the same for tx_buf, so that each chunk sends the correct slice of
-the buffer, and restore the original tx_buf once the transfer has
-completed or failed.
-
-Advancing tx_buf by the number of bytes copied relies on the following
-commit, which ensures that each chunk covers no more than the bytes
-accounted for by the loop in pch_spi_process_messages():
-
-commit 3515e312e096 ("spi: topcliff-pch: clamp DMA bpw_len by bytes
-not words")
-
-Fixes: 7d05b3e868ee ("spi-topcliff-pch: Fix issue for transmitting over 4KByte")
-Closes: https://sashiko.dev/#/bug/linux-625e2f07-fb68-446b-b1a8-b1f66aacb62e
-Cc: stable@vger.kernel.org
+Fixes: 0d62c64a8e48 ("spi: cadence-qspi: assert each subnode flash CS is valid")
+Closes: https://sashiko.dev/#/bug/linux-cd463fc8-1b94-4bcf-8d06-fae21b88894c
 Signed-off-by: Lee Jones <lee@kernel.org>
 ---
 v1 => v2:
- - Rebase onto spi/for-next; no functional changes.
+ - Reject num-cs values exceeding CQSPI_MAX_CHIPSELECT in cqspi_of_get_pdata() and store cs as u32 in cqspi_setup_flash(), per Theo Lebrun's review.
+ - Simplify the commit message and drop the stable tag, per Theo Lebrun's review.
 
- drivers/spi/spi-topcliff-pch.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/spi/spi-cadence-quadspi.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index 0bec3012a6bc..cbe76c4ae2e8 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -947,11 +947,13 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
- 			tx_dma_buf = dma->tx_buf_virt;
- 			for (i = 0; i < data->bpw_len; i++)
- 				*tx_dma_buf++ = *tx_buf++;
-+			data->cur_trans->tx_buf = tx_buf;
- 		} else {
- 			tx_sbuf = data->cur_trans->tx_buf;
- 			tx_dma_sbuf = dma->tx_buf_virt;
- 			for (i = 0; i < data->bpw_len; i++)
- 				*tx_dma_sbuf++ = *tx_sbuf++;
-+			data->cur_trans->tx_buf = tx_sbuf;
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 912470bdd10c..0f15250c51db 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1613,8 +1613,13 @@ static int cqspi_of_get_pdata(struct cqspi_st *cqspi)
  		}
  	}
  
-@@ -1180,10 +1182,12 @@ static void pch_spi_process_messages(struct work_struct *pwork)
- 		if (data->use_dma) {
- 			int i;
- 			char *save_rx_buf = data->cur_trans->rx_buf;
-+			const void *save_tx_buf = data->cur_trans->tx_buf;
+-	if (of_property_read_u32(np, "num-cs", &cqspi->num_chipselect))
++	if (of_property_read_u32(np, "num-cs", &cqspi->num_chipselect)) {
+ 		cqspi->num_chipselect = CQSPI_MAX_CHIPSELECT;
++	} else if (cqspi->num_chipselect > CQSPI_MAX_CHIPSELECT) {
++		dev_err(dev, "num-cs (%u) exceeds maximum (%u)\n",
++			cqspi->num_chipselect, CQSPI_MAX_CHIPSELECT);
++		return -EINVAL;
++	}
  
- 			for (i = 0; i < cnt; i++) {
- 				pch_spi_handle_dma(data, &bpw);
- 				if (!pch_spi_start_transfer(data)) {
-+					data->cur_trans->tx_buf = save_tx_buf;
- 					data->transfer_complete = true;
- 					data->current_msg->status = -EIO;
- 					data->current_msg->complete
-@@ -1196,6 +1200,7 @@ static void pch_spi_process_messages(struct work_struct *pwork)
- 				pch_spi_copy_rx_data_for_dma(data, bpw);
- 			}
- 			data->cur_trans->rx_buf = save_rx_buf;
-+			data->cur_trans->tx_buf = save_tx_buf;
- 		} else {
- 			pch_spi_set_tx(data, &bpw);
- 			pch_spi_set_ir(data);
+ 	cqspi->rclk_en = of_property_read_bool(np, "cdns,rclk-en");
+ 
+@@ -1753,7 +1758,8 @@ static int cqspi_setup_flash(struct cqspi_st *cqspi)
+ 	struct platform_device *pdev = cqspi->pdev;
+ 	struct device *dev = &pdev->dev;
+ 	struct cqspi_flash_pdata *f_pdata;
+-	int ret, cs, max_cs = -1;
++	int ret, max_cs = -1;
++	u32 cs;
+ 
+ 	/* Get flash device data */
+ 	for_each_available_child_of_node_scoped(dev->of_node, np) {
+@@ -1764,7 +1770,7 @@ static int cqspi_setup_flash(struct cqspi_st *cqspi)
+ 		}
+ 
+ 		if (cs >= cqspi->num_chipselect) {
+-			dev_err(dev, "Chip select %d out of range.\n", cs);
++			dev_err(dev, "Chip select %u out of range.\n", cs);
+ 			return -EINVAL;
+ 		}
+ 
 -- 
 2.56.1.839.g22a8290db9-goog
 

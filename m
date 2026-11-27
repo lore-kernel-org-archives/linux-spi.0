@@ -1,54 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795783828;
-	b=RYhhZ/jyj7BHCxuBaCcfSLhC5+84GI7+n68f56kmBn9a9d14eE5h/2rbb/qKdcOI3TFZ
-	 el0rV/HW59Cw1oOgWCm6hmxm7WEZeFwtfXvSN3aqWX+X5KKmKnFTYVXGWVci+CidBtu+9
-	 NCSq7aK/gEk41Dpu7FMWI+5bHc47seAx4A0P2b2pZjbdWICV1FDA1QC85dl/jD4d0RxsD
-	 MFeMls7moBzOUOemfrzfUDxBwy7M6yfephjIbnL+GMJufSjsM02BAQ4ysOHngddAqH/Nn
-	 fM7N1zGVM7LN6PPEYiTbHde08Yb7RA9cD+LGvIr7volhUIHT7oky2nsN/ETFbeSUgsA==
+	t=1795784593;
+	b=RNTakhn1fi4K3iITwO21Noav3IXgPA1+/QaVSUqgiRjSrawBDfZVcBBY+m3JbDPSpd7g
+	 J+p0ArT9tK658JzSQfU1D3coyz1QkON9erGyc7T9+7ggxYKdWtaJ4/M4NBYxFRIRQVqTg
+	 tEs9+hivQJmyFNB/Nsmdj+LykOp1ui9FpTTTvLUq8xWZyvZpE0i9EmGiNj4K6gMpjrCbI
+	 eL7QUzSA9YvhxW/K+kw/mjHDbnw6BxKGyIzI+bnEB3JzPfxpxaqWfS6eF6HKr351Oow6D
+	 rS5iChNZ+b3VZ8Fcmsg7yPs9ftOsnWgLag7q+sYVtrkVKjasobYP5GmllzrqvQ0VHew==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795783828;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-Cookie;
-	bh=W33ZWbAqogJ53umhTfYSfZyh9+/3Wp9/3r8GuyQJTHo=;
-	b=kxmlOEAoZF/LiNQ7ZBR0Jp82V6FxVC/Oz6Vlf4qSS7nCYnu+Skb37orgPK7kdzggtcpt
-	 OS3qQEC+Lfvhka3KrKpnHj4t2l1m6oXscJWhxIrTYbl4/N55d9BIe76gm1QS6oUr8zQBW
-	 29wyiC9ImhEgJUezQyK0aIuwAusk+V7JZcVWsms2AMocSnY/ivTOBM3lqhfnldw1qrFkx
-	 c9jTMPMOaw56/SMjlwzOnxZ7zvRvU+zLa2xByq5EKucsd4skHp841sGnIaoP1wXiDisOl
-	 eHn1Zk+tm8ddZlH7vd31q6m3R9fzzQNaeC8usrQVVzN4X+vxQOivE7RDkptKxEc+KCA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795784593;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
+	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=7UVakvOp4wpiznroxVZYXkTEATKSGQujHq3lj0XSlRk=;
+	b=DiTeBy1WtkyzRLpwYJqym/NgUEbvok9FWp4dMgLZfn+1LbF/ogAOJAeUpNTL3iqhA0uG
+	 y3W4KxoyaaNPYg2JiXiMTu2yK0p9VFgYq/UafJM1/zHkpAHO26L+lj3uN7gcTbwVSebyB
+	 IaeiKFxQJ8LiPL2FLH6SLelCnGoD7Oxdn+VpaObgt5E0H4TyI7waGdKS7ozSPoJFDYUdp
+	 D6mWSIY002Pd1OR4K8HrWHEdHk05dQDI4a8j+70OYB9x4lEyf3u46ZNjlP2i5osST7oOb
+	 xPI8Q4VdhAhSc5biH77tUj9BTYI32K2XBOBylAhAIZkAH3t4msdM1cagW852ajfi5Uw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AirIuTDj;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=cM5VgeY6;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C862606A324;
-	Fri, 27 Nov 2026 12:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D56606A31F
+	for <linux-spi@vger.kernel.org>; Fri, 27 Nov 2026 13:03:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 44D56606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AirIuTDj
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4891F1F00893;
-	Fri, 27 Nov 2026 12:50:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795783827;
-	bh=W33ZWbAqogJ53umhTfYSfZyh9+/3Wp9/3r8GuyQJTHo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AirIuTDjfRmTVGbK9JnkyMy8E7eo/GJzZRq6q9zZ1QriAI5LEXxLatau5rUsP0ZvK
-	 fGqi5id/In9k2+a+86QnYvRJ1byLqiG6zKOA3fcUHRvFaHWKcQBYTa1pbeMnBbBcGA
-	 ktwgzM22czpKsVCCUWI2XEsguGJ2IFpuhWWiHfMvKtt/3VLZibK/WakTB0LgdvrwdJ
-	 we2BZOUKBrWEJ8NKpoPh5V8cOuz6CR/iMpP/o731SHG5Ed/8AfzA6HooEgL1miqWuL
-	 znaMPoqy1G4sYY0VqnZbzroe2CE4NqaQKU6U9xaFRM2T7ielA/ZfY5B2oxNg4TCWeV
-	 /Iosxnb5pZw7g==
-Date: Fri, 27 Nov 2026 12:50:23 +0000
-From: Mark Brown <broonie@kernel.org>
-To: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-Cc: Frank Li <Frank.Li@nxp.com>, linux-spi@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-Subject: Re: [RFC PATCH v2 0/1] spi: fsl-lpspi: add atomic transfer support
-Message-ID: <2353f854-7cc0-41d7-a1db-37d6f72e4c8b@sirena.org.uk>
-References: <20261127073454.351296-1-chunyuzhiqiang@yinhe.ht>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=cM5VgeY6
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 17598C2AC4C;
+	Fri, 27 Nov 2026 13:03:19 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4DDF06049C;
+	Fri, 27 Nov 2026 13:03:10 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5F79011E68760;
+	Fri, 27 Nov 2026 14:02:54 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1795784584; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=7UVakvOp4wpiznroxVZYXkTEATKSGQujHq3lj0XSlRk=;
+	b=cM5VgeY6Qci2ljmxqJH2dWDlf8hXi2XInC/iuzimk3N43ziiTXtiMMiKedJf5R5pYNvGxo
+	Ba144VRx1Z4nzcfrgeAwVxPCnf67yr8iKuUVCrqJhp8X8vYXfT7cuoRwDd++MeDSNAYXqB
+	dcrSTVCBTamAakYw3wbGqr6fxQZufiwpAjnm1GQh990665j2EmAE3ONzv+S26KrJozd0CU
+	uE5nvBl438K4yS5xx8AciV3xr3B1IjR5frJp3hnbF2Fbsr7xDsk98qp9HhCPupN0sWxEzN
+	XAe4fBjrLxm8X48WHk4LSNUBBZvWJApyARHisZtjduTr56v2v3QlnPTY4BIAbA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Tudor Ambarus <tudor.ambarus@linaro.org>
+Cc: Mark Brown <broonie@kernel.org>,  Liang Yang <liang.yang@amlogic.com>,
+  Feng Chen <feng.chen@amlogic.com>,  Xianwei Zhao
+ <xianwei.zhao@amlogic.com>,  Han Xu <han.xu@nxp.com>,  Conor Dooley
+ <conor.dooley@microchip.com>,  Valentina Fernandez
+ <valentina.fernandezalanis@microchip.com>,  Daire McNamara
+ <daire.mcnamara@microchip.com>,  Haibo Chen <haibo.chen@nxp.com>,  Jyan
+ Chou <jyanchou@realtek.com>,  Yu-Chun Lin <eleanor.lin@realtek.com>,
+  Maxime Coquelin <mcoquelin.stm32@gmail.com>,  Alexandre Torgue
+ <alexandre.torgue@foss.st.com>,  Pratyush Yadav <pratyush@kernel.org>,
+  Michael Walle <mwalle@kernel.org>,  Takahiro Kuwano
+ <takahiro.kuwano@infineon.com>,  Richard Weinberger <richard@nod.at>,
+  Vignesh Raghavendra <vigneshr@ti.com>,  Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>,  Alvin Zhou <alvinzhou@mxic.com.tw>,
+  Cheng Ming Lin <chengminglin@mxic.com.tw>,  linux-spi@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-amlogic@lists.infradead.org,
+  imx@lists.linux.dev,  linux-riscv@lists.infradead.org,
+  linux-stm32@st-md-mailman.stormreply.com,
+  linux-arm-kernel@lists.infradead.org,  linux-mtd@lists.infradead.org
+Subject: Re: [PATCH RFC 00/16] spi: spi-mem: Express the dummy phase using
+ cycles when relevant
+In-Reply-To: <41962155-e78d-46b2-a58d-45282fdf1cca@linaro.org> (Tudor
+	Ambarus's message of "Fri, 27 Nov 2026 11:33:09 +0200")
+References: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
+	<41962155-e78d-46b2-a58d-45282fdf1cca@linaro.org>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Fri, 27 Nov 2026 14:02:54 +0100
+Message-ID: <87cxrqtojl.fsf@bootlin.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -58,44 +89,30 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Wp/eDE65bMRInR4B"
-Content-Disposition: inline
-In-Reply-To: <20261127073454.351296-1-chunyuzhiqiang@yinhe.ht>
-X-Cookie: Sank heaven for leetle curls.
-
-
---Wp/eDE65bMRInR4B
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Nov 27, 2026 at 03:34:53PM +0800, ChunYuZhiQiang wrote:
-> This is a resend of the fsl_lpspi follow-up to Heiko Stuebner's "spi:
-> Implement a atomic transfer as a last resort" series.  v1 was based on an
-> earlier revision of that series and no longer applied; this version is
-> based on current broonie/spi for-next, where Heiko's v4 is applied
-> (for-next 63083539d2bf).
+On 27/11/2026 at 11:33:09 +02, Tudor Ambarus <tudor.ambarus@linaro.org> wro=
+te:
 
-Please don't send cover letters for single patches, if there is anything
-that needs saying put it in the changelog of the patch or after the ---
-if it's administrative stuff.  This reduces mail volume and ensures that=20
-any important information is recorded in the changelog rather than being
-lost.=20
+> On 11/25/26 7:51 PM, Miquel Raynal wrote:
+>> This is only build tested for the moment and sent as an RFC because this
+>> topic has raised a lot of questions, there may be things I have
+>
+> There's no ambiguity that this is the right direction, change bytes with
+> cycles. As a matter of fact I tried this in the past as well, posted
 
---Wp/eDE65bMRInR4B
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks!
 
------BEGIN PGP SIGNATURE-----
+> something and then couldn't allocate time for a new revision. You may try
+> to search the set, if you haven't already, and check what the feedback was
+> at the time.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmsJfI4ACgkQJNaLcl1U
-h9Bq/ggAhaW3p2gDhiNaCetn04LlSdl1cazk/E6ADdSZ8g08WxgJSNxRrrQhOMqI
-z5gmc6z0ul/a1ZXPCTq7Kex8PrdmTqxTxc5QF/kiMA5B3JTUcvCuqnUj4Gonp+k6
-X5mbgV9RKlxnkX2vCxFH4RlM8wLbq2ypJkHMue7Ax4PbzEf7PCpR4bx8Hg4kOQQ1
-+xIx9Noo0+4ZBSqU/+H0Sx/P46WRclVm7PafYucz/8l3h42L0hqxjuKUOBvyCMtJ
-xxTXs17dchB9X7anOsXahtDUOOxWwjjcVZDPDZN3OYi8zyciHwL9KPNJ/uUkV4LO
-OLqW35ipe9Q8b1sqjQ5FOj5HeaCdDw==
-=t356
------END PGP SIGNATURE-----
+I haven't found your series, but I found some of your answers to Sergiu
+(iirc).
 
---Wp/eDE65bMRInR4B--
+Let's see until where this version goes :-)
+
+Cheers,
+Miqu=C3=A8l

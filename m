@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795728505;
-	b=Hwa9eB6z6BxZw5AZleIRyuukzg9eHEAt752AiKZ2AiqZcDe1Mis95PlpSCbaAt4qgL3r
-	 tcgqhsprSo+6Wi/V6pfEkyUdB3IKD+23xQX6eHk7vg1Y8zTySl6maikSr5FMXSBakG5g4
-	 g4LBRJabzJyGcQ2iXM4QuJQlARDMwBmIuGXQQ0QIANUwDpBmx8gXBERNlvtmEssZHsLm3
-	 fK2sSJ20ybA2DdpH+03xcdAONh1CKw4OcPevHmnvkjvr+L+WJDWPGcIW1M5TKvicD15TN
-	 6WpN9PyL4CekwbIX8Hy6hy7kmKBIbfCPjGYhKYiH0aWiUrxu8uU6qNVRSf8fKj9C/mA==
+	t=1795742928;
+	b=NLbEM/jJCHw9xyJ9GvmCvOPAJwgVb0KW3aR7qFFZdSsGXP9CphhQIywTaSEDZpGFXxC4
+	 0Z5zPFPpxW2a3jXPipgcxHGN9HEfQy8rf7wxk2+j+FqMlAN/J/7YWnVZLCRGoR6+XCHYA
+	 j0KdpW+aX1t4jNiAzVlRGch9wykVKIuyoSYdkqRHpvYM3jFXmKTSokfQVHVHkrUaZIPv4
+	 XDNjqBcJjgQS+LTelEccNIZg+h/kCaMnYKN1L8JIxgF7zAnN2UEAKQncZPDAjj4EpLGl/
+	 5ZAAiwzPYA5WOiAMr6s0Vhz3vvl8i6pJb23UXQbvK2t5MI+xcStkPRYkG/NMQVHoH4A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795728505;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795742928;
 	h=Received:DKIM-Signature:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
 	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=AKE9hZpQGszWx/7HA8tIwIZOKLxBkMhWpBT53qbuBGk=;
-	b=2cpwsq9ePmuQ6CrcofEVLiaZNVck6UpTW8LzF6PxUTZo5Qxe9+lNlscgMpgVsZUQx7tC
-	 mY7EVOQ5/8spTxQOUwQ/PQLI83CkTOOoKt8uv/wzi0vTtLofgfbFz+9H3B9bBUDkK0P1v
-	 KQO8dKhosbA3vjevqLPfz1qEzcPVjXltzSZ1oB8wxPHBLcX+7PJtwjgvMqkHKcOlGiq2l
-	 yaEsUwoCme72TLf7argtK+ooSIRshRTMD8l7/xVyD3okL2kP9VCXr/x2eWZEdDjKk63Ts
-	 Ajz1Hbx9GQ7HA9Jae4GDN4BKBwdSuenvlMjSg5b1/a3hBtciYwKSCtvHebSpZXWNL5g==
+	bh=mIUR5ntttE9fwFh/8Lo0ajKHgNXRqQ8nKqInF8hk5mY=;
+	b=n/7fxflkS+v3pYTRK9u/zOrVL/+IeMV+lAt0IIgpqTs0S5YdmbdyzJ2XmcJRxmQrw4Zc
+	 yZ3448mMYzRZYeNORACfbNnSjTbhfZBdx/+K3avjAbKEhKdwAh1L2fBkVkQU6+VGZLCUo
+	 4UUNDOLxXoYqd45cOYmRoz6nnpi2EEEZEGMu14Jh4cl7MgPCsVOHCpefny0y9ChefBfMg
+	 bjPlHZqM0/32dZiiTDUNekmPw77paxY+O4j0Q/oD9Z5MGCAIfQpsCHCCXCDIzeHfgFwaf
+	 cgJ/lKG/NRdyNw9wXKFqEZKSVYRYlfL/PxDhvX3SR6Z5eeYihl+hecEsfor48ug7l0Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m+oYj628;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iJuxrC22;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF6A606A323;
-	Thu, 26 Nov 2026 21:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599A4606A31E;
+	Fri, 27 Nov 2026 01:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m+oYj628
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FF331F000C1;
-	Thu, 26 Nov 2026 21:28:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iJuxrC22
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71DC1F00893;
+	Fri, 27 Nov 2026 01:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795728504;
-	bh=AKE9hZpQGszWx/7HA8tIwIZOKLxBkMhWpBT53qbuBGk=;
+	s=k20260515; t=1795742927;
+	bh=mIUR5ntttE9fwFh/8Lo0ajKHgNXRqQ8nKqInF8hk5mY=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=m+oYj6287zb9RCTfENOWwvGl/347fysghidRTIGsZIAgQmoNOAUZI1xSYgX7dJiQ/
-	 NRJK+RAtzUQDtCpRovni3fW5ILQGGCgP0SGIG885i+Acm/L/M+DV1mF53fqEJ6jZ03
-	 tF/R6JnEsWVP8szh5sBl3ygKbsZKDyT6STwJcNfY86gqYS0KJUKDWwAUAhaYFmO61I
-	 UHR6VaPZOa6ah08pJlSTdShRR3ouj7KvAtT7qvXMOkYaJPyB+dg1PYszQeu/tTHGhZ
-	 h6WBnHbokPHlhxTZjDWI+4nlxkW6e9Jic/7ytegVXwSn6Ry8NlwhPnxQhWkpqOj8F7
-	 uPT4Ps0lZtg7g==
+	b=iJuxrC22yvOvXpmfp0jHkY/240TJy7mBRXrdccwNanQ2X5I3UxEOSLK6ROTQ+Puvg
+	 msr6R0jq50c5UVop8Swe1yJc2ORleebLU7IAYmLsZozeix8Q7tUcw00LLyhPsdn6/v
+	 kO4YfO4oi1ZsYj8ErkvGp54AvtL9nBdQmJSVckUr5ssQVxIn2apDCGJSkxBNr6fMm8
+	 im9SGKT1hZb0AM8a6Bh6NEeUDPacjcEE5teW+lKhSi+pYJ2A07kWuIr8XCU13y8A4R
+	 mcX5s2esM0U0UWPWAy2G0XZmqQGyorqqaz8QiqE/Vpjnozy5CNOIz5TfDUL5awOyQU
+	 o83P39zkWNQuQ==
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -51,39 +51,64 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 2/2] dt-bindings: spi: rockchip-sfc: add RK3506 support
+Subject: Re: [PATCH v5 6/7] spi: cadence-xspi: Rework resource discovery
 From: Mark Brown <broonie@kernel.org>
-To: ZhuXiangyu <1194781887@qq.com>
-Cc: Mark Brown <broonie@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
- Chris Morgan <macromorgan@hotmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, linux-spi@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <tencent_E24973E955D1A26CF5A4F983929F8F8B0006@qq.com>
-References: <tencent_B239E24A7651B43AC21C4769D1E75FA0A505@qq.com>
- <tencent_E24973E955D1A26CF5A4F983929F8F8B0006@qq.com>
-Date: Thu, 26 Nov 2026 21:28:16 +0000
-Message-Id: <179572849658.838304.8494302770279500225.b4-review@b4>
+To: Paul Cercueil <paul.cercueil@bootlin.com>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Bharat Bhushan <bbhushan2@marvell.com>, 
+ Sunil Kovvuri Goutham <sgoutham@marvell.com>, 
+ Tanmay Jagdale <tanmay@marvell.com>, Jisheng Zhang <jszhang@kernel.org>, 
+ George Cherian <gcherian@marvell.com>, 
+ Witold Sadowski <wsadowski@marvell.com>
+In-Reply-To: <20261120115925.173568-7-paul.cercueil@bootlin.com>
+References: <20261120115925.173568-1-paul.cercueil@bootlin.com>
+ <20261120115925.173568-7-paul.cercueil@bootlin.com>
+Date: Fri, 27 Nov 2026 01:28:41 +0000
+Message-Id: <179574292141.838304.9533014529156283849.b4-review@b4>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=558; i=broonie@kernel.org;
- h=from:subject:message-id; bh=NYkHdhnKP6nblxfLbI6IxY44AGsOc8rvLXvhgNlcXKI=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLI5lhTuFngeoThR2myD5bwJRrGbd9UE3D8kFiw5/Qu7X
- 5LrstaojlIWBjEuBlkxRZa4LO6X9SWv1/AdXNgGM4eVCWQIAxenAExESJrhJ6PKjGP1XEGOKRvd
- rHMWPBLKktfxD73+oPljAXNAL//fH4wMD+wTmRSauf/EVDjrfdFW3h5zKmPvfy/h/L6J7Fnc71T
- 5AQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1639; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=jJCPUyCZdKpv2ZkbTcksOLnmoUQRf86RdFAkE8AdC0U=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLI57pze+mARy/N2n23SGsr8sRnXGOuX/NOQk7i0fj5D4
+ qq5/RUvO0pZGMS4GGTFFFnisrhf1pe8XsN3cGEbzBxWJpAhDFycAjCRCgFGhgtlNiIdRr9l119N
+ FE05zVa34klokFzbpprqNdeqA7ZqJDD8U2K8mPxwoouM4z+1C0fzMyW5FQMfJlcLu7ROsnGtutD
+ CAAA=
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-> Document the RK3506 FSPI compatible with the generic SFC fallback, and
-> the rockchip,grf and rockchip,max-dll properties used for the
-> power-good handshake and DLL training.
+> The previous code worked, but calling
+> devm_platform_ioremap_resource_byname() on ACPI where resources aren't
+> named causes warnings to be printed, one per call:
+> 
+> cadence-xspi PRP0001:02: error -EINVAL: invalid resource (null)
+> cadence-xspi PRP0001:02: error -EINVAL: invalid resource (null)
+> cadence-xspi PRP0001:02: error -EINVAL: invalid resource (null)
+> cadence-xspi PRP0001:02: error -EINVAL: invalid resource (null)
 
-Please submit patches using subject lines reflecting the style for the
-subsystem, this makes it easier for people to identify relevant patches.
-Look at what existing commits in the area you're changing are doing and
-make sure your subject lines visually resemble what they're doing.
-There's no need to resubmit to fix this alone.
+>  #ifdef CONFIG_64BIT
+>  	if (cdns_xspi->driver_data->mrvl_hw_overlay) {
+> -		cdns_xspi->xferbase = devm_platform_ioremap_resource_byname(pdev, "xfer");
+> +		res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "xfer");
+> +		if (!res)
+> +			res = platform_get_resource(pdev, IORESOURCE_MEM, 3);
+> +
+> +		cdns_xspi->xferbase = devm_ioremap_resource(dev, res);
+>  		if (IS_ERR(cdns_xspi->xferbase)) {
+> -			cdns_xspi->xferbase = devm_platform_ioremap_resource(pdev, 3);
+> -			if (IS_ERR(cdns_xspi->xferbase)) {
+> -				dev_info(dev, "XFER register base not found, set it\n");
+> -				// For compatibility with older firmware
+> -				cdns_xspi->xferbase = cdns_xspi->iobase + 0x8000;
+> -			}
+> +			dev_info(dev, "XFER register base not found, set it\n");
+> +			// For compatibility with older firmware
+> +			cdns_xspi->xferbase = cdns_xspi->iobase + 0x8000;
+
+Shouldn't we go directly here if res is NULL instead of trying to do the
+ioremap, otherwise we'll continue to get errors?  OTOH if we *do* have
+the resource then we know we're supposed to use it instead of the legacy
+one so we should propagate the error instead of guessing.
 
 -- 
 Mark Brown <broonie@kernel.org>

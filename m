@@ -1,131 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.147.86
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795834159;
-	b=k7ohzyQhky4t/TWhhOK6Qk9QUFOZN70LtBm5N8Ru6VcyJIhb8Qg0TMZg1hzdyCEtknNO
-	 Kw44qNUTkpBh1N8ZwNA153VoPFl2DpVbni+j52fq3CU6f66ioTVbBdOu6g09tcpFDeeBb
-	 bQM8WxLlWlHlUwPepxpJH/cGL2lvd58i/iiGqL/Hy0b5XdV7MI8QhgXtG3dSNF6KGHeer
-	 xWU2MSz/MeouXeYOthKkpEfdgzMdxTCMd+DRveQkJByMaimAmgqTGqFlAd5W7ddIBblXB
-	 8L1lMPjQDkjMecIZcLy73cQDyk5PbpJEUo0tYhLOp02Na2Ryrx0Bz+G09tpyWT2GVkQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795834159;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:DKIM-Signature:
-	 Received:Received:X-MS-Exchange-Authentication-Results:Received-SPF:
-	 Received:Received:Received:Received:From:To:CC:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 Content-Type:X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-LD-Processed:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-OriginatorOrg:X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
-	 X-Proofpoint-Reinject:X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-GUID:X-HPE-SCL:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Reason:X-Proofpoint-Spam-Details;
-	bh=vlJ0d7vbXRShVWUajLubmLU6PTxbTVEg/IFnFxQ9wi0=;
-	b=eqkZ+lqP7IYX6vWPVMXWvgIHEU58WLseb2sgd29KB0OTlOZDZ7wfPjAJyx5houGxDeP1
-	 QBtryFNBPD1FZV/t1G6ASwtz+Qz+rg2LCebBjeK+8d+X+bna9Lck75Vx4y1uPsIPKBPC6
-	 pnhxX2FtW0sd7Fdw7NAmp91S7SIBxPf56a4Y11F7NiJJ9QKi7iwTp2HuWwUvEQVp9IUWB
-	 6cFRUSlSM8rS9vpcHPLHOOvLH7b+odosoZfPhAGucyierngzxoKZBeTl3Upxdwdd0bztf
-	 9Gxb5sevD9lncsaBjU3kJhgt9nJx5EajAu8Ey0sNWXKd4sxcCIDy6zKv2fpuyWtz/Og==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=juniper.net;
-	spf=pass smtp.mailfrom=juniper.net;
-	dkim=pass header.d=juniper.net header.i=@juniper.net header.a=rsa-sha256 header.s=jnprhpepp0429 header.b=ps7vtbEp;
-	dkim=pass header.d=juniper.net header.i=@juniper.net header.a=rsa-sha256 header.s=selector2 header.b=LhYPE9R0;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.147.86
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.196
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795839955;
+	b=bdqQs4dYUZRc2AyUVxwbdsFmkMr38X28IKrF7HjlWVtegSBk86RYfmV+RPyThA5Z2nEh
+	 5GjW6ZH/B0agEwIl0DAevyNT74jHwmAsP7Hzuw/CWtkHcaJBQRizzQuX0IDM9bJ64zp40
+	 OCdFvIHUVsqVQlH/2eJJHJLRm6zmTKQhuSAJm+oVZeexAaeDvZgw2P1J96zMzQLs4PpvL
+	 RI4zUw8pHjqTDR8R7E3ly3bBsYY4gNHoVA0c7t5kz0vHs+lElNcPLRAs+8lZxBvfWXzm6
+	 97xuBJOZqTWicEFej5vT0YZLFDWOuMLSeG+dI++VWpzc/58GeJaHGZ20s2YvsChWS8g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795839955;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=mATTlQKNWLn8Om6AxuMDieKUm10lTGvIAb1LEwjHa3Y=;
+	b=Vf41BJNry3L0ytOAUIkC8+3Ulu+EJgdMni+U6MBTVekkev2Lf520Sop5iVXwuJ+V/Qxs
+	 l4pol91PFjAmbEXfJuDqQYUVSOiM0i+znT3j738l5Cj0uOuVWWizX5znCfm1EetSQggci
+	 L5jBeP0AHUaA0cSmWD/KedQsfnrEkSqb+6urW2Pco8lDnWwWVn5h4ZzOXtYRvlS4Q4Ero
+	 WtqBDlJWOV61JySLHdVuBk3hAROQoTdc5wAHeHrzqCt870g/K8aYkJtzGnl5wMbBSwvFi
+	 SJmup6XkO6Hm8tQDaEYOQG0Ns8Zx5FzGbZA6oQGKTHwlZihOU5FcI0rxOXJ11nhJx0g==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=yinhe.ht;
+	spf=pass smtp.mailfrom=yinhe.ht;
+	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=ldp62NYA;
+	arc=none smtp.remote-ip=115.124.28.196
+Received: from out28-196.mail.aliyun.com (out28-196.mail.aliyun.com [115.124.28.196])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D062D606A31C;
-	Sat, 28 Nov 2026 02:49:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D062D606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=juniper.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=juniper.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B8C606A31C;
+	Sat, 28 Nov 2026 04:25:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A5B8C606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=juniper.net header.i=@juniper.net header.a=rsa-sha256 header.s=jnprhpepp0429 header.b=ps7vtbEp;
-	dkim=pass (2048-bit key, unprotected) header.d=juniper.net header.i=@juniper.net header.a=rsa-sha256 header.s=selector2 header.b=LhYPE9R0
-Received: from pps.filterd (m0134421.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AS1GMUu256288;
-	Sat, 28 Nov 2026 02:48:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=juniper.net; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=jnprhpepp0429; bh=vlJ0d7vbXRShVWUajL
-	ubmLU6PTxbTVEg/IFnFxQ9wi0=; b=ps7vtbEpocXLZ6OOr/WG98O+UqJYbDypBN
-	5rW1ClC5aaGa9p7w0gi7gDgywZ7ccjCaaevGX+iISRaMgsXb7napLM/a69GWUTS1
-	T1OQ4KOnsoL8dZNJB8kEIFhZJFttip4x8FFk1Xgm04F0wd2n6MSyPii/hfL5MJ9f
-	+WzqcC4QE6ODtz5Ky3USA33tXiD+f2j6joxPkIbc/KOfeYGWB8yqbkIdGoyjwb5x
-	KLc2ZGdeWD1WInafL53KN+R11RFUvZS+wsz/huClGiCpv/oZHvF7gFS1bLcLkb/0
-	rCfAB2Y5j8RPM+WRgh4MA+3+Ms+aC1Dq9K+1v4INyraRbirmlwZg==
-Received: from dm5pr21cu001.outbound.protection.outlook.com (mail-centralusazon11011071.outbound.protection.outlook.com [52.101.62.71])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 4j7n590knd-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sat, 28 Nov 2026 02:48:58 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=M10bE5t8CkIEt/A5UatfcEhq4PwnITDTk/p7BT2nc1VByZSGxpA6yS80Y+bhje/++Z5OVOj55qlweiIQDIkgHmnMhAXg9TbdFXTOPWXMLrI/OLNK5VbIIUVcAfP3bi1XQb3JJsxcd5sYFJQpw0wgcvAqdRpdANXhQvlZi/9FuK1TO1HXoZYGeEuT1Cf+oVG7/JMb7R+oXmasTpk96BuDR5x4QcgvO7Hvf7926at6I/eEKTRiDUTeI53zj6/XTBCCYe8ZV5VXsXmxlBK+o5lhrmWBGvlPLqnII36bIZYc9km7CCFfBA7SnKKybaWxaaB3VQePr91wi0YAy22lkIEhtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001; h=From:Date:Subject:Message-ID:MIME-Version;
- bh=vlJ0d7vbXRShVWUajLubmLU6PTxbTVEg/IFnFxQ9wi0=;
- b=J0RbdXLSitdM9wVugVE6hiLAEmwEBSCXPj8+9jFb/qcLuY3gXseN7mR5dqSm83pkPWJnyhyayCfBQiLSaRMVUNkdxBhLI6yP7IK9sa/vqUDmkHJ/WVl9gzW3kkqDk+p5oveXZ8u+oGV1jrDs6s8ka98/LUnaUkdn3xymbESsrMwz/5HWATwGqvkckSRuuqt+PrJsWKL5X8aYR2p7avtaGBoLEYRtFRIWD6bKN5zH198oKtam42qBuB44Cg9QldQwIXJlbGefIqHe5uvabEdV8EGggUc0DIflZIjMbQGxg9J7MQV8Kutf49AWHLulpagDp/l4drEeQoBi+mKpK2dB4A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 66.129.239.19) smtp.rcpttodomain=kernel.org smtp.mailfrom=juniper.net;
- dmarc=fail (p=reject sp=reject pct=100) action=oreject
- header.from=juniper.net; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=juniper.net;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vlJ0d7vbXRShVWUajLubmLU6PTxbTVEg/IFnFxQ9wi0=;
- b=LhYPE9R0e8yGryz5ohUh1sJ5GI1Y+4ZlcU0lpADauexopIICBQlJnobHLLiEjKtBaNtypYdicWTuRbCBjm0Z3J3SyyZrbBaFz4B+Lq54jZsqP7wbFF9HtIKFRPoRHEFTquJAq9cUARFOSN85SHPCYP5B9ZBWV8cqRozcWlYxcny/scdSj94VQ+Xr6Y7RIfjQgkU0kalsQc1k/Him9/qMUBes0nGnXtqEOW4v9Yb5bS82rxMc8ljg0tK0grs2O6AhbXkpTpXqiRxyVM+o6b1enEcwIaJI+7D04Ha3qzB1drNKuZWEe2f8kJk/77xJHLjErQlYkllAFmr7nEqqefkJfw==
-Received: from BN0PR04CA0126.namprd04.prod.outlook.com (2603:10b6:408:ed::11)
- by BY3PR05MB8052.namprd05.prod.outlook.com (2603:10b6:a03:36f::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.4; Sat, 28 Nov
- 2026 02:48:56 +0000
-Received: from BN3PEPF00022BC0.namprd04.prod.outlook.com
- (2603:10b6:408:ed:cafe::7a) by BN0PR04CA0126.outlook.office365.com
- (2603:10b6:408:ed::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.662.11 via Frontend Transport; Sat,
- 28 Nov 2026 02:48:55 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=fail (sender IP
- is 66.129.239.19) smtp.mailfrom=juniper.net; dkim=none (message not signed)
- header.d=none;dmarc=fail action=oreject header.from=juniper.net;
-Received-SPF: Fail (protection.outlook.com: domain of juniper.net does not
- designate 66.129.239.19 as permitted sender) receiver=protection.outlook.com;
- client-ip=66.129.239.19; helo=juniper.net;
-Received: from juniper.net (66.129.239.19) by
- BN3PEPF00022BC0.mail.protection.outlook.com (10.167.248.123) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.688.5 via Frontend Transport; Sat, 28 Nov 2026 02:48:55 +0000
-Received: from p-exchbe-eqx-03.jnpr.net (10.104.9.86) by
- p-exchfe-eqx-04.jnpr.net (10.104.9.52) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 27 Nov 2026 18:48:54 -0800
-Received: from p-exchbe-eqx-03.jnpr.net (10.104.9.86) by
- p-exchbe-eqx-03.jnpr.net (10.104.9.86) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 27 Nov 2026 18:48:54 -0800
-Received: from JNPR-MAC-9VDX3G.juniper.net (10.104.20.6) by
- p-exchbe-eqx-03.jnpr.net (10.104.9.86) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Fri, 27 Nov 2026 18:48:54 -0800
-From: Debjit Ghosh <dghosh@juniper.net>
-To: <broonie@kernel.org>, <robh@kernel.org>, <saravanak@kernel.org>
-CC: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        Debjit Ghosh
-	<debjit.ghosh@hpe.com>
-Subject: [PATCH] spi: serialize OF notifier device removal with controller removal
-Date: Fri, 27 Nov 2026 18:48:30 -0800
-Message-ID: <20261128024830.57367-1-dghosh@juniper.net>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key, unprotected) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=ldp62NYA
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=yinhe.ht; s=default;
+	t=1795839949; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=mATTlQKNWLn8Om6AxuMDieKUm10lTGvIAb1LEwjHa3Y=;
+	b=ldp62NYAc+qChMZCt8+NSG9xiFfU3urdCesPeI0+BZatYiIzr8F5Qjufe0pjtFpaVgpxuGFin8qOXe3f0BTw/zStxq7LNy9oYhvHiWsDV6eh8vJPqFguKYn/29zpBcJw109d29rvnmG/XbZSbiURNeH+KXcfJRVVD1ip2VGgBVoXou8x/VMVu07FfHIRFXHWfevc0iaQJfv1KjaZHUEQFOnMo5QaP4IGm1ufLAIYSrhVrppBXb5UErsTVbaRcnJyfUUrGHzmxb/88/ZQREbKkiTm2Og9KrwcY23tse2DB9zVCl5KLWLLCu/OBJITNDqRtXPHJrxESdfCppLomk+2WA==
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436259|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00694659-0.0117943-0.981259;FP=9669561730297515222|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037032112;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DS;RN=6;RT=6;SR=0;TI=SMTPD_---.kC.b7fp_1795839948;
+Received: from galx..(mailfrom:chunyuzhiqiang@yinhe.ht fp:SMTPD_---.kC.b7fp_1795839948 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Sat, 28 Nov 2026 12:25:48 +0800
+From: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+To: Mark Brown <broonie@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>,
+	linux-spi@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>
+Subject: [RFC PATCH v5] spi: fsl-lpspi: add atomic transfer support
+Date: Sat, 28 Nov 2026 12:20:18 +0800
+Message-ID: <20261128042018.344919-1-chunyuzhiqiang@yinhe.ht>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -136,132 +63,369 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF00022BC0:EE_|BY3PR05MB8052:EE_
-X-MS-Office365-Filtering-Correlation-Id: 230044a5-9d09-45f2-14d3-08df4cfa24e3
-X-LD-Processed: bea78b3c-4cdb-4130-854a-1d193232e5f4,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|23010399003|376014|82310400026|1800799024|18002099003|260925021311599003|260925021911599003|56012099006|11063799006|260925022911599003|261009220027099003|261009221227099003|261009221727099003|261009223327099003|261009223027099003|261102123227099003|261021135927099003|261021123027099003|10067099003|261026140227099003|261022105027099003|261026121527099003|261021121427099003|261028144727099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	xlpKhHxCXsJabRMoRKLSdW1fPa/CrrvdvdXcqXYXzIhnLmnjY8knV8OLoU0RNciVPMW7fU+xQAkX459mGtARdv5kLsOc0u8pdO8Kl8mGC2b0BUvkDUdFoPDy6SYuHXkToIqAP/G3GaLzBmBuJ1YV2WeNj2EysACIm0UrroMm+7f1M9Ms1lr5KUxVs5Z2oLtFeYcEGM7ghD/hC/s0ziDJOB4j5YnnJyfLqPyH3UOD+DoZzkK1CsYb2QYxp4Mug5tBLTq6np0rL6h12IBOkRkaREH8/m6AcjeraAzGEtm3+Cu2XeYRv28iYTByumh2I2NRmTrmAHeo0+89IKuyGNpfeEsELYRnweW70dLh/Bi+ZcRfOxS3aTup6iVimTBag/hv3LOmhd3OTdNo0HsJ/HjL7ZjvsKNhXdquNsLX9gWyXKG+s9+BimLAH2oj4SWX9nFUzGGPyXR8PnA9/oiEoHcQGr7MWYJ1XEf305MgSF+GEN5zxxHWueguAkgM1zMlgILx/rKnYon4rrHKO8Mh4O+dfaHAP1NzR0e320cqZMOHV4IWbOxUfhJKrKeSrdHLMhISSwR6kGC21CAUM4BuOvQViwYcjaR0wq6vEU2w1n9t1WliTeefO88Bc4TZHa8YMc/V5eicGh3nmLA0c/B/TSWCj6vU0Vti4LbApRdTCVUH1H3K3ZspULeP1Tj+6fitMCyzSA8MrAENj8NaCWxS0NsfzQ==
-X-Forefront-Antispam-Report:
-	CIP:66.129.239.19;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:juniper.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(376014)(82310400026)(1800799024)(18002099003)(260925021311599003)(260925021911599003)(56012099006)(11063799006)(260925022911599003)(261009220027099003)(261009221227099003)(261009221727099003)(261009223327099003)(261009223027099003)(261102123227099003)(261021135927099003)(261021123027099003)(10067099003)(261026140227099003)(261022105027099003)(261026121527099003)(261021121427099003)(261028144727099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	CAUX9nM1YyEM/3W+0b3zuOOZtwwodLEn06DuLwszjANLJj5vcFClxFNydGyclNzCtlNKp8GWK4yAj1Qwa3WIxhe3Euov0PBLorJ10PfotauCRSkLrTL2fUQ7RBIFPUSnFex1EBkXsVA2y/w0qH1Z/VCHCXT2IFffX0JK06NMgbQ0g4n5UZ9NF5ID98DUey+uTJXjdXcDgVfXVuaIxUoI1c5Jr7LSBmc0FoNMjc+XTEUycGd8mxEPy5sBqQWBMI+PxQSzu97VYVjxIxedRMImOmHkXvPpR2rb0qPr9SMyvH3y36BKjsXJss8JfgLFAqrVwMlT2XrXMG7LSxa8rGqYcRNf0QaRZbVijmq5MY7ySGlc20yq7BGobtBnGrff2TzPY/HmBmlBaICDcvC6uJGHX6jOJGsP06BtuBslJjsvFIqw0X8vGzVUJ1dyC/jbBSHo
-X-Exchange-RoutingPolicyChecked:
-	nO3+sTMiELU8s/cbekVHKoX6b+MfooF9iFGNIEWhRfAa5BBzo9lGsMw6rF9hcJpNqC7FZSpo5m4+bZknud/Z+3lOjnpz0puxCCcNJNax4jyDyFv8ymgZmWg58sSYXtYecXajICoDfXQpKSvGUkpGRkCNzuX7YgOP24A9/rhfeXX5gFcqQBbxDOk1mIoQoJvJnAorvHFNbJGdUFJJ/Ahfb0eD2xz7iFWB/W8Tg70I1SH1OphP9+etAnuVDPyUF5OBeu6OyizjMqVtU+taff7480MIoUkk6KM0xs3lywrC6pTBkRcXFOp0Z2ga/biehNQAwikM3H2pNObH62RBScbixQ==
-X-OriginatorOrg: juniper.net
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Nov 2026 02:48:55.2982
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 230044a5-9d09-45f2-14d3-08df4cfa24e3
-X-MS-Exchange-CrossTenant-Id: bea78b3c-4cdb-4130-854a-1d193232e5f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bea78b3c-4cdb-4130-854a-1d193232e5f4;Ip=[66.129.239.19];Helo=[juniper.net]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF00022BC0.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY3PR05MB8052
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=dd8VTnXe c=1 sm=1 tr=0 ts=6b0a411b cx=c_pps
- a=7iDNbrykdXu3VEpdGPV71A==:117 a=SKdRtqzh2DBFgDMvUaaGnA==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=zJRp6_cAMcgA:10 a=s63m1ICgrNkA:10
- a=rhJc5-LppCAA:10 a=VkNPw1HP01LnGYTKEx00:22 a=gQcMVamqm3wCPoSYhaRC:22
- a=ay80y3fxfMS_JZZz1qJy:22 a=MvuuwTCpAAAA:8 a=f0m63K4f3OUlbL5KzP8A:9
-X-Proofpoint-ORIG-GUID: GgWd9UMJAZwd1i2lPEdy-7yb3Llpuh6M
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI4MDAxMCBTYWx0ZWRfX/tmnBgNq8vIJ
- ifJezbAME/291vmE1vbn9P0s1Joh71JId5Sb72c1tujV+DTq9l+Pg2rdZixExVYKjFxVZjgeMrO
- 0NwG89uQ2LNf7nYYVliQChMYSNwLzdI=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI4MDAxMCBTYWx0ZWRfX8BTBGPshQUNg
- Vu3IA9UMAUVjsDmDnFse7GP/uOGpcylJZOzKIoDMmvWh2EXLeDwfeanMaJ6CjrV6kwxmxFrJSGi
- bsoKnOxew9fgdFHLyDtKJllv0pikg9jZ73HGSCpBPPEY8iEg+xhWCglUo9QBw8qfS80NuqqENVZ
- D7ennCoutt+W97M0vkp/OkjkiROhlWNc3TDvb7K8OxQeY5i1xmj9q3rHIlp/kujG91XtNaHNWup
- Wf7ajYLuEFybUKFhH4uOmNB1W6UtP7xO6XafEsQlDMNYNpp5azD3shXjbRRvwjWSFp6ytzpRxZ+
- Nms6vNgErk0CFQqTYXWU9YncqIKnNSfHfG1uG3JpnT4tlGyn8iGxItFQeQYtlmtJgO1EkxAs+EH
- iHMkNSxfdP0eLtbCDDEzR4HxqlMXybqcIbHb34VXBzysMHEkVdQD4qK1Y7UkFPlqewVif08kQZu
- l8TQ76qsmIKXzsAQfbg==
-X-Proofpoint-GUID: AmkrK1p0H_zr6mXjQEdmbAH2EWl7EGxm
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-28_01,2026-11-27_03,2025-10-01_01
-X-Proofpoint-Spam-Reason: orgsafe
-X-Proofpoint-Spam-Details: rule=outbound_safe policy=outbound score=0
- suspectscore=0 bulkscore=0 clxscore=1011 priorityscore=1501
- lowpriorityscore=0 adultscore=0 spamscore=0 malwarescore=0 phishscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=orgsafe scancount=1 engine=8.22.0-2611040001
- definitions=main-2611280010
 
-From: Debjit Ghosh <debjit.ghosh@hpe.com>
+Implement transfer_atomic() for the i.MX LPSPI controller, following the
+atomic transfer API added by Heiko Stuebner.  The callback uses PIO
+polling with interrupts and DMA disabled, handles chip select through
+spi_set_cs(), and runs the message synchronously without completions.
+The controller is reset before the message so state left by a crashed
+transfer does not leak into the atomic path.
 
-The OF reconfig notifier and spi_unregister_controller() can both
-unregister the same SPI device concurrently. However,
-spi_unregister_controller() unregisters children holding ctlr->add_lock,
-but of_spi_notify() does not. So both contexts, sometimes executing
-concurrently, would call device_del() on the same device potentially
-corrupting the controller's child klist.
+The atomic path cannot call clk_get_rate(), because it takes the clock
+prepare lock.  Cache the per-clock rate at probe and refresh it in the
+normal transfer path; the atomic path only uses the cached value.  A
+zero rate is rejected instead of programming a bogus divisor.
 
-  Oops: general protection fault, probably for non-canonical
-	address 0xdead0000000000f8
-  CPU: 13 UID: 0 PID: 173 Comm: irq/38-pciehp
-  RIP: 0010:klist_next+0x6e/0x140
-   device_for_each_child+0x5d/0xb0
-   spi_unregister_controller+0x3a/0x140
-   ...
-   mfd_remove_devices+0x36/0x50
-   pci_device_remove+0x3d/0xb0
-   ...
-   pciehp_ist+0x13c/0x180
+Program clock polarity and phase before the core asserts the GPIO chip
+select, matching fsl_lpspi_prepare_message().  Terminate continuous mode
+after the last data word, matching fsl_lpspi_write_tx_fifo(), and wait
+for the frame-complete flag after each transfer.  The FIFO reset between
+transfers leaves TCR_CONT set, so the next command can continue with
+CONTC as in the normal transfer path.  Poll the receive FIFO empty flag
+rather than the FIFO watermark so multi-word transfers do not time out,
+use spi_bpw_to_bytes() for the length check so 17..24-bit transfers with
+a 4-byte stride are accepted, and populate effective_speed_hz and
+actual_length for the atomic path.
 
-while an overlay unload mechanism was concurrently removing the same
-device through of_overlay_remove() -> of_spi_notify().
+Only host mode registers the callback.  Poweroff and restart prepare
+handlers runtime-resume the controller so the atomic path can be used
+from the shutdown notifiers, matching the Rockchip implementation.
 
-Serialize the notifier's removal path with the controller's child
-unregistration using ctlr->add_lock, and recheck OF_POPULATED under the
-lock before calling spi_unregister_device().
+The driver is compile-tested on x86 with COMPILE_TEST and on arm64;
+hardware validation on i.MX8QXP is pending.
 
-Signed-off-by: Debjit Ghosh <debjit.ghosh@hpe.com>
+Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
 ---
- drivers/spi/spi.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+Changes in v5:
+- queue the TCR_CONTC-clear command after the last data word, matching
+  fsl_lpspi_write_tx_fifo(); TCR and TDR share the same FIFO, so the
+  v4 order could terminate a frame early.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 8a06fb4e309a..6562e3ac4dd6 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -5308,8 +5308,25 @@ static int of_spi_notify(struct notifier_block *nb, unsigned long action,
- 		if (spi == NULL)
- 			return NOTIFY_OK;	/* No? not meant for us */
+ drivers/spi/spi-fsl-lpspi.c | 206 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 198 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index ed395f822dab1..39be8d181eb24 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -14,6 +14,7 @@
+ #include <linux/err.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
++#include <linux/iopoll.h>
+ #include <linux/irq.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+@@ -22,6 +23,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/dma/imx-dma.h>
+ #include <linux/pm_runtime.h>
++#include <linux/reboot.h>
+ #include <linux/slab.h>
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi_bitbang.h>
+@@ -112,6 +114,7 @@ struct fsl_lpspi_data {
+ 	unsigned long base_phys;
+ 	struct clk *clk_ipg;
+ 	struct clk *clk_per;
++	u32 perclk_rate;
+ 	bool is_target;
+ 	bool is_only_cs1;
+ 	bool is_first_byte;
+@@ -335,7 +338,8 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_data *fsl_lpspi)
+ 	dev_dbg(fsl_lpspi->dev, "FCR=0x%08x\n", temp);
+ }
  
--		/* Unregister takes one ref away */
--		spi_unregister_device(spi);
-+		/*
-+		 * Serialize against spi_unregister_controller. The device
-+		 * can be unregistered concurrently by its controller being
-+		 * torn down (e.g. on surprise hot removal of the underlying
-+		 * bus hosting the controller).
-+		 */
-+		ctlr = spi->controller;
-+		if (IS_ENABLED(CONFIG_SPI_DYNAMIC))
-+			mutex_lock(&ctlr->add_lock);
-+
-+		/*
-+		 * Recheck under the lock as whichever context executes first
-+		 * will depopulate the flag.
-+		 */
-+		if (of_node_check_flag(rd->dn, OF_POPULATED))
-+			spi_unregister_device(spi); /* takes one ref away */
-+
-+		if (IS_ENABLED(CONFIG_SPI_DYNAMIC))
-+			mutex_unlock(&ctlr->add_lock);
+-static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
++static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi,
++				 bool atomic)
+ {
+ 	struct lpspi_config config = fsl_lpspi->config;
+ 	unsigned int perclk_rate, div;
+@@ -343,7 +347,14 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ 	u8 prescale;
+ 	int scldiv;
  
- 		/* And put the reference of the find */
- 		put_device(&spi->dev);
+-	perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
++	if (atomic) {
++		perclk_rate = fsl_lpspi->perclk_rate;
++	} else {
++		perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
++		fsl_lpspi->perclk_rate = perclk_rate;
++	}
++	if (!perclk_rate)
++		return -EINVAL;
+ 	prescale_max = fsl_lpspi->devtype_data->prescale_max ?: 7;
+ 
+ 	if (!config.speed_hz) {
+@@ -427,13 +438,13 @@ static int fsl_lpspi_dma_configure(struct spi_controller *controller)
+ 	return 0;
+ }
+ 
+-static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
++static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi, bool atomic)
+ {
+ 	u32 temp;
+ 	int ret;
+ 
+ 	if (!fsl_lpspi->is_target) {
+-		ret = fsl_lpspi_set_bitrate(fsl_lpspi);
++		ret = fsl_lpspi_set_bitrate(fsl_lpspi, atomic);
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -464,7 +475,7 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
+ 
+ static int fsl_lpspi_setup_transfer(struct spi_controller *controller,
+ 				     struct spi_device *spi,
+-				     struct spi_transfer *t)
++				     struct spi_transfer *t, bool atomic)
+ {
+ 	struct fsl_lpspi_data *fsl_lpspi =
+ 				spi_controller_get_devdata(spi->controller);
+@@ -496,7 +507,7 @@ static int fsl_lpspi_setup_transfer(struct spi_controller *controller,
+ 
+ 	fsl_lpspi->watermark = min(fsl_lpspi->txfifosize, t->len);
+ 
+-	return fsl_lpspi_config(fsl_lpspi);
++	return fsl_lpspi_config(fsl_lpspi, atomic);
+ }
+ 
+ static int fsl_lpspi_prepare_message(struct spi_controller *controller,
+@@ -515,7 +526,7 @@ static int fsl_lpspi_prepare_message(struct spi_controller *controller,
+ 
+ 	fsl_lpspi->is_first_byte = true;
+ 	fsl_lpspi->usedma = false;
+-	ret = fsl_lpspi_setup_transfer(controller, spi, t);
++	ret = fsl_lpspi_setup_transfer(controller, spi, t, false);
+ 
+ 	fsl_lpspi->usedma = fsl_lpspi_can_dma(controller, spi, t);
+ 
+@@ -774,6 +785,149 @@ static int fsl_lpspi_pio_transfer(struct fsl_lpspi_data *fsl_lpspi,
+ 	return ret;
+ }
+ 
++static int fsl_lpspi_pio_xfer_atomic(struct fsl_lpspi_data *fsl_lpspi,
++				     struct spi_transfer *t)
++{
++	u32 sr, temp, timeout_us;
++	int ret;
++
++	/* One frame plus margin, at least 1ms. */
++	timeout_us = DIV_ROUND_UP(fsl_lpspi->config.bpw * USEC_PER_SEC,
++				  fsl_lpspi->config.speed_hz);
++	timeout_us = max(timeout_us * 2, 1000U);
++
++	fsl_lpspi->tx_buf = t->tx_buf;
++	fsl_lpspi->rx_buf = t->rx_buf;
++	fsl_lpspi->remain = t->len;
++
++	while (fsl_lpspi->remain) {
++		ret = readl_poll_timeout_atomic(fsl_lpspi->base + IMX7ULP_SR,
++						sr, sr & SR_TDF, 0, timeout_us);
++		if (ret)
++			return ret;
++		fsl_lpspi->tx(fsl_lpspi);
++
++		/* Queue the terminating command after the last data word. */
++		if (!fsl_lpspi->remain) {
++			temp = readl(fsl_lpspi->base + IMX7ULP_TCR);
++			temp &= ~TCR_CONTC;
++			writel(temp, fsl_lpspi->base + IMX7ULP_TCR);
++		}
++
++		ret = readl_poll_timeout_atomic(fsl_lpspi->base + IMX7ULP_RSR,
++						sr, !(sr & RSR_RXEMPTY), 0,
++						timeout_us);
++		if (ret)
++			return ret;
++		fsl_lpspi->rx(fsl_lpspi);
++	}
++
++	ret = readl_poll_timeout_atomic(fsl_lpspi->base + IMX7ULP_SR, sr,
++					sr & SR_FCF, 0, timeout_us);
++	if (ret)
++		return ret;
++
++	writel(SR_FCF, fsl_lpspi->base + IMX7ULP_SR);
++	return 0;
++}
++
++static int fsl_lpspi_transfer_atomic(struct spi_device *spi,
++				     struct spi_message *msg)
++{
++	struct spi_controller *controller = spi->controller;
++	struct fsl_lpspi_data *fsl_lpspi =
++				spi_controller_get_devdata(controller);
++	struct spi_transfer *t, *first, *next;
++	bool keep_cs = false;
++	bool first_xfer = true;
++	int ret = 0;
++
++	if (!pm_runtime_active(fsl_lpspi->dev))
++		return -ESHUTDOWN;
++
++	msg->actual_length = 0;
++	fsl_lpspi->usedma = false;
++	fsl_lpspi_reset(fsl_lpspi);
++	writel(0, fsl_lpspi->base + IMX7ULP_DER);
++
++	first = list_first_entry(&msg->transfers, struct spi_transfer,
++				 transfer_list);
++
++	/*
++	 * Match fsl_lpspi_prepare_message(): program CPOL/CPHA and the
++	 * first command before the core asserts GPIO chip select.
++	 */
++	fsl_lpspi->is_first_byte = true;
++	ret = fsl_lpspi_setup_transfer(controller, spi, first, true);
++	if (ret)
++		goto out;
++
++	fsl_lpspi_set_cmd(fsl_lpspi);
++	writel(0, fsl_lpspi->base + IMX7ULP_IER);
++	writel(CR_RRF | CR_RTF, fsl_lpspi->base + IMX7ULP_CR);
++	writel(SR_CLEAR_MASK, fsl_lpspi->base + IMX7ULP_SR);
++
++	spi_set_cs(spi, !first->cs_off, false);
++
++	list_for_each_entry(t, &msg->transfers, transfer_list) {
++		if (t->len) {
++			fsl_lpspi->is_first_byte = first_xfer;
++			ret = fsl_lpspi_setup_transfer(controller, spi, t, true);
++			if (ret)
++				break;
++
++			t->effective_speed_hz = fsl_lpspi->config.effective_speed_hz;
++
++			if (t->len %
++			    spi_bpw_to_bytes(fsl_lpspi->config.bpw)) {
++				ret = -EINVAL;
++				break;
++			}
++
++			fsl_lpspi_set_cmd(fsl_lpspi);
++			fsl_lpspi->is_first_byte = false;
++
++			ret = fsl_lpspi_pio_xfer_atomic(fsl_lpspi, t);
++			if (ret)
++				break;
++
++			msg->actual_length += t->len;
++			/*
++			 * This flushes the FIFOs but leaves TCR_CONT set,
++			 * so the next transfer can continue with CONTC.
++			 */
++			fsl_lpspi_reset(fsl_lpspi);
++			first_xfer = false;
++		}
++
++		spi_transfer_delay_exec(t);
++
++		if (t->cs_change) {
++			if (list_is_last(&t->transfer_list, &msg->transfers)) {
++				keep_cs = true;
++			} else {
++				if (!t->cs_off)
++					spi_set_cs(spi, false, false);
++				spi_transfer_cs_change_delay_exec(msg, t);
++				next = list_next_entry(t, transfer_list);
++				if (!next->cs_off)
++					spi_set_cs(spi, true, false);
++			}
++		} else if (!list_is_last(&t->transfer_list, &msg->transfers)) {
++			next = list_next_entry(t, transfer_list);
++			if (t->cs_off != next->cs_off)
++				spi_set_cs(spi, !next->cs_off, false);
++		}
++	}
++
++out:
++	if (ret || !keep_cs)
++		spi_set_cs(spi, false, false);
++	fsl_lpspi_reset(fsl_lpspi);
++	msg->status = ret;
++	return ret;
++}
++
+ static int fsl_lpspi_transfer_one(struct spi_controller *controller,
+ 				  struct spi_device *spi,
+ 				  struct spi_transfer *t)
+@@ -784,7 +938,7 @@ static int fsl_lpspi_transfer_one(struct spi_controller *controller,
+ 
+ 	fsl_lpspi->usedma = fsl_lpspi_can_dma(controller, spi, t);
+ 
+-	ret = fsl_lpspi_setup_transfer(controller, spi, t);
++	ret = fsl_lpspi_setup_transfer(controller, spi, t, false);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -878,6 +1032,19 @@ static int fsl_lpspi_init_rpm(struct fsl_lpspi_data *fsl_lpspi)
+ 	return 0;
+ }
+ 
++static int fsl_lpspi_power_off(struct sys_off_data *data)
++{
++	struct fsl_lpspi_data *fsl_lpspi = data->cb_data;
++	int ret;
++
++	ret = pm_runtime_resume_and_get(fsl_lpspi->dev);
++	if (ret)
++		dev_warn(fsl_lpspi->dev,
++			 "failed to resume controller for poweroff: %d\n", ret);
++
++	return 0;
++}
++
+ static int fsl_lpspi_probe(struct platform_device *pdev)
+ {
+ 	const struct fsl_lpspi_devtype_data *devtype_data;
+@@ -958,6 +1125,9 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 		goto out_pm_get;
+ 	}
+ 
++	/* The atomic transfer path cannot call clk_get_rate(). */
++	fsl_lpspi->perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
++
+ 	temp = readl(fsl_lpspi->base + IMX7ULP_PARAM);
+ 	fsl_lpspi->txfifosize = 1 << (temp & 0x0f);
+ 	fsl_lpspi->rxfifosize = 1 << ((temp >> 8) & 0x0f);
+@@ -972,6 +1142,8 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 	controller->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
+ 	controller->prepare_message = fsl_lpspi_prepare_message;
+ 	controller->transfer_one = fsl_lpspi_transfer_one;
++	if (!fsl_lpspi->is_target)
++		controller->transfer_atomic = fsl_lpspi_transfer_atomic;
+ 	controller->prepare_transfer_hardware = lpspi_prepare_xfer_hardware;
+ 	controller->unprepare_transfer_hardware = lpspi_unprepare_xfer_hardware;
+ 	controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+@@ -982,6 +1154,24 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 	if (!fsl_lpspi->is_target)
+ 		controller->use_gpio_descriptors = true;
+ 
++	if (!fsl_lpspi->is_target) {
++		ret = devm_register_sys_off_handler(&pdev->dev,
++						    SYS_OFF_MODE_POWER_OFF_PREPARE,
++						    SYS_OFF_PRIO_DEFAULT,
++						    fsl_lpspi_power_off,
++						    fsl_lpspi);
++		if (ret)
++			goto out_pm_get;
++
++		ret = devm_register_sys_off_handler(&pdev->dev,
++						    SYS_OFF_MODE_RESTART_PREPARE,
++						    SYS_OFF_PRIO_DEFAULT,
++						    fsl_lpspi_power_off,
++						    fsl_lpspi);
++		if (ret)
++			goto out_pm_get;
++	}
++
+ 	ret = fsl_lpspi_dma_init(&pdev->dev, fsl_lpspi, controller);
+ 	if (ret == -EPROBE_DEFER)
+ 		goto out_pm_get;
+base-commit: 63083539d2bf955ccf84042d4b044d1133752bed
+
 -- 
-2.25.1
+2.47.3
 

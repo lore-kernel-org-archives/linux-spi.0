@@ -1,101 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795879014;
-	b=RlM52JzqQTVqnuQ4Nn2wD0CV5ccq8Io5SAti0fCrcfYvXbHI82av01POpr00zpEyNHR/
-	 izYjj4Q4P4T7PHFYDJthVrEId7YS4TG0jYu0QG8GOJh4NTwUyvd12wzek2N33ZbHJD+wq
-	 dajiq+pmXQYg+d3IyotvLOJIKC9LuRG/SkEWIul39NugtTPm7tPVfTav5R7vQxo6IIM2q
-	 M8F/IB9+JIlLCypON+vJTDNWBD4+FRvkHR9ts4jHAhzrrxrk0nN3CJXiw//okc4211jpA
-	 uoO5MtTwYVVnVlAmW6KBUHYJfIgB+AUpW0tcAjxIDivtF0psu/p1VAl7HvYpLnOptmA==
+	t=1795879072;
+	b=Nr/LuJ+9lkLUXtWC2DEqRlMJwGA2ZRJLqaQx2FfOXwB4oTAlqfk5+D9Mm/iqRcXg91JO
+	 bENRpvTFBq/xeLTZN7Ky3rVCX7b9fW1C9NG+mnPSxifIOYpvHVOTo5pLBQ609F9PZQAG0
+	 SpZZUIdvX7wyzrD00trWToradB0fpXYfh23GKKOoOvkH3lo908IcX3L+Yd25WhW0iZwd5
+	 cbmZWRd/04qXJpD2gOTkgKavJzXsmh+fw73r9fZNCzVYd9Lf/XUPf+5o/o6gt+jranOkg
+	 TTCjFpWRyS2qwBtUNwfCUVH2Rx2USbz0I4C7PLSHazeELCK/nfQPDUZVPFcmXByAITw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795879014;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795879072;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=1FB6N3ZVeS2iXSTJX9cZqix9YwUql7fjHknIhnBZeO8=;
-	b=kF3IH1guKSMC58cEuNQOp4lgQEfJ9y+BNNDfqqHTfi5yr1sdO/8lxGz8/PGhS4NcJYoA
-	 /GJGkvh1VG5RNSkkpPbOlCV6FN3kGGEoV9KdEdI3LDyeKnGg1b7KZ/iKqaHAhvLeCWXNC
-	 LGZa9VvOJIZ4+kcBxjPOdZPOQpbj5FhasNQQ8Jl24YndQdJcyONwWX14FER2YcTYOux6k
-	 EtrQapxbGhGU9oodOCCBiWeoK/sMv2Ixz9IgxLENUTxWKSXZBXfN2fLcz6dzvmpbOy5Rw
-	 kIWWSkSjOkfYnFDzlyX18sDZnj8XJDVi2wHb6MvjFREBUzwupd1S6Ua1wDkxktOBfww==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=boJHVtZaNd2Ip0sYxyQoGj4OCG9SDHvMT5R5+mkI9p4=;
+	b=0mW1pgoVlDoPH1GFL/MRBLMHD3CWm0FvBCfX6dJRECFdBu2+z643ccqTxxE6hwe3ysH0
+	 ECDPsgxYjKv3BODETBj8pGF+ZCNw1Mq/Z8lMZBRyLg+wqr8X6KXivqAKZE0CbkUUNWCyN
+	 GPSbaYqNeIH9dnuKyj0HAq3b4NH2DGfU7+dq44MQUKizSCNEoTBod9l1JZjG8KUf008/Y
+	 7FR65h3VDpKo590MsZP0W4BAn10SWLfDMjeG0PJPeiNowlLNTssjzEp6qOX/btm01w03i
+	 iHY723BtD0WbWm2v8h6DHy28pYc925BSWD6XGL8A2sLCNDwpy/jxqlt0RKcPyLMnp/A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RTAI1v6I;
-	arc=none smtp.remote-ip=209.85.216.45
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VdNXrhtf;
+	arc=none smtp.remote-ip=209.85.214.171
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171DD606A31C
-	for <linux-spi@vger.kernel.org>; Sat, 28 Nov 2026 15:16:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 171DD606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A981606A321
+	for <linux-spi@vger.kernel.org>; Sat, 28 Nov 2026 15:17:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A981606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RTAI1v6I
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3b41188c8b9so6068217a91.0
-        for <linux-spi@vger.kernel.org>; Sat, 28 Nov 2026 07:16:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VdNXrhtf
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2f0634667aaso33639025ad.0
+        for <linux-spi@vger.kernel.org>; Sat, 28 Nov 2026 07:17:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795879013; x=1796483813; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1FB6N3ZVeS2iXSTJX9cZqix9YwUql7fjHknIhnBZeO8=;
-        b=RTAI1v6ImNiBmtc0EHCMI2++E9uOOU+pBNG6woahNXDhDoMnfErZMYgNztUondWek0
-         AwpeWg6bsv1gOOfotB0jSMBXVHjY1DFOWs4nx+fb/yQC3QYon2t/gnr5pwB5YEvgdpLn
-         u825zw1vrc3i48yzo6iw/rv1KGGumukpnTjurYf19nL/8hqAXdJm3dhLa4pdDx4UBTZo
-         5JByY+srjJCAqLGGawigeXsRILq+HMPpp4didpeRkjrGGoXW9RTkIaYG2B3Bvrjbw3sK
-         wWihN7Gp4dIUZLzpyDPtY3Ex9VeY12YeC2drR4oiVSp+nY+vxaifP6eAxFlBmTkLuzBL
-         jk6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795879013; x=1796483813;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1795879072; x=1796483872; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=1FB6N3ZVeS2iXSTJX9cZqix9YwUql7fjHknIhnBZeO8=;
-        b=wjIsNMN5SzbesQGrC70F1tCFoyjMqvKJNNYkWvVRIT6KmJsGahMVWxpcydtBFWKuij
-         eSHUL4kT/Y4XWvdfir6Oc+3HJtSdlhtrcfL+mmH1dGVBK0rVVC7kAaxEuALXbQthyUJX
-         bUgEfdKGVqpvwias8Q5gM2YN882e0/YT2cbWRHUULxY8nkFZ9ADjQPlbqIYDl9Yt/z+Z
-         1O/g4oBLJBDkAb6Y7exlXnesD8oxH4QByFMvP6g7fJctQgCFEx3tSm72P3XNg1BA+XoY
-         AMGngHmFUPM629e6O6JNweLy2Dq0ekMO6uPu5PVRodk+pXef2/7auWGXbhNGFbCqg/+s
-         dqZA==
-X-Forwarded-Encrypted: i=1; AL+hErHBa0LVUYITyuC0LCuM5PPrX/B6DQ1rhRPTF/qIOWMzlBgBpes48vomdaz3Q614pYE3LTif6YtoTOc=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9InuibQiGiZKFSUb07gJflC00YE2Y0mEVxR3EW3Nfp7bHYOo7y
-	F+QYvhe9jCx7lt8D1DWugsSMroB3TcDQgRPiutdrrlHISH+KgaFrA1xY
-X-Gm-Gg: AZFdTZcSsoBwxc6+AdrE0Vtt+rqHrfHG8GLlsvySkjkgUCZL6gr6p4V7F7UIPKO1SXP
-	6nTBmzR7NMUtTzY0REhN6AvRwXRJ/9HGVUE96bEZ+iSjISWt4PIJNSyPIJZi5jZLL0uP/r5FkK7
-	xWa5esgKNt8mybg0+4xPvnlgf6qAvNCtOnEfbFpmpzTR8eYuX8rVX7VZkdsGQnlrTtxjmQ6b2k/
-	GNMAPzuaSUnV7SqRwOScvyP5qIgCOoFS3c2quSe1uELA0ezJnliPP4phoXfGzgid5YU8qSgJ8de
-	iA20KZQ6usYcTIdWVlcowt84t6tLLcTqbv2KhpxaU6hLh198a3ehmMiTuKeBJ6idI9c98Mp56Y6
-	8/5BWnG6JNRIEe6Bevsm5hetPonFcOwp5nUv0gDarmiS7TYE39lH6ZEhx3NWR00BnAZezgyFfr/
-	XcAYFR6mBJiAIOSKqRM/EwuvNnkd7gNC+1ksLc8D1T6mBbH7VVLfKYBYxIsiY0KVWs6VV/HxBFu
-	zgrfe+u1q2kjOFxqx4Bq37Ck4LZRPdLy7c0dFPGPBX5d8a1U3U/LQ4tJCuyREnqRsCHcixqFDeW
-	/dmFut3OwefPJ/+RuJi73RohXhr6eV29b6y/3/WzJQ2RT7n/7MXbMJcZl63JxC7mMfNBJHRHCek
-	hMNBEZ9eEyVDSehB/p5JpPB58tm7/
-X-Received: by 2002:a17:90b:268f:b0:3b0:d0c5:c110 with SMTP id 98e67ed59e1d1-3b41c95ce7fmr27156870a91.56.1795879013360;
-        Sat, 28 Nov 2026 07:16:53 -0800 (PST)
+        bh=boJHVtZaNd2Ip0sYxyQoGj4OCG9SDHvMT5R5+mkI9p4=;
+        b=VdNXrhtfkquQyB+weXIUQzt1WPqF0QGhE/StYFjscKu36SfwJ9AkNy4R0F6Y1Z+ghs
+         +t8QXCNjF6sKYMHnPSkmWOOgJTjOQMUE1J4OTWbov6OG7ZwC9O0EjFyC0gbTRr56s898
+         wGe1e2/u6PZHVVu+m+dbUI2oXGn61oDqI0AwWo6OG3GLEObFYkL4U3RFTwR6A3DOHPoG
+         JZmEkOJOa70FfCvxReI2A4wJ+c8GZM1AWOHZzygGRkHoJ77AOUdPBCdoA9BwZ+K+wMjH
+         gC4LVe1EdboJq2Eucd9+HUkSTEpQvohPB1I7Q5vym8PjKK7tzyuHvfjenoeoXoOiRhSq
+         nkcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795879072; x=1796483872;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=boJHVtZaNd2Ip0sYxyQoGj4OCG9SDHvMT5R5+mkI9p4=;
+        b=RBOcaz31gRuolWqUdAgw9iQmps/VCf9tbLA8T1H+sW4p3kTh/Ij9JccXMbyx/QmmQW
+         /d6VzYX1pPBu+VHZAKr+MVmJ8zZGdrF+yaDl6PAzHKdAJHosQaaWDc9VjgvKWB4o3FLR
+         +7jiTwsH/bIVYZL9lxP25LjKr4HO6emU6ipPADCnwWyxYY+yViJyjEYcMqERfIbdCLoE
+         jS/EGcVv++GE4t42FZ/zYukVU/uvwzDndBdHnpOijlVMWjTHHqRcam3ZH/fRoEK2QcVM
+         j3zC39RbHSzXvieCE1lS/7kscjobIdJnL7wGtQiq2JXjwaVe3ZEnhRl/ycAlBPEdzhMn
+         lmKw==
+X-Forwarded-Encrypted: i=1; AL+hErEMpbfxsa9xV1fL2x5DGS2B5L+sEVym9orwMbVtuTYBOn9IVZt3KQae1qblapmEV9yTDki6kzDc80E=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/xdhBdD5Xlkyf6H7wkGsy1esOziWRd8NJ4asPdMSWciautP2WN
+	Jn7ApFqimPw8f0owK4f+6jYXbWx7/8YRYwgBzX7N9jYAy5M5eAFF9NTH
+X-Gm-Gg: AZFdTZfcVy4GayMJyIbW///7wm5Ok94KT0E6P86UYFpw9GlSDeO8CDT411NK21YM1Yn
+	Du7b9iescgLtOYPTvjQ26yCKG7FOF6yZ4cLPQgl9v2xpGGdpVfH3f8dJR4ykQi6nzIh2XPmd5gm
+	LvdkYVl5rsaFnYplheozHTRROJ7TRV/CgWSN4DohZzmsABHtvabhupXOm+YZ8zf4eSSDd0XOSON
+	prkevBPOI2XbcYRZL16daOAmNZbJLB+FLyPCj4BxdvjOYv1h4krZM31ZpDyeI9Cvn/K5ydXw38h
+	gGpf7Svu6Qi/tLbEf1C+A6S2YQu0+R4bLrHj2p8XuHdQVHZoOj5uCICqpFYoo3qpA5PTQeW3vEl
+	YdfUdhtHxIyYQkx+J7cvDLxI2N6FcxGsdIbvlAuHYOTTQLsAmKVDO6JoE/nrzZbeSh9a/63P0oD
+	GlM4O64ua+oIPOQ+GPIH+EIHoe8KmcKiGhTVT6QQorVHkIgZtbFt82TplWY0Pxn6aStUc61rbUP
+	npehmJskQmU8l20YzpgHhU7z4Q2egYV9E258heflzwk5Un9xSiIbMx6N3LAC6ziAKtHwE94fQoQ
+	oJDR+J5e+qIkvXPkqFtzlciH0ZUpKOj4FFMmr4zTaEfDTcL7++uk25fW4dgExwz1biszOJa3Tn9
+	YOaYuyr5ZJvPI0SRiW4/ZiTSyVggNdOQ36qoeRcj9R/2tQYCm
+X-Received: by 2002:a17:903:244b:b0:2e5:457d:6c20 with SMTP id d9443c01a7336-2f031f7a49emr234013155ad.23.1795879071469;
+        Sat, 28 Nov 2026 07:17:51 -0800 (PST)
 Received: from localhost.localdomain ([2405:201:301c:f8cd:241f:982d:147f:bf76])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b44b7a8c64sm19769280a91.3.2026.11.28.07.16.48
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2f03f0c6e50sm138078425ad.13.2026.11.28.07.17.48
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 28 Nov 2026 07:16:52 -0800 (PST)
+        Sat, 28 Nov 2026 07:17:50 -0800 (PST)
 From: Aryan Sinha <sinha.aryan03@gmail.com>
-To: Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Leilk Liu <leilk.liu@mediatek.com>,
+To: Mark Brown <broonie@kernel.org>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
 	linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org,
 	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Aryan Sinha <sinha.aryan03@gmail.com>
-Subject: [PATCH v2] spi: dt-bindings: mediatek,spi-mt65xx: Add MT8189
-Date: Sat, 28 Nov 2026 20:46:41 +0530
-Message-ID: <20261128151643.16934-1-sinha.aryan03@gmail.com>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/6] arm64: dts: mediatek: Add MT8189 Skywalker based Tarkin Chromebook
+Date: Sat, 28 Nov 2026 20:47:32 +0530
+Message-ID: <20261128151743.17053-1-sinha.aryan03@gmail.com>
 X-Mailer: git-send-email 2.46.0
+In-Reply-To: <9ec63a02-b5bc-4053-a57e-73fd8d290531@sirena.org.uk>
+References: <9ec63a02-b5bc-4053-a57e-73fd8d290531@sirena.org.uk>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -107,34 +103,13 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The SPI controllers on MT8189 use the same IPM design as MT6991. Add the
-MT8189 compatible with mediatek,mt6991-spi as the fallback.
+On Sat, Nov 28, 2026 at 02:39 PM UTC, Mark Brown wrote:
+> This doesn't apply against current code, please check and resend.
 
-Signed-off-by: Aryan Sinha <sinha.aryan03@gmail.com>
----
-Changes in v2:
-- Sent on its own so it applies to the SPI tree, the rest of the
-  series depends on unmerged MT8189 patches (Mark)
-- Fixed the subject prefix (Mark)
-- Link to v1: https://lore.kernel.org/r/20261128141443.13065-2-sinha.aryan03@gmail.com
+Sorry about that, the dts patches depend on the Genio 520/720-EVK series
+which is not merged yet. I have resent the SPI binding on its own with the
+subject fixed, it applies to your tree now. The rest will go to the
+MediaTek folks without you in Cc.
 
- Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml b/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
-index 3bf3eb1f8..34e833745 100644
---- a/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
-+++ b/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
-@@ -41,6 +41,7 @@ properties:
-           - const: mediatek,spi-ipm
-       - items:
-           - enum:
-+              - mediatek,mt8189-spi
-               - mediatek,mt8196-spi
-           - const: mediatek,mt6991-spi
-       - items:
-
-base-commit: 05441d697f7f9a927264f4058cbbc6a03dfcac9d
--- 
-2.46.0
-
+Thanks,
+Aryan
